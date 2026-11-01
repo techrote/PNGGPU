@@ -1,4 +1,4 @@
-# PNG2ANSI-GPU
+# PNGGPU
 
 GPU-accelerated PNG2ANSI reconstruction research using WebGPU + WGSL.
 
