@@ -1,0 +1,225 @@
+{
+  "name": "PNG2ANSI WebGPU GPU-007 COMPLETE Windows installer",
+  "release": "GPU-007",
+  "distribution_type": "cumulative Windows one-click installer; pinned original PNG2ANSI source downloaded once if absent",
+  "base_repo": "techrote/PNG2ANSI",
+  "base_commit": "67ae97295ab9a9ab32fdee5410c2371e4b21ce87",
+  "previous_GPU_version_required": false,
+  "runner": "start.bat",
+  "installer": "setup.bat",
+  "test": "test.bat",
+  "cpu_reference_work_units": 125000000,
+  "gpu_max_safe_integer_work_units": 9007199254740991,
+  "gpu_tile_projection_mib_choices": [
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "gpu_in_flight_options": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    8,
+    12,
+    16,
+    24
+  ],
+  "gpu_max_geometry": {
+    "columns": 1024,
+    "rows": 1024,
+    "sample_width": 32,
+    "sample_height": 64
+  },
+  "features": [
+    "automatic VRAM estimation",
+    "streamed large-raster input",
+    "folder image batch to ANSI ZIP",
+    "optional timing CSV/JSON",
+    "extended pipeline depth",
+    "hardmode benchmark suite"
+  ],
+  "vram_policy": "manual VRAM; warn above VRAM-4GiB; hard block above VRAM-2GiB; estimates do not equal actual free memory",
+  "hardware_GPU_validation": "Not performed in container; high-resolution streaming exact-reference parity unverified",
+  "files": {
+    "README_FIRST.md": {
+      "sha256": "5a02ddc9970786e8b9d91cee3fdd6ed7c5dd405f0280ae413dff0c7d425cedbd",
+      "bytes": 3208
+    },
+    "setup.bat": {
+      "sha256": "e160a1d407027d04d839fac3438665c612c0988cdece0754eef7365a11db9463",
+      "bytes": 361
+    },
+    "start.bat": {
+      "sha256": "6c112776b285e492d661553060c603d0e477cc6b1eb3bc179286e9b1d91843dd",
+      "bytes": 1213
+    },
+    "test.bat": {
+      "sha256": "f8c40efad8203a7164ae640100f4150e158e13c8c98d84678d668a4762c30f96",
+      "bytes": 514
+    },
+    "scripts/serve.mjs": {
+      "sha256": "2dcb931d69cbf48acd488f02315bc2bc7dbda1e1563816612343e2b7d83997f3",
+      "bytes": 2352
+    },
+    "scripts/serve.py": {
+      "sha256": "f313e0f4ef7f485f2a2a1d095773d64a2708e439cd0d84c9ceee93a8dc8c5e5d",
+      "bytes": 2345
+    },
+    "scripts/setup.ps1": {
+      "sha256": "f61174c0dbec28fa3ba34ee438a21db2fa0d5d3da334f2abe5de06daa1f9f2ca",
+      "bytes": 6568
+    },
+    "overlay/GPU006_INSTALL.md": {
+      "sha256": "c4d8b5b3fad99b4a6554716fc8d5c7ce52a48c1528986f88eb709360f2e3dcca",
+      "bytes": 1936
+    },
+    "overlay/GPU007_INSTALL.md": {
+      "sha256": "807d67a687ad7fa2295d5ccbd4a7e2d5ffd187318f7b0ae04f2436cb12e22df2",
+      "bytes": 1438
+    },
+    "overlay/docs/WEBGPU_BENCHMARKS.md": {
+      "sha256": "31b4bfbc60d9fe97f1ef2e4c64b8bfac798132a13686f08734e5d72d76ea3cea",
+      "bytes": 17439
+    },
+    "overlay/docs/WEBGPU_RESEARCH.md": {
+      "sha256": "62dc790edb07833596fe3c0f8b64465dbd0aa3b61c004501f0f6b2ee7fe63ed3",
+      "bytes": 9761
+    },
+    "overlay/experiments/webgpu/photographic.html": {
+      "sha256": "c42a470f3e355039e4ed88f5c1c8975c3422e7fb4be9077cf36a88f71b3cb9a7",
+      "bytes": 67423
+    },
+    "overlay/fixtures/hardmode/bland-blocks-2048.png": {
+      "sha256": "245f1afb99155229b9ad584b2c582ede314e5e0e44b2b440d465a8732d7b4725",
+      "bytes": 11106309
+    },
+    "overlay/fixtures/hardmode/colour-blocks-2048.png": {
+      "sha256": "42c18538f3457fa026b93bce4a4884c44400e0288e57c39926cfd4cffe5bd3c6",
+      "bytes": 10386941
+    },
+    "overlay/fixtures/hardmode/holo-boots-blocks-1024.png": {
+      "sha256": "4158121b1a284677932d27403af18bc67a12935e18c6fc127fa6d7f9fd94f688",
+      "bytes": 2111198
+    },
+    "overlay/fixtures/hardmode/holo-stealth-cloak-1024.png": {
+      "sha256": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+      "bytes": 2935057
+    },
+    "overlay/fixtures/hardmode/manifest.json": {
+      "sha256": "09a9fc5fab3554e87325ff89e5a325f42ed03c8d6ede901649f642ca38c6e0a8",
+      "bytes": 5993
+    },
+    "overlay/fixtures/hardmode/oversharpened-forestry-crt-2048.png": {
+      "sha256": "ef11c80248d09c2866e9a000c428c6af3d7e186595523930ac8ad506a353d491",
+      "bytes": 10739021
+    },
+    "overlay/gpu-smoke.html": {
+      "sha256": "0db9e1b38500ef20233d5c68091555ba13f152e0a2e3ef44246bbcdd3f6507fe",
+      "bytes": 761
+    },
+    "overlay/package.json": {
+      "sha256": "46d81d0f361031488137eee2f599f2cbc9bef9c92c02e05daaba37bdbb4448f8",
+      "bytes": 675
+    },
+    "overlay/src/gpu/benchmark_zip.js": {
+      "sha256": "22a567dbadb417da4fda21accb8a96b0dc079ab6fe1bdddb3c6b5f87cbdaf7d8",
+      "bytes": 3544
+    },
+    "overlay/src/gpu/cpu_worker_host.js": {
+      "sha256": "c55f157e34002061ca6019ec0b41d54da2531eb36a386a976ecb1ba86e29f09b",
+      "bytes": 1740
+    },
+    "overlay/src/gpu/memory.js": {
+      "sha256": "097f77f9b3f37e27a1e027936022ec5412f33d00e91faf3b3aa863a43816c0dd",
+      "bytes": 6451
+    },
+    "overlay/src/gpu/metrics.js": {
+      "sha256": "28d9b8e1d6357f16539d01db1f75968ecce07d532aa5bd3b4919aea6b16db664",
+      "bytes": 2639
+    },
+    "overlay/src/gpu/photographic.js": {
+      "sha256": "91c03b79846b2690f97c2aebbd22170b37feb0732c7a09b4a13eb57dd16bac0c",
+      "bytes": 21640
+    },
+    "overlay/src/gpu/photographic.wgsl": {
+      "sha256": "5e561bdb1dab75e11ce11a37ce1c9b6e3f4129af2af964fedf0713435160e4d4",
+      "bytes": 6572
+    },
+    "overlay/src/gpu/progress.js": {
+      "sha256": "db2545757d016596a1d09536f803a4100a36236f5486cb08c614801340a2c6cf",
+      "bytes": 1610
+    },
+    "overlay/src/gpu/reference_photo.js": {
+      "sha256": "fd027d6b5c053af644b8741b0ccb9df954ecbd57a2f210317233b79b598e9d86",
+      "bytes": 3694
+    },
+    "overlay/src/gpu/reference_photo.worker.js": {
+      "sha256": "c2d1bf9e84e3e19166167e533f8b22de087d1c981729fadd65bd068e9dfd4020",
+      "bytes": 1543
+    },
+    "overlay/src/gpu/streamed_samples.js": {
+      "sha256": "be36abbdac360c4b557feff4bd0e1fc695ba13efb44f82082adc4bb78b847d8e",
+      "bytes": 3756
+    },
+    "overlay/src/gpu/workload.js": {
+      "sha256": "d94b23552d91a627396b96ae7c877c34c6ac5224aeaed785564b33dde0706039",
+      "bytes": 2751
+    },
+    "overlay/tests/benchmark_zip.test.mjs": {
+      "sha256": "633aa1dc1b21be4fe7f023cfdb4b194a711c344a0991427fb73c1c072734547c",
+      "bytes": 2950
+    },
+    "overlay/tests/cpu_worker_progress.test.mjs": {
+      "sha256": "fa532b7b07c1de28e4ff30d8e3fe509d2e5f9c22eb2ed6e090e5b08b4938c9fc",
+      "bytes": 2554
+    },
+    "overlay/tests/gpu007_extended.test.mjs": {
+      "sha256": "86afc13f9346ce368dac02646f7cda36af2212b353ac12b56fd3154351745510",
+      "bytes": 5024
+    },
+    "overlay/tests/gpu_memory.test.mjs": {
+      "sha256": "1f83a3f06fda1ad6f6a8923d213a0802ddcf0327db0ca0ac75ec51c8956e74f1",
+      "bytes": 8500
+    },
+    "overlay/tests/gpu_metrics.test.mjs": {
+      "sha256": "7518522e8e44c791db15843aa3127b329a5e04645c109f6d1142b049df92062f",
+      "bytes": 2030
+    },
+    "overlay/tests/gpu_photo_contract.test.mjs": {
+      "sha256": "a583f3b79240275afffeac8ec4a3e34aada5a8eaadd67eb301d0f867f3b94013",
+      "bytes": 8629
+    },
+    "overlay/tests/gpu_pipeline.test.mjs": {
+      "sha256": "2c2b15b441dc0a27d8ed4b4cab89d1229b5779ca0aa475ef68d4998453c7835d",
+      "bytes": 4906
+    },
+    "overlay/tests/gpu_profiling.test.mjs": {
+      "sha256": "4fec84e8de8d4c69318a77fe22456e017244357b81ce2423b7d0303c43964af5",
+      "bytes": 4419
+    },
+    "overlay/tests/gpu_progress.test.mjs": {
+      "sha256": "a4f8cee223230d4e9f71a788436e7a230bbc4a129b403f083c094909f7ba9923",
+      "bytes": 1879
+    },
+    "overlay/tests/gpu_workload.test.mjs": {
+      "sha256": "781a255e4f5079c1710576ecb1d63e4f55ccc9f835390e88631bcb7e8c911329",
+      "bytes": 1747
+    },
+    "overlay/tests/hardmode_manifest.test.mjs": {
+      "sha256": "1a1f8f95292de46b2476619b5eb0892ae27b34350ef0765d2cbf3b5450e9d80b",
+      "bytes": 1842
+    },
+    "overlay/tests/reference_photo.test.mjs": {
+      "sha256": "ec2cdbc4ea4752653cb200c248d1c93988915713450806ae2142be266ddd4090",
+      "bytes": 2058
+    }
+  }
+}

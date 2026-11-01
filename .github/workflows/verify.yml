@@ -1,0 +1,30 @@
+name: GPU-007 validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  host-tests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Setup pinned CPU reference with GPU overlay
+        shell: pwsh
+        run: ./scripts/setup.ps1
+      - name: Validate GPU-007 host tests and original CPU artifact
+        shell: pwsh
+        run: npm test --prefix PNG2ANSI
+      - name: Verify benchmark image hashes
+        shell: pwsh
+        run: |
+          $manifest = Get-Content overlay/fixtures/hardmode/manifest.json -Raw | ConvertFrom-Json
+          foreach ($i in $manifest.images) {
+            $path = Join-Path 'overlay/fixtures/hardmode' $i.file
+            $hash = (Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($hash -ne $i.sha256) { throw "Hash mismatch: $path" }
+          }

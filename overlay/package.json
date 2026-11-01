@@ -1,0 +1,11 @@
+{
+  "name": "png2ansi-web",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check",
+    "test": "node tests/core.test.mjs && node tests/artifact.test.mjs && node --test tests/gpu_photo_contract.test.mjs tests/gpu_workload.test.mjs tests/hardmode_manifest.test.mjs tests/gpu_metrics.test.mjs tests/gpu_profiling.test.mjs tests/reference_photo.test.mjs tests/gpu_progress.test.mjs tests/cpu_worker_progress.test.mjs tests/gpu_memory.test.mjs tests/gpu_pipeline.test.mjs tests/benchmark_zip.test.mjs tests/gpu007_extended.test.mjs && node scripts/build.mjs --check"
+  }
+}

@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><body id="result">Running</body><script type="module">
+import {PhotographicWebGpuFitter} from './src/gpu/photographic.js';
+const set=t=>document.getElementById('result').textContent=t;
+try{
+ const source=await(await fetch('./src/gpu/photographic.wgsl')).text();
+ const fitter=await PhotographicWebGpuFitter.create(source);
+ const x=await fitter.fit({pixels:new Uint8Array([0,0,0,255,255,255,255,255]),masks:[new Float32Array([0,1]),new Float32Array([1,0])],palette:Array.from({length:16},(_,i)=>[i*16,i*16,i*16]),columns:1,rows:1,sampleWidth:2,sampleHeight:1,foregroundCandidates:6,backgroundCandidates:5});
+ set('PASS '+[...x.chosen]+' '+[...x.fg]+' '+[...x.bg]);fitter.close();
+}catch(e){set('ERROR '+e.stack);}
+</script>
