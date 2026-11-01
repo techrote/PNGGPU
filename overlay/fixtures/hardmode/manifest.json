@@ -1,0 +1,228 @@
+{
+  "schema": "png2ansi-hardmode-v1",
+  "description": "Five user-supplied, original-byte PNG challenge images for GPU/CPU ANSI reconstruction fidelity benchmarks.",
+  "suites": [
+    {
+      "id": "parity-baseline",
+      "columns": 80,
+      "rows": 40,
+      "sampleW": 4,
+      "sampleH": 8,
+      "foreground": 6,
+      "background": 5
+    },
+    {
+      "id": "dense-geometry",
+      "columns": 160,
+      "rows": 80,
+      "sampleW": 8,
+      "sampleH": 32,
+      "foreground": 8,
+      "background": 8
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 8,192",
+      "tileCells": 8192,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 16,384",
+      "tileCells": 16384,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 32,768",
+      "tileCells": 32768,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 65,536",
+      "tileCells": 65536,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 131,072",
+      "tileCells": 131072,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 recommended 256x256 hardmode / tile 262,144",
+      "tileCells": 262144,
+      "columns": 256,
+      "rows": 256,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 short-job clock/ramp 128x128 / 16x32 / FG12 BG8",
+      "columns": 128,
+      "rows": 128,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "tileCells": 16384,
+      "gpuRepeats": 5,
+      "inFlightTiles": 2
+    },
+    {
+      "id": "GPU-006 extreme 512x512 / 16x32 / FG12 BG8",
+      "columns": 512,
+      "rows": 512,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "tileCells": 262144,
+      "gpuRepeats": 1,
+      "inFlightTiles": 1
+    },
+    {
+      "id": "GPU-007 depth-8 research 512x512 / 16x32",
+      "columns": 512,
+      "rows": 512,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "tileMiB": 32,
+      "inFlightTiles": 8,
+      "gpuRepeats": 3
+    },
+    {
+      "id": "GPU-007 depth-24 stress 512x512 / 16x32",
+      "columns": 512,
+      "rows": 512,
+      "sampleW": 16,
+      "sampleH": 32,
+      "foreground": 12,
+      "background": 8,
+      "tileMiB": 16,
+      "inFlightTiles": 24,
+      "gpuRepeats": 1
+    },
+    {
+      "id": "GPU-007 extended 1024x1024 / 32x64",
+      "columns": 1024,
+      "rows": 1024,
+      "sampleW": 32,
+      "sampleH": 64,
+      "foreground": 12,
+      "background": 8,
+      "tileMiB": 32,
+      "inFlightTiles": 2,
+      "gpuRepeats": 1
+    }
+  ],
+  "images": [
+    {
+      "file": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "description": "High saturation against monochrome geometry; thin edges and complex surfaces",
+      "width": 1024,
+      "height": 1024,
+      "size_bytes": 2935057,
+      "sha256": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+      "stress": [
+        "saturated gradients",
+        "repeating diagonals",
+        "fine outlines"
+      ]
+    },
+    {
+      "file": "oversharpened-forestry-crt-2048.png",
+      "title": "Rain-soaked forest / high-frequency texture",
+      "description": "Dark wet mud, rain streaks, specular reflections, foliage and fog",
+      "width": 2048,
+      "height": 2048,
+      "size_bytes": 10739021,
+      "sha256": "ef11c80248d09c2866e9a000c428c6af3d7e186595523930ac8ad506a353d491",
+      "stress": [
+        "dark tonal range",
+        "noise and texture",
+        "fine rain streaks"
+      ]
+    },
+    {
+      "file": "bland-blocks-2048.png",
+      "title": "Monochrome block structures",
+      "description": "Low-saturation, similar-valued structures with fine repeated tile detail",
+      "width": 2048,
+      "height": 2048,
+      "size_bytes": 11106309,
+      "sha256": "245f1afb99155229b9ad584b2c582ede314e5e0e44b2b440d465a8732d7b4725",
+      "stress": [
+        "low contrast",
+        "fine architectural lines",
+        "repeating tile patterns"
+      ]
+    },
+    {
+      "file": "holo-boots-blocks-1024.png",
+      "title": "Holographic clothing and boots",
+      "description": "Small high-contrast boot details and saturated iridescent trousers",
+      "width": 1024,
+      "height": 1024,
+      "size_bytes": 2111198,
+      "sha256": "4158121b1a284677932d27403af18bc67a12935e18c6fc127fa6d7f9fd94f688",
+      "stress": [
+        "small structures",
+        "mixed greyscale/color",
+        "bright saturated highlights"
+      ]
+    },
+    {
+      "file": "colour-blocks-2048.png",
+      "title": "High-contrast coloured blocks",
+      "description": "Dense high-frequency RGB microtextures, alternating light/dark planes",
+      "width": 2048,
+      "height": 2048,
+      "size_bytes": 10386941,
+      "sha256": "42c18538f3457fa026b93bce4a4884c44400e0288e57c39926cfd4cffe5bd3c6",
+      "stress": [
+        "colour interference",
+        "high spatial frequency",
+        "colour quantisation"
+      ]
+    }
+  ]
+}

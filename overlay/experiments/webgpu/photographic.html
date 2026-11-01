@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PNG2ANSI GPU-007 · Pipelined GPU profiling and ZIP benchmark workbench</title>
+<style>
+body{font:14px/1.45 ui-monospace,Consolas,monospace;background:#11151b;color:#e1e6e8;margin:0;padding:20px}
+main{max-width:1500px;margin:auto}h1{font-size:20px}p{color:#a9b4c3}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end}label{display:grid;gap:4px}input,button,select{font:inherit;color:inherit;background:#232c38;border:1px solid #637187;padding:6px}
+button:disabled{opacity:.4}button{cursor:pointer}a{color:#87c8ff}label.inline{display:flex;align-items:center;gap:5px}label.inline input{margin:0}.side-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.help{font-size:12px}details{margin-top:8px}details pre{max-height:220px;overflow:auto}.images{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#0a1017;padding:12px}
+.perf-results{margin-top:12px;padding:10px 12px;background:#111a23;border:1px solid #364354}.perf-results h2{margin:0 0 8px;font-size:16px}.perf-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}.perf-table th,.perf-table td{border-bottom:1px solid #313e4e;padding:6px 10px;text-align:right}.perf-table th:first-child,.perf-table td:first-child{text-align:left}.perf-table tr.total{font-weight:700;background:#233143}.perf-table tr.fit{font-weight:700}.perf-table .muted{color:#adbac9}
+.progress-panel{border:1px solid #364354;background:#151f2a;padding:10px 12px;margin-top:8px}
+.progress-panel h2{font-size:14px;margin:0 0 8px}.progress-line{margin:7px 0 12px}
+.progress-line .name{font-weight:700;display:inline-block;min-width:135px}
+.progress-line progress{display:block;width:100%;height:15px;accent-color:#63b9ff;margin:3px 0}
+.progress-line output{font-size:12px;color:#a9cde4;white-space:pre-wrap;overflow-wrap:anywhere}
+#vram-status{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid #364354;padding:9px;background:#111a23}
+#vram-status[data-state="warning"]{border-color:#b68e38}
+#vram-status[data-state="blocked"]{border-color:#b64f4f}
+.progress-help{font-size:12px;color:#adc1d3;margin:4px 0 0}
+@media(max-width:800px){.images{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<h1>PNG2ANSI · GPU-007 GPU photographic workbench</h1>
+<p>This is an experimental WebGPU matching backend, not the release webapp. Times the reference-equivalent CPU matcher and the WGSL matcher on exactly the same prepared samples and masks. The CPU matcher is checked against the original reference in host tests. Requires HTTPS or localhost; it never changes the existing PNG2ANSI release.</p>
+<div class="controls">
+<label>Image <input id="image" type="file" accept="image/*"></label>
+<label>Columns <input id="columns" type="number" value="80" min="16" max="1024"></label>
+<label>Rows <input id="rows" type="number" value="40" min="8" max="1024"></label>
+<label>Sample width <input id="sampleW" type="number" value="4" min="1" max="32"></label>
+<label>Sample height <input id="sampleH" type="number" value="8" min="1" max="64"></label>
+<label>Foreground colours <input id="foreground" type="number" value="6" min="1" max="12"></label>
+<label>Background colours <input id="background" type="number" value="5" min="1" max="8"></label>
+<label>GPU projection tile target (MiB)
+  <select id="tileMiB" title="Power-of-two MiB of projection-buffer budget per tile; actual allocation is bounded by device limits">
+    <option value="4">4 MiB</option><option value="8">8 MiB</option>
+    <option value="16">16 MiB</option><option value="32" selected>32 MiB</option>
+    <option value="64">64 MiB</option><option value="128">128 MiB</option>
+    <option value="256">256 MiB</option><option value="512">512 MiB</option>
+    <option value="1024">1024 MiB (1 GiB)</option>
+  </select>
+</label>
+<label>Tile pipeline depth
+  <select id="in-flight" title="Multiple independent slot buffers overlap CPU packing/submission with GPU readback; the WebGPU queue remains ordered.">
+    <option value="1">1 · serial</option><option value="2" selected>2 · double</option>
+    <option value="3">3 · triple</option><option value="4">4 · quadruple</option>
+    <option value="6">6 · sextuple</option><option value="8">8 · octuple</option>
+    <option value="12">12 · duodecuple</option><option value="16">16 · hexadecimal</option>
+    <option value="24">24 · quattuorvigintuple</option>
+  </select>
+</label>
+<label>Declared GPU VRAM (GiB) <input id="gpu-vram" type="number" value="" min="1" max="128" step="0.5" placeholder="4 / 24" title="Enter installed dedicated VRAM, e.g. 4 for GTX 1650 SUPER or 24 for RTX Titan. Standard WebGPU does not expose exact VRAM capacity."></label>
+<button id="estimate-memory" title="Inspect intended allocation and hardware-clamped tile size before conversion">Estimate VRAM</button>
+<label>GPU runs <input id="gpu-repeats" type="number" value="1" min="1" max="10" title="Optional repeated full GPU fits; first run is used for end-to-end comparison, median reported separately"></label>
+<label class="inline"><input id="gpu-timestamps" type="checkbox" checked> GPU shader timestamps (if available)</label>
+<label class="inline"><input id="compare-cpu" type="checkbox"> Compare against CPU (may be slow at high settings)</label>
+<button id="run">Run GPU / optional CPU</button>
+<a id="gpu-download" hidden download="webgpu.ans">Save GPU .ANS</a>
+</div>
+<div class="side-actions">
+<label>Hardmode image <select id="hardmode"><option value="">Loading samples…</option></select></label>
+<button id="load-hardmode">Load sample</button>
+<label>Benchmark preset <select id="preset"><option value="">Loading…</option></select></label>
+<button id="apply-preset">Apply preset</button>
+<button id="suite">Benchmark all five (JSON)</button>
+<label>ZIP benchmark scope
+  <select id="zip-scope" title="All five images with this tile target, or a full requested-target sweep (8,192–262,144) for each image">
+    <option value="selected">5 images × selected tile</option>
+    <option value="sweep">5 images × 6 projection targets (8–256 MiB)</option>
+  </select>
+</label>
+<button id="suite-zip">Run benchmarks → ZIP</button>
+<a id="zip-download" hidden download="png2ansi-gpu007-benchmarks.zip">Save benchmark ZIP</a>
+<button id="stop" hidden>Stop after current benchmark</button>
+<a id="report-download" hidden download="png2ansi-hardmode-benchmark.json">Save hardmode report (.JSON)</a>
+</div>
+<div class="side-actions">
+<label>Folder of images <input id="folder-images" type="file" accept="image/*" webkitdirectory multiple title="Select an entire folder; supported Chromium/Firefox. Subfolder paths are retained in ZIP"></label>
+<label>Or select image files <input id="batch-files" type="file" accept="image/*" multiple></label>
+<label class="inline"><input id="batch-metrics" type="checkbox" checked> Include timing/per-image JSON and CSV in ZIP</label>
+<button id="batch-run">Batch folder → ANSI ZIP</button>
+<a id="batch-download" hidden download="png2ansi-gpu007-batch.zip">Save ANSI batch ZIP</a>
+</div>
+<p class="help">GPU work-unit research range: safe-integer accounting (no CPU-era GPU work-unit block). Original CPU app retains 125M. GPU limits are up to 1024×1024 cells and 32×64 samples. Very large rasters are streamed in bounded Canvas2D strips rather than allocated as one image; oversized strip resampling is experimental and not yet reference-parity qualified. Tile target is the requested projection-buffer size in binary MiB (1 MiB = 1,048,576 bytes), not a VRAM reservation or guaranteed allocation. Actual tile size is constrained by WebGPU storage binding and raster buffer limits. Depth up to 24 uses independent GPU slots; VRAM calculations automatically update when settings change and must pass the declared-capacity safety gate before starting. GPU shader work remains queue-ordered; more slots only overlap host packing and readback. Preview is suppressed for extremely large outputs, while ANSI remains downloadable. VRAM reserve remains 4 GiB warning / 2 GiB hard block.</p>
+<p id="vram-status" class="help" aria-live="polite">Enter installed VRAM (4 GiB for GTX 1650 SUPER, 24 GiB for RTX Titan); estimates refresh automatically as you adjust settings.</p>
+<pre id="status">Ready. Upload a source image to start.</pre>
+<section id="job-progress" class="progress-panel" hidden>
+<h2>Live glyph-fitting progress</h2>
+<div class="progress-line"><span class="name">CPU oracle</span><progress id="progress-cpu" max="100" value="0"></progress><output id="progress-cpu-text">Idle</output></div>
+<div class="progress-line"><span class="name">WebGPU</span><progress id="progress-gpu" max="100" value="0"></progress><output id="progress-gpu-text">Idle</output></div>
+<p class="progress-help">Progress counts completed terminal cells. Cells/s and estimated work-units/s are measured/derived during execution; GPU counts advance only after a tile is read back. Rates and ETA are provisional while running.</p>
+</section>
+<section id="metrics" class="perf-results" hidden aria-live="polite">
+<h2>Comparable CPU / GPU performance</h2>
+<table class="perf-table"><thead><tr><th>Stage</th><th>CPU path</th><th>GPU path</th></tr></thead><tbody id="metric-rows"></tbody></table>
+<p class="help" id="metric-note"></p>
+<details><summary>GPU profiling details, memory and throughput</summary><pre id="metric-profile"></pre></details>
+</section><details id="debug-details" hidden><summary>Technical stack trace</summary><pre id="debug"></pre></details>
+<div class="images"><section><h2>CPU reference</h2><img id="cpu" alt="CPU reference output"></section><section><h2>WebGPU matching</h2><img id="gpu" alt="WebGPU output"></section></div>
+<script src="../../src/core.js"></script>
+<script type="module">
+import { PhotographicWebGpuFitter } from "../../src/gpu/photographic.js?gpu007";
+import {benchmarkZip,csvRows} from '../../src/gpu/benchmark_zip.js?gpu007';
+import {runCpuReferenceInWorker} from '../../src/gpu/cpu_worker_host.js?gpu007';
+import {progressSnapshot,humanRate,etaText} from '../../src/gpu/progress.js?gpu007';
+import {milliseconds, decimal, bytes, ratio, compareAnsi, compareCells, summarizeTimings,gpuProfileStages} from "../../src/gpu/metrics.js?gpu007";
+import {MiB,GiB,validateDeclaredVramGiB,estimateGpuMemory,evaluateVramBudget,vramDecisionMessage} from '../../src/gpu/memory.js?gpu007';
+import {GPU_MAX_WORK_UNITS, GPU_SLOW_WORK_WARNING_UNITS, CPU_REFERENCE_WORK_UNITS, WORKBENCH_LIMITS,
+        validateWorkbenchInputs, validateGpuBudget} from "../../src/gpu/workload.js?gpu007";
+
+import {requiresStreamedSamples,makeStreamedSampleProvider,PREVIEW_MAX_PIXELS} from '../../src/gpu/streamed_samples.js?gpu007';
+const byId=id=>document.getElementById(id),status=byId('status');
+let fitter=null,maskCache=new Map(),fontReady=null,downloadUrl=null,reportUrl=null,zipUrl=null,batchUrl=null;
+let selectedFile=null,corpus=null,running=false,stopping=false,preflightTimer=null,preflightEpoch=0;
+let currentWorkUnits=null,currentGlyphCount=0;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const TILE_TARGETS_MIB=[4,8,16,32,64,128,256,512,1024];
+const BENCHMARK_SWEEP_MIB=[8,16,32,64,128,256];
+const format=n=>n.toLocaleString('en-US');
+
+async function font(){
+  if(!fontReady)fontReady=(async()=>{
+    const response=await fetch('../../assets/DejaVuSansMono.ttf');
+    if(!response.ok)throw new Error('Unable to load bundled reference font');
+    const face=new FontFace('PNG2ANSI DejaVu',await response.arrayBuffer());
+    await face.load();document.fonts.add(face);globalThis.__png2ansiFont=face;
+  })();
+  await fontReady;
+}
+// Intentionally identical to the CPU reference's deduplication and sampling.
+async function masksFor(codes,c){
+  const key=`${codes.join(',')}|${c.cell_width}x${c.cell_height}|${c.sample_width}x${c.sample_height}|${c.font_size}`;
+  if(maskCache.has(key))return maskCache.get(key);
+  await font();
+  const kept=[],hi=[],low=[],signatures=new Set();
+  const tile=new OffscreenCanvas(c.cell_width,c.cell_height),ctx=tile.getContext('2d',{willReadFrequently:true});
+  for(const code of codes){
+    ctx.clearRect(0,0,tile.width,tile.height);ctx.fillStyle='#fff';ctx.font=`${c.font_size}px 'PNG2ANSI DejaVu'`;ctx.textBaseline='top';
+    const char=PNG2ANSI.CP437[code],metrics=ctx.measureText(char),x=Math.floor((tile.width-metrics.width)/2);ctx.fillText(char,x,0);
+    const pixels=ctx.getImageData(0,0,tile.width,tile.height).data,mask=new Float32Array(tile.width*tile.height);let sig='';
+    for(let i=0;i<mask.length;i++){mask[i]=pixels[i*4+3]/255;sig+=String.fromCharCode(Math.round(mask[i]*31));}
+    if(signatures.has(sig))continue;signatures.add(sig);kept.push(code);hi.push(mask);
+    const sm=new Float32Array(c.sample_width*c.sample_height);
+    for(let sy=0;sy<c.sample_height;sy++)for(let sx=0;sx<c.sample_width;sx++){
+      const x0=sx*c.cell_width/c.sample_width,x1=(sx+1)*c.cell_width/c.sample_width;
+      const y0=sy*c.cell_height/c.sample_height,y1=(sy+1)*c.cell_height/c.sample_height;
+      let sum=0,n=0;
+      for(let y=Math.floor(y0);y<Math.ceil(y1);y++)for(let x2=Math.floor(x0);x2<Math.ceil(x1);x2++){
+        sum+=mask[clamp(y,0,c.cell_height-1)*c.cell_width+clamp(x2,0,c.cell_width-1)];n++;
+      }
+      sm[sy*c.sample_width+sx]=sum/n;
+    }
+    low.push(sm);
+  }
+  const result={codes:kept,hi,low};maskCache.set(key,result);return result;
+}
+function renderCells(masks,selection,c){
+  const width=c.columns*c.cell_width,height=c.rows*c.cell_height;
+  const canvas=new OffscreenCanvas(width,height),ctx=canvas.getContext('2d');
+  const image=ctx.createImageData(width,height),p=image.data;
+  for(let cell=0;cell<selection.chosen.length;cell++){
+    const cx=cell%c.columns,cy=Math.floor(cell/c.columns),mask=masks.hi[selection.chosen[cell]];
+    const f=PNG2ANSI.PALETTE[selection.fg[cell]],b=PNG2ANSI.PALETTE[selection.bg[cell]];
+    for(let y=0;y<c.cell_height;y++)for(let x=0;x<c.cell_width;x++){
+      const m=mask[y*c.cell_width+x],at=((cy*c.cell_height+y)*width+cx*c.cell_width+x)*4;
+      for(let k=0;k<3;k++)p[at+k]=Math.round(b[k]+m*(f[k]-b[k]));p[at+3]=255;
+    }
+  }
+  ctx.putImageData(image,0,0);return canvas.convertToBlob({type:'image/png'});
+}
+function currentSettings(){
+  const raw=Object.fromEntries(Object.keys(WORKBENCH_LIMITS).map(key=>[key,byId(key).value]));
+  const settings=validateWorkbenchInputs(raw);
+  const tileMiB=Number(byId('tileMiB').value);
+  if(!TILE_TARGETS_MIB.includes(tileMiB))
+    throw new RangeError(`GPU projection target: choose a power-of-two size of 4–1024 MiB`);
+  const gpuRepeats=Number(byId('gpu-repeats').value);
+  if(!Number.isSafeInteger(gpuRepeats)||gpuRepeats<1||gpuRepeats>10)
+    throw new RangeError('GPU runs must be an integer between 1 and 10');
+  const inFlightTiles=Number(byId('in-flight').value);
+  if(![1,2,3,4,6,8,12,16,24].includes(inFlightTiles))throw new RangeError('GPU pipeline depth must be 1, 2, 3, 4, 6, 8, 12, 16 or 24');
+  return {...settings,tileMiB,inFlightTiles,gpuRepeats,captureGpuTimestamps:byId('gpu-timestamps').checked,declaredVramGiB:validateDeclaredVramGiB(byId('gpu-vram').value)};
+}
+function resetProgress(cpuEnabled=true){
+  byId('job-progress').hidden=false;
+  for(const type of ['cpu','gpu']){
+    byId(`progress-${type}`).value=0;
+    byId(`progress-${type}-text`).textContent=type==='cpu'&&!cpuEnabled?'Skipped (GPU-only mode)':'Not started';
+  }
+}
+function updateProgress(type,progress,{runIndex=1,runCount=1}={}){
+  const totalCells=progress.totalCells;
+  if(!totalCells)return;
+  const info=progressSnapshot({...progress,glyphCount:currentGlyphCount,workUnits:currentWorkUnits});
+  byId(`progress-${type}`).value=info.percent;
+  const label=type==='gpu'&&runCount>1?`Run ${runIndex}/${runCount} · `:'';
+  const rate=info.cellsPerSecond===null?'rate pending':`${humanRate(info.cellsPerSecond)} cells/s`;
+  const workRate=info.estimatedWorkUnitsPerSecond===null?'—':`${humanRate(info.estimatedWorkUnitsPerSecond)} estimated work-units/s`;
+  const extra=type==='gpu'&&progress.completedTiles!==undefined?` · tile ${progress.completedTiles}/${progress.totalTiles}`+
+    (progress.inFlightCapacity?` · pipeline ≤${progress.inFlightCapacity}`:''):'';
+  byId(`progress-${type}-text`).textContent=
+    `${label}${info.percent.toFixed(1)}% · ${format(info.completedCells)}/${format(totalCells)} cells${extra} · `+
+    `${rate} · ${workRate} · elapsed ${(info.elapsedMs/1000).toFixed(1)}s · ${etaText(info.remainingMs)}`;
+}
+function showError(error){
+  status.textContent=`ERROR: ${error?.message||String(error)}`;
+  byId('debug-details').hidden=false;
+  byId('debug').textContent=error?.stack||String(error);
+}
+function clearError(){byId('debug-details').hidden=true;byId('debug').textContent='';}
+function setBusy(value){running=value;for(const id of ['run','suite','suite-zip','batch-run','estimate-memory','apply-preset','load-hardmode'])byId(id).disabled=value;byId('stop').hidden=!value;}
+async function createGpuFitter(){
+  if(fitter&&!fitter.lost)return fitter;
+  const shaderSource=await(await fetch('../../src/gpu/photographic.wgsl?gpu007',{cache:'no-store'})).text();
+  fitter=await PhotographicWebGpuFitter.create(shaderSource);return fitter;
+}
+// Never infer VRAM from WebGPU adapter labels or buffer limits. The user
+// supplies the installed GPU capacity; save it locally for subsequent starts.
+function readVramFromControls(){return validateDeclaredVramGiB(byId('gpu-vram').value);}
+function displayVramBudget(estimate,budget,plan){
+  const f=n=>(n/MiB).toFixed(1)+' MiB';
+  const actual=plan.tileCells,requested=plan.requestedTileCells;
+  byId('vram-status').textContent=`Declared VRAM: ${budget.declaredVramGiB} GiB (manual; NOT detected free memory) · `+
+    `estimated workbench allocation: ${f(estimate.estimatedWorkingSetBytes)} `+
+    `(WebGPU buffers ${f(estimate.gpuBufferBytes)}, browser-image allowance ${f(estimate.browserBackingEstimateBytes)}, `+
+    `uncertainty reserve ${f(estimate.uncertaintyAllowanceBytes)}).\n`+
+    `Warning above ${f(budget.warningThresholdBytes)}, HARD BLOCK above ${f(budget.hardThresholdBytes)}. `+
+    `Projection target ${plan.requestedTileMiB??'?'} MiB → effective ${plan.effectiveProjectionMiB.toFixed(1)} MiB `+
+    `(${format(requested)} requested vs ${format(actual)} actual cells) `+
+    `(${format(plan.tileCount)} tiles; projection ${f(plan.projectionBufferBytes)}; `+
+    `${plan.projectWorkgroupsX}×${plan.projectWorkgroupsY} projection workgroups).\n`+
+    vramDecisionMessage(budget);
+  byId('vram-status').dataset.state=budget.status;
+}
+function memoryGate(estimate,budget,plan,approvalScope){
+  displayVramBudget(estimate,budget,plan);
+  if(budget.status==='blocked')throw new RangeError(vramDecisionMessage(budget));
+  if(budget.status==='warning'){
+    if(approvalScope?.has('zip-suite-preflight-approved')||approvalScope?.has('folder-batch-approved'))return;
+    const key=[budget.declaredVramGiB,estimate.estimatedWorkingSetBytes,plan.tileCells].join(':');
+    if(approvalScope?.has(key))return;
+    if(!globalThis.confirm(`${vramDecisionMessage(budget)}\n\nContinue this GPU experiment? `+
+        `The estimate cannot measure VRAM consumed by other applications or guarantee allocation success.`))
+      throw new Error('GPU job cancelled: high-VRAM warning was not confirmed.');
+    approvalScope?.add(key);
+  }
+}
+function makeMemoryEstimate(gpu,settings,glyphCount,sourceWidth,sourceHeight){
+  const plan=PhotographicWebGpuFitter.tilePlan(gpu.device,{
+    columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,
+    sampleHeight:settings.sampleH,glyphCount,preferredTileMiB:settings.tileMiB,
+    inFlightTiles:settings.inFlightTiles});
+  const estimate=estimateGpuMemory({plan,columns:settings.columns,rows:settings.rows,
+    sampleWidth:settings.sampleW,sampleHeight:settings.sampleH,glyphCount,
+    sourceWidth,sourceHeight,captureGpuTimestamps:settings.captureGpuTimestamps,
+    streamedSamples:requiresStreamedSamples(settings),
+    previews:settings.columns*settings.rows*128<=PREVIEW_MAX_PIXELS,
+    timestampsAvailable:gpu.timestampsAvailable&&!!gpu.device.createQuerySet,
+    maxQuerySetSize:gpu.device.limits.maxQuerySetSize??8192});
+  const budget=evaluateVramBudget(estimate,settings.declaredVramGiB);
+  return {plan,estimate,budget};
+}
+async function estimateOnly({background=false}={}){
+  if(running)return;
+  const token=++preflightEpoch;
+  if(!background){byId('estimate-memory').disabled=true;clearError();}
+  try{
+    const file=selectedFile||byId('image').files[0];
+    if(!file&&!background)throw new Error('Choose an image before estimating GPU memory.');
+    const settings=currentSettings(),config=makeConfig(settings),codes=PNG2ANSI.vocabularies()[config.vocabulary];
+    const bitmap=file?await createImageBitmap(file):null;
+    try{
+      const masks=await masksFor(codes,config.canvas);
+      const work=validateGpuBudget(settings,masks.codes.length);
+      const gpu=await createGpuFitter();
+      const {plan,estimate,budget}=makeMemoryEstimate(gpu,settings,masks.codes.length,bitmap?.width??2048,bitmap?.height??2048);
+      if(token!==preflightEpoch||running)return;
+      displayVramBudget(estimate,budget,plan);
+      if(!file)byId('vram-status').textContent+='\nNo source selected: using provisional 2048×2048 input; re-estimate will follow image selection.';
+      if(!background)status.textContent=`GPU preflight: ${format(work)} work units, ${format(settings.columns*settings.rows)} cells, ${budget.status.toUpperCase()}. No conversion or CPU benchmark started.`;
+    }finally{bitmap?.close();}
+  }catch(error){if(background){byId('vram-status').textContent=`Automatic VRAM estimate unavailable: ${error?.message||error}`;
+      byId('vram-status').dataset.state='stale';}else showError(error);}
+  finally{if(!background)byId('estimate-memory').disabled=false;}
+}
+function makeConfig(settings){
+  // GPU-only high-resolution extensions deliberately do not weaken the CPU
+  // reference's validated schema. The CPU oracle is available only for its
+  // original ranges; the GPU uses the same cell-fitting parameters/algorithm.
+  const config=PNG2ANSI.clone(PNG2ANSI.DEFAULTS);
+  Object.assign(config.canvas,{columns:settings.columns,rows:settings.rows,
+    sample_width:settings.sampleW,sample_height:settings.sampleH});
+  Object.assign(config.image,{brightness:1,contrast:1,saturation:1,sharpness:1,gamma:1});
+  config.nl_filter.enabled=false;config.derez.enabled=false;
+  config.fit.foreground_candidates=settings.foreground;
+  config.fit.background_candidates=settings.background;
+  return config;
+}
+function cpuGeometrySupported(settings){
+  return settings.columns<=512&&settings.rows<=512&&settings.sampleW<=16&&settings.sampleH<=32;
+}
+async function compareImage(file,settings,{previews=true,approvalScope=null,returnAnsi=false,cpuEnabled=null}={}){
+  const now=()=>performance.now();
+  const prepStart=now();
+  const compareCpu=cpuEnabled??byId('compare-cpu').checked;
+  if(compareCpu&&!cpuGeometrySupported(settings))throw new RangeError(
+    'CPU oracle is limited to 512×512 cells and 16×32 samples. Disable CPU comparison for GPU-only extended resolutions.');
+  const config=makeConfig(settings),codes=PNG2ANSI.vocabularies()[config.vocabulary];
+  const decodeStart=now(),bitmap=await createImageBitmap(file),decodeMs=now()-decodeStart;
+  try{
+    const atlasStart=now();
+    const atlasKey=`${codes.join(',')}|${config.canvas.cell_width}x${config.canvas.cell_height}|${config.canvas.sample_width}x${config.canvas.sample_height}|${config.canvas.font_size}`;
+    const atlasCached=maskCache.has(atlasKey),masks=await masksFor(codes,config.canvas),atlasMs=now()-atlasStart;
+    const units=validateGpuBudget(settings,masks.codes.length);
+    currentWorkUnits=units;currentGlyphCount=masks.codes.length;
+    // Admission gate BEFORE allocating the large sample raster or launching
+    // the slow CPU oracle. Initial pipeline compilation is not charged to prep.
+    const gpuInitStart=now(),gpu=await createGpuFitter(),gpuInitMs=now()-gpuInitStart;
+    const memoryStart=now();
+    const {plan,estimate,budget}=makeMemoryEstimate(gpu,settings,masks.codes.length,bitmap.width,bitmap.height);
+    memoryGate(estimate,budget,plan,approvalScope);
+    const memoryGateMs=now()-memoryStart;
+    resetProgress(compareCpu);
+    const sampleStart=now();
+    const targetW=settings.columns*settings.sampleW,targetH=settings.rows*settings.sampleH;
+    const streamed=requiresStreamedSamples(settings);
+    let pixels=null,sampleProvider=null,sourceSamplingMode='full-reference-canvas';
+    if(streamed){
+      if(compareCpu)throw new RangeError('The CPU oracle needs the complete sample raster. Disable CPU comparison for huge GPU-only streamed images.');
+      const provider=makeStreamedSampleProvider(bitmap,settings);
+      sampleProvider=provider.getTile;
+      sourceSamplingMode=provider.exactTransform?'tiled-global-transform':'tiled-source-crop-experimental';
+    }else{
+      const canvas=new OffscreenCanvas(targetW,targetH),ctx=canvas.getContext('2d',{willReadFrequently:true});
+      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(bitmap,0,0,targetW,targetH);
+      pixels=ctx.getImageData(0,0,targetW,targetH).data;
+    }
+    const sampleMs=now()-sampleStart;
+    const prepMs=now()-prepStart-gpuInitMs-memoryGateMs;
+    const showPreview=previews && settings.columns*settings.rows*128<=PREVIEW_MAX_PIXELS;
+    let cpuCells=null,cpuFitMs=null,cpuComputeMs=null,cpuAnsi=null,cpuAnsiMs=null,cpuPreviewMs=null,cpuPng=null;
+    if(compareCpu){
+      status.textContent=`${file.name}: CPU glyph reconstruction on shared prepared samples (${format(units)} work units)…`;
+      // The reference algorithm remains exactly the same, but executes in a
+      // dedicated worker so the browser can repaint a real progress bar.
+      // Worker startup and input clone belong to the CPU fit wall time.
+      const cpuResult=await runCpuReferenceInWorker({pixels,masks:masks.low,config,
+        palette:PNG2ANSI.PALETTE,onProgress:event=>updateProgress('cpu',event)});
+      cpuCells=cpuResult.cells;cpuFitMs=cpuResult.wallMs;cpuComputeMs=cpuResult.computeMs;
+      const encoded=now();cpuAnsi=PNG2ANSI.ansiBytes(masks,cpuCells,config);cpuAnsiMs=now()-encoded;
+      if(showPreview){
+        const rendered=now();cpuPng=await renderCells(masks,cpuCells,config.canvas);cpuPreviewMs=now()-rendered;
+      }
+    }
+    status.textContent=`${file.name}: WebGPU tiled glyph reconstruction…`;
+    const runs=[];
+    let cells=null,firstGpuCells=null;
+    for(let i=0;i<settings.gpuRepeats;i++){
+      status.textContent=`${file.name}: GPU run ${i+1}/${settings.gpuRepeats}…`;
+      byId('progress-gpu').value=0;
+      const t=now();
+      cells=await gpu.fit({pixels,sampleProvider,masks:masks.low,palette:PNG2ANSI.PALETTE,
+        columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,sampleHeight:settings.sampleH,
+        foregroundCandidates:settings.foreground,backgroundCandidates:settings.background,
+        preferredTileMiB:settings.tileMiB,inFlightTiles:settings.inFlightTiles,
+        captureGpuTimestamps:settings.captureGpuTimestamps,
+        onProgress:event=>updateProgress('gpu',event,{runIndex:i+1,runCount:settings.gpuRepeats})});
+      const runWallMs=now()-t;
+      // Also finish the bar for a successful older backend that lacks tile callbacks.
+      updateProgress('gpu',{completedCells:settings.columns*settings.rows,
+        totalCells:settings.columns*settings.rows,elapsedMs:runWallMs,
+        completedTiles:cells.stats?.tileCount,totalTiles:cells.stats?.tileCount},
+        {runIndex:i+1,runCount:settings.gpuRepeats});
+      runs.push({wallMs:runWallMs,stages:cells.stats?.timing??null,
+        tileCount:cells.stats?.tileCount??null,peakInFlightTiles:cells.stats?.peakInFlightTiles??null,
+        tileMeasurements:cells.stats?.tileMeasurements??[]});
+      if(i===0)firstGpuCells=cells;
+    }
+    cells=firstGpuCells;
+    // The first measured GPU run is used for the comparable total. Additional
+    // runs measure repeatability, and are NOT charged to a single conversion.
+    // The first GPU result is the canonical comparison output; extra runs only
+    // measure timing variance and cannot overwrite its cells or stage metrics.
+    const gpuFitMs=runs[0].wallMs;
+    const gpuEncode=now(),gpuAnsi=PNG2ANSI.ansiBytes(masks,cells,config),gpuAnsiMs=now()-gpuEncode;
+    let gpuPng=null,gpuPreviewMs=null;
+    if(showPreview){const rendered=now();gpuPng=await renderCells(masks,cells,config.canvas);gpuPreviewMs=now()-rendered;}
+    const outputCpuMs=cpuAnsiMs===null?null:cpuAnsiMs+(cpuPreviewMs??0);
+    const outputGpuMs=gpuAnsiMs+(gpuPreviewMs??0);
+    const summary=summarizeTimings({prepMs,cpuFitMs,gpuFitMs,cpuOutputMs:outputCpuMs,
+      gpuOutputMs:outputGpuMs,gpuRuns:runs.map(r=>r.wallMs)});
+    const diff=compareAnsi(cpuAnsi,gpuAnsi);
+    const cellDiff=compareCells(cpuCells,cells);
+    if(previews){
+      const cpuImg=byId('cpu');if(cpuPng){cpuImg.src=URL.createObjectURL(cpuPng);cpuImg.hidden=false;}
+      else{cpuImg.removeAttribute('src');cpuImg.hidden=true;}
+      const gpuImg=byId('gpu');
+      if(gpuPng){gpuImg.src=URL.createObjectURL(gpuPng);gpuImg.hidden=false;}
+      else{gpuImg.removeAttribute('src');gpuImg.hidden=true;}
+      if(downloadUrl)URL.revokeObjectURL(downloadUrl);
+      downloadUrl=URL.createObjectURL(new Blob([gpuAnsi],{type:'application/octet-stream'}));
+      byId('gpu-download').href=downloadUrl;byId('gpu-download').hidden=false;
+    }
+    return {schema:'png2ansi-webgpu-metrics-v4',image:file.name,sourceBytes:file.size,
+      sourceWidth:bitmap.width,sourceHeight:bitmap.height,memoryEstimate:estimate,vramBudget:budget,
+      columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,
+      sampleHeight:settings.sampleH,foregroundCandidates:settings.foreground,
+      backgroundCandidates:settings.background,glyphCount:masks.codes.length,workUnits:units,
+      sharedCpuPreparation:{decodeMs,atlasMs,sampleMs,miscMs:Math.max(0,prepMs-decodeMs-atlasMs-sampleMs),
+        totalMs:prepMs,atlasCached},
+      cpuRender:{fitMs:cpuFitMs,computeMs:cpuComputeMs,workerOverheadMs:cpuFitMs===null?null:Math.max(0,cpuFitMs-cpuComputeMs),ansiMs:cpuAnsiMs,previewPngMs:cpuPreviewMs},
+      gpuRender:{fitMs:gpuFitMs,ansiMs:gpuAnsiMs,previewPngMs:gpuPreviewMs,
+        pipelineInitMs:gpuInitMs,stageTimings:cells.stats.timing,
+        repeatRuns:runs.map(r=>r.wallMs),repeatDetails:runs},
+      timings:summary,outputKind:showPreview?'ANSI+PNG':'ANSI-only',
+      sourceSamplingMode,sourceRasterBytes:targetW*targetH*4,
+      cpuMs:summary.cpuTotalMs,gpuMs:summary.gpuTotalMs,
+      cpuAnsiBytes:cpuAnsi?.length??null,gpuAnsiBytes:gpuAnsi.length,
+      ...diff,cellDiff,
+      gpuTileCells:cells.stats?.tileCells??null,gpuTiles:cells.stats?.tileCount??null,
+      gpuProjectionBytes:cells.stats?.projectionBufferBytes??null,
+      gpuStats:cells.stats??{},...(returnAnsi?{ansiBytes:gpuAnsi}:{})};
+  }finally{bitmap.close();}
+}
+function metricText(result){
+  const parity=result.mismatches===null?'CPU comparison disabled':result.mismatches===0?'EXACT ANSI PARITY':
+    `${format(result.mismatches)} byte mismatches; first offset ${result.firstMismatch}`;
+  const t=result.timings;
+  return `${result.image} · ${result.columns}×${result.rows} · ${result.glyphCount} glyphs · ${result.outputKind}
+`+
+    `Work units: ${format(result.workUnits)} / ${format(GPU_MAX_WORK_UNITS)}
+`+
+    `CPU shared prep: ${milliseconds(t.cpuPrepMs)} · CPU render: ${milliseconds(t.cpuFitMs)} · CPU total: ${milliseconds(t.cpuTotalMs)}
+`+
+    `GPU shared prep: ${milliseconds(t.gpuPrepMs)} · GPU render (includes streamed tile sampling): ${milliseconds(t.gpuFitMs)} · GPU total: ${milliseconds(t.gpuTotalMs)}
+`+
+    `Comparable glyph-fit speedup: ${t.fitSpeedup===null?'—':t.fitSpeedup.toFixed(2)+'×'} · end-to-end speedup: ${t.totalSpeedup===null?'—':t.totalSpeedup.toFixed(2)+'×'}
+`+
+    `ANSI bytes: CPU ${result.cpuAnsiBytes??'skipped'}, GPU ${result.gpuAnsiBytes} · ${parity}
+`+
+    `Cell differences: glyph ${result.cellDiff.glyph??'—'}, FG ${result.cellDiff.foreground??'—'}, BG ${result.cellDiff.background??'—'}
+`+
+    `GPU tile target: ${result.gpuStats?.requestedTileMiB??'—'} MiB · effective ${result.gpuStats?.effectiveProjectionMiB?.toFixed(1)??'—'} MiB · actual ${result.gpuTileCells??'—'} cells/tile · ${result.gpuTiles??'—'} tiles · pipeline ${result.gpuStats?.inFlightTiles??'—'} · projection buffer ${bytes(result.gpuProjectionBytes)}\n`+
+    `Estimated VRAM: ${bytes(result.memoryEstimate?.estimatedWorkingSetBytes)} / declared ${result.vramBudget?.declaredVramGiB} GiB (${result.vramBudget?.status})`;
+}
+function presentMetrics(result){
+  const t=result.timings,rows=[
+    ['Shared CPU preparation',t.cpuPrepMs,t.gpuPrepMs,''],
+    ['Glyph reconstruction',t.cpuFitMs,t.gpuFitMs,'fit'],
+    [`Output (${result.outputKind})`,t.cpuOutputMs,t.gpuOutputMs,''],
+    ['Single conversion total',t.cpuTotalMs,t.gpuTotalMs,'total']
+  ];
+  const tbody=byId('metric-rows');tbody.replaceChildren();
+  for(const [label,cpu,gpu,kind] of rows){
+    const tr=document.createElement('tr');if(kind)tr.className=kind;
+    for(const value of [label,milliseconds(cpu),milliseconds(gpu)]){
+      const td=document.createElement('td');td.textContent=value;tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  byId('metric-note').textContent='Preparation is executed once and charged to both pathways. '+
+    `Pipeline compilation/init (${milliseconds(result.gpuRender.pipelineInitMs)}) is reported separately. `+
+    `Headline totals exclude optional extra GPU repeat runs and use the first GPU run. `+
+    `GPU runs: ${result.gpuRender.repeatRuns.length} · median ${milliseconds(t.gpuMedianMs)}.`;
+  // GPU-002/003 cached modules can produce a valid cell result without the
+  // newest timing schema. Report missing fields rather than throwing after
+  // an otherwise successful 40-second CPU + GPU benchmark.
+  const g=result.gpuStats??{},h=gpuProfileStages(result);
+  const tiles=g.tileMeasurements??[];
+  const median=values=>{if(!values.length)return null;const a=[...values].sort((x,y)=>x-y),m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2;};
+  const p95=values=>{if(!values.length)return null;const a=[...values].sort((x,y)=>x-y);return a[Math.ceil(.95*a.length)-1];};
+  const b=result.memoryEstimate??{},limits=result.vramBudget??{};
+  const tileMax=tiles.length?Math.max(...tiles.map(x=>x.wallMs)):null;
+  const tileWallMedian=median(tiles.map(x=>x.wallMs));
+  const tileWallP95=p95(tiles.map(x=>x.wallMs));
+  const avgTileMsPerCell=tiles.length?tiles.reduce((total,x)=>total+x.wallMs,0)/tiles.reduce((total,x)=>total+x.cells,0):null;
+  const shaderSum=Number.isFinite(h.gpuProjectionMs)&&Number.isFinite(h.gpuSelectionMs)?h.gpuProjectionMs+h.gpuSelectionMs:null;
+  const shaderFraction=shaderSum!==null&&h.wallTotalMs>0?`${(shaderSum*100/h.wallTotalMs).toFixed(1)}%`:'—';
+  const comps=Number.isFinite(g.sampleComparisons)?g.sampleComparisons:null;
+  const gpuComparisonRate=comps!==null&&Number.isFinite(t.gpuFitMs)&&t.gpuFitMs>0?
+    (comps/t.gpuFitMs/1e6).toFixed(2):'—';
+  byId('metric-profile').textContent=
+    `PREPARATION (CPU; shared)
+`+
+    `Source raster sampling mode: ${result.sourceSamplingMode} · logical full raster ${bytes(result.sourceRasterBytes)}
+`+
+    `Image decode: ${milliseconds(result.sharedCpuPreparation.decodeMs)}
+`+
+    `Glyph atlas/font (${result.sharedCpuPreparation.atlasCached?'cache hit':'cold'}): ${milliseconds(result.sharedCpuPreparation.atlasMs)}
+`+
+    `Canvas resample and RGBA read: ${milliseconds(result.sharedCpuPreparation.sampleMs)}
+`+
+    `Other preparation/validation: ${milliseconds(result.sharedCpuPreparation.miscMs)}
+
+`+
+    `CPU reference worker compute: ${milliseconds(result.cpuRender?.computeMs)}
+`+
+    `CPU worker startup/input clone/result transfer: ${milliseconds(result.cpuRender?.workerOverheadMs)}
+
+`+
+    `GPU FIT (host-side wall-clock breakdown, first run)
+`+
+    `Atlas packing: ${milliseconds(h.atlasPackMs)}
+`+
+    `Resource setup: ${milliseconds(h.bufferCreateMs)}
+`+
+    `Cell-to-tile packing: ${milliseconds(h.tilePackMs)}
+`+
+    `queue.writeBuffer CPU time: ${milliseconds(h.writeBufferMs)} (not PCIe transfer time)
+`+
+    `Encode + submit CPU time: ${milliseconds(h.encodeSubmitMs)}
+`+
+    `Readback.mapAsync wait: ${milliseconds(h.readbackWaitMs)} (includes GPU queue/compute/transfer)
+`+
+    `Cell decode: ${milliseconds(h.decodeCellsMs)}
+`+
+    `Wait for free/completing pipeline slot: ${milliseconds(h.slotAvailabilityWaitMs)} (overlaps GPU and mapping)
+`+
+    `First tile complete after fit start: ${milliseconds(h.firstTileCompletedMs)}
+`+
+    `Optional timestamp retrieval: ${milliseconds(h.timestampsReadMs)}
+`+
+    `True GPU projection shader: ${milliseconds(h.gpuProjectionMs)}
+`+
+    `True GPU selection shader: ${milliseconds(h.gpuSelectionMs)}
+`+
+    `GPU timestamps: ${g.timestampReason??(Object.keys(h).length?'enabled; shader times are summed over tiles':'profiling unavailable (possibly stale cached GPU module)')}
+
+`+
+    `TILE-LEVEL LATENCY AND STAGE BALANCE
+`+
+    `First tile wall time: ${milliseconds(tiles[0]?.wallMs)} | last tile: ${milliseconds(tiles.at(-1)?.wallMs)}
+`+
+    `Tile wall median/p95/max: ${milliseconds(tileWallMedian)} / ${milliseconds(tileWallP95)} / ${milliseconds(tileMax)}
+`+
+    `Mean tile time / cell: ${avgTileMsPerCell===null?'—':(avgTileMsPerCell*1000).toFixed(2)+' μs'}
+`+
+    `True shader execution / total GPU fit wall: ${shaderFraction} (timestamped if available)
+`+
+    `Tile wall durations can overlap across pipeline slots; summed map waits are NOT additive wall time.\n`+
+    `Tile host stages: streamed sample ${milliseconds(median(tiles.map(x=>x.sourceSampleMs??0)))}, `+
+      `pack ${milliseconds(median(tiles.map(x=>x.packMs)))}, `+
+      `upload enqueue ${milliseconds(median(tiles.map(x=>x.uploadEnqueueMs)))}, `+
+      `encode/submit ${milliseconds(median(tiles.map(x=>x.encodeSubmitMs)))}, `+
+      `map wait ${milliseconds(median(tiles.map(x=>x.mapWaitMs)))}, `+
+      `decode ${milliseconds(median(tiles.map(x=>x.decodeMs)))} (medians)
+`+
+    `Per-tile GPU projection/select median: ${milliseconds(median(tiles.map(x=>x.projectionMs).filter(Number.isFinite)))} / ${milliseconds(median(tiles.map(x=>x.selectionMs).filter(Number.isFinite)))}
+
+`+
+    `MEMORY BUDGET AND DEVICE LIMITS
+`+
+    `Declared physical VRAM: ${limits.declaredVramGiB??'—'} GiB (manual; standard WebGPU does not expose free VRAM)
+`+
+    `Estimated peak workbench allocation: ${bytes(b.estimatedWorkingSetBytes)} | status: ${limits.status??'—'}
+`+
+    `WebGPU buffers: ${bytes(b.gpuBufferBytes)} | browser backing estimate: ${bytes(b.browserBackingEstimateBytes)} | uncertainty allowance: ${bytes(b.uncertaintyAllowanceBytes)}
+`+
+    `Projection: ${bytes(b.components?.projection)} | input raster tile: ${bytes(b.components?.tileRaster)} | output/readback: ${bytes((b.components?.tileSelections??0)+(b.components?.tileReadback??0))}
+`+
+    `Glyph masks/stats: ${bytes((b.components?.glyphMasks??0)+(b.components?.glyphStats??0))} | GPU timestamp buffers: ${bytes((b.components?.timestampResolve??0)+(b.components?.timestampReadback??0))}
+`+
+    `Warning threshold (VRAM - 4 GiB): ${bytes(limits.warningThresholdBytes)} | hard block (VRAM - 2 GiB): ${bytes(limits.hardThresholdBytes)}
+`+
+    `Physical target ${format(g.requestedTileCells??0)} → actual ${format(g.tileCells??0)} | dispatch X/Y ${g.projectWorkgroupsX??'—'}/${g.projectWorkgroupsY??'—'}
+`+
+    `Device max storage binding: ${bytes(g.maxStorageBindingBytes)} | maxBufferSize: ${bytes(g.maxBufferBytes)} | max workgroups/dimension: ${g.maxWorkgroups??'—'}
+
+`+
+    `RESOURCE / THROUGHPUT DATA
+`+
+    `Uploaded: ${bytes(g.uploadedBytes)} | Read back: ${bytes(g.readbackBytes)}
+`+
+    `Total temporary GPU allocation: ${bytes(g.allocatedBytes)} (buffers, not VRAM peak usage)
+`+
+    `Peak projection buffer: ${bytes(g.projectionBufferBytes)}
+`+
+    `GPU tiles: ${g.tileCount??'—'} | actual tile size: ${g.tileCells??'—'} cells | buffered slots: ${g.inFlightTiles??'—'} | peak observed in-flight: ${g.peakInFlightTiles??'—'}
+`+
+    `Input sample pixels: ${decimal(result.columns*result.rows*result.sampleWidth*result.sampleHeight)}
+`+
+    `Glyph candidates: ${decimal(g.glyphCandidates)} | Colour candidates: ${decimal(g.colourCandidates)}
+`+
+    `Sample-channel comparisons (estimated): ${decimal(comps)}
+`+
+    `Cells/s (GPU fit wall): ${decimal(result.columns*result.rows/(t.gpuFitMs/1000))}
+`+
+    `Billions of sample-channel comparisons/s (estimated): ${gpuComparisonRate}
+`+
+    `Device: ${JSON.stringify(g.adapterInfo??'not reported')}
+`+
+    `Repeat GPU fit times: ${result.gpuRender.repeatRuns.map(milliseconds).join(' / ')}
+`+
+    `First/later median GPU fit: ${result.gpuRender.repeatRuns.length>1?((result.gpuRender.repeatRuns[0]/median(result.gpuRender.repeatRuns.slice(1))).toFixed(3)+'× (first ÷ later)'):'— (enable 2+ GPU runs)'}
+`+
+    `Note: estimated comparisons are counts derived from the algorithm, not hardware counters.
+`+
+    `GPU submission and mapping stages overlap with GPU work; do not add shader timestamps to the host-stage sum.`;
+  byId('metrics').hidden=false;
+}
+async function run(){
+  if(running)return;
+  setBusy(true);clearError();byId('metrics').hidden=true;byId('job-progress').hidden=true;
+  try{
+    const file=selectedFile||byId('image').files[0];
+    if(!file)throw new Error('Choose an image or load a hardmode sample first');
+    const result=await compareImage(file,currentSettings(),{approvalScope:new Set()});
+    status.textContent=metricText(result);
+    presentMetrics(result);
+    publishReport({schema:'png2ansi-webgpu-benchmark-v2',timestamp:new Date().toISOString(),
+      profile:currentSettings(),source:{name:result.image,bytes:result.sourceBytes},result});
+  }catch(error){showError(error);}finally{setBusy(false);}
+}
+async function loadCorpus(){
+  if(corpus)return corpus;
+  const response=await fetch('../../fixtures/hardmode/manifest.json');
+  if(!response.ok)throw new Error('Hardmode manifest not found: ensure fixtures/hardmode were extracted into repository root');
+  const data=await response.json();
+  if(data.schema!=='png2ansi-hardmode-v1'||!Array.isArray(data.images)||data.images.length!==5)
+    throw new Error('Unexpected or incomplete hardmode manifest');
+  for(const entry of data.images){
+    if(!/^[a-z0-9-]+\.png$/.test(entry.file))throw new Error('Invalid hardmode filename');
+  }
+  corpus=data;
+  byId('hardmode').innerHTML='<option value="">Select sample…</option>'+
+    data.images.map((entry,index)=>`<option value="${index}">${entry.title}</option>`).join('');
+  byId('preset').innerHTML=data.suites.map((item,index)=>`<option value="${index}">${item.id}</option>`).join('');
+  return corpus;
+}
+async function fetchHardmode(entry){
+  const response=await fetch(`../../fixtures/hardmode/${entry.file}`);
+  if(!response.ok)throw new Error(`Hardmode sample missing (${response.status}): ${entry.file}`);
+  return new File([await response.blob()],entry.file,{type:'image/png'});
+}
+async function loadHardmode(){
+  try{
+    const data=await loadCorpus(),index=byId('hardmode').value;
+    if(index==='')throw new Error('Choose a hardmode image from the menu');
+    selectedFile=await fetchHardmode(data.images[Number(index)]);
+    byId('image').value='';
+    status.textContent=`Loaded ${selectedFile.name} (${format(selectedFile.size)} bytes). Click Run GPU / optional CPU.`;
+    scheduleMemoryEstimate();
+  }catch(error){showError(error);}
+}
+function applyPreset(){
+  const chosen=corpus?.suites[Number(byId('preset').value)];if(!chosen)return;
+  for(const key of Object.keys(WORKBENCH_LIMITS))byId(key).value=chosen[key];
+  for(const [key,id] of [['gpuRepeats','gpu-repeats'],['inFlightTiles','in-flight']]){
+    if(chosen[key]!==undefined)byId(id).value=chosen[key];
+  }
+  if(chosen.tileMiB!==undefined)byId('tileMiB').value=chosen.tileMiB;
+  else if(chosen.tileCells!==undefined){
+    // Old presets expressed desired cell counts; convert to projection MiB.
+    const wanted=chosen.tileCells*219*16/MiB;
+    byId('tileMiB').value=TILE_TARGETS_MIB.reduce((a,b)=>Math.abs(b-wanted)<Math.abs(a-wanted)?b:a,32);
+  }
+  scheduleMemoryEstimate();
+  status.textContent=`Hardmode preset '${chosen.id}' applied: ${chosen.columns}×${chosen.rows}, `+
+    `${chosen.sampleW}×${chosen.sampleH} samples, FG ${chosen.foreground} BG ${chosen.background}, `+
+    `tile ${byId('tileMiB').value} MiB, depth ${byId('in-flight').value}, ${byId('gpu-repeats').value} GPU runs.`;
+}
+function publishReport(report){
+  if(reportUrl)URL.revokeObjectURL(reportUrl);
+  reportUrl=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)+'\n'],{type:'application/json'}));
+  byId('report-download').href=reportUrl;byId('report-download').hidden=false;
+}
+async function preflightSuiteMemory(data,settings,approvalScope){
+  // The five bundled PNG dimensions are manifest-verified during setup. Use
+  // the largest estimated allocation to request ONE explicit suite approval.
+  const config=makeConfig(settings),masks=await masksFor(PNG2ANSI.vocabularies()[config.vocabulary],config.canvas);
+  validateGpuBudget(settings,masks.codes.length);
+  const gpu=await createGpuFitter();
+  const decisions=data.images.map(image=>makeMemoryEstimate(gpu,settings,masks.codes.length,image.width,image.height));
+  const blocked=decisions.find(x=>x.budget.status==='blocked');
+  if(blocked){displayVramBudget(blocked.estimate,blocked.budget,blocked.plan);throw new RangeError('Hardmode suite blocked before starting any conversions. '+vramDecisionMessage(blocked.budget));}
+  const worst=decisions.reduce((a,b)=>a.budget.neededBytes>=b.budget.neededBytes?a:b);
+  displayVramBudget(worst.estimate,worst.budget,worst.plan);
+  if(worst.budget.status==='warning'&&!globalThis.confirm(
+      `Hardmode suite VRAM warning (all five images):\n${vramDecisionMessage(worst.budget)}\n\n`+
+      `This approval applies ONLY to these five samples and this exact profile. The estimate is not live free VRAM. Continue?`))
+    throw new Error('Hardmode suite cancelled: high-VRAM warning was not confirmed.');
+  for(const x of decisions)approvalScope.add([x.budget.declaredVramGiB,x.estimate.estimatedWorkingSetBytes,x.plan.tileCells].join(':'));
+}
+async function runSuite(){
+  if(running)return;
+  setBusy(true);stopping=false;clearError();
+  const results=[];
+  try{
+    const data=await loadCorpus();
+    const settings=currentSettings();
+    byId('metrics').hidden=true;byId('job-progress').hidden=true;
+    const started=new Date().toISOString(),approvalScope=new Set();
+    await preflightSuiteMemory(data,settings,approvalScope);
+    for(let i=0;i<data.images.length;i++){
+      if(stopping)break;
+      const entry=data.images[i];status.textContent=`Hardmode ${i+1}/${data.images.length}: ${entry.title}…`;
+      try{
+        const file=await fetchHardmode(entry);
+        const metric=await compareImage(file,settings,{previews:i===data.images.length-1,approvalScope});
+        results.push({...metric,sha256:entry.sha256});
+        status.textContent=`Hardmode ${i+1}/${data.images.length}: ${metric.mismatches===0?'EXACT PARITY':metric.mismatches===null?'GPU ONLY':metric.mismatches+' MISMATCHES'} · CPU fit ${milliseconds(metric.timings.cpuFitMs)} / GPU fit ${milliseconds(metric.timings.gpuFitMs)}`;
+        if(i===data.images.length-1)presentMetrics(metric);
+      }catch(error){results.push({image:entry.file,error:error?.message||String(error)});
+        if(/GPU job cancelled|BLOCKED|hard limit/i.test(error?.message||''))throw error;}
+      await new Promise(resolve=>setTimeout(resolve,0));
+    }
+    const report={schema:'png2ansi-webgpu-hardmode-v2',started,finished:new Date().toISOString(),
+      profile:settings,gpuWorkUnitCeiling:GPU_MAX_WORK_UNITS,compareCpu:byId('compare-cpu').checked,
+      stopped:stopping,results};
+    publishReport(report);
+    const exact=results.filter(x=>x.mismatches===0).length,failed=results.filter(x=>x.error||x.mismatches>0).length;
+    status.textContent=`Hardmode suite: ${results.length}/${data.images.length} completed · ${exact} exact parity · ${failed} failed/mismatched\n`+
+      results.map(x=>x.error?`${x.image}: ERROR ${x.error}`:`${x.image}: CPU prep ${milliseconds(x.timings.cpuPrepMs)} · CPU fit ${milliseconds(x.timings.cpuFitMs)} · GPU prep ${milliseconds(x.timings.gpuPrepMs)} · GPU fit ${milliseconds(x.timings.gpuFitMs)} · `+
+        (x.mismatches===null?'GPU only':x.mismatches===0?'EXACT ANSI PARITY':`${x.mismatches} byte mismatches`)).join('\n')+
+      '\nSave hardmode report (.JSON) for reproducible benchmark records.';
+  }catch(error){showError(error);}finally{setBusy(false);stopping=false;}
+}
+
+byId('run').addEventListener('click',run);
+byId('estimate-memory').addEventListener('click',()=>estimateOnly());
+const savedCapacity=(()=>{try{return localStorage.getItem('png2ansi-gpu-vram-gib')||'';}catch{return '';}})();
+if(savedCapacity)byId('gpu-vram').value=savedCapacity;
+byId('gpu-vram').addEventListener('change',()=>{
+  try{const n=readVramFromControls();localStorage.setItem('png2ansi-gpu-vram-gib',String(n));
+    byId('vram-status').textContent=`GPU VRAM set to ${n} GiB; estimate before proceeding. This is user-supplied capacity, not an OS measurement.`;
+  }catch(error){showError(error);}
+});
+function scheduleMemoryEstimate(){
+  if(running)return;
+  clearTimeout(preflightTimer);
+  byId('vram-status').textContent='Estimating memory from current settings…';
+  byId('vram-status').dataset.state='stale';
+  preflightTimer=setTimeout(()=>estimateOnly({background:true}),350);
+}
+for(const key of [...Object.keys(WORKBENCH_LIMITS),'tileMiB','in-flight','gpu-timestamps','gpu-vram']){
+  for(const eventName of ['change',...(byId(key).tagName==='INPUT'?['input']:[])])
+    byId(key).addEventListener(eventName,scheduleMemoryEstimate);
+}
+// Cumulative benchmark archive: one result JSON per image × requested tile,
+// concise CSV for comparisons, manifest and original hardmode inventory.
+// Plain ZIP32 STORE is intentional so this works entirely offline.
+async function preflightZipMemory(data,settings,tileTargetMiBs,approvalScope){
+  const config=makeConfig(settings);
+  const masks=await masksFor(PNG2ANSI.vocabularies()[config.vocabulary],config.canvas);
+  validateGpuBudget(settings,masks.codes.length);
+  const gpu=await createGpuFitter();
+  const decisions=[];
+  for(const tileMiB of tileTargetMiBs){
+    for(const entry of data.images){
+      decisions.push(makeMemoryEstimate(gpu,{...settings,tileMiB},masks.codes.length,entry.width,entry.height));
+    }
+  }
+  const blocked=decisions.find(x=>x.budget.status==='blocked');
+  if(blocked){displayVramBudget(blocked.estimate,blocked.budget,blocked.plan);
+    throw new RangeError('ZIP suite exceeds hard VRAM budget; no jobs launched. '+vramDecisionMessage(blocked.budget));}
+  const worst=decisions.reduce((a,b)=>a.budget.neededBytes>=b.budget.neededBytes?a:b);
+  displayVramBudget(worst.estimate,worst.budget,worst.plan);
+  if(worst.budget.status==='warning'){
+    const message=`ZIP benchmark VRAM warning for ${data.images.length*tileTargetMiBs.length} jobs:
+`+
+      `${vramDecisionMessage(worst.budget)}
+
+Approve this entire fixed-profile batch? `+
+      `This is an estimated allocation, not measured free GPU VRAM.`;
+    if(!globalThis.confirm(message))throw new Error('ZIP benchmark cancelled at VRAM preflight.');
+    approvalScope.add('zip-suite-preflight-approved');
+  }
+}
+const asFixed=(n)=>Number.isFinite(n)?n:null;
+function zipSummaryCsv(jobs){
+  const columns=['image','tile_target_mib','tile_effective_cells','tile_count','in_flight','peak_in_flight','gpu_repeats',
+    'gpu_fit_ms','gpu_total_ms','gpu_median_ms','cpu_fit_ms','cpu_total_ms','prep_ms',
+    'gpu_projection_shader_ms','gpu_selection_shader_ms','gpu_stream_sample_ms','uploaded_bytes','readback_bytes',
+    'estimated_vram_bytes','ansi_bytes','ansi_mismatches','glyph_mismatches','status','error'];
+  const rows=[columns];
+  for(const job of jobs){
+    const r=job.result??{},g=r.gpuStats??{},t=r.timings??{};
+    const obj={image:job.image,tile_target_mib:job.tileTargetMiB,tile_effective_cells:g.tileCells,tile_count:g.tileCount,
+      in_flight:g.inFlightTiles,peak_in_flight:g.peakInFlightTiles,gpu_repeats:r.gpuRender?.repeatRuns?.length,
+      gpu_fit_ms:t.gpuFitMs,gpu_total_ms:t.gpuTotalMs,gpu_median_ms:t.gpuMedianMs,
+      cpu_fit_ms:t.cpuFitMs,cpu_total_ms:t.cpuTotalMs,prep_ms:t.gpuPrepMs,
+      gpu_projection_shader_ms:g.timing?.gpuProjectionMs,gpu_selection_shader_ms:g.timing?.gpuSelectionMs,
+      gpu_stream_sample_ms:g.timing?.sampleProviderMs,uploaded_bytes:g.uploadedBytes,readback_bytes:g.readbackBytes,
+      estimated_vram_bytes:r.memoryEstimate?.estimatedWorkingSetBytes,ansi_bytes:r.gpuAnsiBytes,
+      ansi_mismatches:r.mismatches,glyph_mismatches:r.cellDiff?.glyph,
+      status:job.error?'ERROR':'OK',error:job.error??''};
+    rows.push(columns.map(key=>obj[key]??''));
+  }
+  return csvRows(rows);
+}
+function zipRepeatsCsv(jobs){
+  const fields=['image','tile_target_mib','run','wall_ms','atlas_pack_ms','buffer_create_ms',
+    'source_sample_ms','tile_pack_ms','queue_write_buffer_ms','encode_submit_ms','readback_wait_ms',
+    'cell_decode_ms','pipeline_slot_wait_ms','first_tile_completed_ms',
+    'gpu_projection_shader_ms','gpu_selection_shader_ms','tile_count','peak_in_flight'];
+  const rows=[fields];
+  for(const job of jobs){
+    for(const [i,run] of (job.result?.gpuRender?.repeatDetails??[]).entries()){
+      const t=run.stages??{};
+      const values={image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,wall_ms:run.wallMs,
+        atlas_pack_ms:t.atlasPackMs,buffer_create_ms:t.bufferCreateMs,
+        source_sample_ms:t.sampleProviderMs,tile_pack_ms:t.tilePackMs,queue_write_buffer_ms:t.writeBufferMs,
+        encode_submit_ms:t.encodeSubmitMs,readback_wait_ms:t.readbackWaitMs,
+        cell_decode_ms:t.decodeCellsMs,pipeline_slot_wait_ms:t.slotAvailabilityWaitMs,
+        first_tile_completed_ms:t.firstTileCompletedMs,
+        gpu_projection_shader_ms:t.gpuProjectionMs,gpu_selection_shader_ms:t.gpuSelectionMs,
+        tile_count:run.tileCount,peak_in_flight:run.peakInFlightTiles};
+      rows.push(fields.map(k=>values[k]??''));
+    }
+  }
+  return csvRows(rows);
+}
+function zipTilesCsv(jobs){
+  const fields=['image','tile_target_mib','run','tile_index','cells','wall_ms','source_sample_ms','pack_ms',
+    'upload_enqueue_ms','encode_submit_ms','map_wait_ms','decode_ms',
+    'gpu_projection_shader_ms','gpu_selection_shader_ms'];
+  const rows=[fields];
+  for(const job of jobs){
+    for(const [i,run] of (job.result?.gpuRender?.repeatDetails??[]).entries()){
+      for(const tile of (run.tileMeasurements??[])){
+        const values={image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,
+          tile_index:tile.index,cells:tile.cells,wall_ms:tile.wallMs,source_sample_ms:tile.sourceSampleMs,pack_ms:tile.packMs,
+          upload_enqueue_ms:tile.uploadEnqueueMs,encode_submit_ms:tile.encodeSubmitMs,
+          map_wait_ms:tile.mapWaitMs,decode_ms:tile.decodeMs,
+          gpu_projection_shader_ms:tile.projectionMs,gpu_selection_shader_ms:tile.selectionMs};
+        rows.push(fields.map(k=>values[k]??''));
+      }
+    }
+  }
+  return csvRows(rows);
+}
+async function runZipBenchmarks(){
+  if(running)return;
+  setBusy(true);stopping=false;clearError();byId('metrics').hidden=true;byId('job-progress').hidden=true;
+  const jobs=[];const stamp=new Date().toISOString();let data=null,settings=null,tileTargetMiBs=[];
+  try{
+    data=await loadCorpus();settings=currentSettings();
+    tileTargetMiBs=byId('zip-scope').value==='sweep'?BENCHMARK_SWEEP_MIB:[settings.tileMiB];
+    const total=data.images.length*tileTargetMiBs.length,approvalScope=new Set();
+    await preflightZipMemory(data,settings,tileTargetMiBs,approvalScope);
+    if(total>5&&!globalThis.confirm(`Run ${total} image/tile combinations × ${settings.gpuRepeats} GPU repetition(s) = `+
+      `${total*settings.gpuRepeats} GPU fits? CPU comparison is ${byId('compare-cpu').checked?'ENABLED':'disabled'}. `+
+      `Results, errors and performance stage details will be archived.`)){
+      throw new Error('ZIP benchmark cancelled before running any job.');
+    }
+    for(const entry of data.images){
+      let file=null;
+      try{file=await fetchHardmode(entry);}
+      catch(error){
+        for(const tileMiB of tileTargetMiBs)jobs.push({image:entry.file,sourceSha256:entry.sha256,
+          tileTargetMiB:tileMiB,error:`Source fetch failed: ${error?.message||error}`});
+        continue;
+      }
+      for(const tileMiB of tileTargetMiBs){
+        if(stopping)break;
+        const idx=jobs.length+1;
+        status.textContent=`ZIP benchmark ${idx}/${total}: ${entry.title}; requested projection tile ${format(tileMiB)} MiB…`;
+        try{
+          const result=await compareImage(file,{...settings,tileMiB},{previews:false,approvalScope});
+          jobs.push({image:entry.file,sourceSha256:entry.sha256,tileTargetMiB:tileMiB,result});
+          status.textContent=`ZIP benchmark ${idx}/${total} complete: ${milliseconds(result.timings.gpuFitMs)} GPU fit; `+
+            `${result.gpuTiles} tiles, ${result.gpuStats?.inFlightTiles} slots.`;
+        }catch(error){
+          jobs.push({image:entry.file,sourceSha256:entry.sha256,tileTargetMiB:tileMiB,error:error?.message||String(error)});
+          status.textContent=`ZIP benchmark ${idx}/${total} ERROR: ${error?.message||error}. Continuing; failure will be logged.`;
+          if(fitter?.lost){stopping=true;break;}
+        }
+      }
+      if(stopping)break;
+    }
+    const ended=new Date().toISOString();
+    const manifest={schema:'png2ansi-webgpu-benchmark-zip-v1',version:'GPU-007',started:stamp,ended,
+      partial:stopping,jobsPlanned:total,jobsCompleted:jobs.length,settings,tileTargetMiBs,
+      compareCpu:byId('compare-cpu').checked,adapterInfo:jobs.find(x=>x.result)?.result?.gpuStats?.adapterInfo??null,
+      sourceManifest:data.images.map(x=>({file:x.file,sha256:x.sha256,width:x.width,height:x.height})),
+      summary:jobs.map(j=>({image:j.image,tileTargetMiB:j.tileTargetMiB,
+        gpuFitMs:j.result?.timings.gpuFitMs??null,gpuMedianMs:j.result?.timings.gpuMedianMs??null,
+        requestedInFlight:j.result?.gpuStats?.requestedInFlightTiles??null,
+        effectiveInFlight:j.result?.gpuStats?.inFlightTiles??null,error:j.error??null}))};
+    const entries=[
+      {name:'README.txt',content:'PNG2ANSI WebGPU GPU-007 benchmark ZIP\nGPU fitting stage, host transfers and shader times are separate.\n'+
+        'GPU shader timestamps are optional. CPU oracle is disabled by default and may be very slow.\n'+
+        'Use results.csv, repeats.csv, tiles.csv, and runs/*.json for full stage and per-tile details.\n'+
+        'Requested tile size may be clamped by maxStorageBufferBindingSize / GPU limits.\n'+
+        'Pipeline depth measures host/GPU overlap, not simultaneous WebGPU shader execution.\n'},
+      {name:'manifest.json',content:JSON.stringify(manifest,null,2)+'\n'},
+      {name:'results.csv',content:zipSummaryCsv(jobs)},
+      {name:'repeats.csv',content:zipRepeatsCsv(jobs)},
+      {name:'tiles.csv',content:zipTilesCsv(jobs)}
+    ];
+    for(let i=0;i<jobs.length;i++){
+      const job=jobs[i],name=`runs/${String(i+1).padStart(3,'0')}-${job.image.replace(/\.png$/,'')}-tile-${job.tileTargetMiB}MiB.json`;
+      entries.push({name,content:JSON.stringify(job,null,2)+'\n'});
+    }
+    const archive=benchmarkZip(entries);
+    if(zipUrl)URL.revokeObjectURL(zipUrl);
+    zipUrl=URL.createObjectURL(archive);
+    const date=stamp.slice(0,19).replaceAll(':','-');
+    const a=byId('zip-download');a.href=zipUrl;
+    a.download=`png2ansi-gpu007-${byId('zip-scope').value}-${date}.zip`;
+    a.hidden=false;a.click();
+    // Keep the manual link visible if the browser refuses an async-triggered download.
+    status.textContent=`ZIP benchmark ${jobs.length}/${total} cases (${jobs.filter(j=>!!j.error).length} errors) · `+
+      `archive ${format(archive.size)} bytes · ${stopping?'partial/stopped':'complete'}. `+
+      `Use "Save benchmark ZIP" if the download did not begin automatically.`;
+    publishReport(manifest);
+  }catch(error){showError(error);}
+  finally{setBusy(false);}
+}
+// GPU-007: browser-local folder conversion; no filesystem permissions or
+// network uploads. Uses HTML directory selection where supported and a
+// multi-file fallback. ANSI and optional performance receipts are ZIP entries.
+function batchSources(){
+  const a=[...byId('folder-images').files],b=[...byId('batch-files').files];
+  return (a.length?a:b).filter(f=>f.type.startsWith('image/')||/\.(png|jpe?g|webp|bmp|gif)$/i.test(f.name));
+}
+function batchRelativePath(file){
+  const raw=(file.webkitRelativePath||file.name).replaceAll('\\','/');
+  const parts=raw.split('/').filter(Boolean).map(p=>p.replace(/[^a-zA-Z0-9._ -]/g,'_'))
+    .filter(p=>p!=='.'&&p!=='..');
+  if(parts.length>1)parts.shift(); // strip selected root folder
+  const stem=parts.join('/').replace(/\.[^.]+$/,'');
+  return (stem||'image')+'.ans';
+}
+async function runFolderBatch(){
+  if(running)return;
+  const files=batchSources();
+  if(!files.length){showError(new RangeError('Select a folder or image files for batch conversion.'));return;}
+  setBusy(true);stopping=false;clearError();
+  const started=new Date().toISOString(),records=[],entries=[],usedPaths=new Set(),approvalScope=new Set();
+  const timings=byId('batch-metrics').checked;
+  try{
+    const settings={...currentSettings(),gpuRepeats:1};
+    // Up-front confirmation applies only to warnings, never to hard VRAM blocks;
+    // every source image is re-estimated against its actual dimensions.
+    if(settings.declaredVramGiB<=4){
+      if(!confirm(`Batch ${files.length} files on a ${settings.declaredVramGiB} GiB GPU. `+
+        `VRAM - 4 GiB warning applies; approve estimated-warning cases? `+
+        `Hard VRAM blocks remain enforced for every file.`))throw new Error('Batch cancelled before processing.');
+      approvalScope.add('folder-batch-approved');
+    }
+    const maxArchive=512*MiB;let archiveBytes=0;
+    for(let index=0;index<files.length;index++){
+      if(stopping)break;
+      const file=files[index];status.textContent=`Folder ${index+1}/${files.length}: ${file.webkitRelativePath||file.name}…`;
+      try{
+        const result=await compareImage(file,settings,{previews:false,approvalScope,returnAnsi:true,cpuEnabled:false});
+        const {ansiBytes, ...receipt}=result;
+        if(archiveBytes+ansiBytes.byteLength>maxArchive){
+          records.push({source:file.webkitRelativePath||file.name,status:'NOT_PROCESSED',error:'ANSI ZIP size cap of 512 MiB reached; split input folder.'});
+          stopping=true;break;
+        }
+        const base=`ansi/${batchRelativePath(file)}`;
+        let path=base,dup=1;
+        while(usedPaths.has(path)){path=base.replace(/\.ans$/i,`-${dup++}.ans`);}
+        usedPaths.add(path);entries.push({name:path,content:ansiBytes});archiveBytes+=ansiBytes.length;
+        const record={source:file.webkitRelativePath||file.name,output:path,status:'OK',
+          ansiBytes:ansiBytes.length,gpuFitMs:receipt.timings.gpuFitMs,gpuTotalMs:receipt.timings.gpuTotalMs,
+          prepMs:receipt.timings.gpuPrepMs,sourceSamplingMode:receipt.sourceSamplingMode,
+          sourceWidth:receipt.sourceWidth,sourceHeight:receipt.sourceHeight,gpuTiles:receipt.gpuTiles,peakInFlight:receipt.gpuStats.peakInFlightTiles,
+          workingSetBytes:receipt.memoryEstimate.estimatedWorkingSetBytes,
+          projectionShaderMs:receipt.gpuStats.timing.gpuProjectionMs,
+          selectionShaderMs:receipt.gpuStats.timing.gpuSelectionMs};
+        records.push(record);
+        if(timings)entries.push({name:`timings/${String(index+1).padStart(4,'0')}.json`,content:JSON.stringify(receipt,null,2)+'\n'});
+        status.textContent=`Folder ${index+1}/${files.length}: ${path} · GPU ${milliseconds(record.gpuFitMs)} · ${format(ansiBytes.length)} bytes`;
+      }catch(error){
+        records.push({source:file.webkitRelativePath||file.name,status:'ERROR',error:error?.message||String(error)});
+        status.textContent=`Folder ${index+1}/${files.length}: ${error?.message||error}; continuing.`;
+        if(fitter?.lost){stopping=true;break;}
+      }
+      await new Promise(resolve=>setTimeout(resolve,0));
+    }
+    const summary={schema:'png2ansi-webgpu-folder-batch-v1',version:'GPU-007',started,finished:new Date().toISOString(),
+      settings,requested:files.length,completed:records.length,partial:stopping,receipts:records};
+    entries.push({name:'manifest.json',content:JSON.stringify(summary,null,2)+'\n'});
+    if(timings){
+      const columns=['source','output','status','gpuFitMs','gpuTotalMs','prepMs','sourceSamplingMode',
+        'ansiBytes','gpuTiles','peakInFlight','workingSetBytes','projectionShaderMs','selectionShaderMs','error'];
+      entries.push({name:'timings.csv',content:csvRows([columns,...records.map(r=>columns.map(key=>r[key]??''))])});
+    }
+    entries.push({name:'README.txt',content:'PNG2ANSI GPU-007 folder batch: original CP437 ANSI files under ansi/.\n'+
+      'manifest.json records failures and partial conversions. Timing reports are optional.\n'+
+      'PNG previews are deliberately omitted from bulk output.\n'});
+    const zip=benchmarkZip(entries);
+    if(batchUrl)URL.revokeObjectURL(batchUrl);batchUrl=URL.createObjectURL(zip);
+    const link=byId('batch-download');link.href=batchUrl;
+    link.download=`png2ansi-gpu007-folder-${started.slice(0,19).replaceAll(':','-')}.zip`;
+    link.hidden=false;link.click();
+    status.textContent=`Batch ANSI ZIP: ${records.filter(r=>r.status==='OK').length}/${files.length} successful · `+
+      `${records.filter(r=>r.status==='ERROR').length} errors · ${(zip.size/MiB).toFixed(1)} MiB archive`+
+      `${stopping?' (partial)':''}. Save ZIP if automatic download was blocked.`;
+    publishReport(summary);
+  }catch(error){showError(error);}finally{setBusy(false);stopping=false;}
+}
+byId('batch-run').addEventListener('click',runFolderBatch);
+
+byId('suite-zip').addEventListener('click',runZipBenchmarks);
+
+byId('suite').addEventListener('click',runSuite);
+byId('stop').addEventListener('click',()=>{stopping=true;status.textContent='Stop requested; finishing the active benchmark then archiving completed results…';});
+byId('load-hardmode').addEventListener('click',loadHardmode);
+byId('apply-preset').addEventListener('click',applyPreset);
+byId('image').addEventListener('change',event=>{
+  selectedFile=event.target.files[0]||null;
+  if(selectedFile){byId('hardmode').value='';status.textContent=`Loaded ${selectedFile.name}. Click Run GPU / optional CPU.`;}
+  scheduleMemoryEstimate();
+});
+status.textContent=PhotographicWebGpuFitter.available()?
+  `WebGPU detected · GPU research mode · choose an image or hardmode sample.`:
+  'WebGPU unavailable. Serve over localhost/HTTPS with a supported GPU/browser.';
+loadCorpus().catch(showError);
+scheduleMemoryEstimate();
+</script></main></body>
+</html>
