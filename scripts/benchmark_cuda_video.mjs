@@ -7,6 +7,7 @@ import {createHash} from 'node:crypto';
 import {createWorkbenchServer} from './serve.mjs';
 import {PhotographicCudaFitter,packTileRgba,packInit,cudaRequest} from '../overlay/src/gpu/cuda.js';
 import {createCudaDirectTransport} from './cuda_direct.mjs';
+import {packRasterTileRgba} from './cuda_raster_packet.mjs';
 import {validateVideoManifest,crop16x9} from './cuda_video_plan.mjs';
 import {videoTilePlan} from './cuda_video_tile_plan.mjs';
 import {verifyWorker} from './cuda_worker_provenance.mjs';
@@ -17,10 +18,11 @@ import {createDriverMonitor} from './cuda_driver_monitor.mjs';
 import {queuePlan,runDepthOneQueue} from './cuda_frame_queue.mjs';
 import '../PNG2ANSI/src/core.js';
 const [worker,batchDirectory,mode,tile,count,output,...flags]=process.argv.slice(2);
-const allowed=['--continuous','--direct','--prepacked','--native-pack'];
+const allowed=['--continuous','--direct','--prepacked','--native-pack','--live-pack'];
 if(!output||new Set(flags).size!==flags.length||flags.some(f=>!allowed.includes(f)))throw new Error('Usage: WORKER BATCH MODE TILE COUNT OUT [--continuous] [--direct] [--prepacked|--native-pack]');
 const continuous=flags.includes('--continuous'),direct=flags.includes('--direct'),prepacked=flags.includes('--prepacked'),nativePack=flags.includes('--native-pack');
-if((direct||prepacked||nativePack)&&!continuous||prepacked&&nativePack||nativePack&&!direct)throw new Error('Prototype packing/transport requires continuous mode; native packing is direct-only');
+const livePack=flags.includes('--live-pack');
+if((direct||prepacked||nativePack||livePack)&&!continuous||prepacked&&(nativePack||livePack)||nativePack&&(!direct||livePack))throw new Error('Prototype packing/transport requires continuous mode; native packing is direct-only');
 const root=resolve(import.meta.dirname,'..');process.chdir(root);
 const batchPath=resolve(batchDirectory,'manifest.json');if((await stat(batchPath)).size>4*1024*1024)throw new Error('Video receipt exceeds 4 MiB');
 const hash=b=>createHash('sha256').update(b).digest('hex'),batchBytes=await readFile(batchPath),batch=JSON.parse(batchBytes);
@@ -78,9 +80,9 @@ try{
       const n=Math.min(plan.tileCells,a.columns*a.rows-start);packetSets[i].push(packTileRgba({...a,pixels:prepared[i]},start,n));
     }
     report.packetPreparationMs=performance.now()-prepareStart;
-    const provider=index=>(direct||prepacked||nativePack)?(({data,tileStart,tileCount})=>{
+    const provider=index=>(direct||prepacked||nativePack||livePack)?(({data,tileStart,tileCount})=>{
       if(prepacked)return packetSets[index][packetIndex(tileStart)];
-      const packet=packTileRgba(data,tileStart,tileCount);packetSets[index].push(packet);return packet;
+      const packet=nativePack?packRasterTileRgba(data,tileStart,tileCount):packTileRgba(data,tileStart,tileCount);packetSets[index].push(packet);return packet;
     }):undefined;
 
     const queued=await runDepthOneQueue({inputs:prepared,fitFrame:(p,index)=>frames.fitFrame(p,{tilePacketProvider:provider(index)}),check:()=>monitor.assertHealthy(),

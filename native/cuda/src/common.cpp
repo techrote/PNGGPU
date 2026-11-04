@@ -180,6 +180,27 @@ std::vector<std::uint8_t> encode_init(const Atlas& atlas) {
   return out;
 }
 
+std::vector<std::uint32_t> parse_raster_tile(const std::vector<std::uint8_t>& payload,const Atlas& atlas,std::uint32_t& count) {
+  if(payload.size()<20||payload.size()>max_message_bytes||read_u32(payload,0)!=3)throw std::runtime_error("Expected raster TILE command3");
+  count=read_u32(payload,4);const auto columns=read_u32(payload,8),rows=read_u32(payload,12),start=read_u32(payload,16);
+  if(count<1||count>atlas.parameters.tile_capacity||columns<1||columns>1024||rows<1||rows>1024||
+    checked_sum(start,count,"Raster tile extent")>checked_product(columns,rows,"Raster frame cells"))throw std::runtime_error("Raster TILE cell geometry exceeds bounds");
+  const auto values=checked_product(count,atlas.layout.samples,"Raster TILE pixels"),bytes=checked_product(values,4,"Raster TILE bytes");
+  if(bytes>max_pixel_bytes||payload.size()!=checked_sum(20,bytes,"Raster TILE"))throw std::runtime_error("Raster TILE byte length mismatch");
+  std::vector<std::uint32_t> pixels(values);const auto sw=atlas.parameters.sample_width,sh=atlas.parameters.sample_height;
+  std::size_t source=20;std::uint32_t consumed=0;
+  while(consumed<count){
+    const auto span=std::min(count-consumed,columns-(start+consumed)%columns);
+    for(std::uint32_t sy=0;sy<sh;++sy){
+      for(std::uint32_t cell=0;cell<span;++cell)for(std::uint32_t sx=0;sx<sw;++sx)
+        pixels[std::size_t(consumed+cell)*atlas.layout.samples+sy*sw+sx]=read_u32(payload,source+std::size_t(cell*sw+sx)*4)&0x00ffffffu;
+      source+=std::size_t(span)*sw*4;
+    }
+    consumed+=span;
+  }
+  return pixels;
+}
+
 std::vector<std::uint8_t> encode_tile(const std::vector<std::uint32_t>& pixels, std::uint32_t count) {
   const auto size = checked_sum(8, checked_product(pixels.size(), 4, "TILE"), "TILE");
   if (size > max_message_bytes) throw std::runtime_error("TILE exceeds message limit");

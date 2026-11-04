@@ -66,6 +66,7 @@ Atlas parse_init(const std::vector<std::uint8_t>& payload);
 std::vector<std::uint32_t> parse_tile(const std::vector<std::uint8_t>& payload,
                                     const Atlas& atlas, std::uint32_t& count);
 std::uint32_t read_u32(const std::vector<std::uint8_t>& bytes, std::size_t offset);
+std::vector<std::uint32_t> parse_raster_tile(const std::vector<std::uint8_t>& payload,const Atlas& atlas,std::uint32_t& count);
 void append_u32(std::vector<std::uint8_t>& bytes, std::uint32_t value);
 void append_float(std::vector<std::uint8_t>& bytes, float value);
 std::vector<std::uint8_t> encode_init(const Atlas& atlas);

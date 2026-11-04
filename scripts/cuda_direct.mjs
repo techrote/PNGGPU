@@ -1,6 +1,6 @@
 import {spawn} from 'node:child_process';
 import {randomBytes} from 'node:crypto';
-import {CUDA_LIMITS,MAX_JSON_BYTES,BridgeError,NativeSession,probeWorker,validateInitPacket,validateTilePacket} from './cuda_worker_session.mjs';
+import {CUDA_LIMITS,MAX_JSON_BYTES,BridgeError,NativeSession,probeWorker,validateInitPacket,validateTilePacket,validateRasterTilePacket} from './cuda_worker_session.mjs';
 
 /** Private Node-to-child transport. Logical operations match the HTTP adapter;
  * no sockets, Response objects or browser privileges are involved. One owner,
@@ -60,7 +60,8 @@ export function createCudaDirectTransport({executable,device=null,arithmeticMode
       e.state='busy';clearTimeout(e.idle);
       const abort=()=>{void closeEntry(e,new Error('Direct CUDA request cancelled'));};signal?.addEventListener('abort',abort,{once:true});
       try{
-        const payload=buffer(body),count=validateTilePacket(payload,e.config);
+        const payload=buffer(body),count=payload.length>=4&&payload.readUInt32LE(0)===3?
+          validateRasterTilePacket(payload,e.config):validateTilePacket(payload,e.config);
         const response=await e.worker.request(payload,Math.min(limit,8+MAX_JSON_BYTES+count*16));
         if(response.metadata.cellCount!==count||response.payload.length-response.dataOffset!==count*16)throw new Error('Unexpected CUDA cell count');
         live(e,signal);e.state='ready';arm(e);return response.payload;

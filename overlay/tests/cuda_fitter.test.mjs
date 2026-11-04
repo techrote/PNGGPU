@@ -160,6 +160,16 @@ test('native fit timing distinguishes missing, partial and measured zero interva
   }
 });
 
+test('native packing interval is separate from native fit and malformed values reject',async()=>{
+  const bridge=fakeBridge({onTile:({metadata,values})=>{
+    metadata.timing.nativePackingMs=0.25;metadata.timing.nativeTotalMs=2;return new Response(responseFrame(metadata,values));
+  }});
+  const fit=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl}),r=await fit.fit(sample());
+  assert.equal(r.stats.timing.nativePackingMs,1);assert.equal(r.stats.timing.nativeTotalMs,8);await fit.close();
+  const bad=fakeBridge({onTile:({metadata,values})=>{metadata.timing.nativePackingMs=-1;return new Response(responseFrame(metadata,values));}});
+  const f=await PhotographicCudaFitter.create({fetchImpl:bad.fetchImpl});await assert.rejects(f.fit(sample()),/nativePackingMs/);assert.equal(bad.deletions.length,1);await f.close();
+});
+
 test('invalid optional native fit measurements fail and release the session',async()=>{
   for(const invalid of [-1,null,'3',NaN,Infinity]){
     const bridge=fakeBridge({onTile:({metadata,values})=>{

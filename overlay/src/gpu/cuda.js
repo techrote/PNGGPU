@@ -299,6 +299,8 @@ export function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, 
   // Keep absence distinct from a measured zero; reject malformed measurements.
   metadata.timing.nativeTotalMs = metadata.timing.nativeTotalMs === undefined ? null :
     finiteTime(metadata.timing.nativeTotalMs, 'nativeTotalMs');
+  metadata.timing.nativePackingMs = metadata.timing.nativePackingMs === undefined ? null :
+    finiteTime(metadata.timing.nativePackingMs, 'nativePackingMs');
   integer(metadata.allocatedBytes, 'CUDA allocated bytes', 1, Number.MAX_SAFE_INTEGER);
   integer(metadata.recoveredCells,'CUDA recovered cells',0,count);
   integer(metadata.certifiedCells,'CUDA certified cells',0,count);
@@ -477,7 +479,7 @@ export class PhotographicCudaFitter {
       atlasPackMs:0, bufferCreateMs:0, tilePackMs:0, sampleProviderMs:0, decodeCellsMs:0,
       writeBufferMs:null, encodeSubmitMs:null, readbackWaitMs:null, timestampsReadMs:0,
       slotAvailabilityWaitMs:0, firstTileCompletedMs:null, wallTotalMs:0,
-      nativeInitMs:0, atlasUploadMs:null, nativeTotalMs:0, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
+      nativeInitMs:0, atlasUploadMs:null, nativeTotalMs:0,nativePackingMs:0, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
       gpuProjectionMs:0, gpuSelectionMs:0, gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,
       gpuDirectProjectionMs:0,gpuDirectSelectionMs:0,
       maxProjectionLaunchMs:0,maxSelectionLaunchMs:0,cleanupMs:0
@@ -551,6 +553,8 @@ export class PhotographicCudaFitter {
         tile.nativeTotalMs = native.timing.nativeTotalMs;
         timing.nativeTotalMs = timing.nativeTotalMs === null || tile.nativeTotalMs === null ? null :
           timing.nativeTotalMs + tile.nativeTotalMs;
+        tile.nativePackingMs=native.timing.nativePackingMs;
+        timing.nativePackingMs=timing.nativePackingMs===null||tile.nativePackingMs===null?null:timing.nativePackingMs+tile.nativePackingMs;
         tile.uploadMs = native.timing.uploadMs; tile.readbackMs = native.timing.readbackMs;
         tile.recoveredCells=native.recoveredCells;tile.certifiedCells=native.certifiedCells;
         tile.directCells=native.directCells;

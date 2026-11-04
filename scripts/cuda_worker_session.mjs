@@ -50,6 +50,14 @@ export function validateTilePacket(body, config) {
   return cellCount;
 }
 
+export function validateRasterTilePacket(body,config) {
+  if(body.length<20||body.readUInt32LE(0)!==3||body.length>CUDA_LIMITS.maxMessageBytes)throw new BridgeError(400,'Invalid raster tile packet');
+  const count=body.readUInt32LE(4),columns=body.readUInt32LE(8),rows=body.readUInt32LE(12),start=body.readUInt32LE(16),bytes=count*config.samples*4;
+  if(count<1||count>config.maxTileCells||columns<1||columns>1024||rows<1||rows>1024||start+count>columns*rows||
+    bytes>CUDA_LIMITS.maxPixelBytes||body.length!==20+bytes)throw new BridgeError(400,'Raster tile geometry exceeds bounds');
+  return count;
+}
+
 function parseResponse(payload) {
   if (payload.length < 8) throw new BridgeError(502, 'CUDA worker returned a truncated response.');
   const status = payload.readUInt32LE(0), jsonLength = payload.readUInt32LE(4);

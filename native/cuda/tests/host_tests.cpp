@@ -324,6 +324,31 @@ int main(int argc,char** argv) {
         require(std::memcmp(&c,&f,sizeof c)==0,"Integer totals and strided masks retain original projection bits");
       }
     }
+    for(const auto shape:{std::pair<unsigned,unsigned>{1,1},{2,3},{4,8},{32,64}})for(unsigned columns:{1u,7u,31u}) {
+      const unsigned sw=shape.first,sh=shape.second,rows=3,cells=columns*rows,n=sw*sh,width=columns*sw;
+      const auto atlas=make_fixture(3,sw,sh,cells);std::vector<std::uint32_t> raster(cells*n);
+      for(std::size_t i=0;i<raster.size();++i)raster[i]=std::uint32_t((i*73u)&0xffffffu)|(std::uint32_t(i&255u)<<24);
+      for(const auto extent:{std::pair<unsigned,unsigned>{0,1},{0,cells},{columns>1?columns-2:0,std::min(cells-(columns>1?columns-2:0),columns+2)},{cells-1,1}}) {
+        const auto start=extent.first,count=extent.second;std::vector<std::uint8_t> packet;
+        for(auto v:{3u,count,columns,rows,start})append_u32(packet,v);
+        for(unsigned row=start/columns;row<=(start+count-1)/columns;++row){
+          const auto left=std::max(start,row*columns)-row*columns,right=std::min(start+count,(row+1)*columns)-row*columns;
+          for(unsigned sy=0;sy<sh;++sy)for(unsigned col=left;col<right;++col)for(unsigned sx=0;sx<sw;++sx)
+            append_u32(packet,raster[(row*sh+sy)*width+col*sw+sx]);
+        }
+        std::vector<std::uint32_t> expected;
+        for(unsigned cell=start;cell<start+count;++cell)for(unsigned sy=0;sy<sh;++sy)for(unsigned sx=0;sx<sw;++sx)
+          expected.push_back(raster[((cell/columns)*sh+sy)*width+(cell%columns)*sw+sx]&0xffffffu);
+        unsigned actual_count=0;const auto actual=parse_raster_tile(packet,atlas,actual_count);
+        require(actual_count==count&&actual==expected,"Native RGBA bands retain independent raster-to-cell RGB words");
+        require(parse_tile(encode_tile(expected,count),atlas,actual_count)==actual,"Native packing is byte-equivalent to canonical RGBX TILE");
+        auto short_packet=packet;short_packet.pop_back();rejects([&]{parse_raster_tile(short_packet,atlas,actual_count);},"Reject incomplete native raster");
+        for(const auto field:{std::pair<unsigned,unsigned>{0,2},{4,0},{8,0},{12,1025},{16,0xffffffffu}}){
+          auto bad=packet;for(unsigned byte=0;byte<4;++byte)bad[field.first+byte]=std::uint8_t(field.second>>(8*byte));
+          rejects([&]{parse_raster_tile(bad,atlas,actual_count);},"Reject raster command/extent/dimensions");
+        }
+      }
+    }
     std::cout << "PNGGPU CUDA host tests: " << checks << " checks passed (no GPU required).\n";
     return 0;
   } catch (const std::exception& error) {

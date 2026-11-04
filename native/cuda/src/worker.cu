@@ -149,6 +149,7 @@ std::string info_json(const DeviceInfo& info) {
       << ",\"directFP32SelectionTraversal\":" << json_string(glyph_major_fp32?"glyph-major-stable-rank":"color-major-original")
       << ",\"deviceMaskLayout\":" << json_string(sample_major_device_masks?"sample-major":"glyph-major")
       << ",\"binary64ProjectionSums\":" << json_string(integer_projection_sums?"uint32-exact":"binary64-original")
+      << ",\"nativeRasterPacking\":\"rgba-row-bands-v1\""
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
       << ",\"maxProjectionBytes\":" << max_projection_bytes << ",\"maxPixelBytes\":" << max_pixel_bytes
@@ -445,7 +446,7 @@ class Worker {
   double atlas_upload_ms_ = 0.0;
 };
 
-std::string tile_json(const TileOutput& result, std::size_t allocated_bytes) {
+std::string tile_json(const TileOutput& result, std::size_t allocated_bytes,double packing_ms=0) {
   std::ostringstream out;
   out.imbue(std::locale::classic());
   out << std::setprecision(10) << "{\"ok\":true,\"cellCount\":" << result.results.size()
@@ -453,6 +454,7 @@ std::string tile_json(const TileOutput& result, std::size_t allocated_bytes) {
       << ",\"gpuSelectionMs\":" << result.selection_ms
       << ",\"uploadMs\":" << result.upload_ms << ",\"readbackMs\":" << result.readback_ms
       << ",\"nativeTotalMs\":" << result.total_ms
+      << ",\"nativePackingMs\":" << packing_ms
       << ",\"gpuGuardMs\":" << result.guard_ms << ",\"gpuRecoveryProjectionMs\":" << result.recovery_projection_ms
       << ",\"gpuRecoverySelectionMs\":" << result.recovery_selection_ms
       << ",\"gpuDirectProjectionMs\":" << result.direct_projection_ms << ",\"gpuDirectSelectionMs\":" << result.direct_selection_ms
@@ -497,7 +499,7 @@ int serve(const DeviceInfo& device) {
            << ",\"recoveryBufferBytes\":" << worker->atlas().layout.recovery_bytes
            << ",\"atlasUploadMs\":" << worker->atlas_upload_ms() << "}";
       write_frame(stdout, make_response(0, json.str()));
-    } else if (command == 2) {
+    } else if (command == 2 || command == 3) {
       if (!worker) throw std::runtime_error("INIT must precede TILE");
 #ifdef PNGGPU_FAULT_INJECTION
       if(test_fault=="context") {
@@ -507,13 +509,15 @@ int serve(const DeviceInfo& device) {
       }
 #endif
       std::uint32_t count = 0;
-      const auto pixels = parse_tile(payload, worker->atlas(), count);
+      const auto packing_start=Clock::now();
+      const auto pixels = command==3?parse_raster_tile(payload,worker->atlas(),count):parse_tile(payload, worker->atlas(), count);
+      const double packing_ms=command==3?milliseconds(packing_start):0;
       const auto result = worker->fit(pixels, count);
       // Instrumented bursts can end before the 100 ms background flush. Flush
       // completed activities before responding, so bridge teardown loses no tail.
       // This is a no-op in normal builds; traced wall timing includes its cost.
       flush_activity_trace();
-      write_frame(stdout, make_response(0, tile_json(result, worker->atlas().layout.allocated_bytes), result.results));
+      write_frame(stdout, make_response(0, tile_json(result, worker->atlas().layout.allocated_bytes,packing_ms), result.results));
     } else throw std::runtime_error("Unknown worker command");
   }
   return 0;
