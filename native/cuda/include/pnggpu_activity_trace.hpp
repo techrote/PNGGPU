@@ -1,6 +1,11 @@
 #pragma once
 #include <memory>
 namespace pnggpu {
+#ifdef PNGGPU_CUPTI_ACTIVITY
+void flush_activity_trace();
+#else
+inline void flush_activity_trace() {}
+#endif
 // Optional process-local activity tracing. No hardware counters or machine settings.
 class ActivityTrace {
  public:

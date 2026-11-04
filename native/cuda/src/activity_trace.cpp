@@ -23,6 +23,8 @@ void check(CUptiResult r,const char* where) {
 }
 std::ofstream output;
 std::mutex output_mutex;
+std::mutex flush_mutex;
+std::atomic<bool> enabled{false};
 std::atomic<unsigned> failures{0};
 std::atomic<unsigned> buffers{0};
 constexpr unsigned max_buffers=4; // at most 4 MiB of outstanding client record buffers
@@ -65,6 +67,14 @@ void CUPTIAPI completed(CUcontext context,std::uint32_t stream,std::uint8_t* buf
 }
 }
 
+void flush_activity_trace() {
+  if(!enabled.load())return;
+  std::lock_guard<std::mutex> flush_lock(flush_mutex);
+  const auto status=cuptiActivityFlushAll(0);
+  if(status!=CUPTI_SUCCESS){++failures;std::lock_guard<std::mutex> lock(output_mutex);status_row("traceError",unsigned(status));}
+  check(status,"CUPTI request-boundary flush");
+}
+
 struct ActivityTrace::Impl {
   std::atomic<bool> stop{false};std::thread flusher;
   explicit Impl(const char* directory) {
@@ -87,14 +97,17 @@ struct ActivityTrace::Impl {
     check(cuptiActivityRegisterCallbacks(requested,completed),"CUPTI activity callbacks");
     check(cuptiActivityEnable(CUPTI_ACTIVITY_KIND_RUNTIME),"CUPTI runtime activity");
     check(cuptiActivityEnable(CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL),"CUPTI kernel activity");
+    enabled=true;
     flusher=std::thread([this]{while(!stop.load()){
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      std::lock_guard<std::mutex> flush_lock(flush_mutex);
       const auto status=cuptiActivityFlushAll(0);
       if(status!=CUPTI_SUCCESS){++failures;std::lock_guard<std::mutex> lock(output_mutex);output << "traceError,0,0,0,0,0,0,0," << unsigned(status) << '\n';output.flush();}
     }});
   }
   ~Impl() {
     stop=true;if(flusher.joinable())flusher.join();
+    enabled=false;
     for(const auto status:{cuptiActivityFlushAll(0),cuptiActivityDisable(CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL),cuptiActivityDisable(CUPTI_ACTIVITY_KIND_RUNTIME)})
       if(status!=CUPTI_SUCCESS){++failures;std::lock_guard<std::mutex> lock(output_mutex);status_row("traceError",unsigned(status));}
     std::lock_guard<std::mutex> lock(output_mutex);status_row("traceErrors",failures.load());output.close();

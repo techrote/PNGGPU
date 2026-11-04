@@ -503,6 +503,10 @@ int serve(const DeviceInfo& device) {
       std::uint32_t count = 0;
       const auto pixels = parse_tile(payload, worker->atlas(), count);
       const auto result = worker->fit(pixels, count);
+      // Instrumented bursts can end before the 100 ms background flush. Flush
+      // completed activities before responding, so bridge teardown loses no tail.
+      // This is a no-op in normal builds; traced wall timing includes its cost.
+      flush_activity_trace();
       write_frame(stdout, make_response(0, tile_json(result, worker->atlas().layout.allocated_bytes), result.results));
     } else throw std::runtime_error("Unknown worker command");
   }
