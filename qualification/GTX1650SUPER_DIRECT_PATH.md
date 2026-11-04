@@ -173,9 +173,11 @@ default and guarded CUDA remains the default arithmetic mode.
 Exact-source [c06ed8a CI](https://github.com/techrote/PNGGPU/actions/runs/41931125685)
 passed all three jobs: Windows host/application checks and Windows/Linux CUDA
 build/native checks. Local validation passes 15 original tests, 78 overlay tests,
-79 bridge/direct/raster/planning/accounting tests, **37,032 independent native
-host checks**, 7 host-only arithmetic CLI checks, independent CPU golden and
-frozen FP32 seed regeneration. CI is compile/host evidence, not a GPU run.
+79 bridge/direct/raster/planning/accounting tests, **37,032 base native host
+checks / 37,092 with both golden fixture sets**, 7 host-only arithmetic CLI
+checks, independent CPU golden and frozen FP32 seed regeneration. The separate
+golden-inclusive native log uses the same fixture arguments as CTest. CI is
+compile/host evidence, not a GPU run.
 Independent read-only review found no supported bounds/ownership/packing issue
 and separately verified all recorded tuple/ANSI archives and input controls.
 

@@ -306,8 +306,8 @@
       "bytes": 10277
     },
     "qualification/GTX1650SUPER_DIRECT_PATH.md": {
-      "sha256": "0e2f6f53ab61ecaa3a1425ffd1bd68f54b9d2a78e18a97a8a63b42ea0cd54aed",
-      "bytes": 13838
+      "sha256": "ca49deecb800c48b65d5abf4f79552aca8230b3fa1c740c1aaeec08ecc90d361",
+      "bytes": 13953
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
       "sha256": "72398e720e208715a4f2401c7d14d6807b8befcfab2d040a0623d2668ba609d9",
@@ -1476,6 +1476,10 @@
     "qualification/gtx1650super-direct-path/independent-goldens.txt": {
       "sha256": "6c834c6c446cb15a4d1d64efd3b05dc9a15aa728c43cfeb2383fca4961980ad2",
       "bytes": 101
+    },
+    "qualification/gtx1650super-direct-path/native-golden-host-tests.txt": {
+      "sha256": "565a3da61612a52d1ac17b712f2006df117b79a749caf5eef1bb26f6d74e2b63",
+      "bytes": 63
     },
     "qualification/gtx1650super-direct-path/native-host-tests.txt": {
       "sha256": "47c3448a5d77ec900aa9a450a273d7b8f3ba49dc2809065aa0a4e9423b07cdbc",
