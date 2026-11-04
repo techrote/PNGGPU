@@ -1,18 +1,22 @@
 """Verify and package the finite parkour measurements. No GPU operations."""
 from pathlib import Path
-import json, hashlib, statistics, csv, shutil
+import json, hashlib, statistics, csv, shutil, sys
 
 ROOT=Path(__file__).resolve().parent.parent
 RAW=ROOT/'build/qualification'
-OUT=ROOT/'qualification/gtx1650super-motion'
+cropped=len(sys.argv)>1 and sys.argv[1]=='cropped'
+if len(sys.argv)>1 and not cropped:raise SystemExit('Optional argument: cropped')
+prefix='parkour-crop' if cropped else 'parkour'
+OUT=ROOT/('qualification/gtx1650super-motion-cropped' if cropped else 'qualification/gtx1650super-motion')
 OUT.mkdir(parents=True,exist_ok=True)
 sha=lambda b:hashlib.sha256(b).hexdigest()
-matrix=json.loads((RAW/'parkour-matrix/matrix.json').read_text())
+matrix=json.loads((RAW/(prefix+'-matrix')/'matrix.json').read_text())
 assert matrix['benchmarkCompleted'] and len(matrix['sessions'])==8
-paths=[RAW/'parkour-initial.json',RAW/'parkour-initial-fp64.json']+[Path(e['report']) for e in matrix['sessions']]
+paths=[RAW/(prefix+'-initial.json'),RAW/(prefix+'-initial-fp64.json')]+[Path(e['report']) for e in matrix['sessions']]
 summary={'schema':'pnggpu-cuda-motion-results-v1','qualificationAccepted':False,'cpuComparison':{'skipped':True},
          'batches':{},'sessions':[],'sourceVideo':json.loads((ROOT/'qualification/gtx1650super-warm-frames/motion-candidate.json').read_text())}
 summary['sourceVideo']['usedInMotionMeasurements']=True
+summary['layout']='cropped' if cropped else 'letterboxed'
 summary['sourceVideo']['nextScope']='First120framesperprecision; eight30-frame comparisons'
 packed=bytearray();offsets={};all_rows=[];word_frames={}
 for path in paths:
@@ -53,7 +57,7 @@ summary.update(benchmarkCompleted=True,totalFrames=480,totalCells=sum(f['cells']
 (OUT/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
 with (OUT/'frames.csv').open('w',newline='',encoding='utf-8') as f:
     w=csv.writer(f,lineterminator='\n');w.writerow(['configuration','frame','fitMs','kernelMs','preparedFrameToAnsiMs','inputReadAndHashMs','ansiMs','packMs','bridgeMs']);w.writerows(all_rows)
-for path in (RAW/'parkour-previews').glob('*'):
+for path in (RAW/(prefix+'-previews')).glob('*'):
     if path.is_file():shutil.copyfile(path,OUT/path.name)
 print(json.dumps({'frames':480,'cells':summary['totalCells'],'packedBytes':len(packed),'tileInvarianceExact':True,
                   'qualityRanges':{str(width):[min(q['changedTuples'] for q in summary['quality'] if q['columns']==width),max(q['changedTuples'] for q in summary['quality'] if q['columns']==width)] for width in [160,320]}}))
