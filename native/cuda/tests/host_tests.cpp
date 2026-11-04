@@ -211,8 +211,8 @@ void arithmetic_tests() {
     }
   }
   rejects([&]{ reference_fit(atlas, pixels, 68); }, "Reject oversized reference tile");
-  const auto small = make_fixture(7, 1, 1, 2);
-  const auto small_result = reference_fit(small, fixture_pixels(small, 2, 1), 2);
+  const auto small_atlas = make_fixture(7, 1, 1, 2);
+  const auto small_result = reference_fit(small_atlas, fixture_pixels(small_atlas, 2, 1), 2);
   require(small_result.size() == 2, "Fewer than 32 glyphs and degenerate variance");
   require(std::isfinite(atlas.statistics[5].z) && atlas.statistics[5].z > 0,
           "Near-constant mask keeps positive finite variance");
