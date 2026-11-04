@@ -4,7 +4,7 @@ import {readFile,mkdtemp,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {imageGeometry,imagePreparationHtml,validateImageFixture,loadImageFixture,sha256} from '../scripts/cuda_image_fixture.mjs';
+import {imageGeometry,parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,loadImageFixture,sha256} from '../scripts/cuda_image_fixture.mjs';
 import {parseFixtureArgs,planFixtures} from '../scripts/cuda_fixture_plan.mjs';
 const makeDocument=()=>{
   const fixture={name:'image-test-1x1-1x1',columns:1,rows:1,sampleWidth:1,sampleHeight:1,pixels:[1,2,3,255],
@@ -18,6 +18,33 @@ const makeDocument=()=>{
 test('small real-image geometry rejects oversized, unsafe and non-integer requests',()=>{
   assert.deepEqual(imageGeometry(8,4),{columns:8,rows:4,sampleWidth:4,sampleHeight:8});
   for(const dims of [[8,9],[0,1],[1,1,9,8],[1,1,8,17],[1.5,1],[Number.MAX_SAFE_INTEGER,1]])assert.throws(()=>imageGeometry(...dims));
+});
+test('larger preparation requires an explicit bounded limit before any browser starts',()=>{
+  const base=['playwright','output','holo-stealth-cloak-1024.png'];
+  for(const [columns,rows] of [[16,8],[32,16],[80,40]]) {
+    assert.throws(()=>parseImagePreparationArgs([...base,String(columns),String(rows)]));
+    const p=parseImagePreparationArgs([...base,String(columns),String(rows),'--max-preparation-cells',String(columns*rows)]);
+    assert.equal(p.maxPreparationCells,columns*rows);assert.equal(p.geometry.columns,columns);
+    const fixture={name:'image-larger',...p.geometry,masks:Array(218),foregroundCandidates:6,backgroundCandidates:5};
+    const options=parseFixtureArgs(['worker','out','--case','image-larger','--webgpu','playwright',
+      '--max-runs','2','--max-cells',String(2*columns*rows),'--max-work',String(117000*columns*rows)]);
+    assert.equal(planFixtures([fixture],options).summary.work,117000*columns*rows);
+    assert.throws(()=>planFixtures([fixture],{...options,maxCells:2*columns*rows-1}));
+  }
+  for(const value of ['3201','9007199254740992','0','-1','1.5'])assert.throws(()=>parseImagePreparationArgs([...base,'80','40','--max-preparation-cells',value]));
+  assert.throws(()=>parseImagePreparationArgs([...base,'1','1','--max-preparation-cells','64','--max-preparation-cells','128']));
+  assert.throws(()=>imageGeometry(81,1,4,8,3200));assert.throws(()=>imageGeometry(80,41,4,8,3200));
+  assert.throws(()=>imageGeometry(80,40,8,16,3200));
+});
+test('prepared larger inputs must retain a valid preparation limit when replayed',()=>{
+  const d=makeDocument();
+  Object.assign(d.fixture,{columns:16,rows:8,sampleWidth:4,sampleHeight:8,
+    pixels:Array(16*8*4*8*4).fill(255),masks:[Array(32).fill(0),Array(32).fill(1)]});
+  d.fixtureSha256=sha256(JSON.stringify(d.fixture));d.provenance.maxPreparationCells=128;
+  assert.equal(validateImageFixture(d),d.fixture);
+  delete d.provenance.maxPreparationCells;assert.throws(()=>validateImageFixture(d),/preparation cell/);
+  d.provenance.maxPreparationCells=64;assert.throws(()=>validateImageFixture(d));
+  d.provenance.maxPreparationCells=3201;assert.throws(()=>validateImageFixture(d));
 });
 test('preparation page uses existing font/mask/config functions without matcher or UI preflight',async()=>{
   const source=await readFile('overlay/experiments/webgpu/photographic.html','utf8'),html=imagePreparationHtml(source);

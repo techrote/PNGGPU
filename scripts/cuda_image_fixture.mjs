@@ -3,11 +3,29 @@ import {createHash} from 'node:crypto';
 import {resolve,relative,isAbsolute} from 'node:path';
 
 export const sha256=bytes=>createHash('sha256').update(bytes).digest('hex');
-export function imageGeometry(columns,rows,sampleWidth=4,sampleHeight=8) {
-  for(const [name,value,max] of [['columns',columns,64],['rows',rows,64],['sampleWidth',sampleWidth,8],['sampleHeight',sampleHeight,16]])
+export function imageGeometry(columns,rows,sampleWidth=4,sampleHeight=8,maxPreparationCells=64) {
+  if(!Number.isSafeInteger(maxPreparationCells)||maxPreparationCells<1||maxPreparationCells>3200)throw new Error('Preparation cell limit must be 1–3200');
+  for(const [name,value,max] of [['columns',columns,80],['rows',rows,64],['sampleWidth',sampleWidth,8],['sampleHeight',sampleHeight,16]])
     if(!Number.isSafeInteger(value)||value<1||value>max)throw new Error(`Invalid small-image ${name}`);
-  if(columns*rows>64||sampleWidth*sampleHeight>128)throw new Error('Small-image preparation is limited to 64 cells and 128 samples/cell');
+  if(columns*rows>maxPreparationCells||sampleWidth*sampleHeight>128)throw new Error('Image exceeds explicit preparation cell/sample limits (default 64 cells / 128 samples)');
+  if(columns*rows>64&&(sampleWidth!==4||sampleHeight!==8))throw new Error('Larger bounded stages require 4x8 samples/cell');
   return {columns,rows,sampleWidth,sampleHeight};
+}
+
+export function parseImagePreparationArgs(args) {
+  const positionals=[];let maxPreparationCells=64,seen=false;
+  for(let i=0;i<args.length;i++) {
+    if(args[i]==='--max-preparation-cells') {
+      const value=args[++i];
+      if(seen||!/^[1-9][0-9]*$/.test(value??''))throw new Error('Specify one positive --max-preparation-cells value');
+      maxPreparationCells=Number(value);seen=true;
+    }else if(args[i].startsWith('--'))throw new Error(`Unknown preparation flag ${args[i]}`);
+    else positionals.push(args[i]);
+  }
+  if(positionals.length<5||positionals.length>7)throw new Error('Expected PLAYWRIGHT OUTPUT IMAGE COLUMNS ROWS [SAMPLE_WIDTH SAMPLE_HEIGHT]');
+  const [playwright,output,image,c,r,sw='4',sh='8']=positionals;
+  if([c,r,sw,sh].some(v=>!/^[1-9][0-9]*$/.test(v)))throw new Error('Image geometry must contain positive integers');
+  return {playwright,output,image,maxPreparationCells,geometry:imageGeometry(Number(c),Number(r),Number(sw),Number(sh),maxPreparationCells)};
 }
 
 // Include only existing workbench preparation functions, with no UI, matcher,
@@ -30,7 +48,7 @@ export function validateImageFixture(document) {
   if(document?.schema!=='pnggpu-real-image-fixture-v1')throw new Error('Invalid real-image fixture schema');
   const f=document.fixture;
   if(!f||typeof f.name!=='string'||!/^image-[a-z0-9-]+$/.test(f.name))throw new Error('Invalid image fixture name');
-  imageGeometry(f.columns,f.rows,f.sampleWidth,f.sampleHeight);
+  imageGeometry(f.columns,f.rows,f.sampleWidth,f.sampleHeight,document.provenance?.maxPreparationCells??64);
   if(f.foregroundCandidates!==6||f.backgroundCandidates!==5)throw new Error('Real-image scope preserves six/five candidates');
   const n=f.sampleWidth*f.sampleHeight;
   if(!Array.isArray(f.pixels)||f.pixels.length!==f.columns*f.rows*n*4||f.pixels.some(v=>!Number.isInteger(v)||v<0||v>255))throw new Error('Invalid image samples');

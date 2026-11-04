@@ -4,18 +4,16 @@ import {resolve,dirname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {createWorkbenchServer} from './serve.mjs';
-import {imageGeometry,imagePreparationHtml,validateImageFixture,sha256} from './cuda_image_fixture.mjs';
+import {parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,sha256} from './cuda_image_fixture.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
 
 const args=process.argv.slice(2);
-if(args.includes('--help')||args.length<5||args.length>7) {
-  console.log('Usage: node scripts/prepare_cuda_image.mjs PLAYWRIGHT_MODULE OUTPUT_JSON EXACT_IMAGE COLUMNS ROWS [SAMPLE_WIDTH SAMPLE_HEIGHT]\nPreparation only; maximum 64 cells / 128 samples each, six/five color candidates. Run setup.bat first.');
+if(args.includes('--help')||!args.length) {
+  console.log('Usage: node scripts/prepare_cuda_image.mjs PLAYWRIGHT_MODULE OUTPUT_JSON EXACT_IMAGE COLUMNS ROWS [SAMPLE_WIDTH SAMPLE_HEIGHT] [--max-preparation-cells N]\nPreparation only; default 64 cells, explicit cap up to 3200. Larger stages require 4x8 samples; small inputs allow at most 128 samples/cell. Six/five candidates. Run setup.bat first.');
   process.exit(args.includes('--help')?0:1);
 }
-const [playwright,output,image,c,r,sw='4',sh='8']=args;
-if([c,r,sw,sh].some(v=>!/^[1-9][0-9]*$/.test(v)))throw new Error('Image geometry must contain positive integers');
-const geometry=imageGeometry(Number(c),Number(r),Number(sw),Number(sh));
+const {playwright,output,image,geometry,maxPreparationCells}=parseImagePreparationArgs(args);
 const root=resolve(import.meta.dirname,'..');process.chdir(root);
 const git=(...a)=>execFileSync('git',a,{encoding:'utf8',cwd:root}).trim();
 const manifestPath='overlay/fixtures/hardmode/manifest.json';
@@ -35,7 +33,7 @@ for(const path of paths) {
 const html=imagePreparationHtml(await readFile('overlay/experiments/webgpu/photographic.html','utf8'));
 const started=new Date().toISOString();
 const provenance={sourceCommit:git('rev-parse','HEAD'),sourceStatus:git('status','--porcelain'),sourceFiles,started,
-  geometry,image:item,sourceSamplingMode:'full-reference-canvas',matchingRuns:0};
+  geometry,maxPreparationCells,image:item,sourceSamplingMode:'full-reference-canvas',matchingRuns:0};
 const server=createWorkbenchServer({appDirectory:resolve(root,'PNG2ANSI')});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 let browser,document,error;
