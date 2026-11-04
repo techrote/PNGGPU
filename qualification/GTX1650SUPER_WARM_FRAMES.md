@@ -63,8 +63,8 @@ skipped in this larger benchmark. See the preceding
 Before this matrix, one-cell and 512-cell sequences ran twice in each precision:
 eight diagnostic frames / 2,052 cells, separately recorded. No fault, pressure,
 stress loop, sanitizer, watchdog bypass or machine-setting change was performed.
-All completed ordinary frames report no stalls, new driver events or cleanup
-failures. Largest observed projection/selection launch intervals were 2.68/3.00 ms;
+All completed ordinary frames report no frame/cleanup timeouts or new driver
+events. Desktop responsiveness was not independently observed. Largest observed projection/selection launch intervals were 2.68/3.00 ms;
 those event intervals do not establish watchdog stability.
 
 Device: GTX 1650 SUPER, ordinal 0, capability 7.5, driver 616.92, display watchdog

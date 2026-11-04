@@ -27,6 +27,10 @@ The [warm-frame report](GTX1650SUPER_WARM_FRAMES.md) records retained native
 worker/context/buffers and 48 bounded frames across FP32/FP64, 160x80/320x160 and
 16/32 MiB tiles, with same-mode cold-output equivalence and separate cleanup.
 
+The [motion report](GTX1650SUPER_MOTION.md) adds aligned 120-frame parkour previews
+and eight 30-frame comparisons. Video reveals larger precision differences and
+timing variation; the earlier still-image conclusions are not universal.
+
 ## Checkpoint and source authority
 
 Latest engineering checkpoint before this documentation handover:

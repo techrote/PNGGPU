@@ -10,5 +10,5 @@
     "reportedFrames": 719
   },
   "usedInWarmMeasurements": false,
-  "nextScope": "Six consecutive frames, bounded; separate decode/preparation/fit/ANSI timing. Raw media remains local."
+  "nextScope": "First120framesperprecisionforassessment;30-frameperformancecomparisons"
 }

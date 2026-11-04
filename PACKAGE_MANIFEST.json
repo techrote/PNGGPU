@@ -54,8 +54,8 @@
   "hardware_GPU_validation": "Not performed in container; high-resolution streaming exact-reference parity unverified",
   "files": {
     ".gitattributes": {
-      "sha256": "282745c08c20b8a854212c44f7ca9840c8da6a8345d47f77ccf76bca62fdaec8",
-      "bytes": 357
+      "sha256": "6631894ccf59b76433d44b67f6cd58d825d0f94b2c4c5667ee061d665d10c1f7",
+      "bytes": 370
     },
     ".github/workflows/verify.yml": {
       "sha256": "ab93967b3966aa024f5eef82615d0e185924073ad25626144c8f89c9f179399c",
@@ -286,8 +286,12 @@
       "bytes": 2058
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "32aefd178338fe373ec6a42a8041a1ace2bdec8f1a74f9f4ebb4958392aac335",
-      "bytes": 9720
+      "sha256": "d9bd4ab7fb1e6458ca154ea51ae7a5295c7570cebd8f428f980d749ea22841ea",
+      "bytes": 9957
+    },
+    "qualification/GTX1650SUPER_MOTION.md": {
+      "sha256": "2b0d6c8429b6a53b8f81187f2863df488a2494361895b46de3a379e6dc5d85e4",
+      "bytes": 9815
     },
     "qualification/GTX1650SUPER_PRECISION_BENCHMARK.md": {
       "sha256": "5a74533db58915a4628b56706d6a00f99b3bdf1aece30424805c10296141dd34",
@@ -306,8 +310,8 @@
       "bytes": 8418
     },
     "qualification/GTX1650SUPER_WARM_FRAMES.md": {
-      "sha256": "de126d239acad9bb671e835603812653f83477d9c20d45eb5ac383a466091c80",
-      "bytes": 8454
+      "sha256": "79f067051f928e3f9d469aa7cbcd24f82b5ad3fb81772c5535f9f72ce9a40cbf",
+      "bytes": 8507
     },
     "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s0-binary64-direct.ans": {
       "sha256": "8f8fe7d09d26204e31bc45f98f98f060b7930cdd829690be419c7a1f22b813d5",
@@ -1409,6 +1413,50 @@
       "sha256": "cef91fd8c138ab11f02ed80506b046250d0385ec4540ee1c23416e2ad00c13d5",
       "bytes": 42134
     },
+    "qualification/gtx1650super-motion/frames.csv": {
+      "sha256": "b4ac91b0a9fdc4c2318eb8e4487ac34ec7694a7a8cc5f6849c43a3c6a8f1a99c",
+      "bytes": 79138
+    },
+    "qualification/gtx1650super-motion/outputs.bin": {
+      "sha256": "bcc66051e9e22e6697dc4419a11aacbcd61e0b74fda4ff3fee0f36d76ab7eb5a",
+      "bytes": 24576000
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp32-160x80-frame0001.png": {
+      "sha256": "25d0167345e22bc28f1f11313f5a3932c7e18213206ba879f6f80925c027c083",
+      "bytes": 187252
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp32-160x80-frame0030.png": {
+      "sha256": "c0f2144a889563e70ccb876275a6f6605a9ed95d488ef0612d3cafc0ab84ca91",
+      "bytes": 183784
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp32-160x80-frame0120.png": {
+      "sha256": "0bb84051d57eb8bc719d8dec39218d8f51d1a01947790b704bac73bfb46abbf6",
+      "bytes": 162830
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp32-160x80.mp4": {
+      "sha256": "2f6e563c7dc38c8ed9c65368e4fec0cf3eec855767aa521c66048f2e4dfc5887",
+      "bytes": 10426371
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp64-160x80-frame0001.png": {
+      "sha256": "0eefa2abdc3ff957e361f2ffb457348f8fee4ea693356639003a5f5d6d5d77af",
+      "bytes": 186118
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp64-160x80-frame0030.png": {
+      "sha256": "04a965cfc33e40a954a0c6a88beeb92a1d1d8e4b7ff913ca8fd40e1abc551e58",
+      "bytes": 183623
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp64-160x80-frame0120.png": {
+      "sha256": "21a529c0b82aa74f87972a4a2aadbf4460de80bc6b8a4870713200186f489270",
+      "bytes": 163640
+    },
+    "qualification/gtx1650super-motion/parkour-120-fp64-160x80.mp4": {
+      "sha256": "e5f9855b57b7de32fb6da014e6cd459b1326d13f3486f6df01fa9be4ccaf3019",
+      "bytes": 10389949
+    },
+    "qualification/gtx1650super-motion/summary.json": {
+      "sha256": "271c3b182a0e4e3aca422cd3f8c8a2697f37fbcdd049e985f3a55de139aac3fb",
+      "bytes": 5840539
+    },
     "qualification/gtx1650super-real-images/driver-final.json": {
       "sha256": "daaf63c05f9d4b1709eb8c1ce3a2991518486056d7528c1fa6ad779e5bf7d1fa",
       "bytes": 121
@@ -1518,8 +1566,8 @@
       "bytes": 8228
     },
     "qualification/gtx1650super-warm-frames/motion-candidate.json": {
-      "sha256": "9e5a7184c7ca0ee5f3109449c1b04e21a4eeb7eebbffa77efeda07bb0181a391",
-      "bytes": 464
+      "sha256": "038bf552d5fe56310ba43cd975e562848c0ca5821b0932b54a1783d08665e901",
+      "bytes": 432
     },
     "qualification/gtx1650super-warm-frames/outputs.bin": {
       "sha256": "5355a927dd48b40c980fe90544f9c41d7d2807a87f1100371b18d0487ad06bef",
@@ -1705,6 +1753,10 @@
       "sha256": "283d33c6ade0985ea90710a753404fc860a94ecbbbfdc955d5edcd29570b399d",
       "bytes": 1169
     },
+    "scripts/export_cuda_video.py": {
+      "sha256": "6e0ba2028f93ce203a6bc759f1deab6240ed273bb4f43b492c55f4f42f76fac6",
+      "bytes": 4398
+    },
     "scripts/export_cuda_warm.py": {
       "sha256": "7b99d1d9030218cf93db4f4feb2bc04d8ea98f84b64da4a930beace67a73bb0a",
       "bytes": 2915
@@ -1740,6 +1792,10 @@
     "scripts/qualify_cuda_resilience.mjs": {
       "sha256": "96ca610e494ddff83963b13d021f27fd530540b3ec0d8c25e7f8df3f18211ee9",
       "bytes": 6581
+    },
+    "scripts/render_cuda_video.py": {
+      "sha256": "e4ab7dbfcfb7c16f89a7d05c545a8c47fac1ab9bf20029289dd5f9369e2faad9",
+      "bytes": 3466
     },
     "scripts/replay_cuda_fixtures.mjs": {
       "sha256": "2a698fe8d076dbc46de1165ee0f26cf11da5378b0225e6a0433b60a44c2978f1",
