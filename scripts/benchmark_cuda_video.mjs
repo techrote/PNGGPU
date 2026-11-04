@@ -5,7 +5,8 @@ import {resolve,dirname,relative,isAbsolute} from 'node:path';
 import {execFileSync,spawn} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {createWorkbenchServer} from './serve.mjs';
-import {PhotographicCudaFitter} from '../overlay/src/gpu/cuda.js';
+import {PhotographicCudaFitter,packTileRgba,cudaRequest} from '../overlay/src/gpu/cuda.js';
+import {createCudaDirectTransport} from './cuda_direct.mjs';
 import {validateVideoManifest,crop16x9} from './cuda_video_plan.mjs';
 import {videoTilePlan} from './cuda_video_tile_plan.mjs';
 import {verifyWorker} from './cuda_worker_provenance.mjs';
@@ -15,9 +16,11 @@ import {checkedAfterInfo} from './cuda_after_info.mjs';
 import {createDriverMonitor} from './cuda_driver_monitor.mjs';
 import {queuePlan,runDepthOneQueue} from './cuda_frame_queue.mjs';
 import '../PNG2ANSI/src/core.js';
-const [worker,batchDirectory,mode,tile,count,output,queueFlag]=process.argv.slice(2);
-if(!output||![8,9].includes(process.argv.length)||(queueFlag!==undefined&&queueFlag!=='--continuous'))throw new Error('Usage: node scripts/benchmark_cuda_video.mjs WORKER BATCH_DIRECTORY MODE TILE_MIB FRAME_COUNT OUTPUT_JSON [--continuous]');
-const continuous=queueFlag==='--continuous';
+const [worker,batchDirectory,mode,tile,count,output,...flags]=process.argv.slice(2);
+const allowed=['--continuous','--direct','--prepacked','--native-pack'];
+if(!output||new Set(flags).size!==flags.length||flags.some(f=>!allowed.includes(f)))throw new Error('Usage: WORKER BATCH MODE TILE COUNT OUT [--continuous] [--direct] [--prepacked|--native-pack]');
+const continuous=flags.includes('--continuous'),direct=flags.includes('--direct'),prepacked=flags.includes('--prepacked'),nativePack=flags.includes('--native-pack');
+if((direct||prepacked||nativePack)&&!continuous||prepacked&&nativePack||nativePack&&!direct)throw new Error('Prototype packing/transport requires continuous mode; native packing is direct-only');
 const root=resolve(import.meta.dirname,'..');process.chdir(root);
 const batchPath=resolve(batchDirectory,'manifest.json');if((await stat(batchPath)).size>4*1024*1024)throw new Error('Video receipt exceeds 4 MiB');
 const hash=b=>createHash('sha256').update(b).digest('hex'),batchBytes=await readFile(batchPath),batch=JSON.parse(batchBytes);
@@ -42,12 +45,14 @@ const report={schema:'pnggpu-cuda-video-latency-v1',sourceCommit:execFileSync('g
   sourceStatus:execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim(),worker:provenance,started:new Date().toISOString(),
   batchPath,batchSha256:hash(batchBytes),batch,mode,tileMiB:Number(tile),scope,cpuComparison:{skipped:true},qualificationAccepted:false,
   frameDepth:1,frames:[],processes:[],benchmarkCompleted:false};
+report.transport=direct?'direct-pipe':'http';report.packing=prepacked?'prepacked':nativePack?'native-raster':'js-raster';
 report.queueMode=continuous?'continuously-refilled':'diagnostic-gaps';report.queueScope=queueScope;
 const check=()=>{const r=driverEventsSince(batch.started);if(r.events.length)throw new Error('New GPU driver error; video stopped');return r;};
 const spawnProcess=(executable,args,options)=>{const child=spawn(executable,args,options),p={pid:child.pid,args,started:new Date().toISOString(),exited:null};report.processes.push(p);child.once('close',(code,signal)=>Object.assign(p,{exited:new Date().toISOString(),code,signal}));return child;};
-const server=createWorkbenchServer({appDirectory:'PNG2ANSI',cudaExecutable:resolve(worker),cudaDevice:0,cudaOptions:{spawnProcess,arithmeticMode:mode,operationTimeoutMs:10000,infoTimeoutMs:10000}});
-await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin=`http://127.0.0.1:${server.address().port}`;
-const fetchImpl=(url,o)=>fetch(new URL(url,origin),{...o,headers:{...o?.headers,Origin:origin}});
+const directTransport=direct?createCudaDirectTransport({executable:resolve(worker),device:0,arithmeticMode:mode,spawnProcess,operationTimeoutMs:10000,infoTimeoutMs:10000}):null;
+const server=direct?null:createWorkbenchServer({appDirectory:'PNG2ANSI',cudaExecutable:resolve(worker),cudaDevice:0,cudaOptions:{spawnProcess,arithmeticMode:mode,operationTimeoutMs:10000,infoTimeoutMs:10000}});
+if(server)await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin=server?`http://127.0.0.1:${server.address().port}`:null;
+const fetchImpl=directTransport??((url,o)=>fetch(new URL(url,origin),{...o,headers:{...o?.headers,Origin:origin}}));
 let fitter,frames,input,tuplesFile,monitor;const outputHash=createHash('sha256');let offset=0;
 await mkdir(dirname(resolve(output)),{recursive:true});const binary=resolve(output+'.bin');
 try{
@@ -62,11 +67,27 @@ try{
     const prepared=Array.from({length:Number(count)},(_,i)=>pixels.subarray(i*frameBytes,(i+1)*frameBytes));
     prepared.forEach((p,i)=>{if(hash(p)!==batch.frames[i].rgbaSha256)throw new Error('Preloaded frame bytes changed');});
     report.preloadMs=performance.now()-preloadStart;
-    const queued=await runDepthOneQueue({inputs:prepared,fitFrame:p=>frames.fitFrame(p),check:()=>monitor.assertHealthy(),
+    const plan=framesPlan(),packetSets=Array.from({length:Number(count)},()=>[]);
+    function framesPlan(){return fitter.tilePlan({...a,glyphCount:a.masks.length,preferredTileMiB:Number(tile),inFlightTiles:1});}
+    report.preparedHostBytes=queueScope.inputBytes*2+Number(count)*plan.tileCount*20+8+plan.tileCells*32*4;
+    if(report.preparedHostBytes>256*1024*1024)throw new Error('Prototype retained input/packet host budget exceeds256MiB');
+    const packetIndex=start=>Math.floor(start/plan.tileCells),prepareStart=performance.now();
+    if(prepacked)for(let i=0;i<prepared.length;i++)for(let start=0;start<a.columns*a.rows;start+=plan.tileCells){
+      const n=Math.min(plan.tileCells,a.columns*a.rows-start);packetSets[i].push(packTileRgba({...a,pixels:prepared[i]},start,n));
+    }
+    report.packetPreparationMs=performance.now()-prepareStart;
+    const provider=index=>(direct||prepacked||nativePack)?(({data,tileStart,tileCount})=>{
+      if(prepacked)return packetSets[index][packetIndex(tileStart)];
+      const packet=packTileRgba(data,tileStart,tileCount);packetSets[index].push(packet);return packet;
+    }):undefined;
+
+    const queued=await runDepthOneQueue({inputs:prepared,fitFrame:(p,index)=>frames.fitFrame(p,{tilePacketProvider:provider(index)}),check:()=>monitor.assertHealthy(),
       failure:monitor.failure,cancel:()=>fitter.close(),frameTimeoutMs:queueScope.frameTimeoutMs,burstTimeoutMs:queueScope.burstTimeoutMs});
     report.queueTiming={peakOutstandingFrames:queued.peakOutstandingFrames,warmSequenceMs:queued.warmSequenceMs,
       warmFrames:Number(count)-1,warmFramesPerSecond:(Number(count)-1)*1000/queued.warmSequenceMs,refillGapsMs:queued.refillGapsMs,
       note:'Prepared inputs preloaded/hashed; tuple/ANSI serialization is after burst. No live decode, display, paced arrivals or dropped-frame policy.'};
+    report.inputPackets=packetSets.map(packets=>packets.map(p=>({bytes:p.byteLength,sha256:hash(p)})));
+    report.inputPacketDigest=hash(Buffer.from(JSON.stringify(report.inputPackets)));
     const drainStart=performance.now();
     for(const record of queued.records){
       const {index,actual,submittedAt,completedAt}=record,ansiStart=performance.now(),ansi=PNG2ANSI.ansiBytes({codes:a.codes},actual,batch.config),ansiMs=performance.now()-ansiStart;
@@ -97,14 +118,14 @@ try{
     report.driverAfter=check();if((index+1)%30===0)console.log(JSON.stringify({frames:index+1,mode,tileMiB:Number(tile),lastFitMs:fitMs}));
    }
   }
-  report.sequenceCleanup=await withTimeout(frames.close(),10000,()=>server.closeCuda());report.benchmarkCompleted=true;
+  report.sequenceCleanup=await withTimeout(frames.close(),10000,()=>directTransport?fitter?.close():server.closeCuda());report.benchmarkCompleted=true;
 }catch(error){report.error=error.stack;process.exitCode=1;}
 finally{
-  report.cleanupErrors=await cleanupSteps([['frames',()=>frames?.close()],['fitter',()=>fitter?.close()],['native',()=>server.closeCuda()],['input',()=>input?.close()],['output',()=>tuplesFile?.close()],
+  report.cleanupErrors=await cleanupSteps([['frames',()=>frames?.close()],['fitter',()=>fitter?.close()],['native',()=>server?.closeCuda()],['input',()=>input?.close()],['output',()=>tuplesFile?.close()],
     ['monitor',async()=>{if(monitor){await monitor.stop();report.driverMonitor=monitor.snapshot();if(report.driverMonitor.error)throw new Error(report.driverMonitor.error);}}]],10000);
   if(!report.error&&!report.cleanupErrors.length)report.cleanupErrors.push(...await cleanupSteps([
-    ['after-info',async()=>{report.deviceAfter=checkedAfterInfo(await(await fetchImpl('/api/cuda/info')).json(),report.deviceBefore,mode);}],['driver-final',()=>{report.driverFinal=check();}]],10000));
-  report.cleanupErrors.push(...await cleanupSteps([['final-native',()=>server.closeCuda()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]],10000));
+    ['after-info',async()=>{report.deviceAfter=checkedAfterInfo(await cudaRequest(fetchImpl,'/api/cuda/info',{timeoutMs:10000}),report.deviceBefore,mode);}],['driver-final',()=>{report.driverFinal=check();}]],10000));
+  report.cleanupErrors.push(...await cleanupSteps([['final-native',()=>directTransport?directTransport.close():server.closeCuda()],['server',()=>{if(!server)return;server.closeAllConnections();return new Promise(r=>server.close(r));}]],10000));
   if(report.cleanupErrors.length){report.benchmarkCompleted=false;process.exitCode=1;}
   report.outputsPath=binary;report.outputsBytes=offset;report.outputsSha256=outputHash.digest('hex');report.finished=new Date().toISOString();
   await writeFile(output,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({benchmarkCompleted:report.benchmarkCompleted,frames:report.frames.length,error:report.error,cleanupErrors:report.cleanupErrors}));

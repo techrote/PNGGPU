@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {PhotographicCudaFitter} from '../src/gpu/cuda.js';
+import {PhotographicCudaFitter,packTileRgba} from '../src/gpu/cuda.js';
 
 const MiB = 1024 * 1024;
 const nativeInfo = () => ({
@@ -120,6 +120,17 @@ test('CUDA capability lookup is optional and reports unavailable services withou
   assert.equal(fitter.adapterInfo.name, 'TITAN RTX (test double)');
   assert.equal(fitter.timestampsAvailable, true);
   assert.equal(bridge.inits.length, 0, 'capabilities do not allocate a render session');
+});
+
+test('prepared tile provider uses identical ABI and invalid packets poison the frame',async()=>{
+  const bridge=fakeBridge(),fit=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl}),session=fit.createFrameSession(sample());
+  const packets=[];const r=await session.fitFrame(sample().pixels,{tilePacketProvider:({data,tileStart,tileCount})=>{
+    const p=packTileRgba(data,tileStart,tileCount);packets.push(p);return p;
+  }});
+  assert.deepEqual([...r.chosen],Array.from({length:10},(_,i)=>i%3));
+  assert.deepEqual(bridge.tiles.map(t=>[...t.bytes]),packets.map(p=>[...p]));
+  await assert.rejects(session.fitFrame(sample().pixels,{tilePacketProvider:()=>new Uint8Array(4)}),/bounded geometry/);
+  await assert.rejects(session.fitFrame(sample().pixels),/closed/);await session.close();assert.equal(bridge.deletions.length,1);
 });
 
 test('native fit host intervals sum partial tiles and reset on warm refill',async()=>{

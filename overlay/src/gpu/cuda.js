@@ -155,7 +155,7 @@ function parseJson(bytes, context) {
   }
 }
 
-async function request(fetchImpl, path, {
+export async function cudaRequest(fetchImpl, path, {
   method = 'GET', body, signal, timeoutMs = 120000,
   limit = MAX_METADATA_BYTES, binary = false
 } = {}) {
@@ -164,6 +164,12 @@ async function request(fetchImpl, path, {
   const timer = setTimeout(() => controller.abort(new Error(`CUDA ${method} request timed out`)), timeoutMs);
   try {
     throwIfAborted(controller.signal);
+    if(typeof fetchImpl?.request==='function'){
+      const value=await fetchImpl.request(path,{method,body,signal:controller.signal,limit,binary});
+      throwIfAborted(controller.signal);
+      if(binary&&(!(value instanceof Uint8Array)||value.byteLength>limit))throw new Error('Invalid bounded direct CUDA response');
+      return value;
+    }
     const headers = {Accept:binary ? 'application/octet-stream' : 'application/json'};
     if (body !== undefined) headers['Content-Type'] = 'application/octet-stream';
     const response = await fetchImpl(path, {
@@ -221,7 +227,7 @@ function inputGeometry(data, info) {
   return {cells, samples, glyphCount};
 }
 
-function packInit(data, plan, glyphCount, samples) {
+export function packInit(data, plan, glyphCount, samples) {
   const bytes = new Uint8Array(32 + glyphCount * samples * 4 + glyphCount * 16 + 256);
   const view = new DataView(bytes.buffer);
   const header = [1, PROTOCOL_VERSION, data.sampleWidth, data.sampleHeight, glyphCount,
@@ -251,7 +257,29 @@ function packInit(data, plan, glyphCount, samples) {
   return bytes;
 }
 
-function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, precision) {
+export function packTileRgba(data,tileStart,tileCount,payload=new Uint8Array(8+tileCount*data.sampleWidth*data.sampleHeight*4),sampled=null) {
+  const samples=data.sampleWidth*data.sampleHeight;
+        const packed = new DataView(payload.buffer,payload.byteOffset,payload.byteLength);
+        packed.setUint32(0, 2, true); packed.setUint32(4, tileCount, true);
+        const putPixel = (source, src, dest) => packed.setUint32(8 + dest * 4,
+          source[src] | (source[src + 1] << 8) | (source[src + 2] << 16), true);
+        if (sampled) {
+          for (let i = 0; i < tileCount * samples; i++) putPixel(sampled, i * 4, i);
+        } else {
+          const sourceWidth = data.columns * data.sampleWidth;
+          for (let local = 0; local < tileCount; local++) {
+            const cell = tileStart + local, cx = cell % data.columns, cy = Math.floor(cell / data.columns);
+            for (let sy = 0; sy < data.sampleHeight; sy++) {
+              let src = ((cy * data.sampleHeight + sy) * sourceWidth + cx * data.sampleWidth) * 4;
+              let dest = local * samples + sy * data.sampleWidth;
+              for (let sx = 0; sx < data.sampleWidth; sx++, src += 4, dest++) putPixel(data.pixels, src, dest);
+            }
+          }
+        }
+  return payload;
+}
+
+export function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, precision) {
   if (bytes.byteLength < 8) throw new Error('Truncated CUDA tile response');
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const status = view.getUint32(0, true), jsonBytes = view.getUint32(4, true);
@@ -301,17 +329,19 @@ export class PhotographicCudaFitter {
   static DEFAULT_TILE_MIB = 32;
 
   static async create({fetchImpl = globalThis.fetch, signal,
-    requestTimeoutMs = 120000, infoTimeoutMs = 10000, cleanupTimeoutMs = 5000, expectedPrecision='float32-guarded-binary64'} = {}) {
-    if (typeof fetchImpl !== 'function') throw new Error('CUDA bridge requires browser fetch support');
+    transport = null, requestTimeoutMs = 120000, infoTimeoutMs = 10000, cleanupTimeoutMs = 5000, expectedPrecision='float32-guarded-binary64'} = {}) {
+    fetchImpl=transport??fetchImpl;
+    if (typeof fetchImpl !== 'function'&&typeof fetchImpl?.request!=='function') throw new Error('CUDA bridge requires fetch or a direct transport');
     integer(infoTimeoutMs, 'CUDA info timeout', 1, 600000);
-    const info = await request(fetchImpl, '/api/cuda/info', {signal, timeoutMs:infoTimeoutMs});
+    const info = await cudaRequest(fetchImpl, '/api/cuda/info', {signal, timeoutMs:infoTimeoutMs});
     return new this(info, {fetchImpl, requestTimeoutMs, cleanupTimeoutMs,expectedPrecision});
   }
 
-  constructor(info, {fetchImpl = globalThis.fetch, requestTimeoutMs = 120000, cleanupTimeoutMs = 5000,expectedPrecision='float32-guarded-binary64'} = {}) {
+  constructor(info, {fetchImpl = globalThis.fetch, transport = null, requestTimeoutMs = 120000, cleanupTimeoutMs = 5000,expectedPrecision='float32-guarded-binary64'} = {}) {
     const limits = validateInfo(info);
     if(info.precision!==expectedPrecision)throw new Error('CUDA arithmetic mode differs from explicitly requested precision');
-    if (typeof fetchImpl !== 'function') throw new Error('CUDA bridge requires browser fetch support');
+    fetchImpl=transport??fetchImpl;
+    if (typeof fetchImpl !== 'function'&&typeof fetchImpl?.request!=='function') throw new Error('CUDA bridge requires fetch or a direct transport');
     this.info = Object.freeze({...info, limits:Object.freeze({...info.limits, ...limits}), device:Object.freeze({...info.device})});
     this.backend = 'cuda';
     this.precision = info.precision;
@@ -387,10 +417,10 @@ export class PhotographicCudaFitter {
       payload:new Uint8Array(8 + plan.tileCells * config.sampleWidth * config.sampleHeight * 4),cleanupError:null};
     this.frameSession = state;
     return Object.freeze({
-      fitFrame:(pixels,{signal,onProgress} = {}) => {
+      fitFrame:(pixels,{signal,onProgress,tilePacketProvider} = {}) => {
         if (state.closed) return Promise.reject(new Error('CUDA frame session is closed'));
         if (state.done) return Promise.reject(new Error('CUDA frame session is already converting a frame; await it before refilling'));
-        const operation = this.fit({...config,pixels,signal,onProgress},state);
+        const operation = this.fit({...config,pixels,signal,onProgress,tilePacketProvider},state);
         state.done = operation;
         operation.finally(() => { if (state.done === operation) state.done = null; }).catch(() => {});
         return operation.catch(async error => {
@@ -416,7 +446,7 @@ export class PhotographicCudaFitter {
       }
       try {
         if (state.sessionId) {
-          const result = await request(this.fetchImpl, `/api/cuda/session/${state.sessionId}`, {
+          const result = await cudaRequest(this.fetchImpl, `/api/cuda/session/${state.sessionId}`, {
             method:'DELETE',timeoutMs:this.cleanupTimeoutMs
           });
           if (result.ok !== true) throw new Error('CUDA bridge did not acknowledge session cleanup');
@@ -463,7 +493,7 @@ export class PhotographicCudaFitter {
       const init = sessionReused ? null : packInit(data, plan, glyphCount, samples);
       timing.atlasPackMs = sessionReused ? 0 : clock() - at;
       at = clock();
-      const ready = sessionReused ? null : await request(this.fetchImpl, '/api/cuda/session', {
+      const ready = sessionReused ? null : await cudaRequest(this.fetchImpl, '/api/cuda/session', {
         method:'POST', body:init, signal:controller.signal, timeoutMs:this.requestTimeoutMs
       });
       timing.nativeInitMs = sessionReused ? 0 : clock() - at;
@@ -500,28 +530,16 @@ export class PhotographicCudaFitter {
           }
         }
         at = clock();
-        const payload = frameState ? frameState.payload.subarray(0,8 + tileCount * samples * 4) : new Uint8Array(8 + tileCount * samples * 4);
-        const packed = new DataView(payload.buffer,payload.byteOffset,payload.byteLength);
-        packed.setUint32(0, 2, true); packed.setUint32(4, tileCount, true);
-        const putPixel = (source, src, dest) => packed.setUint32(8 + dest * 4,
-          source[src] | (source[src + 1] << 8) | (source[src + 2] << 16), true);
-        if (sampled) {
-          for (let i = 0; i < tileCount * samples; i++) putPixel(sampled, i * 4, i);
-        } else {
-          const sourceWidth = data.columns * data.sampleWidth;
-          for (let local = 0; local < tileCount; local++) {
-            const cell = tileStart + local, cx = cell % data.columns, cy = Math.floor(cell / data.columns);
-            for (let sy = 0; sy < data.sampleHeight; sy++) {
-              let src = ((cy * data.sampleHeight + sy) * sourceWidth + cx * data.sampleWidth) * 4;
-              let dest = local * samples + sy * data.sampleWidth;
-              for (let sx = 0; sx < data.sampleWidth; sx++, src += 4, dest++) putPixel(data.pixels, src, dest);
-            }
-          }
-        }
+        const storage = frameState ? frameState.payload.subarray(0,8 + tileCount * samples * 4) : undefined;
+        const payload = data.tilePacketProvider ? await data.tilePacketProvider({data,tileStart,tileCount,storage}) :
+          packTileRgba(data,tileStart,tileCount,storage,sampled);
+        if(!(payload instanceof Uint8Array)||payload.byteLength>plan.maxMessageBytes||payload.byteLength<8||
+          new DataView(payload.buffer,payload.byteOffset,payload.byteLength).getUint32(4,true)!==tileCount)
+          throw new Error('Tile packet provider returned invalid bounded geometry');
         tile.packMs = clock() - at; timing.tilePackMs += tile.packMs;
         throwIfAborted(controller.signal);
         at = clock();
-        const response = await request(this.fetchImpl, `/api/cuda/session/${sessionId}/tile`, {
+        const response = await cudaRequest(this.fetchImpl, `/api/cuda/session/${sessionId}/tile`, {
           method:'POST', body:payload, signal:controller.signal, timeoutMs:this.requestTimeoutMs,
           binary:true, limit:8 + MAX_METADATA_BYTES + tileCount * 16
         });
@@ -561,7 +579,7 @@ export class PhotographicCudaFitter {
           totalTiles:plan.tileCount, elapsedMs:clock() - timedStart, inFlightCapacity:1});
       }
       throwIfAborted(controller.signal);
-      return {chosen, fg, bg, stats:{version:'CUDA-001', ...plan, precision:this.precision,
+      return {chosen, fg, bg, stats:{version:'CUDA-001', ...plan, precision:this.precision,transport:typeof this.fetchImpl==='function'?'http':this.fetchImpl.name??'custom',
         sessionReused,frameIndex:frameState ? frameState.index++ : null,
         timing, tileMeasurements, peakInFlightTiles:1, uploadedBytes, readbackBytes, allocatedBytes,
         recoveredCells:tileMeasurements.reduce((sum,tile)=>sum+tile.recoveredCells,0),
@@ -585,7 +603,7 @@ export class PhotographicCudaFitter {
       if (sessionId && (!frameState || primaryError || frameState.closed)) {
         const at = clock();
         try {
-          const closed = await request(this.fetchImpl, `/api/cuda/session/${sessionId}`, {
+          const closed = await cudaRequest(this.fetchImpl, `/api/cuda/session/${sessionId}`, {
             method:'DELETE', timeoutMs:this.cleanupTimeoutMs
           });
           if (closed.ok !== true) throw new Error('CUDA bridge did not acknowledge session cleanup');
