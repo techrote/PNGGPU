@@ -106,8 +106,8 @@
       "bytes": 17026
     },
     "native/cuda/src/worker.cu": {
-      "sha256": "c567ffd1310ee0c6a0365651003ec752bd0417594fad7b7fa6422175bf2e8309",
-      "bytes": 33434
+      "sha256": "6672ee1d3f1e9078bdac90a89953865aaecc32cf15ac60d1371678cdb6da788c",
+      "bytes": 33876
     },
     "native/cuda/tests/fixtures/cpu-parity.bin": {
       "sha256": "717f36620b75d899c103541fb58718002647b5434801128569602272a13bb0f8",

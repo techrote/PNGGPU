@@ -165,15 +165,16 @@ __global__ void project_kernel(const std::uint32_t* pixels, const float* masks,
   projections[linear]={dots.x,dots.y,dots.z,-arithmetic::dot(cov,cov)/arithmetic::variance(s.z)};
 }
 
+template<bool Guarded>
 __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statistics,
                               const Float4* palette, const Float4* projections,
                               Result* results, std::uint32_t samples,
                               std::uint32_t glyph_count, std::uint32_t foreground_count,
                               std::uint32_t background_count,
-                              std::uint32_t start, std::uint32_t end,bool guarded) {
+                              std::uint32_t start, std::uint32_t end) {
   const std::uint32_t cell = start+blockIdx.x*blockDim.x+threadIdx.x;
   if (cell < end) {
-    if(guarded)results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
+    if constexpr(Guarded)results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
       projections+std::size_t(cell)*glyph_count, samples,glyph_count,foreground_count,background_count);
     else results[cell]=arithmetic::select(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
   }
@@ -214,7 +215,8 @@ std::string kernel_resource_json(Kernel kernel,const DeviceInfo& info) {
 
 std::string kernel_resources_json(const DeviceInfo& info) {
   return "{\"source\":\"CUDA function attributes and theoretical occupancy API; not achieved hardware counters\","
-    "\"selectionShared\":"+kernel_resource_json(select_kernel,info)+
+    "\"selectionGuarded\":"+kernel_resource_json(select_kernel<true>,info)+
+    ",\"selectionFP32\":"+kernel_resource_json(select_kernel<false>,info)+
     ",\"selectionFP64\":"+kernel_resource_json(recover_select_kernel,info)+
     ",\"projectionShared\":"+kernel_resource_json(project_kernel,info)+"}";
 }
@@ -313,10 +315,14 @@ class Worker {
     if(!direct_binary64)for (std::uint32_t start = 0; start < count;) {
       const std::uint32_t end = start+std::min(count-start, cells_per_launch);
       cuda_check(cudaEventRecord(start_.value, stream_.value), "Record selection start");
-      select_kernel<<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
+      if(direct_float32||half_mixed)select_kernel<false><<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
         pixels_.as<std::uint32_t>(), statistics_.as<Float4>(), palette_.as<Float4>(),
         projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
-        p.foreground_count, p.background_count, start, end,!direct_float32&&!half_mixed);
+        p.foreground_count, p.background_count, start, end);
+      else select_kernel<true><<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
+        pixels_.as<std::uint32_t>(), statistics_.as<Float4>(), palette_.as<Float4>(),
+        projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
+        p.foreground_count, p.background_count, start, end);
       cuda_check(cudaGetLastError(), "Selection kernel launch");
       const double elapsed=finish_timed_launch("Selection kernel completion");
       result.selection_ms+=elapsed;result.max_selection_launch_ms=std::max(result.max_selection_launch_ms,elapsed);
