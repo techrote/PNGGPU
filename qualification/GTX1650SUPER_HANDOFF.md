@@ -4,6 +4,11 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [selection-stage profile](GTX1650SUPER_SELECTION_PROFILE.md) adds bounded
+compiler/CUPTI diagnostics and a glyph-major FP32 experiment. It improves the
+160x45 median but regresses measured 320x90 medians; the original traversal stays
+the default. It does not establish realtime throughput or sustained stability.
+
 Continuation completed a bounded first GTX pass. Read
 [GTX1650SUPER_RESULTS.md](GTX1650SUPER_RESULTS.md) for the explicit limited CLI,
 hardware/binary provenance and independent CPU/CUDA/WebGPU comparisons. The

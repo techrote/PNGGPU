@@ -264,7 +264,12 @@ int main(int argc,char** argv) {
         const auto atlas=parse_init(init);std::uint32_t count=0;const auto pixels=parse_tile(tile,atlas,count);
         require(expected.size()==16&&count==1,"Frozen FP32 fixture geometry");
         const Result golden{read_u32(expected,0),read_u32(expected,4),read_u32(expected,8),read_u32(expected,12)};
-        require(equal(reference_fit(atlas,pixels,count)[0],golden),"Optional FP32 retains pre-optimization tuple");++fixtures;
+        require(equal(reference_fit(atlas,pixels,count)[0],golden),"Optional FP32 retains pre-optimization tuple");
+        const auto gc=atlas.parameters.glyph_count,n=std::uint32_t(atlas.layout.samples);
+        std::vector<Float4> projections(gc);
+        for(unsigned g=0;g<gc;++g)projections[g]=arithmetic::project(pixels.data(),atlas.masks.data(),atlas.statistics.data(),n,gc,g);
+        require(equal(arithmetic::select<true>(pixels.data(),atlas.statistics.data(),atlas.palette.data(),projections.data(),n,gc,
+          atlas.parameters.foreground_count,atlas.parameters.background_count,0),golden),"Glyph-first FP32 retains frozen pre-optimization tuple");++fixtures;
       }
       require(fixtures==12,"All frozen seed regressions checked");
     }

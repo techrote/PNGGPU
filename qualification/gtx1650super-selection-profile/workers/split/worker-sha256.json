@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "f1eb5d48faf466f30396461d864c113c5eb74348",
+  "worker": "pnggpu_cuda_worker.exe",
+  "sha256": "540f44f217aec5a7f699de37ff72cfe2f92c5c71498a1bdc2d99802543ba95f6",
+  "build": {
+    "nvcc": "12.8.93",
+    "hostCompiler": "MSVC19.44.35228.0",
+    "profile": true,
+    "cmakeType": "Release",
+    "faultWorker": false,
+    "flags": [
+      "--resource-usage",
+      "-lineinfo",
+      "--fmad=false",
+      "--ftz=false",
+      "--prec-div=true",
+      "--prec-sqrt=true"
+    ]
+  }
+}

@@ -5,7 +5,7 @@ option(PNGGPU_ENABLE_CUDA "Build the optional CUDA worker (requires NVIDIA CUDA 
 option(PNGGPU_BUILD_FAULT_WORKER "Build separate hardware fault-injection qualification worker" OFF)
 option(PNGGPU_CUDA_PROFILE "Emit CUDA resource reports and source line information (Release optimizations retained)" OFF)
 option(PNGGPU_CUPTI_ACTIVITY "Build optional process-local CUPTI activity tracing (requires CUPTI_ROOT)" OFF)
-option(PNGGPU_COLOR_MAJOR_FP32 "Benchmark the original color-major direct FP32 selection traversal" OFF)
+option(PNGGPU_COLOR_MAJOR_FP32 "Use original direct FP32 traversal (OFF experiments with glyph-major)" ON)
 include(CTest)
 
 add_library(pnggpu_cuda_common STATIC src/common.cpp)

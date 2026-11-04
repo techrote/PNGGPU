@@ -1,5 +1,29 @@
 # Optional CUDA worker
 
+The [GTX selection profile](../../qualification/GTX1650SUPER_SELECTION_PROFILE.md)
+records bounded FP32/FP64 warm-frame measurements. `PNGGPU_COLOR_MAJOR_FP32=ON`
+(default) retains the original direct FP32 candidate traversal. Configure it
+`OFF` to experiment with glyph-major traversal and explicit stable tie ranks.
+This reduced 160x45 latency but regressed the measured 320x90 medians; it is not
+an automatic universal optimization. The guarded/default arithmetic and binary64
+selector are unchanged. The same traversal is used by FP16-mixed selection.
+
+`PNGGPU_CUDA_PROFILE=ON` adds `--resource-usage` and `-lineinfo` while retaining
+Release optimizations and strict arithmetic flags. `--info.kernelResources`
+reports compiler/runtime attributes and theoretical occupancy, not achieved
+hardware counters. Do not interpret local stack bytes as spill traffic.
+
+Optional `PNGGPU_CUPTI_ACTIVITY=ON` requires a matching CUPTI SDK via `CUPTI_ROOT`
+and its runtime DLL/library and license. It is off by default. Only a `--stdio`
+process with `PNGGPU_CUDA_ACTIVITY_DIRECTORY` set records CSV runtime/kernel
+activities; info probes are untraced. Client record buffers are capped at four
+1 MiB allocations; the separate host-pinned profiling pool is limited to two
+buffers. Background flushes occur every 100 ms. Check expected kernel counts,
+`dropped`/`traceError` rows, and the orderly-exit `traceErrors` footer. A killed
+bridge worker can lack the footer, so completeness must be checked explicitly.
+Tracing adds overhead. These options apply to the normal worker only. No
+privileged counters, registry changes or watchdog changes are required.
+
 This native worker implements PNGGPU's photographic projection and ANSI candidate
 selection on NVIDIA CUDA. Its primary targets are **TITAN RTX and RTX 2060 / 2070 /
 2080 / 2080 Ti, including Turing variants**. NVIDIA assigns these GPUs compute

@@ -5,6 +5,11 @@ WebGPU backend or an optional local CUDA worker. **WebGPU remains the default.**
 CUDA is explicitly selected in the workbench; it never silently falls back to
 WebGPU or CPU after an error.
 
+The [GTX selection profile](../../qualification/GTX1650SUPER_SELECTION_PROFILE.md)
+records bounded warm-frame FP32/FP64 diagnostics. A build-only glyph-major FP32
+experiment improves 160x45 medians but regresses 320x90 medians. Original
+traversal remains the default; no new workbench control or realtime claim is made.
+
 The primary targets are **NVIDIA TITAN RTX and RTX 2060, 2070, 2080 and 2080 Ti,
 including Turing variants**. These are compute capability 7.5 devices. The build
 contains native `sm_75` code and `compute_75` PTX. A browser cannot launch native

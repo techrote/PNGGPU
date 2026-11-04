@@ -1,0 +1,43 @@
+**********************************************************************
+** Visual Studio 2022 Developer Command Prompt v17.14.40
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+-- Configuring done (6.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/pnggpu-CUDA/build/profile-baseline
+[1/2] Building CUDA object CMakeFiles\pnggpu_cuda_worker.dir\src\worker.cu.obj
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main21recover_select_kernelEPKjPKN6pnggpu6Float4ES5_PKNS2_7precise10ProjectionEPNS2_6ResultEjjjjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main21recover_select_kernelEPKjPKN6pnggpu6Float4ES5_PKNS2_7precise10ProjectionEPNS2_6ResultEjjjjjjb
+    768 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 80 registers, used 0 barriers, 768 bytes cumulative stack size, 417 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main22recover_project_kernelEPKjPKfPKN6pnggpu6Float4EPKNS4_6ResultEPNS4_7precise10ProjectionEjjjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main22recover_project_kernelEPKjPKfPKN6pnggpu6Float4EPKNS4_6ResultEPNS4_7precise10ProjectionEjjjjjb
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 47 registers, used 0 barriers, 413 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelEPKjPKN6pnggpu6Float4ES5_S5_PNS2_6ResultEjjjjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelEPKjPKN6pnggpu6Float4ES5_S5_PNS2_6ResultEjjjjjjb
+    768 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 95 registers, used 0 barriers, 768 bytes cumulative stack size, 417 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main14project_kernelEPKjPKfPKN6pnggpu6Float4EPS5_jjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main14project_kernelEPKjPKfPKN6pnggpu6Float4EPS5_jjjjb
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 45 registers, used 0 barriers, 401 bytes cmem[0]
+
+ptxas info    : Compile time = 0.000 ms
+
+worker.cu
+
+tmpxft_00004bd8_00000000-7_worker.cudafe1.cpp
+
+[2/2] Linking CXX executable pnggpu_cuda_worker.exe
+Test project C:/pnggpu-CUDA/build/profile-baseline
+    Start 1: cuda_host_protocol_and_arithmetic
+1/1 Test #1: cuda_host_protocol_and_arithmetic ...   Passed    0.04 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.05 sec
