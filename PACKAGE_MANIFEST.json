@@ -142,8 +142,8 @@
       "bytes": 1438
     },
     "overlay/docs/CUDA_BACKEND.md": {
-      "sha256": "30852f39039fb2dd3a44719d7f6e0a1bc793c0883646d77d15164e1c0e9e8dcd",
-      "bytes": 28118
+      "sha256": "94f0c44cb5cd7cc00980c2c6e93e77e2ced5d333dc99229ff9d06dbd44ac20fa",
+      "bytes": 28676
     },
     "overlay/docs/WEBGPU_BENCHMARKS.md": {
       "sha256": "31b4bfbc60d9fe97f1ef2e4c64b8bfac798132a13686f08734e5d72d76ea3cea",
@@ -306,12 +306,16 @@
       "bytes": 10277
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "acc6bb982c46555fc24118a9ec4d7456f0fc3ffa7f5e3470b6036cfc44cbd4e8",
-      "bytes": 11021
+      "sha256": "bc5cf948c297186267590137898ca322ed34e5b81a1bb386d356ab5eda3504b1",
+      "bytes": 11407
     },
     "qualification/GTX1650SUPER_MOTION.md": {
       "sha256": "8ba6fcbc764bc524d26aa683d8363b64c0271eb3488ea7ece151bdcab7d863ba",
       "bytes": 9831
+    },
+    "qualification/GTX1650SUPER_NATIVE_TIMING.md": {
+      "sha256": "7be38847475ad2a2b02231aeaa320c387d859eee8b1d89aeae718676ecafbcd6",
+      "bytes": 9784
     },
     "qualification/GTX1650SUPER_PRECISION_BENCHMARK.md": {
       "sha256": "5a74533db58915a4628b56706d6a00f99b3bdf1aece30424805c10296141dd34",
@@ -1532,6 +1536,38 @@
     "qualification/gtx1650super-motion/summary.json": {
       "sha256": "7e3d3586e15fdf4ad31f6d0824e10e5aebe8d03d48ac407380f22bf2246525f2",
       "bytes": 5840529
+    },
+    "qualification/gtx1650super-native-timing/frames.csv": {
+      "sha256": "f1b479798e35ce59425bd4902b109ab13f0b5747af8d08f5bf0f90eecc5bc8bd",
+      "bytes": 35474
+    },
+    "qualification/gtx1650super-native-timing/native-host-tests.txt": {
+      "sha256": "d37affc9df867eae7c967b434bc0f2f130acbee9b9dc2b571ff73346c40dc79c",
+      "bytes": 63
+    },
+    "qualification/gtx1650super-native-timing/native-total-app-tests.txt": {
+      "sha256": "9cac953c384db1372598d4eacb293efa07c15c370b26dd16ddec52ebf94a072c",
+      "bytes": 9490
+    },
+    "qualification/gtx1650super-native-timing/native-total-bridge-tests.txt": {
+      "sha256": "2c39a6f300ab22e40efc3a59868d84b655acd2a18890090dfe025ce4303b94fd",
+      "bytes": 5940
+    },
+    "qualification/gtx1650super-native-timing/smoke.json": {
+      "sha256": "3e3cb76d9db30714757dba7a9c110fbf7286a3ea06ce48531d465369f4fa4b94",
+      "bytes": 303494
+    },
+    "qualification/gtx1650super-native-timing/summary.json": {
+      "sha256": "82e771e97c33da536d9b318eaa1a14ef2da4a8440fc710ed09126ddb1f8bade8",
+      "bytes": 918032
+    },
+    "qualification/gtx1650super-native-timing/worker/SOURCE_COMMIT.txt": {
+      "sha256": "6baabc1c32178c7d2cb59fe9036dfd0a35615dfb6b4b4dd5652196b9cd59a859",
+      "bytes": 41
+    },
+    "qualification/gtx1650super-native-timing/worker/worker-sha256.json": {
+      "sha256": "b113f85bf3e9d1d3e59e76c7ce7fae6f2aee5a61ba3cb11d00f4cba9c9d5bad2",
+      "bytes": 626
     },
     "qualification/gtx1650super-projection-queue/activity-summary.json": {
       "sha256": "f229a1387de5df1ba06ca3864348ecd5ea595154be7128746541fc5a4b688767",

@@ -4,6 +4,12 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [native-timer continuation](GTX1650SUPER_NATIVE_TIMING.md) exposes the
+already-emitted worker fit interval and reruns all three geometries in FP32/FP64.
+It separates packing, native compute intervals and the remaining bridge bucket,
+supporting direct-path/native-packing experiments without assigning all remaining
+latency to HTTP. Native code and the 2 GiB reserve are unchanged.
+
 The [projection/continuous-queue report](GTX1650SUPER_PROJECTION_QUEUE.md) records
 sample-major masks, exact integer RGB totals for binary64 projection and bounded
 continuously refilled depth-one FP32/FP64 queues at 160x45, 320x90 and letterboxed

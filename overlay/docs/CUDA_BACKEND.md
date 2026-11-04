@@ -5,6 +5,14 @@ WebGPU backend or an optional local CUDA worker. **WebGPU remains the default.**
 CUDA is explicitly selected in the workbench; it never silently falls back to
 WebGPU or CPU after an error.
 
+`stats.timing.nativeTotalMs` and each tile's `nativeTotalMs` preserve the worker's
+host-clock fit interval; a frame total is null if any tile lacks it. The interval
+includes GPU/transfers/launch synchronization and bookkeeping, while excluding
+INIT, packet parsing, pre-timer result allocation and response serialization/pipe
+writes. It is contained in bridge round-trip time and must not be added to that
+time. See the [native-timer report](../../qualification/GTX1650SUPER_NATIVE_TIMING.md)
+for bounded depth-one comparisons and warm residual accounting.
+
 The [projection/queue continuation](../../qualification/GTX1650SUPER_PROJECTION_QUEUE.md)
 adds sample-major masks and exact integer RGB totals in binary64 projection,
 with unchanged outputs on the bounded comparisons and unchanged native memory
