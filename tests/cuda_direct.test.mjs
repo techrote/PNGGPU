@@ -31,8 +31,8 @@ test('direct fitter reuses one framed child, partial tiles, buffers and cleanup'
 test('direct init reserves slot and simultaneous requests cannot queue allocations',async t=>{
   const {transport}=await fixture(t,'slow-init'),packet=packInit(data(),{tileCells:2},2,1);
   const pending=transport.request('/api/cuda/session',{method:'POST',body:packet});
-  await assert.rejects(transport.request('/api/cuda/session',{method:'POST',body:packet}),/busy/);await pending;
-  await transport.request('/api/cuda/session/direct_cuda_session',{method:'DELETE'});
+  await assert.rejects(transport.request('/api/cuda/session',{method:'POST',body:packet}),/busy/);const ready=await pending;
+  await transport.request(`/api/cuda/session/${ready.sessionId}`,{method:'DELETE'});
 });
 test('direct cancellation kills the active child before releasing ownership',async t=>{
   const f=await fixture(t,'slow-tile'),fit=await PhotographicCudaFitter.create({transport:f.transport}),session=fit.createFrameSession(data());

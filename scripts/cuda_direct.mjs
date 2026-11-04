@@ -1,4 +1,5 @@
 import {spawn} from 'node:child_process';
+import {randomBytes} from 'node:crypto';
 import {CUDA_LIMITS,MAX_JSON_BYTES,BridgeError,NativeSession,probeWorker,validateInitPacket,validateTilePacket} from './cuda_worker_session.mjs';
 
 /** Private Node-to-child transport. Logical operations match the HTTP adapter;
@@ -42,17 +43,19 @@ export function createCudaDirectTransport({executable,device=null,arithmeticMode
       }
       if(path==='/api/cuda/session'&&method==='POST'){
         if(entry)throw new BridgeError(409,'Direct CUDA session is busy');
-        const payload=buffer(body),config=validateInitPacket(payload),e={state:'initializing',config};entry=e;
+        const payload=buffer(body),config=validateInitPacket(payload),e={id:randomBytes(16).toString('base64url'),state:'initializing',config};entry=e;
         const abort=()=>{void closeEntry(e,new Error('Direct CUDA request cancelled'));};signal?.addEventListener('abort',abort,{once:true});
         try{
           e.worker=new NativeSession({executable,device,arithmeticMode,spawnProcess:trackedSpawn,timeoutMs:operationTimeoutMs,onFailure:error=>closeEntry(e,error)});
           const response=await e.worker.request(payload,8+MAX_JSON_BYTES);
           if(response.payload.length!==response.dataOffset)throw new Error('Unexpected CUDA initialization data');
-          live(e,signal);e.state='ready';arm(e);return {...response.metadata,sessionId:'direct_cuda_session'};
+          live(e,signal);e.state='ready';arm(e);return {...response.metadata,sessionId:e.id};
         }catch(error){await closeEntry(e,error);throw error;}finally{signal?.removeEventListener('abort',abort);}
       }
-      if(path==='/api/cuda/session/direct_cuda_session'&&method==='DELETE'){await closeEntry(entry);return {ok:true};}
-      if(path!=='/api/cuda/session/direct_cuda_session/tile'||method!=='POST'||!binary)throw new Error('Unknown direct CUDA operation');
+      const match=/^\/api\/cuda\/session\/([A-Za-z0-9_-]{16,128})(\/tile)?$/.exec(path);
+      if(!match||entry&&entry.id!==match[1])throw new Error('Unknown direct CUDA session');
+      if(!match[2]&&method==='DELETE'){await closeEntry(entry);return {ok:true};}
+      if(!match[2]||method!=='POST'||!binary)throw new Error('Unknown direct CUDA operation');
       const e=entry;if(!e||e.state!=='ready')throw new BridgeError(409,'Direct CUDA session is closed or busy');
       e.state='busy';clearTimeout(e.idle);
       const abort=()=>{void closeEntry(e,new Error('Direct CUDA request cancelled'));};signal?.addEventListener('abort',abort,{once:true});

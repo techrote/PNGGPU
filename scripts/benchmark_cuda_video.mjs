@@ -59,6 +59,7 @@ try{
   report.driverBaseline=check();
   if(continuous){monitor=createDriverMonitor(batch.started);await monitor.ready;}
   fitter=await PhotographicCudaFitter.create({fetchImpl,expectedPrecision:mode,infoTimeoutMs:10000,requestTimeoutMs:10000});report.deviceBefore=fitter.info;
+  if(nativePack&&fitter.info.nativeRasterPacking!=='rgba-row-bands-v1')throw new Error('Matching native raster packing support is required');
   frames=fitter.createFrameSession({...a,masks:a.masks.map(m=>Float32Array.from(m)),preferredTileMiB:Number(tile),inFlightTiles:1});
   input=await open(rgbaPath,'r');tuplesFile=await open(binary,'w');
   if(continuous){
