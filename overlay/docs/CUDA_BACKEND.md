@@ -180,9 +180,10 @@ backend's JSON/ZIP report. No CUDA speedup claim is made without physical result
 ## Physical qualification
 
 The float32-only baseline failures below are preserved as historical evidence.
-The current guarded recovery passes the saved failures and deterministic
-sample/candidate sweeps through a real native worker. Full hardmode and 512×512
-requalification must use a matching new worker. PR #2 remains draft.
+The current guarded recovery passes the saved failures, deterministic
+sample/candidate sweeps, all five hardmodes and both 512×512 workloads against
+CPU on TITAN RTX. Requalification must use a matching new worker. PR #2 remains
+draft; see [source-bound recovery evidence](../../qualification/RECOVERY.md).
 
 The minimal no-browser regression package compares all saved physical failing
 cells and deterministic fixtures against the independent JS CPU, with exact

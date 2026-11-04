@@ -66,8 +66,8 @@
       "bytes": 70
     },
     "README.md": {
-      "sha256": "c2431a9b0e861e5bfb71d1eaf40534bd5143ec95dcf21c0a125548ba65709fc8",
-      "bytes": 5283
+      "sha256": "9c91c3b077687df4808944de4f04a579a44fc45f35aa5546db03e1c30f3c1b65",
+      "bytes": 5344
     },
     "README_FIRST.md": {
       "sha256": "498fb67d41d4a9d22cd0a9bd9a69237f27d5bb08329dc2d422397b70b12c973a",
@@ -126,8 +126,8 @@
       "bytes": 1438
     },
     "overlay/docs/CUDA_BACKEND.md": {
-      "sha256": "76cb428bba243a48701bbe7b388ec116cc8439ddb9534c82317db225462386f6",
-      "bytes": 15983
+      "sha256": "f4bdc7861d57f912ce6927982a0345bfb2a945f55c9b73b90f041b968476a0c1",
+      "bytes": 16068
     },
     "overlay/docs/WEBGPU_BENCHMARKS.md": {
       "sha256": "31b4bfbc60d9fe97f1ef2e4c64b8bfac798132a13686f08734e5d72d76ea3cea",
@@ -286,8 +286,12 @@
       "bytes": 2058
     },
     "qualification/README.md": {
-      "sha256": "2bc637ea4cf99566c7efaf3e6abc8f1c474cc8e8a568e6d129723fe6a05a093b",
-      "bytes": 9158
+      "sha256": "572cb7d6b097ab226ff4707b7aebe18ecddf66cac5381c6dc28e1f636e49a283",
+      "bytes": 9748
+    },
+    "qualification/RECOVERY.md": {
+      "sha256": "ffb26f2018a7c363b7f067497ff32141413e47d65ab190d74f8be274f14ad896",
+      "bytes": 9118
     },
     "qualification/arithmetic-37706c3.json": {
       "sha256": "cef91fd8c138ab11f02ed80506b046250d0385ec4540ee1c23416e2ad00c13d5",
@@ -296,6 +300,18 @@
     "qualification/memcheck-37706c3.txt": {
       "sha256": "6218bf138585d3d523759efc0cadc8a64e5a97857e2f45f7eafd158f23fd7e65",
       "bytes": 324
+    },
+    "qualification/recovery-01fc878.json": {
+      "sha256": "4ec6a2903e07a2c4711654bd2fd6d465950d69eb17f7825c50d8a4053c1572f8",
+      "bytes": 500826
+    },
+    "qualification/recovery-ci-01fc878-fixtures.json": {
+      "sha256": "357a026de4de1e690c7c5e0410fcaf377ddd84976fa233e1de04cde3086f7954",
+      "bytes": 410307
+    },
+    "qualification/recovery-ci-01fc878-selftest.json": {
+      "sha256": "5487feae0fd663b1c26e40890c0a3f55ddad92120009ee729ae2c5b846873c5d",
+      "bytes": 426
     },
     "qualification/turing-37706c3.json": {
       "sha256": "9f2c0fb6fead155a16f1df3869bc9f80b9e79d690166ebcaba36d8b8936e91c9",

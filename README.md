@@ -38,9 +38,10 @@ CUDA reports device identity, full local-bridge/initialization overhead and
 actual kernel timings. The existing CPU/ANSI comparison, hardmode benchmark,
 ZIP exports and folder-batch paths work with the selected backend. **CUDA
 hardware qualification remains incomplete.** Physical TITAN RTX tests pass the
-five modest hardmode cases; historical float32 failures at 512×512 now have
-precise GPU recovery and regression fixtures undergoing renewed qualification.
-PR #2 remains draft. See the CUDA guide for the acceptance runner.
+five modest hardmode cases and both 512×512 workloads now match the CPU exactly
+with precise GPU recovery. WebGPU retains its known float32 differences.
+PR #2 remains draft pending remaining qualification gates. See the
+[recovery evidence](qualification/RECOVERY.md) and CUDA guide.
 Host tests and compiler CI are not physical GPU acceptance.
 
 See the [CUDA setup, usage and qualification guide](overlay/docs/CUDA_BACKEND.md)

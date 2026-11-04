@@ -1,6 +1,16 @@
 # TITAN RTX qualification — 4 November 2026
 
-**Disposition: BLOCKED — CORRECTNESS DEFECT. PR #2 remains draft.**
+**Current disposition: CONDITIONAL — PHYSICAL QUALIFICATION REQUIRED. PR #2 remains draft.**
+
+The CUDA parity blocker described below was repaired by guarded binary64 GPU
+recovery in `01fc878e7e1741644d6ceb99f2321cd78adb03dd`. Renewed TITAN RTX tests
+match CPU exactly across the five modest hardmodes, partial tiles and both
+512×512 workloads. See [current recovery evidence](RECOVERY.md). Remaining
+sanitizer and broader hardware qualification gates still prevent acceptance.
+
+The following report preserves the **historical float32-only failure** and its
+original source identities. It must not be mistaken for the current worker's
+qualification result.
 
 Physical GPU execution is available and has been tested. Production acceptance
 has failed; this is no longer merely a missing-hardware gate.
