@@ -82,7 +82,7 @@ test('stalled work stops and failing cleanup does not skip subsequent resource d
   assert.equal(disposed,true);assert.equal(errors.length,2);assert.equal(errors[0].step,'browser');
 });
 import {planFrames} from '../scripts/cuda_frame_plan.mjs';
-import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES,pngDimensions} from '../scripts/cuda_video_plan.mjs';
+import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES,pngDimensions,crop16x9} from '../scripts/cuda_video_plan.mjs';
 import {checkedAfterInfo} from '../scripts/cuda_after_info.mjs';
 
 test('warm frame plans cap the entire sequence and require immutable matching geometry before discovery',()=>{
@@ -120,6 +120,14 @@ test('PNG dimension caps reject oversized headers before browser decoding',()=>{
   assert.deepEqual(pngDimensions(b),{width:854,height:480});
   b.writeUInt32BE(4097,16);assert.throws(()=>pngDimensions(b),/dimensions/);
   assert.throws(()=>pngDimensions(Buffer.alloc(24)),/header/);
+});
+
+test('cropped video grids preserve the glyph display aspect with a small exact source crop',()=>{
+  assert.deepEqual(crop16x9(854,480),{x:3,y:1,width:848,height:477});
+  for(const [columns,rows] of [[160,45],[320,90]]){
+    assert.equal(columns*8/(rows*16),16/9);assert.equal(videoGeometry(columns,rows,30).count,30);
+  }
+  assert.throws(()=>crop16x9(10,4));assert.throws(()=>videoGeometry(160,46,30));
 });
 
 test('failed or changed post-cleanup device probes cannot silently allow another sequence',()=>{

@@ -6,18 +6,19 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {createWorkbenchServer} from './serve.mjs';
 import {imagePreparationHtml,decodeRgbaTransport,sha256} from './cuda_image_fixture.mjs';
-import {videoGeometry,VIDEO_SOURCE_FILES,pngDimensions} from './cuda_video_plan.mjs';
+import {videoGeometry,VIDEO_SOURCE_FILES,pngDimensions,crop16x9} from './cuda_video_plan.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
-const [playwright,inputDirectory,c,r,n,output]=process.argv.slice(2);
-if(!output||process.argv.length!==8)throw new Error('Usage: node scripts/prepare_cuda_video.mjs PLAYWRIGHT PNG_DIRECTORY COLUMNS ROWS COUNT OUTPUT_DIRECTORY');
+const [playwright,inputDirectory,c,r,n,output,fitMode='contain-black']=process.argv.slice(2);
+if(!output||![8,9].includes(process.argv.length)||!['contain-black','crop-16:9'].includes(fitMode))throw new Error('Usage: node scripts/prepare_cuda_video.mjs PLAYWRIGHT PNG_DIRECTORY COLUMNS ROWS COUNT OUTPUT_DIRECTORY [contain-black|crop-16:9]');
 const geometry=videoGeometry(Number(c),Number(r),Number(n));process.chdir(resolve(import.meta.dirname,'..'));
+if(fitMode==='crop-16:9'?geometry.rows!==geometry.columns*9/32:geometry.rows!==geometry.columns/2)throw new Error('Layout and glyph aspect do not match');
 const out=resolve(output),input=resolve(inputDirectory);await mkdir(out,{recursive:true});
 const paths=VIDEO_SOURCE_FILES;
 const sourceFiles={};for(const path of paths)sourceFiles[path]=sha256(await readFile(path));
 const report={schema:'pnggpu-video-frames-v1',geometry,sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
   sourceStatus:execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim(),sourceFiles,
-  started:new Date().toISOString(),inputDirectory:input,fitMode:'contain-black',matchingRuns:0,frames:[],completed:false};
+  started:new Date().toISOString(),inputDirectory:input,fitMode,matchingRuns:0,frames:[],completed:false};
 const check=()=>{const v=driverEventsSince(report.started);if(v.events.length)throw new Error('New driver error; preparation stopped');return v;};
 const server=createWorkbenchServer({appDirectory:resolve('PNG2ANSI')});await new Promise(r=>server.listen(0,'127.0.0.1',r));
 let browser,file;const rgbaHash=createHash('sha256');let offset=0;
@@ -46,24 +47,32 @@ try {
     if(png.length>16*1024*1024)throw new Error('PNG exceeds 16 MiB frame cap');
     const dimensions=pngDimensions(png),sourceReadMs=performance.now()-start;
     const transportStart=performance.now();
-    const f=await withTimeout(page.evaluate(async({png,geometry})=>{
+    const f=await withTimeout(page.evaluate(async({png,geometry,fitMode})=>{
       const bytes=Uint8Array.from(atob(png),c=>c.charCodeAt(0)),begin=performance.now(),bitmap=await createImageBitmap(new Blob([bytes]));
       const decodeMs=performance.now()-begin;
       try{
         if(bitmap.width>4096||bitmap.height>4096)throw new Error('Source frame dimensions exceed 4096');
         const start=performance.now(),canvas=new OffscreenCanvas(geometry.columns*4,geometry.rows*8),ctx=canvas.getContext('2d',{willReadFrequently:true});
         ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
-        const scale=Math.min(canvas.width/bitmap.width,canvas.height/bitmap.height),w=bitmap.width*scale,h=bitmap.height*scale;
-        ctx.drawImage(bitmap,(canvas.width-w)/2,(canvas.height-h)/2,w,h);
+        let crop=null;
+        if(fitMode==='crop-16:9'){
+          const k=Math.floor(Math.min(bitmap.width/16,bitmap.height/9));if(k<1)throw new Error('Frame too small for 16:9 crop');
+          crop={x:Math.floor((bitmap.width-16*k)/2),y:Math.floor((bitmap.height-9*k)/2),width:16*k,height:9*k};
+          ctx.drawImage(bitmap,crop.x,crop.y,crop.width,crop.height,0,0,canvas.width,canvas.height);
+        }else{
+          const scale=Math.min(canvas.width/bitmap.width,canvas.height/bitmap.height),w=bitmap.width*scale,h=bitmap.height*scale;
+          ctx.drawImage(bitmap,(canvas.width-w)/2,(canvas.height-h)/2,w,h);
+        }
         const rgba=ctx.getImageData(0,0,canvas.width,canvas.height).data,resampleMs=performance.now()-start;
         const base64=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(',')[1]);f.readAsDataURL(new Blob([rgba]));});
-        return {base64,decodeMs,resampleMs,width:bitmap.width,height:bitmap.height};
+        return {base64,decodeMs,resampleMs,width:bitmap.width,height:bitmap.height,crop};
       }finally{bitmap.close();}
-    },{png:png.toString('base64'),geometry}),10000,()=>browser.close());
+    },{png:png.toString('base64'),geometry,fitMode}),10000,()=>browser.close());
     const rgba=decodeRgbaTransport(f.base64,geometry.columns*geometry.rows*32*4);
     if(f.width!==dimensions.width||f.height!==dimensions.height)throw new Error('Decoded PNG dimensions differ from header');
+    if(fitMode==='crop-16:9'&&JSON.stringify(f.crop)!==JSON.stringify(crop16x9(dimensions.width,dimensions.height)))throw new Error('Source crop differs from declared geometry');
     const transportMs=performance.now()-transportStart;rgbaHash.update(rgba);await file.writeFile(rgba);
-    report.frames.push({index,name,sourceSha256:sha256(png),sourceBytes:png.length,sourceReadMs,width:f.width,height:f.height,
+    report.frames.push({index,name,sourceSha256:sha256(png),sourceBytes:png.length,sourceReadMs,width:f.width,height:f.height,crop:f.crop,
       decodeMs:f.decodeMs,resampleMs:f.resampleMs,transportMs,rgbaOffset:offset,rgbaBytes:rgba.length,rgbaSha256:sha256(rgba)});offset+=rgba.length;
     report.driverAfter=check();if((index+1)%30===0)console.log(JSON.stringify({prepared:index+1,total:geometry.count,matchingRuns:0}));
   }

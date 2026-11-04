@@ -8,9 +8,14 @@ export function pngDimensions(bytes) {
   if(width<1||height<1||width>4096||height>4096)throw new Error('Source PNG dimensions exceed 1–4096');
   return {width,height};
 }
+export function crop16x9(width,height) {
+  const k=Math.floor(Math.min(width/16,height/9));
+  if(!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||k<1||width>4096||height>4096)throw new Error('Invalid source crop dimensions');
+  return {x:Math.floor((width-16*k)/2),y:Math.floor((height-9*k)/2),width:16*k,height:9*k};
+}
 export function videoGeometry(columns,rows,count) {
-  if(!((columns===160&&rows===80)||(columns===320&&rows===160))||!Number.isSafeInteger(count)||count<1||count>120)
-    throw new Error('Video scope is 160x80 or 320x160 and 1–120 consecutive frames');
+  if(!((columns===160&&[45,80].includes(rows))||(columns===320&&[90,160].includes(rows)))||!Number.isSafeInteger(count)||count<1||count>120)
+    throw new Error('Video scope is 160x45/80 or 320x90/160 and 1–120 consecutive frames');
   return {columns,rows,count,sampleWidth:4,sampleHeight:8};
 }
 export function videoPlan(atlas,count,mode,tileMiB) {
@@ -27,7 +32,9 @@ export function validateVideoManifest(batch) {
     throw new Error('Invalid completed video receipt');
   const a=batch.atlas,g=batch.geometry;videoGeometry(a?.columns,a?.rows,g?.count);
   const frameBytes=a.columns*a.rows*32*4;
-  if(g.columns!==a.columns||g.rows!==a.rows||batch.fitMode!=='contain-black'||a.sampleWidth!==4||a.sampleHeight!==8||
+  const crop=batch.fitMode==='crop-16:9';
+  if(g.columns!==a.columns||g.rows!==a.rows||!['contain-black','crop-16:9'].includes(batch.fitMode)||
+    (crop?a.rows!==a.columns*9/32:a.rows!==a.columns/2)||a.sampleWidth!==4||a.sampleHeight!==8||
     a.foregroundCandidates!==6||a.backgroundCandidates!==5||!Array.isArray(a.masks)||a.masks.length<1||a.masks.length>256||
     a.masks.some(m=>!Array.isArray(m)||m.length!==32||m.some(v=>!Number.isFinite(v)||v<0||v>1||Math.fround(v)!==v))||
     !Array.isArray(a.codes)||a.codes.length!==a.masks.length||new Set(a.codes).size!==a.codes.length||a.codes.some(v=>!Number.isInteger(v)||v<0||v>255)||
