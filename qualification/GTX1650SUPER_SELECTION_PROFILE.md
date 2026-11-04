@@ -133,6 +133,7 @@ separate Release build directories with `PNGGPU_ENABLE_CUDA=ON`, architecture
 to its exact source with SOURCE_COMMIT.txt / worker-sha256.json and preserve
 licenses before using the acceptance scripts. Do not substitute the older
 float32-only worker. The current native source must match the receipt.
+Use `PNGGPU_CUPTI_ACTIVITY=OFF` for ordinary timing-comparison workers.
 
 For each worker, run one finite comparison at a time:
 
@@ -151,6 +152,34 @@ queries introduce inter-frame gaps. Fit includes packing/HTTP/CUDA/decode;
 input read/hash and ANSI encoding are reported separately. These are warm-frame
 latencies, not continuously replenished queue throughput or live capture/display
 latency. No queue-depth increase was made.
+
+For a separate instrumented worker, additionally configure
+`PNGGPU_CUPTI_ACTIVITY=ON -DCUPTI_ROOT=PATH_TO_CUPTI_12_8_90`, retain its license,
+and put its matching runtime DLL beside the Windows executable (or resolve the
+library through the platform's normal loader path). In the shell running one
+bounded benchmark, set `PNGGPU_CUDA_ACTIVITY_DIRECTORY` to a fresh output
+directory. Unset it afterwards. Match ordered kernel counts to each frame's
+projection/selection sublaunch counters and reject dropped/error traces; do not
+pool instrumented and uninstrumented timing results.
+
+## Validation closeout
+
+Source `14aec8f4265e51c2a9c47ae56e617ab7fec3a54d`
+[passed all three CI jobs](https://github.com/techrote/PNGGPU/actions/runs/41889906601),
+including Windows/Linux CUDA compilation. Local checks passed 15 original
+application, 73 overlay, 52 bridge/planning/image, 7 arithmetic CLI and 13,488
+native checks; both independent CPU golden and frozen FP32 packet regeneration
+passed. Native checks include 540 traversal comparisons and 12 frozen GPU-FP32
+tuples checked against both traversals. The package manifest was regenerated.
+
+Matching local workers at that source also passed two-frame, one-cell FP32
+smokes for both traversals and one saved guarded CPU tuple/ANSI replay. Their
+clean-source receipts are in
+[closeout.json](gtx1650super-selection-profile/closeout.json). Independent review
+verified all 750 ordinary frame/ANSI hashes, raw receipts, activity counts,
+numeric tables and tie behavior. Earlier intermediate CI failures were package
+manifest drift; the corrected full run above is green. Documentation-only
+closeout commits do not extend the recorded hardware measurement scope.
 
 Next: profile projection/access locality and test a finite continuously refilled
 depth-one sequence with a separate bounded driver monitor. The optimized 160x45

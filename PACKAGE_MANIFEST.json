@@ -326,8 +326,8 @@
       "bytes": 11706
     },
     "qualification/GTX1650SUPER_SELECTION_PROFILE.md": {
-      "sha256": "683e95db1b9245f1585badfdc940186e7c58210c656db59b432f367bb0436166",
-      "bytes": 9682
+      "sha256": "823dac733de11c4bdf2988b7693b62b9039075fb5755605a1c62f326922181e6",
+      "bytes": 11455
     },
     "qualification/GTX1650SUPER_STAGED_OUTPUTS.md": {
       "sha256": "7a1c71eeeccc5033a991930b348d2f5ec2e77fde7a04a9076c859f17062be447",
@@ -1616,6 +1616,10 @@
     "qualification/gtx1650super-selection-profile/activity-summary.json": {
       "sha256": "dc996db559b7fb31ad5e781138a65e0674c228b4f92841f4a28034910c07746a",
       "bytes": 10220
+    },
+    "qualification/gtx1650super-selection-profile/closeout.json": {
+      "sha256": "fb2a4290012653ab894d84505785958fd6078f8cf3a8f9a4a1c151170087b568",
+      "bytes": 98555
     },
     "qualification/gtx1650super-selection-profile/compiler-baseline.txt": {
       "sha256": "91032af37d52b304e0a80ab1d10623f73901ef98b6481cdd5f65f563ed2fcb9d",
