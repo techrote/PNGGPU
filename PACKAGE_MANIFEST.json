@@ -58,8 +58,8 @@
       "bytes": 370
     },
     ".github/workflows/verify.yml": {
-      "sha256": "663abcfe77e6b867cb657915566d030b70640be7da067c257d65b0605cb75fbb",
-      "bytes": 5469
+      "sha256": "91b5c2388c6ce373097cc93be887061b6c63114e1d5a4eb210b1da2499a458ae",
+      "bytes": 5495
     },
     ".gitignore": {
       "sha256": "b0ee05b6dd0bb4a0eb11169e9f0a79bc11593c337244e5d61575e37c81f7f0b3",
@@ -1922,8 +1922,8 @@
       "bytes": 4164
     },
     "scripts/benchmark_cuda_video.mjs": {
-      "sha256": "ad900b675eebb7fa9344864adced7a5d2845798431be264d5d0659e76043279a",
-      "bytes": 8169
+      "sha256": "eab889f06ea0a6faae57d5d797b66d7537f2dea2d1e774904e9097354ba0b2bb",
+      "bytes": 11191
     },
     "scripts/benchmark_cuda_video_matrix.mjs": {
       "sha256": "f68a4d68103fe763696519d3269b0559144613ef34eafe39e3eb089cee2a6637",
@@ -1950,8 +1950,12 @@
       "bytes": 21962
     },
     "scripts/cuda_driver_events.mjs": {
-      "sha256": "4ff06083bf823ea106b4ddcb59018082a52deb13c4bed48ab2bb6bb049c9076b",
-      "bytes": 1069
+      "sha256": "5b9c0031bc4004d84de8b90398c49f8664f3567921798474ac9e68a37d14ef13",
+      "bytes": 1742
+    },
+    "scripts/cuda_driver_monitor.mjs": {
+      "sha256": "640e98fbfb8074b7508030976d59672e6be6992cfc2120e6bd7bddd699d0677f",
+      "bytes": 2048
     },
     "scripts/cuda_fixture_plan.mjs": {
       "sha256": "bd4dcec4a831d409a05f4f61d451459731399f5995db4768cd61a73ea1d98586",
@@ -1964,6 +1968,10 @@
     "scripts/cuda_frame_plan.mjs": {
       "sha256": "4eaa728a4fb7b1491a4bcb742861a81463272d71d8796da07798b85a0d4506cc",
       "bytes": 1791
+    },
+    "scripts/cuda_frame_queue.mjs": {
+      "sha256": "dca4f307b54ab10fbffa00839a7fae86b3a97af3adcefbc801d9aff90f8e7b7d",
+      "bytes": 2059
     },
     "scripts/cuda_image_fixture.mjs": {
       "sha256": "614d10c4c68e24554effa601cf334def066c32fe841d5ae1b58b0ed72557670b",
@@ -2076,6 +2084,10 @@
     "tests/cuda_image_fixture.test.mjs": {
       "sha256": "b70cd8838b5cfc576ea6eb453214b4b34539b5b1a0f5aaab5130b9c3151c6132",
       "bytes": 7257
+    },
+    "tests/cuda_queue.test.mjs": {
+      "sha256": "cc92716f5de0af3f1f30d47e20ee8851198e3ac142417541c917d38d6dfb49e2",
+      "bytes": 3677
     }
   },
   "optional_cuda": {
