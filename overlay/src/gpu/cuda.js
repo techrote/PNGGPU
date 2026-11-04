@@ -405,11 +405,11 @@ export class PhotographicCudaFitter {
     if (state.closing) return state.closing;
     state.closed = true;
     state.closing = (async () => {
+      const started = clock();
       if (state.done) {
         if (this.frameSession === state) this.activeController?.abort(abortError());
         await state.done.catch(() => {});
       }
-      const started = clock();
       try {
         if (state.sessionId) {
           const result = await request(this.fetchImpl, `/api/cuda/session/${state.sessionId}`, {
