@@ -84,6 +84,20 @@ Each cropped grid has **43.75% fewer cells**. At a common 32 MiB target:
 | FP32 / 320 | 142.41 | 99.90 | 2.781 | 3.469 |
 | FP64 / 320 | 229.71 | 147.56 | 4.487 | 5.124 |
 
+At that same 32 MiB target, the warm ranges and coefficient of variation
+(population standard deviation / mean over the 29 frames) are:
+
+| Precision / width | Letterboxed range ms | Cropped range ms | Letterboxed CV | Cropped CV |
+|---|---:|---:|---:|---:|
+| FP32 / 160 | 32.91–143.15 | 18.72–108.54 | 39.4% | 54.1% |
+| FP64 / 160 | 67.44–245.01 | 40.43–181.31 | 42.4% | 48.2% |
+| FP32 / 320 | 116.44–238.81 | 75.37–234.78 | 24.9% | 36.6% |
+| FP64 / 320 | 212.55–255.08 | 131.58–187.97 | 3.8% | 10.0% |
+
+These are content/run variability, not repeated identical-frame jitter or
+observed presentation stutter. Lower absolute latency did not imply lower
+relative variation in these runs.
+
 Cost does not scale linearly with cell count here. The smaller crop did not make
 the 160-column median faster; the 320-column absolute medians improved, but less
 than the cell-count reduction. Large uniform regions may be cheaper per cell,
@@ -105,7 +119,9 @@ cropped data range from 96–687 tuples/frame at 160x45 (120 frames) and
 1,098–5,560 at 320x90 (30 frames); counts are not perceptual scores.
 
 Preparation source is `4427a4a` (full source commit in its receipts); matching
-source is `8d6edecd942e8865c7998ee447b888540e411144`. Native sources and the adapter
+source is `8d6edecd942e8865c7998ee447b888540e411144`.
+[Its CI passed all three jobs](https://github.com/techrote/PNGGPU/actions/runs/41876774371).
+Native sources and the adapter
 arithmetic are unchanged from the preceding motion experiment. The physical
 normal worker is still `30fc36d74cbeb29b07b55e70dff08b591f07d858`, SHA-256
 `e9306b8e7380fdbe94206ad86f5205c98c504c09c3b02d74623b3cc853cd0c7a`, with receipts
@@ -129,6 +145,11 @@ Full raw inputs/results remain in ignored `build/qualification/parkour-crop*`
 and `parkour-larger-tiles/`. Independent pre-matching review checked crop geometry,
 caps and export labeling; the earlier letterboxed evidence remains separately
 preserved in [its report](GTX1650SUPER_MOTION.md).
+
+Independent post-run review verified all 600 raw/packed/ANSI output hashes,
+480 baseline CSV rows, larger-tile equality, counters/process exits, scope,
+quality ranges and numerical tables, and recomputed all four paired/bootstrap
+results. The orchestration source SHA matches the recorded helper exactly.
 
 From the repo root, after setup with the source-bound worker and local tools:
 
