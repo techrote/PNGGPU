@@ -13,9 +13,10 @@ export function parseFixtureArgs(args) {
     if(flag==='--case') {const name=args[++i];if(!name||name.startsWith('--')||options.cases.includes(name))throw new Error('Expected unique exact --case NAME');options.cases.push(name);continue;}
     if(seen.has(flag))throw new Error(`Duplicate flag ${flag}`);seen.add(flag);
     if(flag==='--suite'||flag==='--list'||flag==='--help'){options[flag.slice(2)]=true;continue;}
+    if(flag==='--allow-parity-differences'){options.allowParityDifferences=true;continue;}
     if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file','--cuda-mode'].includes(flag))throw new Error(`Unknown flag ${flag}`);
     const value=args[++i];
-    if(flag==='--cuda-mode'){if(!['float32-guarded-binary64','binary64-direct'].includes(value))throw new Error('Unsupported CUDA arithmetic mode');options.cudaMode=value;continue;}
+    if(flag==='--cuda-mode'){if(!['float32-guarded-binary64','binary64-direct','float32-direct','float16-mixed'].includes(value))throw new Error('Unsupported CUDA arithmetic mode');options.cudaMode=value;continue;}
     if(flag==='--webgpu'){if(!value||value.startsWith('--'))throw new Error('Expected --webgpu PLAYWRIGHT_MODULE');options.webgpu=value;continue;}
     if(flag==='--fixture-file'){if(!value||value.startsWith('--'))throw new Error('Expected --fixture-file PATH');options.fixtureFile=value;continue;}
     if(flag==='--tiles') {

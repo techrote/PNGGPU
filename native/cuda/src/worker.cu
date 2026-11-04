@@ -4,6 +4,7 @@
 #include "pnggpu_precise.hpp"
 
 #include <cuda_runtime.h>
+#include <cuda_fp16.h>
 
 #include <algorithm>
 #include <chrono>
@@ -27,7 +28,10 @@ using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
 bool direct_binary64 = false;
-const char* precision_name() { return direct_binary64 ? "binary64-direct" : "float32-guarded-binary64"; }
+bool direct_float32 = false, half_mixed = false;
+const char* precision_name() {
+  return direct_binary64 ? "binary64-direct" : half_mixed ? "float16-mixed" : direct_float32 ? "float32-direct" : "float32-guarded-binary64";
+}
 #ifdef PNGGPU_FAULT_INJECTION
 std::string test_fault;
 __global__ void poison_context() { asm("trap;"); }
@@ -138,10 +142,24 @@ std::string info_json(const DeviceInfo& info) {
 __global__ void project_kernel(const std::uint32_t* pixels, const float* masks,
                                const Float4* statistics, Float4* projections,
                                std::uint32_t samples, std::uint32_t glyph_count,
-                               std::uint32_t start, std::uint32_t end) {
+                               std::uint32_t start, std::uint32_t end,bool half_products) {
   const std::uint32_t linear = start+blockIdx.x*blockDim.x+threadIdx.x;
-  if (linear < end)
-    projections[linear] = arithmetic::project(pixels, masks, statistics, samples, glyph_count, linear);
+  if(linear>=end)return;
+  if(!half_products) { projections[linear]=arithmetic::project(pixels,masks,statistics,samples,glyph_count,linear);return; }
+  // Experimental mixed precision: actual FP16 products, FP32 accumulation,
+  // statistics and scoring. No Tensor Core or all-FP16 throughput claim.
+  const auto cell=linear/glyph_count,glyph=linear%glyph_count;
+  arithmetic::Vec3 totals{},dots{};
+  for(std::uint32_t i=0;i<samples;++i) {
+    const auto p=arithmetic::rgb(pixels[std::size_t(cell)*samples+i]);
+    const auto m=__float2half_rn(masks[std::size_t(glyph)*samples+i]);
+    totals=arithmetic::add(totals,p);
+    dots=arithmetic::add(dots,{__half2float(__hmul(__float2half_rn(p.x),m)),
+      __half2float(__hmul(__float2half_rn(p.y),m)),__half2float(__hmul(__float2half_rn(p.z),m))});
+  }
+  const auto s=statistics[glyph];
+  const auto cov=arithmetic::subtract(dots,arithmetic::multiply(totals,s.x));
+  projections[linear]={dots.x,dots.y,dots.z,-arithmetic::dot(cov,cov)/arithmetic::variance(s.z)};
 }
 
 __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statistics,
@@ -149,11 +167,13 @@ __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statist
                               Result* results, std::uint32_t samples,
                               std::uint32_t glyph_count, std::uint32_t foreground_count,
                               std::uint32_t background_count,
-                              std::uint32_t start, std::uint32_t end) {
+                              std::uint32_t start, std::uint32_t end,bool guarded) {
   const std::uint32_t cell = start+blockIdx.x*blockDim.x+threadIdx.x;
-  if (cell < end)
-    results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
+  if (cell < end) {
+    if(guarded)results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
       projections+std::size_t(cell)*glyph_count, samples,glyph_count,foreground_count,background_count);
+    else results[cell]=arithmetic::select(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
+  }
 }
 
 __global__ void recover_project_kernel(const std::uint32_t* pixels,const float* masks,const Float4* stats,
@@ -253,7 +273,7 @@ class Worker {
       cuda_check(cudaEventRecord(start_.value, stream_.value), "Record projection start");
       project_kernel<<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
         pixels_.as<std::uint32_t>(), masks_.as<float>(), statistics_.as<Float4>(), projections_.as<Float4>(),
-        samples, p.glyph_count, start, end);
+        samples, p.glyph_count, start, end,half_mixed);
       cuda_check(cudaGetLastError(), "Projection kernel launch");
       const double elapsed=finish_timed_launch("Projection kernel completion");
       result.projection_ms+=elapsed;result.max_projection_launch_ms=std::max(result.max_projection_launch_ms,elapsed);
@@ -272,14 +292,14 @@ class Worker {
       select_kernel<<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
         pixels_.as<std::uint32_t>(), statistics_.as<Float4>(), palette_.as<Float4>(),
         projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
-        p.foreground_count, p.background_count, start, end);
+        p.foreground_count, p.background_count, start, end,!direct_float32&&!half_mixed);
       cuda_check(cudaGetLastError(), "Selection kernel launch");
       const double elapsed=finish_timed_launch("Selection kernel completion");
       result.selection_ms+=elapsed;result.max_selection_launch_ms=std::max(result.max_selection_launch_ms,elapsed);
       ++result.selection_launches;
       start = end;
     }
-    result.guard_ms=result.selection_ms;
+    result.guard_ms=(direct_float32||half_mixed)?0:result.selection_ms;
     if(!direct_binary64) {
       stage = Clock::now();
       cuda_check(cudaMemcpyAsync(result.results.data(), results_.data, count*sizeof(Result), cudaMemcpyDeviceToHost, stream_.value), "Read back selected cells");
@@ -344,6 +364,9 @@ class Worker {
       result.direct_cells=count;
       result.direct_projection_ms=result.recovery_projection_ms;result.recovery_projection_ms=0;
       result.direct_selection_ms=result.recovery_selection_ms;result.recovery_selection_ms=0;
+    } else if(direct_float32||half_mixed) {
+      result.direct_cells=count;
+      result.direct_projection_ms=result.projection_ms;result.direct_selection_ms=result.selection_ms;
     }
     result.total_ms = milliseconds(begin);
     return result;
@@ -505,8 +528,9 @@ int main(int argc, char** argv) {
         if(arithmetic_option_seen || ++i>=argc)throw std::runtime_error("Specify --arithmetic-mode once");
         arithmetic_option_seen=true;
         const std::string arithmetic=argv[i];
-        if(arithmetic!="float32-guarded-binary64" && arithmetic!="binary64-direct")throw std::runtime_error("Unsupported CUDA arithmetic mode");
+        if(arithmetic!="float32-guarded-binary64" && arithmetic!="binary64-direct" && arithmetic!="float32-direct" && arithmetic!="float16-mixed")throw std::runtime_error("Unsupported CUDA arithmetic mode");
         direct_binary64=arithmetic=="binary64-direct";
+        direct_float32=arithmetic=="float32-direct";half_mixed=arithmetic=="float16-mixed";
       } else if (arg == "--device") {
         if (++i >= argc) throw std::runtime_error("--device requires a non-negative ordinal");
         const std::string index = argv[i];
@@ -525,13 +549,13 @@ int main(int argc, char** argv) {
 #endif
       else if (arg == "--help") {
         std::cout << "PNGGPU optional CUDA worker (Turing sm_75 + compute_75 PTX)\n"
-                     "Usage: pnggpu_cuda_worker (--info | --stdio | --self-test) [--device N] [--arithmetic-mode float32-guarded-binary64|binary64-direct]\n"
+                     "Usage: pnggpu_cuda_worker (--info | --stdio | --self-test) [--device N] [--arithmetic-mode float32-guarded-binary64|binary64-direct|float32-direct|float16-mixed]\n"
                      "Default device: first permitted GPU of compute capability 7.5 or later.\n";
         return 0;
       } else throw std::runtime_error("Unknown argument: "+arg);
     }
     if (mode.empty()) throw std::runtime_error("Use --info, --stdio, --self-test or --help");
-    if(direct_binary64 && mode=="--self-test")throw std::runtime_error("Guard certification self-test requires guarded mode; qualify direct mode with bounded independent CPU fixtures");
+    if((direct_binary64||direct_float32||half_mixed) && mode=="--self-test")throw std::runtime_error("Guard certification self-test requires guarded mode; qualify direct mode with bounded independent CPU fixtures");
     binary_mode = mode == "--stdio";
 #ifdef _WIN32
     if (binary_mode) {

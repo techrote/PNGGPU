@@ -53,7 +53,7 @@ function validateInfo(info) {
     throw new Error(`CUDA is unavailable: ${info?.error || 'start the optional CUDA server with start-cuda.bat'}`);
   }
   if (info.schema !== 'pnggpu-cuda-info-v1' || info.protocolVersion !== PROTOCOL_VERSION ||
-      info.backend !== 'cuda' || !['float32-guarded-binary64','binary64-direct'].includes(info.precision)) {
+      info.backend !== 'cuda' || !['float32-guarded-binary64','binary64-direct','float32-direct','float16-mixed'].includes(info.precision)) {
     throw new Error('Incompatible CUDA worker; rebuild the native worker from this PNGGPU checkout');
   }
   const capability = /^(\d+)\.(\d+)$/.exec(String(info.device?.computeCapability ?? ''));
@@ -269,13 +269,13 @@ function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, precisi
   integer(metadata.recoveredCells,'CUDA recovered cells',0,count);
   integer(metadata.certifiedCells,'CUDA certified cells',0,count);
   metadata.directCells=integer(metadata.directCells??0,'CUDA direct cells',0,count);
-  if(precision==='binary64-direct'?(metadata.directCells!==count||metadata.recoveredCells!==0||metadata.certifiedCells!==0):
+  if(precision!=='float32-guarded-binary64'?(metadata.directCells!==count||metadata.recoveredCells!==0||metadata.certifiedCells!==0):
     (metadata.directCells!==0||metadata.recoveredCells+metadata.certifiedCells!==count))throw new Error('CUDA arithmetic counts do not match the tile');
   if(metadata.deviceReadbackBytes!==count*16*(metadata.recoveredCells?2:1))throw new Error('CUDA device readback byte count does not match recovery');
   for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs','maxProjectionLaunchMs','maxSelectionLaunchMs'])finiteTime(metadata.timing?.[key],key);
   for(const key of ['gpuDirectProjectionMs','gpuDirectSelectionMs'])metadata.timing[key]=finiteTime(metadata.timing[key]??0,key);
-  if(precision==='binary64-direct'&&['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Direct CUDA mode reported guarded/recovery work');
-  if(precision!=='binary64-direct'&&['gpuDirectProjectionMs','gpuDirectSelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Guarded CUDA mode reported direct work');
+  if(precision!=='float32-guarded-binary64'&&['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Direct CUDA mode reported guarded/recovery work');
+  if(precision==='float32-guarded-binary64'&&['gpuDirectProjectionMs','gpuDirectSelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Guarded CUDA mode reported direct work');
   for (let i = 0; i < count; i++) {
     const at = 8 + jsonBytes + i * 16;
     const glyph = view.getUint32(at, true), foreground = view.getUint32(at + 4, true);

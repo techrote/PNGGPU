@@ -24,7 +24,8 @@ if(options.help) {
   --timeout-ms N               Per request timeout, default 10000, maximum 30000
   --webgpu PLAYWRIGHT_MODULE   Also compare the same inputs in installed Chrome
   --fixture-file PATH         Use a validated prepare_cuda_image.mjs output; exact --case required
-  --cuda-mode MODE            float32-guarded-binary64 (default) or explicit binary64-direct
+  --cuda-mode MODE            guarded default, binary64-direct, float32-direct, float16-mixed
+  --allow-parity-differences  Record quality differences while benchmarking; parity/qualification still separate
   --suite                     Explicitly select all fixtures; still requires sufficient caps
 Preserve SOURCE_COMMIT.txt, worker-sha256.json and runtime licenses from the CI artifact.
 No native self-test, cancellation workload, fault injection or hidden replay is run.
@@ -43,8 +44,9 @@ const provenance=await verifyWorker(resolve(options.worker),root);
 const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
 const report={schema:'pnggpu-cuda-bounded-fixtures-v2',sourceCommit:git('rev-parse','HEAD'),sourceStatus:git('status','--porcelain'),
   workerSourceCommit:provenance.sourceCommit,workerSha256:provenance.sha256,workerReceipt:provenance.receipt,
-  started:new Date().toISOString(),scope:summary,qualificationAccepted:false,cases:[],sourceFiles:{}};
+  started:new Date().toISOString(),scope:summary,qualificationAccepted:false,benchmarkCompleted:false,cases:[],sourceFiles:{}};
 report.requestedCudaMode=options.cudaMode;
+report.parityDifferencesAllowed=options.allowParityDifferences===true;
 if(imageInput)report.imageInput=imageInput.input;
 report.driverSince=imageInput?.input.provenance.started??report.started;
 for(const name of [...git('ls-files','scripts','overlay/src/gpu','qualification/turing-37706c3.json').split('\n'),
@@ -102,13 +104,14 @@ try {
         foregroundCandidates:data.foregroundCandidates,backgroundCandidates:data.backgroundCandidates,
         cpuMs,wallMs,cellDiff,ansiDiff,cpuTuples:tuple(expected),actualTuples:tuple(actual),
         cpuAnsiBytes:cpuAnsi.length,cpuAnsiSha256:createHash('sha256').update(cpuAnsi).digest('hex'),stats:actual.stats});
-      if(backend==='cuda'&&(cellDiff.changedCells||ansiDiff.mismatches))throw new Error(`CPU parity failed ${data.name}, tile ${tileCells}, repeat ${repeat}`);
+      if(backend==='cuda'&&!options.allowParityDifferences&&(cellDiff.changedCells||ansiDiff.mismatches))throw new Error(`CPU parity failed ${data.name}, tile ${tileCells}, repeat ${repeat}`);
       report.driverAfter=driverEventsSince(report.driverSince);
       if(report.driverAfter.events.length)throw new Error('New GPU driver error; scope stopped');
     }
   }
   report.scopedParityPassed=report.cases.length===summary.runs&&report.cases.every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
   report.cudaScopedParityPassed=report.cases.length===summary.runs&&report.cases.filter(c=>c.backend==='cuda').every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
+  report.benchmarkCompleted=report.cases.length===summary.runs;
 }catch(error){report.error=error.stack;report.scopedParityPassed=false;report.cudaScopedParityPassed=false;process.exitCode=1;}
 finally {
   report.cleanupErrors=await cleanupSteps([
@@ -121,10 +124,10 @@ finally {
   report.cleanupErrors.push(...await cleanupSteps([
     ['final-native',()=>server.closeCuda()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]
   ],options.timeoutMs));
-  if(report.cleanupErrors.length){report.scopedParityPassed=false;report.cudaScopedParityPassed=false;process.exitCode=1;}
+  if(report.cleanupErrors.length){report.scopedParityPassed=false;report.cudaScopedParityPassed=false;report.benchmarkCompleted=false;process.exitCode=1;}
   report.wallTotalMs=performance.now()-started;report.finished=new Date().toISOString();
   await mkdir(dirname(resolve(options.output)),{recursive:true});await writeFile(options.output,JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({scopedParityPassed:report.scopedParityPassed,cudaScopedParityPassed:report.cudaScopedParityPassed,
-    qualificationAccepted:false,cases:report.cases.length,error:report.error}));
-  if(!report.scopedParityPassed&&!process.exitCode)process.exitCode=2;
+    benchmarkCompleted:report.benchmarkCompleted,qualificationAccepted:false,cases:report.cases.length,error:report.error}));
+  if(!report.scopedParityPassed&&!options.allowParityDifferences&&!process.exitCode)process.exitCode=2;
 }

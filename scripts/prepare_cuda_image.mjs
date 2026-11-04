@@ -10,7 +10,7 @@ import {driverEventsSince} from './cuda_driver_events.mjs';
 
 const args=process.argv.slice(2);
 if(args.includes('--help')||!args.length) {
-  console.log('Usage: node scripts/prepare_cuda_image.mjs PLAYWRIGHT_MODULE OUTPUT_JSON EXACT_IMAGE COLUMNS ROWS [SAMPLE_WIDTH SAMPLE_HEIGHT] [--max-preparation-cells N]\nPreparation only; default 64 cells, explicit cap up to 3200. Larger stages require 4x8 samples; small inputs allow at most 128 samples/cell. Six/five candidates. Run setup.bat first.');
+  console.log('Usage: node scripts/prepare_cuda_image.mjs PLAYWRIGHT_MODULE OUTPUT_JSON EXACT_IMAGE COLUMNS ROWS [SAMPLE_WIDTH SAMPLE_HEIGHT] [--max-preparation-cells N]\nPreparation only; default 64 cells, explicit cap up to 3200. Larger stages require 4x8 or 8x16 samples. Six/five candidates. Run setup.bat first.');
   process.exit(args.includes('--help')?0:1);
 }
 const {playwright,output,image,geometry,maxPreparationCells}=parseImagePreparationArgs(args);

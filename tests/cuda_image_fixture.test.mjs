@@ -34,7 +34,8 @@ test('larger preparation requires an explicit bounded limit before any browser s
   for(const value of ['3201','9007199254740992','0','-1','1.5'])assert.throws(()=>parseImagePreparationArgs([...base,'80','40','--max-preparation-cells',value]));
   assert.throws(()=>parseImagePreparationArgs([...base,'1','1','--max-preparation-cells','64','--max-preparation-cells','128']));
   assert.throws(()=>imageGeometry(81,1,4,8,3200));assert.throws(()=>imageGeometry(80,41,4,8,3200));
-  assert.throws(()=>imageGeometry(80,40,8,16,3200));
+  assert.equal(imageGeometry(80,40,8,16,3200).sampleHeight,16);
+  assert.throws(()=>imageGeometry(80,40,8,8,3200));
 });
 test('prepared larger inputs must retain a valid preparation limit when replayed',()=>{
   const d=makeDocument();

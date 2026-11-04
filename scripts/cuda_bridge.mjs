@@ -152,7 +152,7 @@ class NativeSession {
     this.timeoutMs = timeoutMs;
     this.stderr = '';
     const args = ['--stdio', ...(device === null ? [] : ['--device', String(device)]),
-      ...(arithmeticMode==='binary64-direct'?['--arithmetic-mode',arithmeticMode]:[])];
+      ...(arithmeticMode!=='float32-guarded-binary64'?['--arithmetic-mode',arithmeticMode]:[])];
     this.child = spawnProcess(executable, args, { stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, shell: false });
     this.child.on('error', () => this.fail(new BridgeError(503, 'Could not start the CUDA worker. Build it and check the --cuda executable path.')));
     this.child.stdin.on('error', () => this.fail(new BridgeError(502, 'CUDA worker input stream closed.')));
@@ -251,7 +251,7 @@ function probeWorker({ executable, device, arithmeticMode, spawnProcess, timeout
     if (signal?.aborted) { onAbort(); return; }
     signal?.addEventListener('abort', onAbort, { once: true });
     try { child = spawnProcess(executable, ['--info', ...(device === null ? [] : ['--device', String(device)]),
-      ...(arithmeticMode==='binary64-direct'?['--arithmetic-mode',arithmeticMode]:[])],
+      ...(arithmeticMode!=='float32-guarded-binary64'?['--arithmetic-mode',arithmeticMode]:[])],
       { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, shell: false }); }
     catch { finish(new BridgeError(503, 'Could not start the CUDA worker. Build it and check the --cuda executable path.')); return; }
     timer = setTimeout(() => finish(new BridgeError(504, 'CUDA device detection timed out.')), timeoutMs);
@@ -284,7 +284,7 @@ export function createCudaBridge({ executable = null, device = null, arithmeticM
     idleTimeoutMs = 120_000, operationTimeoutMs = 120_000, infoTimeoutMs = 15_000,
     uploadTimeoutMs = 30_000, maxRequestBytes = CUDA_LIMITS.maxMessageBytes } = {}) {
   if (device !== null && (!Number.isSafeInteger(device) || device < 0)) throw new RangeError('CUDA device index must be a non-negative integer.');
-  if(!['float32-guarded-binary64','binary64-direct'].includes(arithmeticMode))throw new RangeError('Unsupported CUDA arithmetic mode');
+  if(!['float32-guarded-binary64','binary64-direct','float32-direct','float16-mixed'].includes(arithmeticMode))throw new RangeError('Unsupported CUDA arithmetic mode');
   if (![idleTimeoutMs, operationTimeoutMs, infoTimeoutMs, uploadTimeoutMs].every(n => Number.isSafeInteger(n) && n > 0) ||
       !Number.isSafeInteger(maxRequestBytes) || maxRequestBytes < 32 || maxRequestBytes > CUDA_LIMITS.maxMessageBytes) {
     throw new RangeError('Invalid CUDA bridge limits.');

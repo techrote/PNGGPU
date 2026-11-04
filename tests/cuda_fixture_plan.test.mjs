@@ -18,6 +18,10 @@ test('default exact single-cell scope and conservative full-recovery work',()=>{
 test('only explicit supported CUDA modes are admitted before GPU discovery',()=>{
   assert.equal(parseFixtureArgs(args).cudaMode,'float32-guarded-binary64');
   assert.equal(parseFixtureArgs([...args,'--cuda-mode','binary64-direct']).cudaMode,'binary64-direct');
+  for(const mode of ['float32-direct','float16-mixed']) {
+    const o=parseFixtureArgs([...args,'--cuda-mode',mode,'--allow-parity-differences']);
+    assert.equal(o.cudaMode,mode);assert.equal(o.allowParityDifferences,true);
+  }
   for(const value of ['float32','fast-math','--test-fault',undefined])assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode',...(value?[value]:[])]));
   assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode','binary64-direct','--cuda-mode','binary64-direct']));
 });

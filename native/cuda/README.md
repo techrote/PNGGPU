@@ -54,6 +54,16 @@ projection buffer. Neither the 2 GiB reserve nor display protections change.
 The certification self-test remains guarded-only; direct-mode qualification uses
 bounded independent CPU fixtures, not a claim of certified-fast-path coverage.
 
+Visual/performance experiments may explicitly choose `float32-direct` (the
+original unguarded float32 projection/selection helper) or `float16-mixed`.
+The latter rounds masks and RGB products to FP16, then accumulates and scores
+in FP32 with the original float32 statistics. It is not all-FP16 arithmetic or
+a Tensor Core implementation; conversion overhead may outweigh arithmetic gains.
+Keeping accumulation/scoring in FP32 avoids overflowing FP16 image-error sums.
+Both experimental modes retain candidate counts, strict comparisons and stable
+ties, perform no certification/recovery, and report direct cells and timings.
+Their visual differences are measurements, not exact CPU-parity acceptance.
+
 For `n <= 2048` RGB8 samples and binary32 masks in `[0,1]`, the bound
 `delta = 2*n*(n+1)*255*2^-24` encloses the difference between each float32 dot and
 the CPU binary64 dot. With `gamma(k,u)=k*u/(1-k*u)`, this exceeds

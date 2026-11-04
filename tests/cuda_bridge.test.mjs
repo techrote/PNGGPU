@@ -60,10 +60,10 @@ if (process.argv.includes('--info')) {
      out.writeUInt32LE(3,i*16+4);out.writeUInt32LE(2,i*16+8);
     }
     reply({ok:true,cellCount:mode==='wrong-count'?count+1:count,
-      directCells:arithmetic==='binary64-direct'?count:0,recoveredCells:arithmetic==='binary64-direct'?0:count,certifiedCells:0,deviceReadbackBytes:count*(arithmetic==='binary64-direct'?16:32),
+      directCells:arithmetic!=='float32-guarded-binary64'?count:0,recoveredCells:arithmetic!=='float32-guarded-binary64'?0:count,certifiedCells:0,deviceReadbackBytes:count*(arithmetic!=='float32-guarded-binary64'?16:32),
       timing:{gpuProjectionMs:1.25,gpuSelectionMs:2.5,uploadMs:0.1,readbackMs:0.2,
-        gpuGuardMs:arithmetic==='binary64-direct'?0:0.1,gpuRecoveryProjectionMs:arithmetic==='binary64-direct'?0:0.2,gpuRecoverySelectionMs:arithmetic==='binary64-direct'?0:0.3,
-        gpuDirectProjectionMs:arithmetic==='binary64-direct'?1.25:0,gpuDirectSelectionMs:arithmetic==='binary64-direct'?2.5:0,
+        gpuGuardMs:arithmetic!=='float32-guarded-binary64'?0:0.1,gpuRecoveryProjectionMs:arithmetic!=='float32-guarded-binary64'?0:0.2,gpuRecoverySelectionMs:arithmetic!=='float32-guarded-binary64'?0:0.3,
+        gpuDirectProjectionMs:arithmetic!=='float32-guarded-binary64'?1.25:0,gpuDirectSelectionMs:arithmetic!=='float32-guarded-binary64'?2.5:0,
         maxProjectionLaunchMs:1,maxSelectionLaunchMs:0.3},allocatedBytes:4096},out);
    };
    if(mode==='slow-tile') setTimeout(tile,250);else tile();

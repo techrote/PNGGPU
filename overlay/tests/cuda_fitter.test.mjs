@@ -138,6 +138,20 @@ test('direct binary64 requires explicit selection and preserves honest counts/re
   assert.equal(result.stats.readbackBytes,10*16);assert.equal(result.stats.timing.gpuGuardMs,0);
   assert.ok(result.stats.timing.gpuDirectSelectionMs>0);fitter.close();
 });
+test('experimental FP32 and FP16 mixed modes require opt-in without recovery or certification claims',async()=>{
+  for(const precision of ['float32-direct','float16-mixed']) {
+    const info={...nativeInfo(),precision};
+    assert.throws(()=>new PhotographicCudaFitter(info),/explicitly requested precision/);
+    const bridge=fakeBridge({info,onTile:({metadata,values,count})=>{
+      Object.assign(metadata,{directCells:count,recoveredCells:0,certifiedCells:0,deviceReadbackBytes:count*16});
+      Object.assign(metadata.timing,{gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,gpuDirectProjectionMs:1,gpuDirectSelectionMs:1});
+      return new Response(responseFrame(metadata,values));
+    }});
+    const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl,expectedPrecision:precision});
+    const r=await fitter.fit(sample());assert.equal(r.stats.precision,precision);assert.equal(r.stats.directCells,10);
+    assert.equal(r.stats.recoveredCells,0);assert.equal(r.stats.certifiedCells,0);fitter.close();
+  }
+});
 
 test('direct mode rejects recovery work or false direct accounting and still closes its session',async()=>{
   for(const inconsistent of ['counts','timing','readback']) {

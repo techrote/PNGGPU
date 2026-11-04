@@ -274,7 +274,7 @@ For staged ordinary outputs beyond 64 characters, preparation requires explicit
 validated again by replay; replay's separate aggregate limits still include all
 backends, repeats and tile choices. For example, 16×8, 32×16 and 80×40 character
 outputs need preparation caps 128, 512 and 3,200. Larger preparation currently
-requires 4×8 samples. Keep six/five
+requires 4×8 or 8×16 samples. Keep six/five
 candidates and conservative tiles, advancing one ordinary image at a time only
 after exact CUDA/CPU parity and no observed stalls or new driver errors. Larger
 preparation permission does not authorize unbounded repeats or stress tests.
@@ -302,8 +302,29 @@ worker binary, candidate counts, tile size and pipeline depth in both modes.
 Source/binary and installed-overlay checks still apply.
 
 The native certification self-test is guarded-only; run no full self-test or
-stress workload as part of this bounded direct experiment. Compilation, five
+stress workload as part of this bounded direct experiment. Compilation, seven
 host-only CLI checks and protocol tests do not establish physical parity.
+
+### Precision benchmarks for visual comparison
+
+`--cuda-mode float32-direct` runs the original unguarded float32 matcher.
+`--cuda-mode float16-mixed` is an exploratory mode with actual FP16 products
+and FP32 accumulation/statistics/scoring, not a full-FP16 or Tensor Core path.
+Both require explicit precision selection and retain all requested candidates.
+The default remains guarded CUDA; WebGPU remains the application's default.
+
+Use `--allow-parity-differences` when judging speed and appearance. It records
+tuple/ANSI differences and false parity results without stopping the benchmark
+or treating differences as a failed experiment. `benchmarkCompleted` is separate
+from parity, and `qualificationAccepted` remains false. Invalid outputs,
+timeouts, driver events and cleanup failures still stop the run. Input geometry
+and source checks still precede device discovery. Prepared fixture files are
+bounded to 8 MiB for the allowed 80×40 / 8×16 sample case.
+
+Current fit wall time includes context/process creation and bridge overhead.
+Kernel time alone is not streaming frame latency; persistent-frame reuse and
+frame-time distributions need separate engineering and measurement before a
+realtime claim. Benchmark figures here do not promise imperceptible lag.
 
 ### Complete suite on a suitably isolated qualification system
 
