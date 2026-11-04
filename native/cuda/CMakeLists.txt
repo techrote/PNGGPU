@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 3.21)
+project(PNGGPUCUDA VERSION 1.0.0 LANGUAGES CXX)
+
+option(PNGGPU_ENABLE_CUDA "Build the optional CUDA worker (requires NVIDIA CUDA Toolkit)" OFF)
+include(CTest)
+
+add_library(pnggpu_cuda_common STATIC src/common.cpp)
+target_include_directories(pnggpu_cuda_common PUBLIC include)
+target_compile_features(pnggpu_cuda_common PUBLIC cxx_std_17)
+if(MSVC)
+  target_compile_options(pnggpu_cuda_common PRIVATE /W4 /fp:strict)
+else()
+  target_compile_options(pnggpu_cuda_common PRIVATE -Wall -Wextra -Wpedantic -ffp-contract=off)
+endif()
+
+if(BUILD_TESTING)
+  add_executable(pnggpu_cuda_host_tests tests/host_tests.cpp)
+  target_link_libraries(pnggpu_cuda_host_tests PRIVATE pnggpu_cuda_common)
+  if(MSVC)
+    target_compile_options(pnggpu_cuda_host_tests PRIVATE /W4 /fp:strict)
+  else()
+    target_compile_options(pnggpu_cuda_host_tests PRIVATE -Wall -Wextra -Wpedantic -ffp-contract=off)
+  endif()
+  add_test(NAME cuda_host_protocol_and_arithmetic COMMAND pnggpu_cuda_host_tests)
+endif()
+
+if(PNGGPU_ENABLE_CUDA)
+  # Compiler detection must not pick the build host's GPU or an old nvcc default.
+  set(CMAKE_CUDA_ARCHITECTURES 75)
+  enable_language(CUDA)
+  find_package(CUDAToolkit REQUIRED)
+  add_executable(pnggpu_cuda_worker src/worker.cu)
+  target_link_libraries(pnggpu_cuda_worker PRIVATE pnggpu_cuda_common CUDA::cudart_static)
+  set_target_properties(pnggpu_cuda_worker PROPERTIES
+    CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED YES
+    CUDA_ARCHITECTURES "75-real;75-virtual"
+    CUDA_RUNTIME_LIBRARY Static)
+  target_compile_options(pnggpu_cuda_worker PRIVATE
+    $<$<COMPILE_LANGUAGE:CUDA>:--fmad=false>
+    $<$<COMPILE_LANGUAGE:CUDA>:--ftz=false>
+    $<$<COMPILE_LANGUAGE:CUDA>:--prec-div=true>
+    $<$<COMPILE_LANGUAGE:CUDA>:--prec-sqrt=true>)
+  if(MSVC)
+    target_compile_options(pnggpu_cuda_worker PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/fp:strict>)
+  else()
+    target_compile_options(pnggpu_cuda_worker PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffp-contract=off>)
+  endif()
+  # Deliberately no GPU CTest entry: hosted CPU runners can compile this worker.
+  # Actual device qualification is explicit: pnggpu_cuda_worker --self-test.
+  install(TARGETS pnggpu_cuda_worker RUNTIME DESTINATION bin)
+endif()

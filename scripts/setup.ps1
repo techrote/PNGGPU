@@ -13,10 +13,10 @@ function Test-Installed {
     foreach ($relative in @(
         'src/core.js', 'assets/DejaVuSansMono.ttf', 'PNG2ANSI-web.html',
         'src/gpu/streamed_samples.js', 'src/gpu/photographic.js', 'src/gpu/photographic.wgsl', 'src/gpu/memory.js', 'src/gpu/benchmark_zip.js',
-        'src/gpu/workload.js', 'src/gpu/reference_photo.js',
+        'src/gpu/workload.js', 'src/gpu/reference_photo.js', 'src/gpu/cuda.js',
         'src/gpu/metrics.js', 'src/gpu/cpu_worker_host.js',
         'src/gpu/reference_photo.worker.js', 'src/gpu/progress.js', 'tests/gpu_memory.test.mjs',
-        'docs/WEBGPU_BENCHMARKS.md', 'tests/gpu_pipeline.test.mjs', 'tests/gpu007_extended.test.mjs', 'tests/benchmark_zip.test.mjs',
+        'docs/WEBGPU_BENCHMARKS.md', 'docs/CUDA_BACKEND.md', 'tests/cuda_fitter.test.mjs', 'tests/gpu_pipeline.test.mjs', 'tests/gpu007_extended.test.mjs', 'tests/benchmark_zip.test.mjs',
         'experiments/webgpu/photographic.html',
         'fixtures/hardmode/manifest.json'
     )) {

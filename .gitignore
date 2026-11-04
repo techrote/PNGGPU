@@ -1,0 +1,6 @@
+PNG2ANSI/
+build/
+.cuda-toolchain/
+.cuda-downloads/
+__pycache__/
+*.pyc

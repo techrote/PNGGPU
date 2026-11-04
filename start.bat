@@ -4,7 +4,7 @@ cd /d "%~dp0"
 set "APP_DIR=%~dp0PNG2ANSI"
 set "PORT=8000"
 if not "%~1"=="" set "PORT=%~1"
-if not exist "%APP_DIR%\GPU007_BASE.json" (
+if not exist "%APP_DIR%\src\gpu\cuda.js" (
     echo [PNG2ANSI GPU-007] First run or version update: applying complete GPU-007 package...
     call "%~dp0setup.bat"
     if errorlevel 1 exit /b 1

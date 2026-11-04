@@ -1,6 +1,6 @@
 {
-  "name": "PNG2ANSI WebGPU GPU-007 COMPLETE Windows installer",
-  "release": "GPU-007",
+  "name": "PNGGPU WebGPU and optional Turing CUDA source package",
+  "release": "GPU-007+CUDA-001",
   "distribution_type": "cumulative Windows one-click installer; pinned original PNG2ANSI source downloaded once if absent",
   "base_repo": "techrote/PNG2ANSI",
   "base_commit": "67ae97295ab9a9ab32fdee5410c2371e4b21ce87",
@@ -44,38 +44,66 @@
     "folder image batch to ANSI ZIP",
     "optional timing CSV/JSON",
     "extended pipeline depth",
-    "hardmode benchmark suite"
+    "hardmode benchmark suite",
+    "optional CUDA photographic matcher",
+    "explicit backend selection and benchmark provenance",
+    "local same-origin native bridge",
+    "CUDA native host tests and Windows/Linux compiler CI"
   ],
   "vram_policy": "manual VRAM; warn above VRAM-4GiB; hard block above VRAM-2GiB; estimates do not equal actual free memory",
   "hardware_GPU_validation": "Not performed in container; high-resolution streaming exact-reference parity unverified",
   "files": {
+    ".gitattributes": {
+      "sha256": "0b2b758ccf66e0fdbdf1c9b400aefcb0d62281e28a0ad72b85f9a717e39edb28",
+      "bytes": 326
+    },
+    ".github/workflows/verify.yml": {
+      "sha256": "fc2e52e0ea69cf6156f1cd1a433e7d252af379591ca97cd7695e43aae9576957",
+      "bytes": 4152
+    },
+    ".gitignore": {
+      "sha256": "4b9e22e2506fe26074b575c4ed2e10cd08a2abca04850096cc70532ff2431c95",
+      "bytes": 70
+    },
+    "README.md": {
+      "sha256": "479c0f509c6e86bbabcf4ac996e9119570ce6770ed9d771ad87052a36f187fab",
+      "bytes": 5020
+    },
     "README_FIRST.md": {
-      "sha256": "5a02ddc9970786e8b9d91cee3fdd6ed7c5dd405f0280ae413dff0c7d425cedbd",
-      "bytes": 3208
+      "sha256": "498fb67d41d4a9d22cd0a9bd9a69237f27d5bb08329dc2d422397b70b12c973a",
+      "bytes": 3552
     },
-    "setup.bat": {
-      "sha256": "e160a1d407027d04d839fac3438665c612c0988cdece0754eef7365a11db9463",
-      "bytes": 361
+    "build-cuda.bat": {
+      "sha256": "3e0288a28de5a4629511d983e74b55b6424c6b724aaf9191bfc3da2cc6e9689c",
+      "bytes": 208
     },
-    "start.bat": {
-      "sha256": "6c112776b285e492d661553060c603d0e477cc6b1eb3bc179286e9b1d91843dd",
-      "bytes": 1213
+    "native/cuda/CMakeLists.txt": {
+      "sha256": "553d17fe576ce4b900bfcd2be84c60d13b7a08319e18430f305a19fe694eb1b0",
+      "bytes": 2252
     },
-    "test.bat": {
-      "sha256": "f8c40efad8203a7164ae640100f4150e158e13c8c98d84678d668a4762c30f96",
-      "bytes": 514
+    "native/cuda/README.md": {
+      "sha256": "02314888a8ff68bcf1a4ac8b5cecd629270ee472f01c7a09f7455d8200991b04",
+      "bytes": 12185
     },
-    "scripts/serve.mjs": {
-      "sha256": "2dcb931d69cbf48acd488f02315bc2bc7dbda1e1563816612343e2b7d83997f3",
-      "bytes": 2352
+    "native/cuda/include/pnggpu_algorithm.hpp": {
+      "sha256": "dc2bda45d3bfe8379b74ae4132953b67cb57a3ba2fe79d8c4b261bc1c955f0de",
+      "bytes": 6784
     },
-    "scripts/serve.py": {
-      "sha256": "f313e0f4ef7f485f2a2a1d095773d64a2708e439cd0d84c9ceee93a8dc8c5e5d",
-      "bytes": 2345
+    "native/cuda/include/pnggpu_common.hpp": {
+      "sha256": "de87f2487d35b3506666e76242e866a73ff0cd7acd78e2f49667f8de59704a88",
+      "bytes": 3728
     },
-    "scripts/setup.ps1": {
-      "sha256": "f61174c0dbec28fa3ba34ee438a21db2fa0d5d3da334f2abe5de06daa1f9f2ca",
-      "bytes": 6568
+    "native/cuda/src/common.cpp": {
+      "sha256": "b4ff65a23ee4bddf1a960d574e1dbf72aef08adedc5290cb26e760eff2f7bd16",
+      "bytes": 15702
+    },
+    "native/cuda/src/worker.cu": {
+      "sha256": "e7f4931803851cc836f656e76f1674675b7dde25881f8a30d77afaec90e1569f",
+      "bytes": 18970
+    },
+    "native/cuda/tests/host_tests.cpp": {
+      "sha256": "3421876d657c38328fecba3653378bbd10839d0ef54b897f7af3382dd0b2d365",
+      "bytes": 11024
     },
     "overlay/GPU006_INSTALL.md": {
       "sha256": "c4d8b5b3fad99b4a6554716fc8d5c7ce52a48c1528986f88eb709360f2e3dcca",
@@ -84,6 +112,10 @@
     "overlay/GPU007_INSTALL.md": {
       "sha256": "807d67a687ad7fa2295d5ccbd4a7e2d5ffd187318f7b0ae04f2436cb12e22df2",
       "bytes": 1438
+    },
+    "overlay/docs/CUDA_BACKEND.md": {
+      "sha256": "8e70a75cf7799b27773bb7498166385b2a4db2abe7b1a88533bc4520f78c01aa",
+      "bytes": 10861
     },
     "overlay/docs/WEBGPU_BENCHMARKS.md": {
       "sha256": "31b4bfbc60d9fe97f1ef2e4c64b8bfac798132a13686f08734e5d72d76ea3cea",
@@ -94,8 +126,8 @@
       "bytes": 9761
     },
     "overlay/experiments/webgpu/photographic.html": {
-      "sha256": "c42a470f3e355039e4ed88f5c1c8975c3422e7fb4be9077cf36a88f71b3cb9a7",
-      "bytes": 67423
+      "sha256": "f247c5863de68f0d915e40489f75d68ec73a280ecb3d6b7735d3c1e8f27abba1",
+      "bytes": 73229
     },
     "overlay/fixtures/hardmode/bland-blocks-2048.png": {
       "sha256": "245f1afb99155229b9ad584b2c582ede314e5e0e44b2b440d465a8732d7b4725",
@@ -126,8 +158,8 @@
       "bytes": 761
     },
     "overlay/package.json": {
-      "sha256": "46d81d0f361031488137eee2f599f2cbc9bef9c92c02e05daaba37bdbb4448f8",
-      "bytes": 675
+      "sha256": "a5dd67f93852d645427e8ea9c43433e4c9062515b5f45101bc4de722fef1478a",
+      "bytes": 732
     },
     "overlay/src/gpu/benchmark_zip.js": {
       "sha256": "22a567dbadb417da4fda21accb8a96b0dc079ab6fe1bdddb3c6b5f87cbdaf7d8",
@@ -137,9 +169,13 @@
       "sha256": "c55f157e34002061ca6019ec0b41d54da2531eb36a386a976ecb1ba86e29f09b",
       "bytes": 1740
     },
+    "overlay/src/gpu/cuda.js": {
+      "sha256": "f232abf26f86b5a776cffa53b83321350dbd923f8b6812fa3101c872b2f84ca9",
+      "bytes": 26226
+    },
     "overlay/src/gpu/memory.js": {
-      "sha256": "097f77f9b3f37e27a1e027936022ec5412f33d00e91faf3b3aa863a43816c0dd",
-      "bytes": 6451
+      "sha256": "e42a0d71050a393ea4ae5767e76edf38e35ca5f65ee004369a81ad98d3430fda",
+      "bytes": 6450
     },
     "overlay/src/gpu/metrics.js": {
       "sha256": "28d9b8e1d6357f16539d01db1f75968ecce07d532aa5bd3b4919aea6b16db664",
@@ -181,6 +217,14 @@
       "sha256": "fa532b7b07c1de28e4ff30d8e3fe509d2e5f9c22eb2ed6e090e5b08b4938c9fc",
       "bytes": 2554
     },
+    "overlay/tests/cuda_fitter.test.mjs": {
+      "sha256": "eb2667b368c792c25e18daac7219f7944d2bb01dc85d48f58a941931f9202f0a",
+      "bytes": 20508
+    },
+    "overlay/tests/cuda_workbench.test.mjs": {
+      "sha256": "072b6ebb37de8429e3a0b4981efb70d32fd8ea5807484ef099f5f83e32e9b0df",
+      "bytes": 6112
+    },
     "overlay/tests/gpu007_extended.test.mjs": {
       "sha256": "86afc13f9346ce368dac02646f7cda36af2212b353ac12b56fd3154351745510",
       "bytes": 5024
@@ -220,6 +264,72 @@
     "overlay/tests/reference_photo.test.mjs": {
       "sha256": "ec2cdbc4ea4752653cb200c248d1c93988915713450806ae2142be266ddd4090",
       "bytes": 2058
+    },
+    "scripts/build-cuda.ps1": {
+      "sha256": "3d52f85345c3732a6fda9116c90517aa21eb4e8b997fb0bcc2d84e4f089f2a18",
+      "bytes": 1564
+    },
+    "scripts/cuda_bridge.mjs": {
+      "sha256": "72e708587a3e66eb6f3d8a57ebedf0601e5da9b60cbdfa488dc651b28c157431",
+      "bytes": 21430
+    },
+    "scripts/fetch_cuda_toolchain.py": {
+      "sha256": "c87f36f40703ae29dc0a1efda6c6baa83b53841ab7183a300aeb5327b4c4f618",
+      "bytes": 4674
+    },
+    "scripts/package_manifest.py": {
+      "sha256": "04e7a59749a79f006e99504688e23fdeb6d6899675064106dc91936481f9463a",
+      "bytes": 2047
+    },
+    "scripts/serve.mjs": {
+      "sha256": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
+      "bytes": 5391
+    },
+    "scripts/serve.py": {
+      "sha256": "f313e0f4ef7f485f2a2a1d095773d64a2708e439cd0d84c9ceee93a8dc8c5e5d",
+      "bytes": 2345
+    },
+    "scripts/setup.ps1": {
+      "sha256": "38035a1b58f1c4a9b9c11d65d9cfa99fee4bc92750645ffae4e1e327ef2252b5",
+      "bytes": 6641
+    },
+    "setup.bat": {
+      "sha256": "762a81e8b0ab4d4ee93429df2f7f5018a1a36c2ddd9642575756f698b284f482",
+      "bytes": 361
+    },
+    "start-cuda.bat": {
+      "sha256": "3dfd10ec6b90c0610605bebb75ed100bcd4a061bec8d1cef303172bbf1eb9b1c",
+      "bytes": 1139
+    },
+    "start.bat": {
+      "sha256": "8e5bd801e233217ff5d6cb5749d78a0b26bc8214494337a6deb2515c2d30c70d",
+      "bytes": 1212
+    },
+    "test.bat": {
+      "sha256": "a3f2d75e871b4c7cb24b7388b9879d658d86b217a763e86327b0a3dbc9aed7e1",
+      "bytes": 639
+    },
+    "tests/cuda_bridge.test.mjs": {
+      "sha256": "4d9ae215688f17c3e3120171b7b7558ebc1a4cb4f4256368bd28b41ab08ba0cf",
+      "bytes": 22184
     }
-  }
+  },
+  "optional_cuda": {
+    "enabled_by_default": false,
+    "build": "build-cuda.bat",
+    "runner": "start-cuda.bat",
+    "native_directory": "native/cuda",
+    "target": "sm_75 + compute_75 PTX",
+    "primary_gpus": [
+      "NVIDIA TITAN RTX",
+      "GeForce RTX 2060",
+      "GeForce RTX 2070",
+      "GeForce RTX 2080",
+      "GeForce RTX 2080 Ti"
+    ],
+    "compiler_ci_baseline": "NVIDIA CUDA 12.8.1 / NVCC 12.8.93",
+    "pipeline_depth": 1,
+    "physical_gpu_qualification": "pending: no physical CUDA GPU available in implementation environment"
+  },
+  "file_hash_policy": "SHA-256 and byte sizes after CRLF-to-LF normalization for text; raw bytes for binary. Manifest excludes itself."
 }
