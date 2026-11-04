@@ -29,6 +29,11 @@ using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
 constexpr unsigned selection_block_size = 64;
+#ifdef PNGGPU_INTEGER_PROJECTION_SUMS
+constexpr bool integer_projection_sums = true;
+#else
+constexpr bool integer_projection_sums = false;
+#endif
 #ifdef PNGGPU_SAMPLE_MAJOR_MASKS
 constexpr bool sample_major_device_masks = true;
 #else
@@ -143,6 +148,7 @@ std::string info_json(const DeviceInfo& info) {
       << ",\"runtimeVersion\":" << info.runtime_version << ",\"driverVersion\":" << info.driver_version
       << ",\"directFP32SelectionTraversal\":" << json_string(glyph_major_fp32?"glyph-major-stable-rank":"color-major-original")
       << ",\"deviceMaskLayout\":" << json_string(sample_major_device_masks?"sample-major":"glyph-major")
+      << ",\"binary64ProjectionSums\":" << json_string(integer_projection_sums?"uint32-exact":"binary64-original")
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
       << ",\"maxProjectionBytes\":" << max_projection_bytes << ",\"maxPixelBytes\":" << max_pixel_bytes
@@ -203,7 +209,7 @@ __global__ void recover_project_kernel(const std::uint32_t* pixels,const float* 
   const auto cell=cell_offset+linear/gc,g=linear%gc;
   if(!verify && results[cell].reserved==0)return;
   const auto* mask=sample_major_device_masks?masks+g:masks+std::size_t(g)*n;
-  projections[linear]=precise::project(pixels+std::size_t(cell)*n,mask,stats[g],n,sample_major_device_masks?gc:1u);
+  projections[linear]=precise::project<integer_projection_sums>(pixels+std::size_t(cell)*n,mask,stats[g],n,sample_major_device_masks?gc:1u);
 }
 __global__ void recover_select_kernel(const std::uint32_t* pixels,const Float4* stats,const Float4* palette,
     const precise::Projection* projections,Result* results,std::uint32_t n,std::uint32_t gc,

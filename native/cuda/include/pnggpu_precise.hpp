@@ -11,16 +11,25 @@ namespace pnggpu::precise {
 struct Projection { double x, y, z, score; };
 PNGGPU_EXACT inline double clamp(double x) { return x < 0 ? 0 : (x > 255 ? 255 : x); }
 // This is the original JS CPU expression tree, not the WGSL dot grouping.
+template<bool IntegerSums=false>
 PNGGPU_EXACT inline Projection project(const std::uint32_t* pixels, const float* mask,
                                        Float4 stats, std::uint32_t n, std::uint32_t mask_stride=1) {
   double sums[3]{}, dots[3]{};
+  // Validated n<=2048 and RGB8 imply totals<=522240. Both integer addition and
+  // the original binary64 additions are exact; conversion at the end is exact.
+  std::uint32_t integer_sums[3]{};
   for (std::uint32_t i=0; i<n; ++i) {
     const auto p=pixels[i];
     const double channels[3]={double(p&255u), double((p>>8)&255u), double((p>>16)&255u)};
-    for (unsigned k=0; k<3; ++k) { sums[k]+=channels[k]; dots[k]+=channels[k]*double(mask[std::size_t(i)*mask_stride]); }
+    for (unsigned k=0; k<3; ++k) {
+      if constexpr(IntegerSums)integer_sums[k]+=(p>>(8u*k))&255u;
+      else sums[k]+=channels[k];
+      dots[k]+=channels[k]*double(mask[std::size_t(i)*mask_stride]);
+    }
   }
   double explained=0;
-  for (unsigned k=0; k<3; ++k) { const double cov=dots[k]-sums[k]*double(stats.x); explained+=cov*cov/double(stats.z); }
+  for (unsigned k=0; k<3; ++k) { const double sum=IntegerSums?double(integer_sums[k]):sums[k];
+    const double cov=dots[k]-sum*double(stats.x); explained+=cov*cov/double(stats.z); }
   return {dots[0],dots[1],dots[2],-explained};
 }
 

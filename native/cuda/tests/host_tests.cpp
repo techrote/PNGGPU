@@ -318,6 +318,10 @@ int main(int argc,char** argv) {
         const auto c=precise::project(pixels.data()+cell*n,atlas.masks.data()+std::size_t(g)*n,atlas.statistics[g],n);
         const auto d=precise::project(pixels.data()+cell*n,transposed.data()+g,atlas.statistics[g],n,gc);
         require(std::memcmp(&c,&d,sizeof c)==0,"Strided mask retains every binary64 projection bit");
+        const auto e=precise::project<true>(pixels.data()+cell*n,atlas.masks.data()+std::size_t(g)*n,atlas.statistics[g],n);
+        const auto f=precise::project<true>(pixels.data()+cell*n,transposed.data()+g,atlas.statistics[g],n,gc);
+        require(std::memcmp(&c,&e,sizeof c)==0,"Integer totals retain original binary64 projection bits");
+        require(std::memcmp(&c,&f,sizeof c)==0,"Integer totals and strided masks retain original projection bits");
       }
     }
     std::cout << "PNGGPU CUDA host tests: " << checks << " checks passed (no GPU required).\n";
