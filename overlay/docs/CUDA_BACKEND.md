@@ -103,14 +103,21 @@ bytes. The CUDA worker replaces only these two matching passes:
 
 | Pass | Preserved behavior |
 |---|---|
-| Glyph projection | Every supplied glyph, every source sample, original sample order, float32 projections and explained-variance ranking |
+| Glyph projection | Every supplied glyph/sample, original sample order, float32 projection followed by CPU-objective decision certification |
 | Cell selection | Stable 32-glyph shortlist, all requested foreground/background candidates, original palette order and strict first-winning tie behavior |
 
 The build disables fused multiply-add and fast-math. It uses neither Tensor
-Cores nor half precision. These choices preserve the intended float32 operation
-sequence; they **do not prove identical results to every WebGPU driver or the
-original JavaScript CPU oracle**. The CPU oracle uses binary64 arithmetic for
-many accumulations, and the WGSL path already has known precision differences.
+Cores nor half precision. The arithmetic mode is now `float32-guarded-binary64`:
+conservative outward-rounded intervals certify the original CPU shortlist,
+palette and selection decisions; ambiguous cells rerun all matching stages on
+the GPU in binary64 using the original CPU expression grouping and stable ties.
+The recovery preserves candidate counts and never falls back to CPU execution.
+WebGPU's existing float32 behavior is unchanged and can differ from both CPU
+and recovered CUDA. The old float32-only worker is rejected by the new adapter.
+
+Recovery reuses at most 32 MiB / 1,024 cells of additional projection storage,
+included in native admission and browser estimates. See the
+[native fidelity/proof notes](../../native/cuda/README.md#precise-recovery-and-certification).
 
 The existing cell comparison and ANSI-byte comparison remain the acceptance
 measure. A GPU-only run reports comparison as skipped, not zero mismatches.
@@ -172,6 +179,37 @@ backend's JSON/ZIP report. No CUDA speedup claim is made without physical result
 
 ## Physical qualification
 
+The float32-only baseline failures below are preserved as historical evidence.
+The current guarded recovery passes the saved failures and deterministic
+sample/candidate sweeps through a real native worker. Full hardmode and 512×512
+requalification must use a matching new worker. PR #2 remains draft.
+
+The minimal no-browser regression package compares all saved physical failing
+cells and deterministic fixtures against the independent JS CPU, with exact
+cell and ANSI comparisons and tile sizes 1, 3 and 64:
+
+```powershell
+node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/recovery-fixtures.json
+node scripts/generate_cuda_regressions.mjs --check
+```
+
+The native CTest also reads binary regression frames generated from those CPU
+winners. `--self-test` unconditionally runs binary64 GPU matching for every
+fixture and checks all certified tuples against it; it additionally requires
+nontrivial certified decisions. Its native helper remains shared code, so the
+independent JS comparisons are a separate mandatory acceptance gate.
+
+Reports retain the strict aggregate `accepted` flag for all backend comparisons.
+`cudaAccepted` separately requires every CUDA tuple/ANSI/repeat comparison to
+match CPU plus device/cancellation gates. Existing WebGPU mismatches remain
+visible and keep the all-backend aggregate false; they are not relabeled exact.
+
+Recovery counts/reasons and guard/recovery event times are additive fields.
+Projection and selection totals include recovery. Device readback byte counts
+include both guard inspection and recovered results, whereas HTTP response
+bytes contain only the final tuples. Launch maxima are measured event intervals,
+not a watchdog guarantee.
+
 Physical testing on a TITAN RTX / driver 581.80 has now exercised the baseline
 worker. All five 80×40 / 4×8 hardmode cases and a 17×9 partial-tile case matched
 CPU, CUDA and WebGPU exactly. **This is not blanket qualification:** 512×512
@@ -226,8 +264,9 @@ Run these from the repository root on the Turing machine:
 If using a CI artifact, omit `Release\` when appropriate. The self-test checks
 synthetic constant, random, alternating, duplicate and near-degenerate masks,
 shortlists larger than 32 glyphs, partial blocks, repeated buffer reuse and
-internal sublaunch boundaries. Its comparison oracle is native float32 with
-shared arithmetic; it is not the original independent CPU oracle.
+internal sublaunch boundaries. Its comparison oracle is native binary64 with
+shared arithmetic and unconditional GPU verification; it is not the original
+independent JS CPU oracle.
 
 Then use the workbench to run the five-image hardmode suite with CPU comparison
 at modest settings. Compare both cell components and ANSI bytes. Repeat with

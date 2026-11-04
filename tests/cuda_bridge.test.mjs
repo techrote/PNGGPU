@@ -17,10 +17,10 @@ const MOCK_WORKER = `
 const mode = process.env.PNGGPU_MOCK_MODE || 'normal';
 const device = Number(process.argv[process.argv.indexOf('--device') + 1]) || 0;
 const info = {schema:'pnggpu-cuda-info-v1',backend:'cuda',protocolVersion:1,available:true,
- precision:'float32-no-fma',device:{name:'test fixture (not a GPU)',index:device,
+ precision:'float32-guarded-binary64',device:{name:'test fixture (not a GPU)',index:device,
  computeCapability:'7.5',totalMemoryBytes:24*1024**3,freeMemoryBytes:20*1024**3},
  limits:{maxMessageBytes:134217728,maxTileCells:65536,maxSamplesPerCell:2048,maxGlyphCount:65535,
- maxProjectionBytes:134217728,maxPixelBytes:67108864,maxProjectionWork:16777216}};
+ maxProjectionBytes:134217728,maxPixelBytes:67108864,maxProjectionWork:16777216,maxRecoveryProjectionBytes:33554432,maxRecoveryCells:1024}};
 if (process.argv.includes('--info')) {
  if (mode==='info-stall') { setInterval(()=>{},1000); }
  else if (mode==='info-overflow') process.stdout.write('x'.repeat(70000));
@@ -59,7 +59,8 @@ if (process.argv.includes('--info')) {
      out.writeUInt32LE(3,i*16+4);out.writeUInt32LE(2,i*16+8);
     }
     reply({ok:true,cellCount:mode==='wrong-count'?count+1:count,
-      timing:{gpuProjectionMs:1.25,gpuSelectionMs:2.5,uploadMs:0.1,readbackMs:0.2},allocatedBytes:4096},out);
+      recoveredCells:count,certifiedCells:0,deviceReadbackBytes:count*32,
+      timing:{gpuProjectionMs:1.25,gpuSelectionMs:2.5,uploadMs:0.1,readbackMs:0.2,gpuGuardMs:0.1,gpuRecoveryProjectionMs:0.2,gpuRecoverySelectionMs:0.3,maxProjectionLaunchMs:1,maxSelectionLaunchMs:0.3},allocatedBytes:4096},out);
    };
    if(mode==='slow-tile') setTimeout(tile,250);else tile();
   }

@@ -1,5 +1,6 @@
 #include "pnggpu_common.hpp"
 #include "pnggpu_algorithm.hpp"
+#include "pnggpu_precise.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -40,6 +41,9 @@ Layout validate_parameters(const Parameters& p) {
   l.pixel_bytes = checked_product(checked_product(p.tile_capacity, l.samples, "Tile raster"), 4, "Tile raster");
   l.projection_bytes = checked_product(checked_product(p.tile_capacity, p.glyph_count, "Projections"),
                                        sizeof(Float4), "Projections");
+  l.recovery_capacity=std::uint32_t(std::min<std::uint64_t>({p.tile_capacity,max_recovery_cells,
+    max_recovery_projection_bytes/(std::uint64_t(p.glyph_count)*sizeof(precise::Projection))}));
+  l.recovery_bytes=checked_product(checked_product(l.recovery_capacity,p.glyph_count,"Recovery"),sizeof(precise::Projection),"Recovery");
   l.result_bytes = checked_product(p.tile_capacity, sizeof(Result), "Selections");
   l.init_bytes = checked_sum(checked_sum(32, l.mask_bytes, "INIT"),
                              checked_sum(l.stats_bytes, 16*sizeof(Float4), "INIT"), "INIT");
@@ -48,7 +52,7 @@ Layout validate_parameters(const Parameters& p) {
   if (l.pixel_bytes > max_pixel_bytes || l.projection_bytes > max_projection_bytes)
     throw std::runtime_error("Tile raster/projections exceed native buffer limits");
   l.allocated_bytes = checked_sum(l.mask_bytes, l.stats_bytes, "GPU allocation");
-  for (const auto bytes : {16*sizeof(Float4), l.pixel_bytes, l.projection_bytes, l.result_bytes})
+  for (const auto bytes : {16*sizeof(Float4), l.pixel_bytes, l.projection_bytes, l.result_bytes,l.recovery_bytes})
     l.allocated_bytes = checked_sum(l.allocated_bytes, bytes, "GPU allocation");
   return l;
 }
@@ -254,6 +258,21 @@ std::vector<Result> reference_fit(const Atlas& atlas,
       projections.data(), std::uint32_t(atlas.layout.samples), p.glyph_count,
       p.foreground_count, p.background_count, i);
   return results;
+}
+
+std::vector<Result> precise_reference_fit(const Atlas& atlas,const std::vector<std::uint32_t>& pixels,std::uint32_t count) {
+  const auto& p=atlas.parameters;
+  if(count<1 || count>p.tile_capacity || pixels.size()!=checked_product(count,atlas.layout.samples,"Precise reference samples"))
+    throw std::runtime_error("Precise reference geometry mismatch");
+  const auto n=std::uint32_t(atlas.layout.samples);
+  std::vector<precise::Projection> projections(p.glyph_count);std::vector<Result> result(count);
+  for(std::uint32_t cell=0;cell<count;++cell) {
+    const auto* input=pixels.data()+std::size_t(cell)*n;
+    for(std::uint32_t g=0;g<p.glyph_count;++g)
+      projections[g]=precise::project(input,atlas.masks.data()+std::size_t(g)*n,atlas.statistics[g],n);
+    result[cell]=precise::select(input,atlas.statistics.data(),atlas.palette.data(),projections.data(),n,p.glyph_count,p.foreground_count,p.background_count);
+  }
+  return result;
 }
 
 Atlas make_fixture(std::uint32_t glyph_count, std::uint32_t sample_width,

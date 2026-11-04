@@ -1,5 +1,7 @@
 #include "pnggpu_common.hpp"
 #include "pnggpu_algorithm.hpp"
+#include "pnggpu_guard.hpp"
+#include "pnggpu_precise.hpp"
 
 #include <cuda_runtime.h>
 
@@ -111,12 +113,13 @@ std::string info_json(const DeviceInfo& info) {
   std::ostringstream out;
   out.imbue(std::locale::classic());
   out << "{\"schema\":\"pnggpu-cuda-info-v1\",\"available\":true,\"backend\":\"cuda\","
-         "\"protocolVersion\":1,\"precision\":\"float32-no-fma\",\"device\":" << device_json(info)
+         "\"protocolVersion\":1,\"precision\":\"float32-guarded-binary64\",\"device\":" << device_json(info)
       << ",\"runtimeVersion\":" << info.runtime_version << ",\"driverVersion\":" << info.driver_version
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
       << ",\"maxProjectionBytes\":" << max_projection_bytes << ",\"maxPixelBytes\":" << max_pixel_bytes
       << ",\"maxProjectionWork\":" << max_projection_work << ",\"memoryReserveBytes\":" << memory_reserve_bytes
+      << ",\"maxRecoveryProjectionBytes\":" << max_recovery_projection_bytes << ",\"maxRecoveryCells\":" << max_recovery_cells
       << "},\"kernelWorkLimitScope\":\"internal sublaunches; HTTP tile size is independently bounded by buffers\","
          "\"timingSources\":{\"gpuProjectionMs\":\"CUDA events, sum of sublaunches\","
          "\"gpuSelectionMs\":\"CUDA events, sum of sublaunches\","
@@ -142,8 +145,27 @@ __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statist
                               std::uint32_t start, std::uint32_t end) {
   const std::uint32_t cell = start+blockIdx.x*blockDim.x+threadIdx.x;
   if (cell < end)
-    results[cell] = arithmetic::select(pixels, statistics, palette, projections, samples,
-                                       glyph_count, foreground_count, background_count, cell);
+    results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
+      projections+std::size_t(cell)*glyph_count, samples,glyph_count,foreground_count,background_count);
+}
+
+__global__ void recover_project_kernel(const std::uint32_t* pixels,const float* masks,const Float4* stats,
+    const Result* results,precise::Projection* projections,std::uint32_t n,std::uint32_t gc,
+    std::uint32_t cell_offset,std::uint32_t start,std::uint32_t end,bool verify) {
+  const auto linear=start+blockIdx.x*blockDim.x+threadIdx.x;
+  if(linear>=end)return;
+  const auto cell=cell_offset+linear/gc,g=linear%gc;
+  if(!verify && results[cell].reserved==0)return;
+  projections[linear]=precise::project(pixels+std::size_t(cell)*n,masks+std::size_t(g)*n,stats[g],n);
+}
+__global__ void recover_select_kernel(const std::uint32_t* pixels,const Float4* stats,const Float4* palette,
+    const precise::Projection* projections,Result* results,std::uint32_t n,std::uint32_t gc,
+    std::uint32_t nf,std::uint32_t nb,std::uint32_t cell_offset,std::uint32_t count,bool verify) {
+  const auto local=blockIdx.x*blockDim.x+threadIdx.x;
+  if(local>=count)return;
+  const auto cell=cell_offset+local;
+  if(!verify && results[cell].reserved==0)return;
+  results[cell]=precise::select(pixels+std::size_t(cell)*n,stats,palette,projections+std::size_t(local)*gc,n,gc,nf,nb);
 }
 
 struct TileOutput {
@@ -155,6 +177,10 @@ struct TileOutput {
   double total_ms = 0.0;
   std::uint32_t projection_launches = 0;
   std::uint32_t selection_launches = 0;
+  double guard_ms=0,recovery_projection_ms=0,recovery_selection_ms=0;
+  double max_projection_launch_ms=0,max_selection_launch_ms=0;
+  std::uint32_t recovered_cells=0,shortlist_cells=0,palette_cells=0,selection_cells=0,certified_verified=0;
+  std::size_t readback_bytes=0;
 };
 
 class Worker {
@@ -168,6 +194,7 @@ class Worker {
     palette_.allocate(16*sizeof(Float4));
     pixels_.allocate(atlas_.layout.pixel_bytes);
     projections_.allocate(atlas_.layout.projection_bytes);
+    recovery_.allocate(atlas_.layout.recovery_bytes);
     results_.allocate(atlas_.layout.result_bytes);
     const auto start = Clock::now();
     cuda_check(cudaMemcpyAsync(masks_.data, atlas_.masks.data(), atlas_.layout.mask_bytes, cudaMemcpyHostToDevice, stream_.value), "Upload glyph masks");
@@ -186,7 +213,7 @@ class Worker {
   const Atlas& atlas() const { return atlas_; }
   double atlas_upload_ms() const { return atlas_upload_ms_; }
 
-  TileOutput fit(const std::vector<std::uint32_t>& pixels, std::uint32_t count) {
+  TileOutput fit(const std::vector<std::uint32_t>& pixels, std::uint32_t count,bool verify_guard=false) {
     const auto& p = atlas_.parameters;
     if (count < 1 || count > p.tile_capacity || pixels.size() != std::size_t(count)*atlas_.layout.samples)
       throw std::runtime_error("CUDA tile geometry mismatch");
@@ -211,7 +238,8 @@ class Worker {
         pixels_.as<std::uint32_t>(), masks_.as<float>(), statistics_.as<Float4>(), projections_.as<Float4>(),
         samples, p.glyph_count, start, end);
       cuda_check(cudaGetLastError(), "Projection kernel launch");
-      result.projection_ms += finish_timed_launch("Projection kernel completion");
+      const double elapsed=finish_timed_launch("Projection kernel completion");
+      result.projection_ms+=elapsed;result.max_projection_launch_ms=std::max(result.max_projection_launch_ms,elapsed);
       ++result.projection_launches;
       start = end;
     }
@@ -229,14 +257,68 @@ class Worker {
         projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
         p.foreground_count, p.background_count, start, end);
       cuda_check(cudaGetLastError(), "Selection kernel launch");
-      result.selection_ms += finish_timed_launch("Selection kernel completion");
+      const double elapsed=finish_timed_launch("Selection kernel completion");
+      result.selection_ms+=elapsed;result.max_selection_launch_ms=std::max(result.max_selection_launch_ms,elapsed);
       ++result.selection_launches;
       start = end;
     }
+    result.guard_ms=result.selection_ms;
     stage = Clock::now();
     cuda_check(cudaMemcpyAsync(result.results.data(), results_.data, count*sizeof(Result), cudaMemcpyDeviceToHost, stream_.value), "Read back selected cells");
     cuda_check(cudaStreamSynchronize(stream_.value), "Result readback completion");
     result.readback_ms = milliseconds(stage);
+    result.readback_bytes=count*sizeof(Result);
+    const auto guarded=result.results;
+    for(const auto record:guarded) {
+      if(record.reserved)++result.recovered_cells;
+      if(record.reserved==1)++result.shortlist_cells;
+      if(record.reserved==2)++result.palette_cells;
+      if(record.reserved==3)++result.selection_cells;
+    }
+    if(result.recovered_cells || verify_guard) {
+      for(std::uint32_t offset=0;offset<count;offset+=atlas_.layout.recovery_capacity) {
+        const auto chunk=std::min(count-offset,atlas_.layout.recovery_capacity);
+        bool needed=verify_guard;
+        for(std::uint32_t i=0;i<chunk;++i)needed=needed||guarded[offset+i].reserved!=0;
+        if(!needed)continue;
+        const auto pairs=chunk*p.glyph_count;
+        for(std::uint32_t start=0;start<pairs;) {
+          const auto end=start+std::min(pairs-start,pairs_per_launch);
+          cuda_check(cudaEventRecord(start_.value,stream_.value),"Record recovery projection start");
+          recover_project_kernel<<<(end-start+block_size-1)/block_size,block_size,0,stream_.value>>>(
+            pixels_.as<std::uint32_t>(),masks_.as<float>(),statistics_.as<Float4>(),results_.as<Result>(),
+            recovery_.as<precise::Projection>(),samples,p.glyph_count,offset,start,end,verify_guard);
+          cuda_check(cudaGetLastError(),"Recovery projection launch");
+          const double elapsed=finish_timed_launch("Recovery projection completion");
+          result.recovery_projection_ms+=elapsed;result.projection_ms+=elapsed;++result.projection_launches;start=end;
+          result.max_projection_launch_ms=std::max(result.max_projection_launch_ms,elapsed);
+        }
+        // Reuse the same conservative selection work limit, including gc*32.
+        for(std::uint32_t local=0;local<chunk;) {
+          const auto cells=std::min(chunk-local,cells_per_launch);
+          cuda_check(cudaEventRecord(start_.value,stream_.value),"Record recovery selection start");
+          recover_select_kernel<<<(cells+block_size-1)/block_size,block_size,0,stream_.value>>>(
+            pixels_.as<std::uint32_t>(),statistics_.as<Float4>(),palette_.as<Float4>(),
+            recovery_.as<precise::Projection>()+std::size_t(local)*p.glyph_count,results_.as<Result>(),
+            samples,p.glyph_count,p.foreground_count,p.background_count,offset+local,cells,verify_guard);
+          cuda_check(cudaGetLastError(),"Recovery selection launch");
+          const double elapsed=finish_timed_launch("Recovery selection completion");
+          result.recovery_selection_ms+=elapsed;result.selection_ms+=elapsed;++result.selection_launches;local+=cells;
+          result.max_selection_launch_ms=std::max(result.max_selection_launch_ms,elapsed);
+        }
+      }
+      stage=Clock::now();
+      cuda_check(cudaMemcpyAsync(result.results.data(),results_.data,count*sizeof(Result),cudaMemcpyDeviceToHost,stream_.value),"Read back recovered cells");
+      cuda_check(cudaStreamSynchronize(stream_.value),"Recovery readback completion");
+      result.readback_ms+=milliseconds(stage);
+      result.readback_bytes+=count*sizeof(Result);
+      if(verify_guard)for(std::size_t i=0;i<count;++i)if(guarded[i].reserved==0) {
+        const auto a=guarded[i],b=result.results[i];
+        if(a.glyph!=b.glyph || a.foreground!=b.foreground || a.background!=b.background)
+          throw std::runtime_error("Guard certified a tuple that differs from unconditional binary64 GPU recovery");
+        ++result.certified_verified;
+      }
+    }
     result.total_ms = milliseconds(begin);
     return result;
   }
@@ -252,7 +334,7 @@ class Worker {
   Atlas atlas_;
   Stream stream_;
   Event start_, stop_;
-  DeviceBuffer masks_, statistics_, palette_, pixels_, projections_, results_;
+  DeviceBuffer masks_, statistics_, palette_, pixels_, projections_, recovery_, results_;
   double atlas_upload_ms_ = 0.0;
 };
 
@@ -264,8 +346,15 @@ std::string tile_json(const TileOutput& result, std::size_t allocated_bytes) {
       << ",\"gpuSelectionMs\":" << result.selection_ms
       << ",\"uploadMs\":" << result.upload_ms << ",\"readbackMs\":" << result.readback_ms
       << ",\"nativeTotalMs\":" << result.total_ms
+      << ",\"gpuGuardMs\":" << result.guard_ms << ",\"gpuRecoveryProjectionMs\":" << result.recovery_projection_ms
+      << ",\"gpuRecoverySelectionMs\":" << result.recovery_selection_ms
+      << ",\"maxProjectionLaunchMs\":" << result.max_projection_launch_ms << ",\"maxSelectionLaunchMs\":" << result.max_selection_launch_ms
       << "},\"allocatedBytes\":" << allocated_bytes << ",\"projectionSublaunches\":" << result.projection_launches
-      << ",\"selectionSublaunches\":" << result.selection_launches << "}";
+      << ",\"selectionSublaunches\":" << result.selection_launches
+      << ",\"deviceReadbackBytes\":" << result.readback_bytes
+      << ",\"recoveredCells\":" << result.recovered_cells << ",\"certifiedCells\":" << result.results.size()-result.recovered_cells
+      << ",\"recoveryReasons\":{\"shortlist\":" << result.shortlist_cells << ",\"palette\":" << result.palette_cells
+      << ",\"selection\":" << result.selection_cells << "}}";
   return out.str();
 }
 
@@ -280,7 +369,8 @@ int serve(const DeviceInfo& device) {
       std::ostringstream json;
       json.imbue(std::locale::classic());
       json << std::setprecision(10) << "{\"ok\":true,\"device\":" << device_json(device)
-           << ",\"protocolVersion\":1,\"precision\":\"float32-no-fma\",\"allocatedBytes\":" << worker->atlas().layout.allocated_bytes
+           << ",\"protocolVersion\":1,\"precision\":\"float32-guarded-binary64\",\"allocatedBytes\":" << worker->atlas().layout.allocated_bytes
+           << ",\"recoveryBufferBytes\":" << worker->atlas().layout.recovery_bytes
            << ",\"atlasUploadMs\":" << worker->atlas_upload_ms() << "}";
       write_frame(stdout, make_response(0, json.str()));
     } else if (command == 2) {
@@ -295,31 +385,41 @@ int serve(const DeviceInfo& device) {
 }
 
 int self_test(const DeviceInfo& device) {
-  std::size_t cases = 0, compared_cells = 0;
+  std::size_t cases = 0, compared_cells = 0,certified_verified=0,recovered=0;
   const Parameters fixtures[] = {
     {2,2,1,1,1,3}, {4,4,8,12,8,67}, {8,8,40,12,8,67},
     {1,1,40,1,1,65}, {32,64,219,12,8,65}, {4,4,219,12,8,129},
-    {1,1,40,12,8,1025}
+    {1,1,40,12,8,1025}, {4,8,37,6,5,129}
   };
   for (const auto p : fixtures) {
     // Round-trip the same protocol path used by the loopback service.
-    const auto source = make_fixture(p.glyph_count, p.sample_width, p.sample_height,
+    auto source = make_fixture(p.glyph_count, p.sample_width, p.sample_height,
                                      p.tile_capacity, p.foreground_count, p.background_count);
+    if(p.glyph_count==37) {
+      std::uint32_t state=0x719efad3u;
+      for(auto& value:source.masks) {state=1664525u*state+1013904223u;value=float(state>>24)/255.0f;}
+      for(std::uint32_t g=0;g<p.glyph_count;++g)source.statistics[g]=compute_statistics(source.masks.data()+std::size_t(g)*source.layout.samples,source.layout.samples);
+    }
     Worker worker(parse_init(encode_init(source)));
     for (const std::uint32_t requested : {1u, 3u, 63u, 64u, 65u, p.tile_capacity}) {
       if (requested > p.tile_capacity) continue;
-      const auto generated = fixture_pixels(worker.atlas(), requested, 0x12345678u+std::uint32_t(cases));
+      auto generated = fixture_pixels(worker.atlas(), requested, 0x12345678u+std::uint32_t(cases));
+      if(p.glyph_count==37) {
+        std::uint32_t state=0xf17eac31u+std::uint32_t(cases);
+        for(auto& value:generated){state=1664525u*state+1013904223u;value=state&0xffffffu;}
+      }
       std::uint32_t count = 0;
       const auto pixels = parse_tile(encode_tile(generated, requested), worker.atlas(), count);
-      const auto expected = reference_fit(worker.atlas(), pixels, count);
-      const auto actual = worker.fit(pixels, count);
+      const auto expected = precise_reference_fit(worker.atlas(), pixels, count);
+      const auto actual = worker.fit(pixels, count,true);
+      certified_verified+=actual.certified_verified;recovered+=actual.recovered_cells;
       for (std::size_t i = 0; i < expected.size(); ++i) {
         const auto a = actual.results[i], e = expected[i];
         if (a.glyph != e.glyph || a.foreground != e.foreground || a.background != e.background || a.reserved != 0)
-          throw std::runtime_error("CUDA float32 self-test mismatch in case "+std::to_string(cases)+", cell "+std::to_string(i));
+          throw std::runtime_error("CUDA CPU-objective self-test mismatch in case "+std::to_string(cases)+", cell "+std::to_string(i));
       }
       // A second identical call checks reusable-buffer repeatability.
-      const auto repeated = worker.fit(pixels, count);
+      const auto repeated = worker.fit(pixels, count,true);
       for (std::size_t i = 0; i < expected.size(); ++i) {
         const auto a = repeated.results[i], e = expected[i];
         if (a.glyph != e.glyph || a.foreground != e.foreground || a.background != e.background || a.reserved != 0)
@@ -329,9 +429,12 @@ int self_test(const DeviceInfo& device) {
       compared_cells += count;
     }
   }
+  if(certified_verified<=5)throw std::runtime_error("Self-test did not exercise nontrivial certified decisions");
   std::cout << "{\"schema\":\"pnggpu-cuda-self-test-v1\",\"ok\":true,\"device\":" << device_json(device)
             << ",\"cases\":" << cases << ",\"comparedCells\":" << compared_cells
-            << ",\"oracle\":\"native float32, shared arithmetic, FMA disabled\",\"originalCpuParityProven\":false}\n";
+            << ",\"oracle\":\"CPU-grouped binary64 plus unconditional binary64 GPU verification of every certified tuple\""
+            << ",\"certifiedVerified\":" << certified_verified << ",\"recoveredCells\":" << recovered
+            << ",\"originalCpuParityProven\":false}\n";
   return 0;
 }
 

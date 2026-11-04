@@ -10,7 +10,7 @@ import {validateWorkbenchInputs,WORKBENCH_LIMITS} from '../src/gpu/workload.js';
 import {milliseconds,bytes,gpuProfileStages,compareCells,compareAnsi} from '../src/gpu/metrics.js';
 
 const html=await readFile(new URL('../experiments/webgpu/photographic.html',import.meta.url),'utf8');
-test('physical precision fixture retains the independent CPU winner and records the unresolved CUDA result',async()=>{
+test('historical physical precision fixture retains the independent CPU winner and failed baseline output',async()=>{
   const saved=JSON.parse(await readFile(new URL('../fixtures/cuda/precision-cutoff.json',import.meta.url),'utf8'));
   const result=referencePhotoFit({pixels:Uint8Array.from(saved.fixture.pixels),
     masks:saved.atlas.masks.map(m=>Float32Array.from(m)),palette:saved.atlas.palette,
@@ -38,10 +38,10 @@ function element(value=''){
     replaceChildren(){this.children=[];},appendChild(child){this.children.push(child);}};
 }
 const info={schema:'pnggpu-cuda-info-v1',available:true,backend:'cuda',protocolVersion:1,
-  precision:'float32-no-fma',device:{name:'Test Turing',computeCapability:'7.5',index:0,
+  precision:'float32-guarded-binary64',device:{name:'Test Turing',computeCapability:'7.5',index:0,
     totalMemoryBytes:24*1024**3,freeMemoryBytes:22*1024**3},limits:{
     maxMessageBytes:128*1024**2,maxTileCells:65536,maxSamplesPerCell:2048,maxGlyphCount:65535,
-    maxProjectionBytes:128*1024**2,maxPixelBytes:64*1024**2,maxProjectionWork:16777216}};
+    maxProjectionBytes:128*1024**2,maxPixelBytes:64*1024**2,maxProjectionWork:16777216,maxRecoveryProjectionBytes:32*1024**2,maxRecoveryCells:1024}};
 
 function conversionContext(fit){
   const config={canvas:{columns:1,rows:1,sample_width:1,sample_height:1,cell_width:8,cell_height:16},vocabulary:'test'};

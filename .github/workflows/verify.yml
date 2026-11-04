@@ -25,6 +25,8 @@ jobs:
         run: node --test tests/cuda_bridge.test.mjs
       - name: Verify source package manifest
         run: python scripts/package_manifest.py --check
+      - name: Verify native regression fixtures against independent CPU
+        run: node scripts/generate_cuda_regressions.mjs --check
       - name: Verify benchmark image hashes
         shell: pwsh
         run: |

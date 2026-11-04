@@ -17,6 +17,8 @@ constexpr std::uint64_t max_projection_work = 16ull * 1024 * 1024;
 constexpr std::uint32_t max_tile_cells = 65536;
 constexpr std::uint32_t max_glyph_count = 65535;
 constexpr std::uint64_t memory_reserve_bytes = 2ull * 1024 * 1024 * 1024;
+constexpr std::uint64_t max_recovery_projection_bytes = 32ull * 1024 * 1024;
+constexpr std::uint32_t max_recovery_cells = 1024;
 
 struct Float4 { float x, y, z, w; };
 struct Result { std::uint32_t glyph, foreground, background, reserved; };
@@ -39,6 +41,8 @@ struct Layout {
   std::size_t stats_bytes = 0;
   std::size_t pixel_bytes = 0;
   std::size_t projection_bytes = 0;
+  std::uint32_t recovery_capacity = 0;
+  std::size_t recovery_bytes = 0;
   std::size_t result_bytes = 0;
   std::size_t init_bytes = 0;
   std::size_t allocated_bytes = 0;
@@ -76,6 +80,9 @@ std::string json_string(const std::string& value);
 std::vector<Result> reference_fit(const Atlas& atlas,
                                   const std::vector<std::uint32_t>& pixels,
                                   std::uint32_t count);
+std::vector<Result> precise_reference_fit(const Atlas& atlas,
+                                          const std::vector<std::uint32_t>& pixels,
+                                          std::uint32_t count);
 
 // Synthetic fixtures exercise the production arithmetic without images/fonts.
 Atlas make_fixture(std::uint32_t glyph_count, std::uint32_t sample_width,

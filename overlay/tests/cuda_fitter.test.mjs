@@ -5,12 +5,12 @@ import {PhotographicCudaFitter} from '../src/gpu/cuda.js';
 const MiB = 1024 * 1024;
 const nativeInfo = () => ({
   schema:'pnggpu-cuda-info-v1', available:true, backend:'cuda', protocolVersion:1,
-  precision:'float32-no-fma',
+  precision:'float32-guarded-binary64',
   device:{index:0, name:'TITAN RTX (test double)', computeCapability:'7.5',
     totalMemoryBytes:24 * 1024 ** 3, freeMemoryBytes:22 * 1024 ** 3},
   limits:{maxMessageBytes:128 * MiB, maxTileCells:65536, maxSamplesPerCell:2048,
     maxGlyphCount:65535, maxProjectionBytes:128 * MiB, maxPixelBytes:64 * MiB,
-    maxProjectionWork:16777216}
+    maxProjectionWork:16777216,maxRecoveryProjectionBytes:32*MiB,maxRecoveryCells:1024}
 });
 
 function sample({columns = 5, rows = 2, sampleWidth = 2, sampleHeight = 2, glyphCount = 3} = {}) {
@@ -88,7 +88,8 @@ function fakeBridge({info = nativeInfo(), readyMetadata = {}, onInit, onTile, on
         values.push(cell % geometry.glyphCount, cell % 16, cell % 8, 0);
       }
       const metadata = {ok:true, cellCount:count, allocatedBytes:123456,
-        timing:{gpuProjectionMs:1.25, gpuSelectionMs:0.5, uploadMs:0.1, readbackMs:0.2}};
+        recoveredCells:count,certifiedCells:0,deviceReadbackBytes:count*32,
+        timing:{gpuProjectionMs:1.25, gpuSelectionMs:0.5, uploadMs:0.1, readbackMs:0.2,gpuGuardMs:0.1,gpuRecoveryProjectionMs:0.2,gpuRecoverySelectionMs:0.3,maxProjectionLaunchMs:1,maxSelectionLaunchMs:0.3}};
       const frame = responseFrame(metadata, values);
       tiles.push({bytes, pixels, count});
       const custom = onTile && await onTile({bytes, count, pixels, metadata, values, frame, options});
@@ -114,7 +115,7 @@ test('CUDA capability lookup is optional and reports unavailable services withou
   const bridge = fakeBridge();
   const fitter = await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl});
   assert.equal(fitter.backend, 'cuda');
-  assert.equal(fitter.precision, 'float32-no-fma');
+  assert.equal(fitter.precision, 'float32-guarded-binary64');
   assert.equal(fitter.info.device.computeCapability, '7.5');
   assert.equal(fitter.adapterInfo.name, 'TITAN RTX (test double)');
   assert.equal(fitter.timestampsAvailable, true);
@@ -135,7 +136,7 @@ test('worker version, precision and GPU capability are checked before any render
 test('initialization preserves live memory telemetry but cannot silently change GPU identity', async () => {
   const freeMemoryBytes = 19 * 1024 ** 3;
   const bridge = fakeBridge({readyMetadata:{device:{...nativeInfo().device, freeMemoryBytes}, atlasUploadMs:2.5,
-    protocolVersion:1, precision:'float32-no-fma'}});
+    protocolVersion:1, precision:'float32-guarded-binary64'}});
   const fitter = await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl});
   const result = await fitter.fit(sample());
   assert.equal(result.stats.cudaInfo.device.freeMemoryBytes, freeMemoryBytes);
@@ -170,13 +171,15 @@ test('CUDA tile limits use actual buffer/payload limits and report the requested
     'native kernel work segmentation must not create tiny HTTP tiles');
   assert.ok(plan.projectionBufferBytes <= 128 * MiB);
   assert.equal(plan.nativeBufferBytes, 219 * 2048 * 4 + 219 * 16 + 256 +
-    plan.projectionBufferBytes + plan.rasterBufferBytes + plan.tileCells * 16);
+    plan.projectionBufferBytes + plan.rasterBufferBytes + plan.tileCells * 16+plan.recoveryProjectionBytes);
   assert.throws(() => PhotographicCudaFitter.tilePlan(nativeInfo(), {
     columns:1, rows:1, sampleWidth:32, sampleHeight:64, glyphCount:65535
   }), /atlas exceeds/);
   assert.throws(() => PhotographicCudaFitter.tilePlan(nativeInfo(), {
     columns:1025, rows:1, sampleWidth:1, sampleHeight:1, glyphCount:1
   }), /Columns/);
+  const malformed=nativeInfo();malformed.limits.maxRecoveryProjectionBytes=1;
+  assert.throws(()=>PhotographicCudaFitter.tilePlan(malformed,{columns:1,rows:1,sampleWidth:1,sampleHeight:1,glyphCount:1}),/recovery row/);
 });
 
 test('browser packs atlas statistics, palette and cell-major RGB identically to WebGPU, then stitches a partial tile', async () => {
@@ -225,7 +228,9 @@ test('browser packs atlas statistics, palette and cell-major RGB identically to 
   assert.ok(result.stats.timing.nativeInitMs >= 0);
   assert.ok(result.stats.timing.bridgeRoundTripMs >= 0);
   assert.ok(result.stats.timing.wallTotalMs >= result.stats.timing.nativeInitMs);
-  assert.equal(result.stats.readbackBytes, 10 * 16);
+  assert.equal(result.stats.readbackBytes, 10 * 32,'Includes guard result inspection and recovered results');
+  assert.equal(result.stats.recoveredCells,10);
+  assert.equal(result.stats.certifiedCells,0);
   assert.equal(result.stats.uploadedBytes, bytes.length - 32 + 10 * 4 * 4);
   assert.equal(bridge.deletions.length, 1);
 });
@@ -283,6 +288,9 @@ test('invalid native tuples, timings and truncated frames cannot reach ANSI enco
     ({metadata, values}) => responseFrame({...metadata, cellCount:99}, values),
     ({metadata, values}) => responseFrame({...metadata, timing:{...metadata.timing, gpuProjectionMs:-1}}, values),
     ({metadata, values}) => responseFrame({...metadata, allocatedBytes:0}, values),
+    ({metadata, values}) => responseFrame({...metadata, recoveredCells:0,certifiedCells:0}, values),
+    ({metadata, values}) => responseFrame({...metadata, deviceReadbackBytes:0}, values),
+    ({metadata, values}) => responseFrame({...metadata, timing:{...metadata.timing,gpuRecoverySelectionMs:-1}}, values),
     ({frame}) => frame.subarray(0,frame.length - 1),
     ({frame}) => frame.subarray(0,7),
     ({metadata, values}) => responseFrame(metadata, values, 2),

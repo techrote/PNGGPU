@@ -58,16 +58,16 @@
       "bytes": 326
     },
     ".github/workflows/verify.yml": {
-      "sha256": "bd8183956f33613b7f5f4f796f854c83b437b71743c5d730f5b11eb978a783de",
-      "bytes": 4996
+      "sha256": "11674c60e3c16fcb8697b0265800a7bab85a3b96aaa539a0cd48d126f9076e9d",
+      "bytes": 5132
     },
     ".gitignore": {
       "sha256": "4b9e22e2506fe26074b575c4ed2e10cd08a2abca04850096cc70532ff2431c95",
       "bytes": 70
     },
     "README.md": {
-      "sha256": "eb26e6f38f718332a9b9ebe653351cd3a9aea2b34d3d36712085bc874ca56577",
-      "bytes": 5168
+      "sha256": "c2431a9b0e861e5bfb71d1eaf40534bd5143ec95dcf21c0a125548ba65709fc8",
+      "bytes": 5283
     },
     "README_FIRST.md": {
       "sha256": "498fb67d41d4a9d22cd0a9bd9a69237f27d5bb08329dc2d422397b70b12c973a",
@@ -78,32 +78,44 @@
       "bytes": 208
     },
     "native/cuda/CMakeLists.txt": {
-      "sha256": "553d17fe576ce4b900bfcd2be84c60d13b7a08319e18430f305a19fe694eb1b0",
-      "bytes": 2252
+      "sha256": "98814d5904fde7f4827a3c32b9e9c436ea721e665cc41cad63bb85fb063fa6b8",
+      "bytes": 2312
     },
     "native/cuda/README.md": {
-      "sha256": "02314888a8ff68bcf1a4ac8b5cecd629270ee472f01c7a09f7455d8200991b04",
-      "bytes": 12185
+      "sha256": "f378cfb9eb4d27bd118a041fe4fae51ac8470634426428a30f0437660b6bd18d",
+      "bytes": 14745
     },
     "native/cuda/include/pnggpu_algorithm.hpp": {
       "sha256": "dc2bda45d3bfe8379b74ae4132953b67cb57a3ba2fe79d8c4b261bc1c955f0de",
       "bytes": 6784
     },
     "native/cuda/include/pnggpu_common.hpp": {
-      "sha256": "de87f2487d35b3506666e76242e866a73ff0cd7acd78e2f49667f8de59704a88",
-      "bytes": 3728
+      "sha256": "e5ad3b10467b2a7961687b8c1053bd8ddf109105933df281c2fe4b06e2c9f19a",
+      "bytes": 4139
+    },
+    "native/cuda/include/pnggpu_guard.hpp": {
+      "sha256": "54e87a18e514b33c2120ac66aa73e9c181e684b952bc73014123d50a9876a2ed",
+      "bytes": 7285
+    },
+    "native/cuda/include/pnggpu_precise.hpp": {
+      "sha256": "dbb6b5f218f5559692bfe0825ddd885bc326992b7719c7114ab1f780d846049b",
+      "bytes": 3895
     },
     "native/cuda/src/common.cpp": {
-      "sha256": "b4ff65a23ee4bddf1a960d574e1dbf72aef08adedc5290cb26e760eff2f7bd16",
-      "bytes": 15702
+      "sha256": "80d03a2d0161239dd9b5f59adc95af495888f4bf1fbb88c1ca881f13c73eb30a",
+      "bytes": 17026
     },
     "native/cuda/src/worker.cu": {
-      "sha256": "e7f4931803851cc836f656e76f1674675b7dde25881f8a30d77afaec90e1569f",
-      "bytes": 18970
+      "sha256": "06d0f74ed248863961b9d2dfeffee7fbe7834457bbac86dfb98efc42fab45b46",
+      "bytes": 26228
+    },
+    "native/cuda/tests/fixtures/cpu-parity.bin": {
+      "sha256": "717f36620b75d899c103541fb58718002647b5434801128569602272a13bb0f8",
+      "bytes": 36532
     },
     "native/cuda/tests/host_tests.cpp": {
-      "sha256": "9ffb6f0808fff61d778d5f5c7d32fb0a9c8203e51745bed25d758830b49280ec",
-      "bytes": 11042
+      "sha256": "ccd2bb30148c8cff782a2490ca6a52cd0d4d6dd74fb69412122b78fe16260ce4",
+      "bytes": 14157
     },
     "overlay/GPU006_INSTALL.md": {
       "sha256": "c4d8b5b3fad99b4a6554716fc8d5c7ce52a48c1528986f88eb709360f2e3dcca",
@@ -114,8 +126,8 @@
       "bytes": 1438
     },
     "overlay/docs/CUDA_BACKEND.md": {
-      "sha256": "2e57ab6fb02caa212451b9b7b02db54e5a0131f2873ebd8791604d41916e5aea",
-      "bytes": 13742
+      "sha256": "76cb428bba243a48701bbe7b388ec116cc8439ddb9534c82317db225462386f6",
+      "bytes": 15983
     },
     "overlay/docs/WEBGPU_BENCHMARKS.md": {
       "sha256": "31b4bfbc60d9fe97f1ef2e4c64b8bfac798132a13686f08734e5d72d76ea3cea",
@@ -126,8 +138,8 @@
       "bytes": 9761
     },
     "overlay/experiments/webgpu/photographic.html": {
-      "sha256": "d85f997c977e9f94bd3a4af6350ea87254672cea84f1cbbb1f2c411d2a8b51c7",
-      "bytes": 74872
+      "sha256": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
+      "bytes": 75404
     },
     "overlay/fixtures/cuda/precision-cutoff.json": {
       "sha256": "3d5a45d8583f7c8d8907c94213666bdf3a8055187563ba8d9d8dbb8fd2a040d9",
@@ -178,12 +190,12 @@
       "bytes": 2120
     },
     "overlay/src/gpu/cuda.js": {
-      "sha256": "f232abf26f86b5a776cffa53b83321350dbd923f8b6812fa3101c872b2f84ca9",
-      "bytes": 26226
+      "sha256": "5adde8328e7d23ef4d75edb535615064effa34ed5f96307eaba288fd84876b01",
+      "bytes": 28218
     },
     "overlay/src/gpu/memory.js": {
-      "sha256": "e42a0d71050a393ea4ae5767e76edf38e35ca5f65ee004369a81ad98d3430fda",
-      "bytes": 6450
+      "sha256": "b1446b9f79a3efb348228d20ae40e9c764d42665084657f8c18786a61dcd5e51",
+      "bytes": 6506
     },
     "overlay/src/gpu/metrics.js": {
       "sha256": "28d9b8e1d6357f16539d01db1f75968ecce07d532aa5bd3b4919aea6b16db664",
@@ -226,12 +238,12 @@
       "bytes": 3238
     },
     "overlay/tests/cuda_fitter.test.mjs": {
-      "sha256": "eb2667b368c792c25e18daac7219f7944d2bb01dc85d48f58a941931f9202f0a",
-      "bytes": 20508
+      "sha256": "a1fc16c731bfd8c3533f86ab90cdd18001cc9a706ad956101962b4ec23d2d232",
+      "bytes": 21500
     },
     "overlay/tests/cuda_workbench.test.mjs": {
-      "sha256": "0ffdb4a75f81f85c05be416b428388e536dbee9fa07b86058cc15f678a116d16",
-      "bytes": 11894
+      "sha256": "ed5fc1a3689b18a867fa580f46114500811109ddc372f1baa9319150a203e14c",
+      "bytes": 11963
     },
     "overlay/tests/gpu007_extended.test.mjs": {
       "sha256": "86afc13f9346ce368dac02646f7cda36af2212b353ac12b56fd3154351745510",
@@ -305,13 +317,21 @@
       "sha256": "c87f36f40703ae29dc0a1efda6c6baa83b53841ab7183a300aeb5327b4c4f618",
       "bytes": 4674
     },
+    "scripts/generate_cuda_regressions.mjs": {
+      "sha256": "12e25ad5d97602560acf67b2b0c44eadeb9d879ebde9cd93996e5973cb71244b",
+      "bytes": 2170
+    },
     "scripts/package_manifest.py": {
       "sha256": "04e7a59749a79f006e99504688e23fdeb6d6899675064106dc91936481f9463a",
       "bytes": 2047
     },
     "scripts/qualify_cuda.mjs": {
-      "sha256": "8f1602614f99c089ac2e2e567e93366ef9419754cf41d68187dd1787d22fbf78",
-      "bytes": 12533
+      "sha256": "e1e9e34669ee4273d2d42d48ff3305739d9291ae3bafffee6786182f26b4dade",
+      "bytes": 12909
+    },
+    "scripts/replay_cuda_fixtures.mjs": {
+      "sha256": "b0dbfab6423aa8168e94da6c47a60a92e4c2df915d9728d4ef9270a40c8b9640",
+      "bytes": 4197
     },
     "scripts/serve.mjs": {
       "sha256": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
@@ -342,8 +362,8 @@
       "bytes": 639
     },
     "tests/cuda_bridge.test.mjs": {
-      "sha256": "4d9ae215688f17c3e3120171b7b7558ebc1a4cb4f4256368bd28b41ab08ba0cf",
-      "bytes": 22184
+      "sha256": "506ae2ebeffe6c9b439d614c7ac772c473240520f5c4d4b6680c9633ea976007",
+      "bytes": 22445
     }
   },
   "optional_cuda": {

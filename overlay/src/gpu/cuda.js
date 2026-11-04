@@ -3,8 +3,9 @@
  *
  * Image preparation, font rasterization and ANSI encoding stay in the browser.
  * This adapter transfers the SAME prepared samples, Float32 glyph masks and
- * Float32 statistics used by the WGSL implementation. It does not claim that
- * native float32 arithmetic is byte-identical to the binary64 CPU oracle.
+ * Float32 statistics used by the WGSL implementation. Conservative decision
+ * intervals certify CPU-objective results; ambiguous cells recover on the GPU
+ * using the original CPU's binary64 grouping and strict tie order.
  *
  * The local bridge owns one persistent native worker per fit; atlas/device
  * allocations are reused across tiles. CUDA-001 uses one tile at a time. A
@@ -52,7 +53,7 @@ function validateInfo(info) {
     throw new Error(`CUDA is unavailable: ${info?.error || 'start the optional CUDA server with start-cuda.bat'}`);
   }
   if (info.schema !== 'pnggpu-cuda-info-v1' || info.protocolVersion !== PROTOCOL_VERSION ||
-      info.backend !== 'cuda' || info.precision !== 'float32-no-fma') {
+      info.backend !== 'cuda' || info.precision !== 'float32-guarded-binary64') {
     throw new Error('Incompatible CUDA worker; rebuild the native worker from this PNGGPU checkout');
   }
   const capability = /^(\d+)\.(\d+)$/.exec(String(info.device?.computeCapability ?? ''));
@@ -70,7 +71,9 @@ function validateInfo(info) {
     maxSamplesPerCell:2048,
     maxGlyphCount:65535,
     maxProjectionBytes:128 * MiB,
-    maxPixelBytes:64 * MiB
+    maxPixelBytes:64 * MiB,
+    maxRecoveryProjectionBytes:32 * MiB,
+    maxRecoveryCells:1024
   };
   const limits = {};
   for (const [key, cap] of Object.entries(hardCaps)) {
@@ -263,6 +266,11 @@ function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart) {
     finiteTime(metadata.timing?.[key], key);
   }
   integer(metadata.allocatedBytes, 'CUDA allocated bytes', 1, Number.MAX_SAFE_INTEGER);
+  integer(metadata.recoveredCells,'CUDA recovered cells',0,count);
+  integer(metadata.certifiedCells,'CUDA certified cells',0,count);
+  if(metadata.recoveredCells+metadata.certifiedCells!==count)throw new Error('CUDA recovery counts do not match the tile');
+  if(metadata.deviceReadbackBytes!==count*16*(metadata.recoveredCells?2:1))throw new Error('CUDA device readback byte count does not match recovery');
+  for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs','maxProjectionLaunchMs','maxSelectionLaunchMs'])finiteTime(metadata.timing?.[key],key);
   for (let i = 0; i < count; i++) {
     const at = 8 + jsonBytes + i * 16;
     const glyph = view.getUint32(at, true), foreground = view.getUint32(at + 4, true);
@@ -329,15 +337,19 @@ export class PhotographicCudaFitter {
       Math.floor((limits.maxMessageBytes - 8 - MAX_METADATA_BYTES) / 16));
     if (tileCells < 1) throw new RangeError('No valid CUDA tile fits the native worker limits');
     const projectionBufferBytes = tileCells * glyphCount * 16;
+    const recoveryTileCells=Math.min(tileCells,limits.maxRecoveryCells,Math.floor(limits.maxRecoveryProjectionBytes/(glyphCount*32)));
+    if(recoveryTileCells<1)throw new RangeError('No precise recovery row fits the CUDA recovery buffer limit');
+    const recoveryProjectionBytes=recoveryTileCells*glyphCount*32;
     const rasterBufferBytes = tileCells * samples * 4;
     return {
       backend:'cuda', requestedTileCells:requestedCells, requestedTileMiB:preferredTileMiB,
       effectiveProjectionMiB:projectionBufferBytes / MiB,
       requestedInFlightTiles:inFlightTiles, inFlightTiles:1,
       tileCells, tileCount:Math.ceil(cells / tileCells), projectionBufferBytes, rasterBufferBytes,
+      recoveryTileCells,recoveryProjectionBytes,
       maxStorageBindingBytes:null, maxBufferBytes:Math.max(limits.maxProjectionBytes, limits.maxPixelBytes),
       maxMessageBytes:limits.maxMessageBytes, maxKernelProjectionWork:limits.maxKernelProjectionWork ?? null,
-      nativeBufferBytes:atlasBytes + projectionBufferBytes + rasterBufferBytes + tileCells * 16,
+      nativeBufferBytes:atlasBytes + projectionBufferBytes + rasterBufferBytes + tileCells * 16 + recoveryProjectionBytes,
       pipelineNote:'One persistent native CUDA worker; sequential tiles; native kernel sublaunches are bounded independently.'
     };
   }
@@ -359,7 +371,8 @@ export class PhotographicCudaFitter {
       writeBufferMs:null, encodeSubmitMs:null, readbackWaitMs:null, timestampsReadMs:0,
       slotAvailabilityWaitMs:0, firstTileCompletedMs:null, wallTotalMs:0,
       nativeInitMs:0, atlasUploadMs:null, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
-      gpuProjectionMs:0, gpuSelectionMs:0, cleanupMs:0
+      gpuProjectionMs:0, gpuSelectionMs:0, gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,
+      maxProjectionLaunchMs:0,maxSelectionLaunchMs:0,cleanupMs:0
     };
     let sessionId = null, primaryError = null;
     try {
@@ -437,6 +450,14 @@ export class PhotographicCudaFitter {
         tile.decodeMs = clock() - at; timing.decodeCellsMs += tile.decodeMs;
         tile.projectionMs = native.timing.gpuProjectionMs; tile.selectionMs = native.timing.gpuSelectionMs;
         tile.uploadMs = native.timing.uploadMs; tile.readbackMs = native.timing.readbackMs;
+        tile.recoveredCells=native.recoveredCells;tile.certifiedCells=native.certifiedCells;
+        tile.recoveryReasons=native.recoveryReasons??null;
+        for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs']) {
+          tile[key]=native.timing[key];timing[key]+=native.timing[key];
+        }
+        for(const key of ['maxProjectionLaunchMs','maxSelectionLaunchMs']) {
+          tile[key]=native.timing[key];timing[key]=Math.max(timing[key],native.timing[key]);
+        }
         tile.projectionSublaunches = native.projectionSublaunches === undefined ? null :
           integer(native.projectionSublaunches, 'CUDA projection sublaunch count', 1, Number.MAX_SAFE_INTEGER);
         tile.selectionSublaunches = native.selectionSublaunches === undefined ? null :
@@ -444,7 +465,8 @@ export class PhotographicCudaFitter {
         timing.gpuProjectionMs += tile.projectionMs; timing.gpuSelectionMs += tile.selectionMs;
         timing.uploadMs += tile.uploadMs; timing.readbackMs += tile.readbackMs;
         allocatedBytes = native.allocatedBytes;
-        uploadedBytes += tileCount * samples * 4; readbackBytes += tileCount * 16;
+        tile.deviceReadbackBytes=native.deviceReadbackBytes;
+        uploadedBytes += tileCount * samples * 4; readbackBytes += native.deviceReadbackBytes;
         requestPayloadBytes += payload.byteLength; tileResponseBytes += response.byteLength;
         tile.wallMs = clock() - tileStarted;
         tileMeasurements.push(tile);
@@ -456,6 +478,8 @@ export class PhotographicCudaFitter {
       throwIfAborted(controller.signal);
       return {chosen, fg, bg, stats:{version:'CUDA-001', ...plan, precision:this.precision,
         timing, tileMeasurements, peakInFlightTiles:1, uploadedBytes, readbackBytes, allocatedBytes,
+        recoveredCells:tileMeasurements.reduce((sum,tile)=>sum+tile.recoveredCells,0),
+        certifiedCells:tileMeasurements.reduce((sum,tile)=>sum+tile.certifiedCells,0),
         requestPayloadBytes, tileResponseBytes, adapterInfo:{...this.adapterInfo, ...cudaInfo.device}, cudaInfo,
         projectionSublaunches:tileMeasurements.every(tile => tile.projectionSublaunches !== null) ?
           tileMeasurements.reduce((sum, tile) => sum + tile.projectionSublaunches, 0) : null,

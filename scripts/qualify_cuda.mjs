@@ -171,6 +171,9 @@ finally {
   report.accepted=!report.error&&report.invalidDevice.passed&&report.cancellation?.passed===true&&report.jobs.length>0&&report.jobs.every(j=>['cuda','webgpu'].every(b=>
     j.parity[b]?.cells?.changedCells===0&&j.parity[b]?.ansi?.mismatches===0&&
     j.runs[b]?.length===3&&j.runs[b].every(r=>r.vsFirst===null||r.vsFirst.changedCells===0)));
+  report.cudaAccepted=!report.error&&report.invalidDevice.passed&&report.cancellation?.passed===true&&report.jobs.length>0&&report.jobs.every(j=>
+    j.parity.cuda?.cells?.changedCells===0&&j.parity.cuda?.ansi?.mismatches===0&&j.runs.cuda?.length===3&&
+    j.runs.cuda.every(r=>r.vsCpu.changedCells===0&&r.ansiVsCpu.mismatches===0&&(!r.vsFirst||r.vsFirst.changedCells===0)));
   await writeFile(output,JSON.stringify(report,null,2)+'\n');
   if(!report.accepted&&!process.exitCode)process.exitCode=2;
 }

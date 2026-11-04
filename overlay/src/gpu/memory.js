@@ -44,6 +44,7 @@ export function estimateGpuMemory({plan,columns,rows,sampleWidth,sampleHeight,gl
     glyphStats:glyphCount*16,
     ansiPalette:16*16,
     projection:plan.projectionBufferBytes*depth,
+    recoveryProjection:plan.recoveryProjectionBytes??0,
     tileSelections:plan.tileCells*16*depth,
     tileReadback:plan.tileCells*16*depth,
     timestampResolve:timestampEnabled?timestampCount*8:0,

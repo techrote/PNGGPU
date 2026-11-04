@@ -24,7 +24,7 @@ section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space
 </head>
 <body><main>
 <h1>PNGGPU · GPU-007 photographic workbench + optional CUDA</h1>
-<p>Compare WebGPU or local CUDA matching with the CPU reference on the same prepared samples, glyph masks and ANSI palette. GPU matching uses single precision; enable CPU comparison to measure actual parity. The CPU matcher is checked against the original reference in host tests.</p>
+<p>Compare WebGPU or local CUDA matching with the CPU reference on the same prepared samples, glyph masks and ANSI palette. WebGPU uses single precision; CUDA certifies decisions with conservative intervals and recovers ambiguous cells in binary64 on the GPU. Enable CPU comparison to measure actual parity.</p>
 <div class="controls">
 <label>Backend <select id="backend"><option value="webgpu" selected>WebGPU · browser</option><option value="cuda">CUDA · local NVIDIA GPU</option></select></label>
 <label>Image <input id="image" type="file" accept="image/*"></label>
@@ -505,7 +505,7 @@ function presentMetrics(result){
   const g=result.gpuStats??{},h=gpuProfileStages(result);
   if(result.backend==='cuda'){
     byId('metric-profile').textContent=[
-      'CUDA · float32, fused multiply-add disabled',
+      'CUDA · certified float32 decisions with binary64 GPU recovery, fused multiply-add disabled',
       `Device: ${JSON.stringify(g.adapterInfo??'not reported')}`,
       `Sampling: ${result.sourceSamplingMode}; full logical raster ${bytes(result.sourceRasterBytes)}`,
       `Atlas packing: ${milliseconds(h.atlasPackMs)}`,
@@ -515,6 +515,9 @@ function presentMetrics(result){
       `Native upload + synchronization (host wall): ${milliseconds(h.uploadMs)}`,
       `True GPU projection shader: ${milliseconds(h.gpuProjectionMs)}`,
       `True GPU selection shader: ${milliseconds(h.gpuSelectionMs)}`,
+      `Decision certification: ${milliseconds(h.gpuGuardMs)}; recovery projection: ${milliseconds(h.gpuRecoveryProjectionMs)}; recovery selection: ${milliseconds(h.gpuRecoverySelectionMs)}`,
+      `Certified cells: ${g.certifiedCells??'not reported'}; precisely recovered cells: ${g.recoveredCells??'not reported'}`,
+      `Maximum measured projection/selection sublaunch: ${milliseconds(h.maxProjectionLaunchMs)} / ${milliseconds(h.maxSelectionLaunchMs)}`,
       `Native readback + synchronization (host wall): ${milliseconds(h.readbackMs)}`,
       `Result decode: ${milliseconds(h.decodeCellsMs)}; fit wall: ${milliseconds(h.wallTotalMs)}`,
       `Uploaded: ${bytes(g.uploadedBytes)}; read back: ${bytes(g.readbackBytes)}`,

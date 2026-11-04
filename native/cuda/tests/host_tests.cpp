@@ -1,4 +1,7 @@
 #include "pnggpu_common.hpp"
+#include "pnggpu_algorithm.hpp"
+#include "pnggpu_guard.hpp"
+#include "pnggpu_precise.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -80,7 +83,8 @@ void layout_tests() {
   const auto layout = validate_parameters(valid);
   require(layout.samples == 64, "Samples per cell");
   require(layout.init_bytes == 32+40*64*4+40*16+256, "INIT length");
-  require(layout.allocated_bytes == 40*64*4+40*16+256+67*64*4+67*40*16+67*16, "GPU allocation estimate");
+  require(layout.allocated_bytes == 40*64*4+40*16+256+67*64*4+67*40*16+67*16+67*40*32, "GPU allocation estimate including recovery");
+  require(layout.recovery_capacity==67 && layout.recovery_bytes==67*40*32,"Recovery capacity accounts for double projections");
   for (const auto invalid : {
       Parameters{0,8,40,12,8,67}, Parameters{33,8,40,12,8,67}, Parameters{8,65,40,12,8,67},
       Parameters{8,8,0,12,8,67}, Parameters{8,8,65536,12,8,67}, Parameters{8,8,40,13,8,67},
@@ -219,9 +223,54 @@ void arithmetic_tests() {
 }
 } // namespace
 
-int main() {
+int main(int argc,char** argv) {
   try {
     layout_tests(); protocol_tests(); arithmetic_tests();
+    if(argc>1) {
+      std::FILE* stream=nullptr;
+#ifdef _WIN32
+      if(fopen_s(&stream,argv[1],"rb")!=0)stream=nullptr;
+#else
+      stream=std::fopen(argv[1],"rb");
+#endif
+      File input(stream,std::fclose);
+      require(bool(input),"Open independent CPU regression frames");
+      std::vector<std::uint8_t> init,tile,expected;unsigned fixtures=0;
+      while(read_frame(input.get(),init)) {
+        require(read_frame(input.get(),tile)&&read_frame(input.get(),expected),"Complete CPU fixture frames");
+        const auto atlas=parse_init(init);std::uint32_t count=0;const auto pixels=parse_tile(tile,atlas,count);
+        require(expected.size()==16 && count==1,"Independent fixture geometry");
+        const Result golden{read_u32(expected,0),read_u32(expected,4),read_u32(expected,8),read_u32(expected,12)};
+        require(equal(precise_reference_fit(atlas,pixels,count)[0],golden),"Binary64 recovery retains independent JS CPU winner");
+        const auto n=std::uint32_t(atlas.layout.samples),gc=atlas.parameters.glyph_count;
+        std::vector<Float4> projections(gc);
+        for(unsigned g=0;g<gc;++g)projections[g]=arithmetic::project(pixels.data(),atlas.masks.data(),atlas.statistics.data(),n,gc,g);
+        const auto guarded=guard::select(pixels.data(),atlas.statistics.data(),atlas.palette.data(),projections.data(),n,gc,6,5);
+        require(guarded.reserved!=0,"Saved precision and shortlist failures must request recovery");++fixtures;
+      }
+      require(fixtures==2,"Both historical parity defects are native regressions");
+    }
+    for(const auto n:{1u,2u,32u,64u,512u,2048u}) {
+      auto atlas=make_fixture(40,1,n<=64?n:64,17);
+      if(n>64)atlas=make_fixture(40,n/64,64,17);
+      const auto pixels=fixture_pixels(atlas,17,0x91abcdefu+n);
+      const auto expected=precise_reference_fit(atlas,pixels,17);
+      std::vector<Float4> projected(40);
+      for(unsigned cell=0;cell<17;++cell) {
+        for(unsigned g=0;g<40;++g) {
+          projected[g]=arithmetic::project(pixels.data(),atlas.masks.data(),atlas.statistics.data(),n,40,cell*40+g);
+          const auto exact=precise::project(pixels.data()+cell*n,atlas.masks.data()+g*n,atlas.statistics[g],n);
+          const float approx[3]={projected[g].x,projected[g].y,projected[g].z};
+          const double dots[3]={exact.x,exact.y,exact.z};
+          for(unsigned k=0;k<3;++k) {
+            const auto bound=guard::dots(approx[k],n,float(n*255u));
+            require(double(bound.lo)<=dots[k] && dots[k]<=double(bound.hi),"Dot interval encloses binary64 oracle");
+          }
+        }
+        const auto guarded=guard::select(pixels.data()+cell*n,atlas.statistics.data(),atlas.palette.data(),projected.data(),n,40,12,8);
+        require(guarded.reserved!=0 || equal(guarded,expected[cell]),"Guard cannot certify a different CPU-objective tuple");
+      }
+    }
     std::cout << "PNGGPU CUDA host tests: " << checks << " checks passed (no GPU required).\n";
     return 0;
   } catch (const std::exception& error) {

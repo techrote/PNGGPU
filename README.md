@@ -26,8 +26,9 @@ GPU's VRAM capacity (24 GiB for TITAN RTX), choose an image and run. WebGPU rema
 available in the backend selector, and normal `start.bat` has no CUDA dependency.
 
 The CUDA worker uses the same browser-prepared samples, glyph masks and ANSI
-palette, then runs the projection and stable candidate-selection passes in
-float32 with fused multiply-add disabled. It contains native `sm_75` code plus
+palette, then uses float32 projection, conservative decision certification and
+binary64 GPU recovery for ambiguous cells. Fused multiply-add remains disabled.
+It contains native `sm_75` code plus
 `compute_75` PTX, selects the first compatible GPU (skipping older cards such as
 V100), and supports explicit device selection. It reuses one tile-buffer set and
 splits large tiles into bounded kernel launches. Actual CUDA pipeline depth is
@@ -37,8 +38,9 @@ CUDA reports device identity, full local-bridge/initialization overhead and
 actual kernel timings. The existing CPU/ANSI comparison, hardmode benchmark,
 ZIP exports and folder-batch paths work with the selected backend. **CUDA
 hardware qualification remains incomplete.** Physical TITAN RTX tests pass the
-five modest hardmode cases but expose CPU/CUDA/WebGPU parity failures at
-512×512; PR #2 remains draft. See the CUDA guide for the acceptance runner.
+five modest hardmode cases; historical float32 failures at 512×512 now have
+precise GPU recovery and regression fixtures undergoing renewed qualification.
+PR #2 remains draft. See the CUDA guide for the acceptance runner.
 Host tests and compiler CI are not physical GPU acceptance.
 
 See the [CUDA setup, usage and qualification guide](overlay/docs/CUDA_BACKEND.md)
