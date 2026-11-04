@@ -2150,8 +2150,8 @@
       "bytes": 4164
     },
     "scripts/benchmark_cuda_video.mjs": {
-      "sha256": "225fee4eef7d3dfdad2ac4f84b176aa81c2908ce691aefc9e11173585753b40e",
-      "bytes": 13593
+      "sha256": "bbcf324065a2b831d9027e887c964242a08caed86ca83ff2ac7558cda295e583",
+      "bytes": 13672
     },
     "scripts/benchmark_cuda_video_matrix.mjs": {
       "sha256": "f68a4d68103fe763696519d3269b0559144613ef34eafe39e3eb089cee2a6637",

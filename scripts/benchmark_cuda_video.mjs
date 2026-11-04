@@ -5,7 +5,7 @@ import {resolve,dirname,relative,isAbsolute} from 'node:path';
 import {execFileSync,spawn} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {createWorkbenchServer} from './serve.mjs';
-import {PhotographicCudaFitter,packTileRgba,cudaRequest} from '../overlay/src/gpu/cuda.js';
+import {PhotographicCudaFitter,packTileRgba,packInit,cudaRequest} from '../overlay/src/gpu/cuda.js';
 import {createCudaDirectTransport} from './cuda_direct.mjs';
 import {validateVideoManifest,crop16x9} from './cuda_video_plan.mjs';
 import {videoTilePlan} from './cuda_video_tile_plan.mjs';
@@ -69,6 +69,7 @@ try{
     prepared.forEach((p,i)=>{if(hash(p)!==batch.frames[i].rgbaSha256)throw new Error('Preloaded frame bytes changed');});
     report.preloadMs=performance.now()-preloadStart;
     const plan=framesPlan(),packetSets=Array.from({length:Number(count)},()=>[]);
+    report.initPacketSha256=hash(packInit(a,plan,a.masks.length,32));
     function framesPlan(){return fitter.tilePlan({...a,glyphCount:a.masks.length,preferredTileMiB:Number(tile),inFlightTiles:1});}
     report.preparedHostBytes=queueScope.inputBytes*2+Number(count)*plan.tileCount*20+8+plan.tileCells*32*4;
     if(report.preparedHostBytes>256*1024*1024)throw new Error('Prototype retained input/packet host budget exceeds256MiB');
