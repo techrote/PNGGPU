@@ -19,7 +19,7 @@ import {queuePlan,runDepthOneQueue} from './cuda_frame_queue.mjs';
 import '../PNG2ANSI/src/core.js';
 const [worker,batchDirectory,mode,tile,count,output,...flags]=process.argv.slice(2);
 const allowed=['--continuous','--direct','--prepacked','--native-pack','--live-pack'];
-if(!output||new Set(flags).size!==flags.length||flags.some(f=>!allowed.includes(f)))throw new Error('Usage: WORKER BATCH MODE TILE COUNT OUT [--continuous] [--direct] [--prepacked|--native-pack]');
+if(!output||new Set(flags).size!==flags.length||flags.some(f=>!allowed.includes(f)))throw new Error('Usage: WORKER BATCH MODE TILE COUNT OUT [--continuous] [--direct] [--prepacked|--native-pack|--live-pack]');
 const continuous=flags.includes('--continuous'),direct=flags.includes('--direct'),prepacked=flags.includes('--prepacked'),nativePack=flags.includes('--native-pack');
 const livePack=flags.includes('--live-pack');
 if((direct||prepacked||nativePack||livePack)&&!continuous||prepacked&&(nativePack||livePack)||nativePack&&(!direct||livePack))throw new Error('Prototype packing/transport requires continuous mode; native packing is direct-only');

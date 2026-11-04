@@ -1,0 +1,18 @@
+**********************************************************************
+** Visual Studio 2022 Developer Command Prompt v17.14.40
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+-- Configuring done (6.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/pnggpu-CUDA/build/direct-native
+[1/4] Building CXX object CMakeFiles\pnggpu_cuda_common.dir\src\common.cpp.obj
+[2/4] Linking CXX static library pnggpu_cuda_common.lib
+[3/4] Linking CXX executable pnggpu_cuda_host_tests.exe
+[4/4] Linking CXX executable pnggpu_cuda_worker.exe
+Test project C:/pnggpu-CUDA/build/direct-native
+    Start 1: cuda_host_protocol_and_arithmetic
+1/1 Test #1: cuda_host_protocol_and_arithmetic ...   Passed    0.12 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.15 sec

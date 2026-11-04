@@ -25,6 +25,23 @@ A final fresh log query follows cleanup. Detection latency includes query time;
 polling cannot guarantee detecting an event before the next immediate refill.
 This is prepared-frame conversion throughput, not live capture/display latency.
 
+The [direct-path experiment](../../qualification/GTX1650SUPER_DIRECT_PATH.md)
+compares identical prepacked TILE inputs through HTTP and a private Node child-
+pipe transport. `--continuous --prepacked` prepares/retains packets before the
+timed burst; add `--direct` to remove the HTTP hop. For matched live allocation
+controls, use `--continuous --live-pack` with or without `--direct`. All prototype
+arms allocate and retain per-frame packets and cap declared parent raw/packet/
+session-payload storage at 256 MiB (not whole-process RSS). The browser path
+continues to use HTTP and its reusable tile buffer.
+
+`--continuous --direct --native-pack` copies compact RGBA row bands in bulk on
+the JS side and gathers canonical cell-major RGB words in native C++. The
+normal worker advertises `nativeRasterPacking: "rgba-row-bands-v1"`; the runner
+requires that capability explicitly. Native gathering uses small cell blocks
+for output locality after validating the complete source extent. It changes
+neither kernels, arithmetic nor GPU buffer admission. This is still a copying
+pipe protocol, with one worker/context and one outstanding request.
+
 The [GTX selection profile](../../qualification/GTX1650SUPER_SELECTION_PROFILE.md)
 records bounded FP32/FP64 warm-frame measurements. `PNGGPU_COLOR_MAJOR_FP32=ON`
 (default) retains the original direct FP32 candidate traversal. Configure it
@@ -282,6 +299,17 @@ Exactly one INIT is accepted, then zero or more sequential TILE requests:
 |---|---|
 | INIT | Eight `uint32`: `1, 1, sampleWidth, sampleHeight, glyphCount, foregroundCandidates, backgroundCandidates, maxTileCells`; then float32 glyph-major masks; float32 glyph statistics, four values per glyph; float32 palette, four values for each of 16 colors |
 | TILE | Two `uint32`: `2, cellCount`; then `cellCount * sampleWidth * sampleHeight` packed RGB8 words (`R \| G<<8 \| B<<16`, zero high byte), in cell-major sample order |
+| RASTER_TILE (private direct prototype) | Five `uint32`: `3, cellCount, columns, rows, startCell`; then compact RGBA8 row bands described below |
+
+RASTER_TILE requires columns/rows in 1..1024 and a contiguous logical cell range
+within that grid and the INIT tile capacity. For each cell row intersecting the
+range, append its selected contiguous cells in raster order: sample Y, cell X,
+sample X, RGBA byte. Partial first/last rows contain only selected cells. The
+pixel byte count remains `cellCount * samples * 4`; its header adds 12 bytes
+relative to TILE. Native conversion ignores alpha and preserves RGB8 exactly.
+Full geometry/length validation precedes allocation and gathering. HTTP rejects
+command 3; only the private direct transport admits it. Responses use the
+existing TILE schema and canonical output ordering.
 
 Mask values must be finite in `[0,1]`. Statistics must equal the browser-host
 algorithm's binary64 sum/sum-of-squares followed by float32 storage, and contain
@@ -304,6 +332,12 @@ Successful INIT metadata includes `ok`, `device`, `protocolVersion`, `precision`
 | `uploadMs` | Host elapsed time for tile transfer through its stream completion |
 | `readbackMs` | Host elapsed time for result transfer through its stream completion |
 | `nativeTotalMs` | Native tile call elapsed time, including waits/launch overhead |
+| `nativePackingMs` | RASTER_TILE validation, allocation and host gather before the native fit interval; zero for ordinary TILE, not zero legacy parsing cost |
+
+`nativePackingMs` is outside `nativeTotalMs` and already inside the client bridge
+interval. Subtract it from the bridge remainder before presenting disjoint
+timing buckets. Optional absent native timing fields remain unavailable/null in
+the adapter. `scripts/cuda_timing_breakdown.mjs` supplies warm-frame accounting.
 
 The browser's request/packing time and native initialization are separate costs.
 Kernel intervals must not be presented as end-to-end conversion throughput.

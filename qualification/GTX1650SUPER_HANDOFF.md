@@ -4,6 +4,13 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [direct-path continuation](GTX1650SUPER_DIRECT_PATH.md) compares identical
+prepacked inputs through HTTP/direct pipes, then measures live JS/native packing
+and a cache-blocked native gather separately. All 1,080 ordinary frames match
+same-mode output archives. The final 320x90 FP32 conversion run is 36.6 FPS with
+27.3 ms mean fit; this excludes live decode/display and does not qualify sustained
+stability. The 2 GiB reserve and depth one remain; WebGPU/HTTP stay browser defaults.
+
 The [native-timer continuation](GTX1650SUPER_NATIVE_TIMING.md) exposes the
 already-emitted worker fit interval and reruns all three geometries in FP32/FP64.
 It separates packing, native compute intervals and the remaining bridge bucket,

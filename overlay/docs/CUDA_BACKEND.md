@@ -5,6 +5,27 @@ WebGPU backend or an optional local CUDA worker. **WebGPU remains the default.**
 CUDA is explicitly selected in the workbench; it never silently falls back to
 WebGPU or CPU after an error.
 
+The [direct-path report](../../qualification/GTX1650SUPER_DIRECT_PATH.md) records
+bounded HTTP/direct-pipe comparisons with identical packed inputs, followed by
+separately timed native input gathering. This Node-only prototype is injectable
+as `await PhotographicCudaFitter.create({transport})`, where `transport` comes from
+`scripts/cuda_direct.mjs`. Its `request(path, options)` interface replaces fetch
+handling and owns one bounded child session; always await `transport.close()`.
+The browser's transport/default backend and HTTP origin restrictions are unchanged.
+Pass `expectedPrecision` explicitly when selecting a direct arithmetic mode.
+
+For engineering use, `frameSession.fitFrame(pixels, {tilePacketProvider})` may
+provide immutable bounded packet views retained until request completion. The
+default packs canonical TILE buffers in JS. The direct prototype can instead
+use `packRasterTileRgba` from `scripts/cuda_raster_packet.mjs`; it supports source
+byte offsets/row stride and compact RGBA row bands, then the native worker
+gathers exactly the same canonical RGB words. No workbench toggle is added.
+
+`stats.timing.nativePackingMs` measures that command-3 validation/allocation/
+gather. It is outside native fit and inside bridge round-trip time. Zero denotes
+no raster gather; older workers omitting it produce null. Use
+`packingTimingBreakdown` to remove it from the bridge residual exactly once.
+
 `stats.timing.nativeTotalMs` and each tile's `nativeTotalMs` preserve the worker's
 host-clock fit interval; a frame total is null if any tile lacks it. The interval
 includes GPU/transfers/launch synchronization and bookkeeping, while excluding

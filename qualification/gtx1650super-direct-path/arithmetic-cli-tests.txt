@@ -1,0 +1,1 @@
+CUDA arithmetic CLI: 7 host-only checks passed (no device discovery or GPU work)
