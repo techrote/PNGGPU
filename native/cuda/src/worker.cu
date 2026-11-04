@@ -28,7 +28,7 @@ namespace {
 using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
-constexpr unsigned selection_block_size = 32;
+constexpr unsigned selection_block_size = 64;
 bool direct_binary64 = false;
 bool direct_float32 = false, half_mixed = false;
 const char* precision_name() {
@@ -178,7 +178,7 @@ __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statist
   if (cell < end) {
     if constexpr(Guarded)results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
       projections+std::size_t(cell)*glyph_count, samples,glyph_count,foreground_count,background_count);
-    else results[cell]=arithmetic::select(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
+    else results[cell]=arithmetic::select<true>(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
   }
 }
 

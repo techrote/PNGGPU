@@ -289,6 +289,17 @@ int main(int argc,char** argv) {
         require(guarded.reserved!=0 || equal(guarded,expected[cell]),"Guard cannot certify a different CPU-objective tuple");
       }
     }
+    for(unsigned gc:{1u,7u,32u,40u,218u})for(unsigned nf:{1u,6u,12u,16u})for(unsigned nb:{1u,5u,8u}) {
+      const auto atlas=make_fixture(gc,4,8,9);
+      const auto pixels=fixture_pixels(atlas,9,0x91724u+gc);
+      std::vector<Float4> projections(gc*9);
+      for(unsigned i=0;i<gc*9;++i)projections[i]=arithmetic::project(pixels.data(),atlas.masks.data(),atlas.statistics.data(),32,gc,i);
+      for(unsigned cell=0;cell<9;++cell) {
+        const auto a=arithmetic::select(pixels.data(),atlas.statistics.data(),atlas.palette.data(),projections.data(),32,gc,nf,nb,cell);
+        const auto b=arithmetic::select<true>(pixels.data(),atlas.statistics.data(),atlas.palette.data(),projections.data(),32,gc,nf,nb,cell);
+        require(equal(a,b),"Glyph-first candidate traversal retains original strict-tie winner");
+      }
+    }
     std::cout << "PNGGPU CUDA host tests: " << checks << " checks passed (no GPU required).\n";
     return 0;
   } catch (const std::exception& error) {

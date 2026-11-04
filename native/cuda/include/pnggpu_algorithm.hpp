@@ -51,6 +51,7 @@ PNGGPU_HD inline Float4 project(const std::uint32_t* pixels, const float* masks,
   return {dots.x, dots.y, dots.z, -explained};
 }
 
+template<bool GlyphMajor = false>
 PNGGPU_HD inline Result select(const std::uint32_t* pixels, const Float4* statistics,
                               const Float4* palette, const Float4* projections,
                               std::uint32_t samples, std::uint32_t glyph_count,
@@ -139,6 +140,34 @@ PNGGPU_HD inline Result select(const std::uint32_t* pixels, const Float4* statis
   }
   float best_error = 3.402823466e+38f;
   Result chosen{0, 0, 0, 0};
+  if constexpr(GlyphMajor) {
+    // Keep the original fi/bi/gi order as an explicit tie rank while visiting
+    // one glyph's projection once instead of reloading it for every color pair.
+    std::uint32_t best_rank = 0;
+    for (std::uint32_t gi = 0; gi < shortlist_size; ++gi) {
+      const auto glyph = shortlist[gi];
+      const Float4 stats = statistics[glyph];
+      const Vec3 dot_rgb = xyz(projections[std::size_t(cell)*glyph_count+glyph]);
+      for (std::uint32_t fi = 0; fi < foreground_count; ++fi) {
+        const auto foreground_id = fg_ids[fi];
+        const Vec3 fg = xyz(palette[foreground_id]);
+        for (std::uint32_t bi = 0; bi < background_count; ++bi) {
+          const auto background_id = bg_ids[bi];
+          const Vec3 bg = xyz(palette[background_id]);
+          const Vec3 d = subtract(fg, bg);
+          const float error = sum_p2 + float(samples)*dot(bg, bg)
+            + 2.0f*dot(bg, d)*stats.x*float(samples)
+            + dot(d, d)*stats.y
+            - 2.0f*dot(bg, totals) - 2.0f*dot(d, dot_rgb);
+          const auto rank = (fi*background_count+bi)*shortlist_size+gi;
+          if (error < best_error || (error == best_error && rank < best_rank)) {
+            best_error = error; best_rank = rank;
+            chosen = {glyph, foreground_id, background_id, 0};
+          }
+        }
+      }
+    }
+  } else {
   for (std::uint32_t fi = 0; fi < foreground_count; ++fi) {
     const std::uint32_t foreground_id = fg_ids[fi];
     const Vec3 fg = xyz(palette[foreground_id]);
@@ -160,6 +189,7 @@ PNGGPU_HD inline Result select(const std::uint32_t* pixels, const Float4* statis
         }
       }
     }
+  }
   }
   return chosen;
 }
