@@ -84,6 +84,7 @@ test('stalled work stops and failing cleanup does not skip subsequent resource d
 import {planFrames} from '../scripts/cuda_frame_plan.mjs';
 import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES,pngDimensions,crop16x9} from '../scripts/cuda_video_plan.mjs';
 import {checkedAfterInfo} from '../scripts/cuda_after_info.mjs';
+import {videoTilePlan} from '../scripts/cuda_video_tile_plan.mjs';
 
 test('warm frame plans cap the entire sequence and require immutable matching geometry before discovery',()=>{
   const data={columns:320,rows:160,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,
@@ -128,6 +129,14 @@ test('cropped video grids preserve the glyph display aspect with a small exact s
     assert.equal(columns*8/(rows*16),16/9);assert.equal(videoGeometry(columns,rows,30).count,30);
   }
   assert.throws(()=>crop16x9(10,4));assert.throws(()=>videoGeometry(160,46,30));
+});
+
+test('larger CUDA video tiles preserve aggregate work and reject targets beyond the native experiment cap',()=>{
+  const a={columns:320,rows:90,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,masks:Array(218)};
+  const p=videoTilePlan(a,30,'float32-direct',32),q=videoTilePlan(a,30,'float32-direct',128);
+  assert.equal(p.work,q.work);assert.equal(q.runs,30);assert.equal(q.tiles[0],38479);
+  assert.equal(videoTilePlan(a,30,'binary64-direct',64).tiles[0],19239);
+  assert.throws(()=>videoTilePlan(a,30,'float32-direct',256));
 });
 
 test('failed or changed post-cleanup device probes cannot silently allow another sequence',()=>{

@@ -12,6 +12,7 @@ OUT.mkdir(parents=True,exist_ok=True)
 sha=lambda b:hashlib.sha256(b).hexdigest()
 matrix=json.loads((RAW/(prefix+'-matrix')/'matrix.json').read_text())
 assert matrix['benchmarkCompleted'] and len(matrix['sessions'])==8
+assert matrix.get('layout','letterboxed')==('cropped' if cropped else 'letterboxed')
 paths=[RAW/(prefix+'-initial.json'),RAW/(prefix+'-initial-fp64.json')]+[Path(e['report']) for e in matrix['sessions']]
 summary={'schema':'pnggpu-cuda-motion-results-v1','qualificationAccepted':False,'cpuComparison':{'skipped':True},
          'batches':{},'sessions':[],'sourceVideo':json.loads((ROOT/'qualification/gtx1650super-warm-frames/motion-candidate.json').read_text())}
@@ -25,6 +26,8 @@ for path in paths:
     b=Path(r['outputsPath']).read_bytes();assert sha(b)==r['outputsSha256']
     workers=[p for p in r['processes'] if '--stdio' in p['args']];assert len(workers)==1 and workers[0]['exited']
     a=r['batch']['atlas'];width=a['columns'];kind='characterization' if len(r['frames'])==120 else 'comparison'
+    assert r['batch']['fitMode']==('crop-16:9' if cropped else 'contain-black')
+    assert a['rows']==(width*9//32 if cropped else width//2)
     key=f'{kind}-{width}-{r["mode"]}-{r["tileMiB"]}';summary['batches'][str(width)]=r.pop('batch')
     r.update(key=key,batchWidth=width,rawReport=str(path),rawReportSha256=sha(raw),rawOutputsSha256=sha(b))
     del r['outputsPath']
