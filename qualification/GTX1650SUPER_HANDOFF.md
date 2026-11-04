@@ -4,6 +4,13 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [projection/continuous-queue report](GTX1650SUPER_PROJECTION_QUEUE.md) records
+sample-major masks, exact integer RGB totals for binary64 projection and bounded
+continuously refilled depth-one FP32/FP64 queues at 160x45, 320x90 and letterboxed
+160x80. All 1,080 ordinary comparison frames preserve same-mode tuple/ANSI hashes.
+These conversion-only rates exclude live decode/display and do not qualify
+sustained stability or an optimal tile/depth configuration.
+
 The [selection-stage profile](GTX1650SUPER_SELECTION_PROFILE.md) adds bounded
 compiler/CUPTI diagnostics and a glyph-major FP32 experiment. It improves the
 160x45 median but regresses measured 320x90 medians; the original traversal stays

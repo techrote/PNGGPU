@@ -1,5 +1,30 @@
 # Optional CUDA worker
 
+The [projection/continuous-queue report](../../qualification/GTX1650SUPER_PROJECTION_QUEUE.md)
+adds FP32/FP64 results at 160x45, 320x90 and letterboxed 160x80 characters.
+Fresh normal builds now default `PNGGPU_SAMPLE_MAJOR_MASKS=ON` and
+`PNGGPU_INTEGER_PROJECTION_SUMS=ON`. The former repacks the static atlas on the
+host once, keeping GPU mask storage unchanged; its cold repack/upload span is
+included in `atlasUploadMs`. The latter sums RGB8 channels exactly as uint32 in
+binary64 projection, retaining binary64 products, accumulation and objective.
+Validated samples/cell <=2048 imply totals <=522240, so the old double sums and
+new integer sums/conversions are exact. Original CPU helpers remain the oracle.
+Existing CMake caches require explicit ON settings when upgrading. `--info`
+reports `deviceMaskLayout` and `binary64ProjectionSums`; both controls apply only
+to the normal worker. The 2 GiB reserve and GPU allocation sizes are unchanged.
+
+`scripts/benchmark_cuda_video.mjs ... --continuous` measures a finite always-ready
+producer with depth one: 2–30 prepared frames, <=128 MiB preloaded input, a
+30-second burst bound and 10-second per-frame timeout. It refills immediately
+after completion and retains results for post-burst tuple/ANSI serialization.
+Reports distinguish preload, fit/warm-span throughput, refill gaps and output
+drain costs. A serialized asynchronous driver-log monitor polls between queries
+(250 ms delay, 10-second query timeout, 12-second maximum observation age), aborts
+on errors/staleness and is stopped with its active query cancelled on cleanup.
+A final fresh log query follows cleanup. Detection latency includes query time;
+polling cannot guarantee detecting an event before the next immediate refill.
+This is prepared-frame conversion throughput, not live capture/display latency.
+
 The [GTX selection profile](../../qualification/GTX1650SUPER_SELECTION_PROFILE.md)
 records bounded FP32/FP64 warm-frame measurements. `PNGGPU_COLOR_MAJOR_FP32=ON`
 (default) retains the original direct FP32 candidate traversal. Configure it
@@ -18,7 +43,9 @@ and its runtime DLL/library and license. It is off by default. Only a `--stdio`
 process with `PNGGPU_CUDA_ACTIVITY_DIRECTORY` set records CSV runtime/kernel
 activities; info probes are untraced. Client record buffers are capped at four
 1 MiB allocations; the separate host-pinned profiling pool is limited to two
-buffers. Background flushes occur every 100 ms. Check expected kernel counts,
+buffers. Background flushes occur every 100 ms; instrumented tile responses also
+flush completed activities before returning, avoiding tail loss on short bursts.
+These flushes add traced wall overhead. Check expected kernel counts,
 `dropped`/`traceError` rows, and the orderly-exit `traceErrors` footer. A killed
 bridge worker can lack the footer, so completeness must be checked explicitly.
 Tracing adds overhead. These options apply to the normal worker only. No

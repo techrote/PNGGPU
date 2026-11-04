@@ -1,0 +1,66 @@
+**********************************************************************
+** Visual Studio 2022 Developer Command Prompt v17.14.40
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+-- The CXX compiler identification is MSVC 19.44.35228.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- The CUDA compiler identification is NVIDIA 12.8.93 with host compiler MSVC 19.44.35228.0
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: C:/pnggpu-CUDA/.cuda-toolchain/bin/nvcc.exe - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Found CUDAToolkit: C:/pnggpu-CUDA/.cuda-toolchain/include (found version "12.8.93")
+-- Configuring done (11.7s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/pnggpu-CUDA/build/projection-legacy
+[1/6] Building CXX object CMakeFiles\pnggpu_cuda_common.dir\src\common.cpp.obj
+[2/6] Linking CXX static library pnggpu_cuda_common.lib
+[3/6] Building CXX object CMakeFiles\pnggpu_cuda_host_tests.dir\tests\host_tests.cpp.obj
+[4/6] Linking CXX executable pnggpu_cuda_host_tests.exe
+[5/6] Building CUDA object CMakeFiles\pnggpu_cuda_worker.dir\src\worker.cu.obj
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelILb0EEEvPKjPKN6pnggpu6Float4ES6_S6_PNS3_6ResultEjjjjjj' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelILb0EEEvPKjPKN6pnggpu6Float4ES6_S6_PNS3_6ResultEjjjjjj
+    352 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 72 registers, used 0 barriers, 352 bytes cumulative stack size, 416 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelILb1EEEvPKjPKN6pnggpu6Float4ES6_S6_PNS3_6ResultEjjjjjj' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main13select_kernelILb1EEEvPKjPKN6pnggpu6Float4ES6_S6_PNS3_6ResultEjjjjjj
+    768 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 96 registers, used 0 barriers, 768 bytes cumulative stack size, 416 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main21recover_select_kernelEPKjPKN6pnggpu6Float4ES5_PKNS2_7precise10ProjectionEPNS2_6ResultEjjjjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main21recover_select_kernelEPKjPKN6pnggpu6Float4ES5_PKNS2_7precise10ProjectionEPNS2_6ResultEjjjjjjb
+    768 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 80 registers, used 0 barriers, 768 bytes cumulative stack size, 417 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main22recover_project_kernelEPKjPKfPKN6pnggpu6Float4EPKNS4_6ResultEPNS4_7precise10ProjectionEjjjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main22recover_project_kernelEPKjPKfPKN6pnggpu6Float4EPKNS4_6ResultEPNS4_7precise10ProjectionEjjjjjb
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 47 registers, used 0 barriers, 413 bytes cmem[0]
+ptxas info    : Compile time = 0.000 ms
+ptxas info    : Compiling entry function '_ZN37_GLOBAL__N__812e0851_9_worker_cu_main14project_kernelEPKjPKfPKN6pnggpu6Float4EPS5_jjjjb' for 'sm_75'
+ptxas info    : Function properties for _ZN37_GLOBAL__N__812e0851_9_worker_cu_main14project_kernelEPKjPKfPKN6pnggpu6Float4EPS5_jjjjb
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+
+ptxas info    : Used 45 registers, used 0 barriers, 401 bytes cmem[0]
+
+ptxas info    : Compile time = 0.000 ms
+
+worker.cu
+
+tmpxft_00002c60_00000000-7_worker.cudafe1.cpp
+
+[6/6] Linking CXX executable pnggpu_cuda_worker.exe
+Test project C:/pnggpu-CUDA/build/projection-legacy
+    Start 1: cuda_host_protocol_and_arithmetic
+1/1 Test #1: cuda_host_protocol_and_arithmetic ...   Passed    0.09 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.12 sec

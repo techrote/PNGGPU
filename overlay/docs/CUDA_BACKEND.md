@@ -5,6 +5,13 @@ WebGPU backend or an optional local CUDA worker. **WebGPU remains the default.**
 CUDA is explicitly selected in the workbench; it never silently falls back to
 WebGPU or CPU after an error.
 
+The [projection/queue continuation](../../qualification/GTX1650SUPER_PROJECTION_QUEUE.md)
+adds sample-major masks and exact integer RGB totals in binary64 projection,
+with unchanged outputs on the bounded comparisons and unchanged native memory
+admission. It also records continuously refilled depth-one FP32/FP64 measurements,
+including letterboxed 160x80. WebGPU and guarded CUDA remain their respective
+defaults; no new workbench precision/selection control is introduced.
+
 The [GTX selection profile](../../qualification/GTX1650SUPER_SELECTION_PROFILE.md)
 records bounded warm-frame FP32/FP64 diagnostics. A build-only glyph-major FP32
 experiment improves 160x45 medians but regresses 320x90 medians. Original

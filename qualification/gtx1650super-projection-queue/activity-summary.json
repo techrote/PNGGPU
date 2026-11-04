@@ -1,0 +1,1642 @@
+[
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-trace-legacy-float32-direct.json",
+    "rawReportSha256": "d7dc77048a868b0f017305fc64fa550b5b72ab46fe8a5eaaa43ed139c22665b5",
+    "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+    "worker": {
+      "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+      "sha256": "503ae80c1a5d09ff4f3118e4bb4cc600d8450bd305702bf36449e1934366fa1e",
+      "receipt": {
+        "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "503ae80c1a5d09ff4f3118e4bb4cc600d8450bd305702bf36449e1934366fa1e",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": false,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "float32-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "float32-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "glyph-major",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 45,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 47,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 110,
+    "expectedKernels": 110,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 4.247295976,
+        "projectionActivityMs": 3.5068200000000003,
+        "selectionEventsMs": 5.413952053,
+        "tupleSha256": "d96d2efe1f353f81482a20c24443b6091b71f696e84870a3660897542987f901",
+        "ansiSha256": "bdfdc6e4e5c5557638622db20df7207a9708bc575e258cc9abbb2e8ecf2a458c"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 3.68678391,
+        "projectionActivityMs": 3.5102130000000002,
+        "selectionEventsMs": 5.065727949,
+        "tupleSha256": "6632185c109b348c0711bedd5cfe558dd570ca06226c03901c456371d47f1497",
+        "ansiSha256": "ead40ee63765ae4ab5ae30a1d821047f7fc812f8f76523a4e74308a38ae7a610"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 3.671296,
+        "projectionActivityMs": 3.514405,
+        "selectionEventsMs": 4.970367968,
+        "tupleSha256": "792ab635918d14ced90df4fa7ba2866c69e5dddd7beb15ad0e2ed5603b68ee42",
+        "ansiSha256": "ff25cbb20fa09712313afe4d79d465d7fc87c93ca9de301e5eaf945f78cdff48"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 3.678080082,
+        "projectionActivityMs": 3.510116,
+        "selectionEventsMs": 4.920831919,
+        "tupleSha256": "e31747ee292746ee47941290063a23fdcc06aedb92a5403c17f692beb938bad9",
+        "ansiSha256": "e7b7f710f9d8ac108a485bd8115f9dd5e364939067fa67f2dd909c094426c668"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 3.636896014,
+        "projectionActivityMs": 3.511654,
+        "selectionEventsMs": 4.904447973,
+        "tupleSha256": "a8a3a0eef305add55146bbb7f2f59e1a9130ab16dd9837dda291710f8c246d4c",
+        "ansiSha256": "ee859b6fa3040c4496faa17834ca99e9afd2030998a352d4a0c28f17144aeea3"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 3.664608121,
+        "projectionActivityMs": 3.511685,
+        "selectionEventsMs": 4.855136037,
+        "tupleSha256": "6b3f0762a0fb182ca25e1bbe2b5118ac54beb21e02b81fe99e4e8dd683dedd4c",
+        "ansiSha256": "8f603604f0cdf4ffd2cf19387de02192bef4204c350a8cd609e150221cdcbccc"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 3.609535933,
+        "projectionActivityMs": 3.476262,
+        "selectionEventsMs": 5.046848059,
+        "tupleSha256": "2bb8b6660930d87f9c6ea1b3cb6bd0856e78559b560f0b949b55acd60256bb8f",
+        "ansiSha256": "30cb1f398b460fe77e24df9f30afee1fc9055a1279c665cd621f642154699eb2"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 4.234400034,
+        "projectionActivityMs": 4.147029,
+        "selectionEventsMs": 4.806591928,
+        "tupleSha256": "f24ec7529577f181fd9d0a69ab2c0a023e4756787a48fd22ed175d4fb589c621",
+        "ansiSha256": "13074e32599237646dbc2c87c31f84efb86086b9661a6613941e3d4b43798873"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 3.778496027,
+        "projectionActivityMs": 3.4762950000000004,
+        "selectionEventsMs": 5.291999996,
+        "tupleSha256": "b545a10eb24f05d0c80a9469c71e8baac717a2a5f527baa0ac63f3e2909e13c6",
+        "ansiSha256": "b1de53fda518d31803291f52c903bf8fe356059528ab8336537ce86d687fbac2"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 3.851071954,
+        "projectionActivityMs": 3.760221,
+        "selectionEventsMs": 4.802367985,
+        "tupleSha256": "0dd9b7be12de6b806dfc16ddec6fc89b4ef6530d0073acc6a996af990d4d2af8",
+        "ansiSha256": "c3896259d54440e2fbe8b90ed1e5fffb046ffb3ef87e30ad6d8576a89c604cae"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-trace-legacy-float32-direct-0.csv",
+        "rawSha256": "49df5bc72e9635a35287657e94019378a2d510bcfc210de63feb4f26af13a412",
+        "committedLFSha256": "489e6de33a3972c05af6a8815145fb1356e475fc331dc7f07680795b0f6c55b4"
+      }
+    ]
+  },
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-trace-sample-float32-direct.json",
+    "rawReportSha256": "355e1235b6aa0d3ed4aa3b9f8f0d235f5ddcc757ce8ee361b835195357078773",
+    "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+    "worker": {
+      "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+      "sha256": "51e2d464a5761391364d03b0d6a5565b52b36cb425d084323824e5fce5d1e76a",
+      "receipt": {
+        "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "51e2d464a5761391364d03b0d6a5565b52b36cb425d084323824e5fce5d1e76a",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": true,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "float32-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "float32-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "sample-major",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 110,
+    "expectedKernels": 110,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 1.401248008,
+        "projectionActivityMs": 0.407476,
+        "selectionEventsMs": 5.620736003,
+        "tupleSha256": "d96d2efe1f353f81482a20c24443b6091b71f696e84870a3660897542987f901",
+        "ansiSha256": "bdfdc6e4e5c5557638622db20df7207a9708bc575e258cc9abbb2e8ecf2a458c"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 0.491456002,
+        "projectionActivityMs": 0.40699700000000005,
+        "selectionEventsMs": 5.102336049,
+        "tupleSha256": "6632185c109b348c0711bedd5cfe558dd570ca06226c03901c456371d47f1497",
+        "ansiSha256": "ead40ee63765ae4ab5ae30a1d821047f7fc812f8f76523a4e74308a38ae7a610"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 0.5411520004,
+        "projectionActivityMs": 0.40683800000000003,
+        "selectionEventsMs": 4.968095958,
+        "tupleSha256": "792ab635918d14ced90df4fa7ba2866c69e5dddd7beb15ad0e2ed5603b68ee42",
+        "ansiSha256": "ff25cbb20fa09712313afe4d79d465d7fc87c93ca9de301e5eaf945f78cdff48"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 0.4869119972,
+        "projectionActivityMs": 0.40318999999999994,
+        "selectionEventsMs": 4.857887983,
+        "tupleSha256": "e31747ee292746ee47941290063a23fdcc06aedb92a5403c17f692beb938bad9",
+        "ansiSha256": "e7b7f710f9d8ac108a485bd8115f9dd5e364939067fa67f2dd909c094426c668"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 0.6309759915,
+        "projectionActivityMs": 0.402741,
+        "selectionEventsMs": 5.258527994,
+        "tupleSha256": "a8a3a0eef305add55146bbb7f2f59e1a9130ab16dd9837dda291710f8c246d4c",
+        "ansiSha256": "ee859b6fa3040c4496faa17834ca99e9afd2030998a352d4a0c28f17144aeea3"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 0.4754880071,
+        "projectionActivityMs": 0.402998,
+        "selectionEventsMs": 4.821055949,
+        "tupleSha256": "6b3f0762a0fb182ca25e1bbe2b5118ac54beb21e02b81fe99e4e8dd683dedd4c",
+        "ansiSha256": "8f603604f0cdf4ffd2cf19387de02192bef4204c350a8cd609e150221cdcbccc"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 0.513439998,
+        "projectionActivityMs": 0.403253,
+        "selectionEventsMs": 4.876191974,
+        "tupleSha256": "2bb8b6660930d87f9c6ea1b3cb6bd0856e78559b560f0b949b55acd60256bb8f",
+        "ansiSha256": "30cb1f398b460fe77e24df9f30afee1fc9055a1279c665cd621f642154699eb2"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 0.6661760062,
+        "projectionActivityMs": 0.402581,
+        "selectionEventsMs": 5.409888029,
+        "tupleSha256": "f24ec7529577f181fd9d0a69ab2c0a023e4756787a48fd22ed175d4fb589c621",
+        "ansiSha256": "13074e32599237646dbc2c87c31f84efb86086b9661a6613941e3d4b43798873"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 0.5493760109,
+        "projectionActivityMs": 0.40622899999999995,
+        "selectionEventsMs": 5.603071988,
+        "tupleSha256": "b545a10eb24f05d0c80a9469c71e8baac717a2a5f527baa0ac63f3e2909e13c6",
+        "ansiSha256": "b1de53fda518d31803291f52c903bf8fe356059528ab8336537ce86d687fbac2"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 0.6222719848,
+        "projectionActivityMs": 0.40687,
+        "selectionEventsMs": 5.118656039,
+        "tupleSha256": "0dd9b7be12de6b806dfc16ddec6fc89b4ef6530d0073acc6a996af990d4d2af8",
+        "ansiSha256": "c3896259d54440e2fbe8b90ed1e5fffb046ffb3ef87e30ad6d8576a89c604cae"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-trace-sample-float32-direct-0.csv",
+        "rawSha256": "784d2f0c8379fb93c792a6d91eb026bf8647880422cb7a8c2a18d1953a43d10e",
+        "committedLFSha256": "c028bf0c4a65abecf719bdac6e806a6087769720cdb1e2f68c071ef8b0869b10"
+      }
+    ]
+  },
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-trace-sample-binary64-direct.json",
+    "rawReportSha256": "62b39307ad45fb468ac965aa4a0e81d939211c17162447eb3fa5e86c57873c76",
+    "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+    "worker": {
+      "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+      "sha256": "51e2d464a5761391364d03b0d6a5565b52b36cb425d084323824e5fce5d1e76a",
+      "receipt": {
+        "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "51e2d464a5761391364d03b0d6a5565b52b36cb425d084323824e5fce5d1e76a",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": true,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "binary64-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "binary64-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "sample-major",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 160,
+    "expectedKernels": 160,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 15.49129595,
+        "projectionActivityMs": 14.373327,
+        "selectionEventsMs": 17.4705919,
+        "tupleSha256": "04e590750b4f2e204a1e6eff85034a7897945c33433885203585e441876fe4a6",
+        "ansiSha256": "64726d394233e1c12ed686ce1b8194f4bb587d607eaeacd6ec28148479a7ae7f"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 14.97212809,
+        "projectionActivityMs": 14.74839,
+        "selectionEventsMs": 16.56614399,
+        "tupleSha256": "8611fbb3b2e1fff33cd9b3456ef7e82f9f4961094cb4d7d71cb0cd4c3f63fe28",
+        "ansiSha256": "ee706741e92a210bea5ddc2ff97a1ff3bb53d9958c44245842c4d716da0af3a0"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 15.09164766,
+        "projectionActivityMs": 14.803715,
+        "selectionEventsMs": 16.49475193,
+        "tupleSha256": "47c3c48060f7d508fd83258b06c896fce838de947a317b033805c2fdc4458b12",
+        "ansiSha256": "e3cacc9dcbe81019b143032f7743ffb3b3d010224d158add4e2239e2d339d814"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 14.79046399,
+        "projectionActivityMs": 14.591206999999999,
+        "selectionEventsMs": 16.2687037,
+        "tupleSha256": "f394afe9038685e8936d22cf100e9351ebfba6232129e9d87aa5eb55407bfcbb",
+        "ansiSha256": "9997a4b1e80dab60512b5bfcc54721cb21ea9b991b0e7cd89030660e3c4e4bc9"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 12.34908799,
+        "projectionActivityMs": 12.126087,
+        "selectionEventsMs": 14.49174392,
+        "tupleSha256": "71de67f3715aa23ec184db20c82998eef0358e028749d3b767e9f5a2263eed7b",
+        "ansiSha256": "b6458d7be7a261cf66dd940915c827d24155b15685c8f2aec03e924f3578e57c"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 11.33513588,
+        "projectionActivityMs": 10.999686,
+        "selectionEventsMs": 14.69584,
+        "tupleSha256": "fbac588ad4b7a047401e5b4ed29a9754384ff257f41a7445a6159f2aa34d0a76",
+        "ansiSha256": "6af116901c338b8c964c36711c703bd6c03272ccde947af4f7078c9286522f3d"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 11.22105587,
+        "projectionActivityMs": 10.982438,
+        "selectionEventsMs": 14.40940809,
+        "tupleSha256": "a62117a1be7bd17d8832881c73a63aa4925e41c3f9ecdf6cab70849b1e76e564",
+        "ansiSha256": "4462213158c22209c9b2595a21b969edf8067adf41f948b41b929442686baae9"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 11.23987196,
+        "projectionActivityMs": 10.987781,
+        "selectionEventsMs": 14.50262415,
+        "tupleSha256": "449940e104c2d3f29718b1545bd7c7a089562529da9dbb493982fa8e299f0534",
+        "ansiSha256": "13c0d89b6ef2407a90b3dca86009370d1d8482a5a522bcb41b92bb43b8ffaaaa"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 11.43804792,
+        "projectionActivityMs": 10.971239,
+        "selectionEventsMs": 14.05209625,
+        "tupleSha256": "631e91014002b3028c60173cf7c540e7e539e227e7541acf5a55083c7c44a625",
+        "ansiSha256": "cfad691b9c76ebe57fa0188aaf00cae1b76c5dfa276a2857cd0cd5a24bb469e7"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 11.39296009,
+        "projectionActivityMs": 11.245982,
+        "selectionEventsMs": 13.9389441,
+        "tupleSha256": "884056214ff5dd28c7cbf4bfdc21742d9a47b8ecb9812d1e6981e5451a1ec0cb",
+        "ansiSha256": "a35fb7cdde548d0f1ed8a66e8a4c6bd30b5c216a916c52f6083dce44c648f1f8"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-trace-sample-binary64-direct-0.csv",
+        "rawSha256": "51bb1b6df70215427aef665618cd694cf03ccb66cd4edebfa50d7556b72a3439",
+        "committedLFSha256": "4e7c1079f8c450851c7baf018d77b3460526ef308e68861b6f6e74080e0d49f7"
+      }
+    ]
+  },
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-trace-legacy-binary64-direct.json",
+    "rawReportSha256": "def14fb596fc14d1622f485312897623270e9032d7cbfe7bcab3f696fa919abc",
+    "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+    "worker": {
+      "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+      "sha256": "503ae80c1a5d09ff4f3118e4bb4cc600d8450bd305702bf36449e1934366fa1e",
+      "receipt": {
+        "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "503ae80c1a5d09ff4f3118e4bb4cc600d8450bd305702bf36449e1934366fa1e",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": false,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "binary64-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "binary64-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "glyph-major",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 45,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 47,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 160,
+    "expectedKernels": 160,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 15.7396481,
+        "projectionActivityMs": 14.085772,
+        "selectionEventsMs": 16.6744318,
+        "tupleSha256": "04e590750b4f2e204a1e6eff85034a7897945c33433885203585e441876fe4a6",
+        "ansiSha256": "64726d394233e1c12ed686ce1b8194f4bb587d607eaeacd6ec28148479a7ae7f"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 15.03260806,
+        "projectionActivityMs": 14.441215999999999,
+        "selectionEventsMs": 17.92790413,
+        "tupleSha256": "8611fbb3b2e1fff33cd9b3456ef7e82f9f4961094cb4d7d71cb0cd4c3f63fe28",
+        "ansiSha256": "ee706741e92a210bea5ddc2ff97a1ff3bb53d9958c44245842c4d716da0af3a0"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 15.339072,
+        "projectionActivityMs": 14.72441,
+        "selectionEventsMs": 17.43078363,
+        "tupleSha256": "47c3c48060f7d508fd83258b06c896fce838de947a317b033805c2fdc4458b12",
+        "ansiSha256": "e3cacc9dcbe81019b143032f7743ffb3b3d010224d158add4e2239e2d339d814"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 14.824,
+        "projectionActivityMs": 14.248007,
+        "selectionEventsMs": 17.78403234,
+        "tupleSha256": "f394afe9038685e8936d22cf100e9351ebfba6232129e9d87aa5eb55407bfcbb",
+        "ansiSha256": "9997a4b1e80dab60512b5bfcc54721cb21ea9b991b0e7cd89030660e3c4e4bc9"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 15.05596785,
+        "projectionActivityMs": 14.668764,
+        "selectionEventsMs": 16.8539201,
+        "tupleSha256": "71de67f3715aa23ec184db20c82998eef0358e028749d3b767e9f5a2263eed7b",
+        "ansiSha256": "b6458d7be7a261cf66dd940915c827d24155b15685c8f2aec03e924f3578e57c"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 12.01110408,
+        "projectionActivityMs": 11.618125,
+        "selectionEventsMs": 14.43238413,
+        "tupleSha256": "fbac588ad4b7a047401e5b4ed29a9754384ff257f41a7445a6159f2aa34d0a76",
+        "ansiSha256": "6af116901c338b8c964c36711c703bd6c03272ccde947af4f7078c9286522f3d"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 11.62572812,
+        "projectionActivityMs": 11.332151,
+        "selectionEventsMs": 14.05203211,
+        "tupleSha256": "a62117a1be7bd17d8832881c73a63aa4925e41c3f9ecdf6cab70849b1e76e564",
+        "ansiSha256": "4462213158c22209c9b2595a21b969edf8067adf41f948b41b929442686baae9"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 11.42156801,
+        "projectionActivityMs": 10.998204,
+        "selectionEventsMs": 13.93673611,
+        "tupleSha256": "449940e104c2d3f29718b1545bd7c7a089562529da9dbb493982fa8e299f0534",
+        "ansiSha256": "13c0d89b6ef2407a90b3dca86009370d1d8482a5a522bcb41b92bb43b8ffaaaa"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 11.63075209,
+        "projectionActivityMs": 11.2541,
+        "selectionEventsMs": 14.43606365,
+        "tupleSha256": "631e91014002b3028c60173cf7c540e7e539e227e7541acf5a55083c7c44a625",
+        "ansiSha256": "cfad691b9c76ebe57fa0188aaf00cae1b76c5dfa276a2857cd0cd5a24bb469e7"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 11.83734393,
+        "projectionActivityMs": 11.584654,
+        "selectionEventsMs": 14.16499197,
+        "tupleSha256": "884056214ff5dd28c7cbf4bfdc21742d9a47b8ecb9812d1e6981e5451a1ec0cb",
+        "ansiSha256": "a35fb7cdde548d0f1ed8a66e8a4c6bd30b5c216a916c52f6083dce44c648f1f8"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-trace-legacy-binary64-direct-0.csv",
+        "rawSha256": "a9392cc22d0d03afd5a145fbecf7d8ffb00e4f1d7886494ac15c446e6be8f441",
+        "committedLFSha256": "5d795cc234a424f390eabdb0a4988f40b80c611adda7fa1cbd1d818d6a399fca"
+      }
+    ]
+  },
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-int-trace-sample-binary64-direct.json",
+    "rawReportSha256": "e4225461daaf7f23af33f9eab20da59cadb66b9f18b9f5199c55b11d01f983fc",
+    "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+    "worker": {
+      "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+      "sha256": "002a0add48ed60ed3c20d1e2f9c484f297e70a66b669979350bf6359b63914be",
+      "receipt": {
+        "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "002a0add48ed60ed3c20d1e2f9c484f297e70a66b669979350bf6359b63914be",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": true,
+          "integerProjectionSums": false,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "binary64-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "binary64-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "sample-major",
+      "binary64ProjectionSums": "binary64-original",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 160,
+    "expectedKernels": 160,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 15.17609633,
+        "projectionActivityMs": 14.055701,
+        "selectionEventsMs": 16.44316781,
+        "tupleSha256": "04e590750b4f2e204a1e6eff85034a7897945c33433885203585e441876fe4a6",
+        "ansiSha256": "64726d394233e1c12ed686ce1b8194f4bb587d607eaeacd6ec28148479a7ae7f"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 14.17612826,
+        "projectionActivityMs": 14.040631,
+        "selectionEventsMs": 16.39622378,
+        "tupleSha256": "8611fbb3b2e1fff33cd9b3456ef7e82f9f4961094cb4d7d71cb0cd4c3f63fe28",
+        "ansiSha256": "ee706741e92a210bea5ddc2ff97a1ff3bb53d9958c44245842c4d716da0af3a0"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 14.21072003,
+        "projectionActivityMs": 14.057368,
+        "selectionEventsMs": 16.77724791,
+        "tupleSha256": "47c3c48060f7d508fd83258b06c896fce838de947a317b033805c2fdc4458b12",
+        "ansiSha256": "e3cacc9dcbe81019b143032f7743ffb3b3d010224d158add4e2239e2d339d814"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 14.15907199,
+        "projectionActivityMs": 13.929593,
+        "selectionEventsMs": 16.01785588,
+        "tupleSha256": "f394afe9038685e8936d22cf100e9351ebfba6232129e9d87aa5eb55407bfcbb",
+        "ansiSha256": "9997a4b1e80dab60512b5bfcc54721cb21ea9b991b0e7cd89030660e3c4e4bc9"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 14.07385613,
+        "projectionActivityMs": 13.875098,
+        "selectionEventsMs": 16.44339228,
+        "tupleSha256": "71de67f3715aa23ec184db20c82998eef0358e028749d3b767e9f5a2263eed7b",
+        "ansiSha256": "b6458d7be7a261cf66dd940915c827d24155b15685c8f2aec03e924f3578e57c"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 12.78863998,
+        "projectionActivityMs": 12.63097,
+        "selectionEventsMs": 14.72364807,
+        "tupleSha256": "fbac588ad4b7a047401e5b4ed29a9754384ff257f41a7445a6159f2aa34d0a76",
+        "ansiSha256": "6af116901c338b8c964c36711c703bd6c03272ccde947af4f7078c9286522f3d"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 11.11715207,
+        "projectionActivityMs": 10.988868,
+        "selectionEventsMs": 13.76710415,
+        "tupleSha256": "a62117a1be7bd17d8832881c73a63aa4925e41c3f9ecdf6cab70849b1e76e564",
+        "ansiSha256": "4462213158c22209c9b2595a21b969edf8067adf41f948b41b929442686baae9"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 11.12659218,
+        "projectionActivityMs": 10.994403,
+        "selectionEventsMs": 13.85673594,
+        "tupleSha256": "449940e104c2d3f29718b1545bd7c7a089562529da9dbb493982fa8e299f0534",
+        "ansiSha256": "13c0d89b6ef2407a90b3dca86009370d1d8482a5a522bcb41b92bb43b8ffaaaa"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 11.1138881,
+        "projectionActivityMs": 10.975686,
+        "selectionEventsMs": 13.85215998,
+        "tupleSha256": "631e91014002b3028c60173cf7c540e7e539e227e7541acf5a55083c7c44a625",
+        "ansiSha256": "cfad691b9c76ebe57fa0188aaf00cae1b76c5dfa276a2857cd0cd5a24bb469e7"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 11.09276796,
+        "projectionActivityMs": 10.955078,
+        "selectionEventsMs": 13.79503977,
+        "tupleSha256": "884056214ff5dd28c7cbf4bfdc21742d9a47b8ecb9812d1e6981e5451a1ec0cb",
+        "ansiSha256": "a35fb7cdde548d0f1ed8a66e8a4c6bd30b5c216a916c52f6083dce44c648f1f8"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-int-trace-sample-binary64-direct-0.csv",
+        "rawSha256": "1ec043ac518d22ab07d992c06099816c4c47f8091632abd4041bf55f826a073e",
+        "committedLFSha256": "ee7fddc089b35ec54cc6943df97f30261c75af8631a26abbe9ae3511fb153ecc"
+      }
+    ]
+  },
+  {
+    "rawReport": "C:\\pnggpu-CUDA\\build\\qualification\\projection-int-trace-integer-binary64-direct.json",
+    "rawReportSha256": "bf5c7c44308c4f590c2deaa9c7a155b1d96cfbcf8aea83ebd6c720a116e030f3",
+    "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+    "worker": {
+      "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+      "sha256": "810c914a4107cd43b59995aee20593a507b0bbc552d7b42c9e5b3e3045bc5149",
+      "receipt": {
+        "sourceCommit": "2416cd632947848bfd8757e1bd76382c54ceef93",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "810c914a4107cd43b59995aee20593a507b0bbc552d7b42c9e5b3e3045bc5149",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "sampleMajorMasks": true,
+          "integerProjectionSums": true,
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "binary64-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "binary64-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "deviceMaskLayout": "sample-major",
+      "binary64ProjectionSums": "uint32-exact",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 48,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionFP64": {
+          "registersPerThread": 52,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 160,
+    "expectedKernels": 160,
+    "valid": true,
+    "errors": [],
+    "rejection": null,
+    "frames": [
+      {
+        "index": 0,
+        "projectionEventsMs": 12.10736012,
+        "projectionActivityMs": 11.168958,
+        "selectionEventsMs": 16.20131218,
+        "tupleSha256": "04e590750b4f2e204a1e6eff85034a7897945c33433885203585e441876fe4a6",
+        "ansiSha256": "64726d394233e1c12ed686ce1b8194f4bb587d607eaeacd6ec28148479a7ae7f"
+      },
+      {
+        "index": 1,
+        "projectionEventsMs": 11.28710403,
+        "projectionActivityMs": 11.12688,
+        "selectionEventsMs": 16.29424012,
+        "tupleSha256": "8611fbb3b2e1fff33cd9b3456ef7e82f9f4961094cb4d7d71cb0cd4c3f63fe28",
+        "ansiSha256": "ee706741e92a210bea5ddc2ff97a1ff3bb53d9958c44245842c4d716da0af3a0"
+      },
+      {
+        "index": 2,
+        "projectionEventsMs": 11.32620801,
+        "projectionActivityMs": 11.03562,
+        "selectionEventsMs": 16.21577597,
+        "tupleSha256": "47c3c48060f7d508fd83258b06c896fce838de947a317b033805c2fdc4458b12",
+        "ansiSha256": "e3cacc9dcbe81019b143032f7743ffb3b3d010224d158add4e2239e2d339d814"
+      },
+      {
+        "index": 3,
+        "projectionEventsMs": 11.21350395,
+        "projectionActivityMs": 11.037762,
+        "selectionEventsMs": 16.1880002,
+        "tupleSha256": "f394afe9038685e8936d22cf100e9351ebfba6232129e9d87aa5eb55407bfcbb",
+        "ansiSha256": "9997a4b1e80dab60512b5bfcc54721cb21ea9b991b0e7cd89030660e3c4e4bc9"
+      },
+      {
+        "index": 4,
+        "projectionEventsMs": 9.030655928,
+        "projectionActivityMs": 8.730783,
+        "selectionEventsMs": 13.81974387,
+        "tupleSha256": "71de67f3715aa23ec184db20c82998eef0358e028749d3b767e9f5a2263eed7b",
+        "ansiSha256": "b6458d7be7a261cf66dd940915c827d24155b15685c8f2aec03e924f3578e57c"
+      },
+      {
+        "index": 5,
+        "projectionEventsMs": 8.921344087,
+        "projectionActivityMs": 8.720894,
+        "selectionEventsMs": 14.14185619,
+        "tupleSha256": "fbac588ad4b7a047401e5b4ed29a9754384ff257f41a7445a6159f2aa34d0a76",
+        "ansiSha256": "6af116901c338b8c964c36711c703bd6c03272ccde947af4f7078c9286522f3d"
+      },
+      {
+        "index": 6,
+        "projectionEventsMs": 8.967264101,
+        "projectionActivityMs": 8.712638,
+        "selectionEventsMs": 13.92883205,
+        "tupleSha256": "a62117a1be7bd17d8832881c73a63aa4925e41c3f9ecdf6cab70849b1e76e564",
+        "ansiSha256": "4462213158c22209c9b2595a21b969edf8067adf41f948b41b929442686baae9"
+      },
+      {
+        "index": 7,
+        "projectionEventsMs": 8.930175994,
+        "projectionActivityMs": 8.720926,
+        "selectionEventsMs": 13.78784001,
+        "tupleSha256": "449940e104c2d3f29718b1545bd7c7a089562529da9dbb493982fa8e299f0534",
+        "ansiSha256": "13c0d89b6ef2407a90b3dca86009370d1d8482a5a522bcb41b92bb43b8ffaaaa"
+      },
+      {
+        "index": 8,
+        "projectionEventsMs": 8.956032179,
+        "projectionActivityMs": 8.695808,
+        "selectionEventsMs": 14.25596774,
+        "tupleSha256": "631e91014002b3028c60173cf7c540e7e539e227e7541acf5a55083c7c44a625",
+        "ansiSha256": "cfad691b9c76ebe57fa0188aaf00cae1b76c5dfa276a2857cd0cd5a24bb469e7"
+      },
+      {
+        "index": 9,
+        "projectionEventsMs": 8.877760001,
+        "projectionActivityMs": 8.684161,
+        "selectionEventsMs": 13.97657609,
+        "tupleSha256": "884056214ff5dd28c7cbf4bfdc21742d9a47b8ecb9812d1e6981e5451a1ec0cb",
+        "ansiSha256": "a35fb7cdde548d0f1ed8a66e8a4c6bd30b5c216a916c52f6083dce44c648f1f8"
+      }
+    ],
+    "files": [
+      {
+        "file": "projection-int-trace-integer-binary64-direct-0.csv",
+        "rawSha256": "47f1d7d50e982a3db7315ecd8a2be3ff5bc8cafb3f80a6b862b50fe1668ef6d6",
+        "committedLFSha256": "23ce777db239193a0430cddb0b2c2505fbfd2ad0f6f0ca8a853a6ba8695ed274"
+      }
+    ]
+  },
+  {
+    "rawReport": "build\\qualification\\projection-trace-baseline-fp32.json",
+    "rawReportSha256": "8f0477bfeadf0a8a2074750d55ca2f02ad45d29705c62c9c86ba2709a199e61f",
+    "sourceCommit": "7b1e4491c3c71e4d9ffc65ca53587a5181513f88",
+    "worker": {
+      "sourceCommit": "14aec8f4265e51c2a9c47ae56e617ab7fec3a54d",
+      "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+      "receipt": {
+        "sourceCommit": "14aec8f4265e51c2a9c47ae56e617ab7fec3a54d",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "float32-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "float32-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 45,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 77,
+    "expectedKernels": 110,
+    "valid": false,
+    "errors": [],
+    "rejection": "Background-only flush lost tail before bridge termination; excluded from profiling conclusions",
+    "frames": [],
+    "files": [
+      {
+        "file": "projection-trace-baseline-fp32-0.csv",
+        "rawSha256": "dcab54efdb82998439f410318ec37aa6df53e39478161729099098c41be66081",
+        "committedLFSha256": "eec573de689c591cc4105ef4a767bd1392b66a929c57b7077ecdb5b2cbdcd14f"
+      }
+    ]
+  },
+  {
+    "rawReport": "build\\qualification\\projection-trace-baseline-fp64.json",
+    "rawReportSha256": "5c25053a7fb53d7a0b8d41b2568e409969f288a3097f91e0ebb17a4e70537950",
+    "sourceCommit": "7b1e4491c3c71e4d9ffc65ca53587a5181513f88",
+    "worker": {
+      "sourceCommit": "14aec8f4265e51c2a9c47ae56e617ab7fec3a54d",
+      "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+      "receipt": {
+        "sourceCommit": "14aec8f4265e51c2a9c47ae56e617ab7fec3a54d",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "colorMajorFP32": false,
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "mode": "binary64-direct",
+    "deviceBefore": {
+      "schema": "pnggpu-cuda-info-v1",
+      "available": true,
+      "backend": "cuda",
+      "protocolVersion": 1,
+      "precision": "binary64-direct",
+      "device": {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "computeCapability": "7.5",
+        "totalMemoryBytes": 4294508544,
+        "freeMemoryBytes": 3441950720,
+        "index": 0,
+        "multiprocessorCount": 20,
+        "kernelExecTimeoutEnabled": true
+      },
+      "runtimeVersion": 12080,
+      "driverVersion": 13040,
+      "directFP32SelectionTraversal": "glyph-major-stable-rank",
+      "limits": {
+        "maxMessageBytes": 134217728,
+        "maxTileCells": 65536,
+        "maxSamplesPerCell": 2048,
+        "maxGlyphCount": 65535,
+        "maxProjectionBytes": 134217728,
+        "maxPixelBytes": 67108864,
+        "maxProjectionWork": 16777216,
+        "memoryReserveBytes": 2147483648,
+        "maxRecoveryProjectionBytes": 33554432,
+        "maxRecoveryCells": 1024,
+        "maxKernelProjectionWork": 16777216
+      },
+      "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+      "timingSources": {
+        "gpuProjectionMs": "CUDA events, sum of sublaunches",
+        "gpuSelectionMs": "CUDA events, sum of sublaunches",
+        "uploadMs": "host steady clock, transfer plus stream synchronization",
+        "readbackMs": "host steady clock, transfer plus stream synchronization"
+      },
+      "kernelResources": {
+        "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+        "selectionGuarded": {
+          "registersPerThread": 96,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 10,
+          "theoreticalActiveThreadsPerSM": 640,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP32": {
+          "registersPerThread": 64,
+          "localBytesPerThread": 352,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "selectionFP64": {
+          "registersPerThread": 80,
+          "localBytesPerThread": 768,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 12,
+          "theoreticalActiveThreadsPerSM": 768,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        },
+        "projectionShared": {
+          "registersPerThread": 45,
+          "localBytesPerThread": 0,
+          "staticSharedBytesPerBlock": 0,
+          "blockThreads": 64,
+          "theoreticalActiveBlocksPerSM": 16,
+          "theoreticalActiveThreadsPerSM": 1024,
+          "deviceMaxThreadsPerSM": 1024,
+          "binaryVersion": 75,
+          "ptxVersion": 75
+        }
+      }
+    },
+    "actualKernels": 144,
+    "expectedKernels": 160,
+    "valid": false,
+    "errors": [],
+    "rejection": "Background-only flush lost tail before bridge termination; excluded from profiling conclusions",
+    "frames": [],
+    "files": [
+      {
+        "file": "projection-trace-baseline-fp64-0.csv",
+        "rawSha256": "d03301c99d266daeac01c6e60b43cf22ed82def75271e3a641b25883712ab19a",
+        "committedLFSha256": "dbebd8488dc70b4fa7149c511fb201b79fb7ada5f962184cda894f5a11bdc5ec"
+      }
+    ]
+  }
+]
