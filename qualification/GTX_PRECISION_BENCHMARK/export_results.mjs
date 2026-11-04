@@ -81,7 +81,8 @@ try {
 }finally{await browser?.close();await server.closeCuda();server.closeAllConnections();await new Promise(r=>server.close(r));}
 const summary={schema:'pnggpu-precision-visual-benchmark-v2',sourceCommits:[...new Set(cases.map(c=>c.sourceCommit))],worker:matrix.worker,settings,
   images:images.map(i=>({file:i.file,title:i.title,sha256:i.sha256})),started:matrix.started,finished:large.finished,
-  benchmarkCompleted:true,qualificationAccepted:false,cases,outputsSha256:hash(packed),uniquePreviews:previewHashes.size,
+  benchmarkCompleted:true,qualificationAccepted:false,cases,outputsSha256:hash(packed),previewFiles:previewHashes.size,
+  distinctPreviewHashes:new Set(previewHashes.values()).size,previewDeduplication:'geometry and tuple hash; different tuples can render identical pixels',
   driverFinal:{since:matrix.started,recorded:new Date().toISOString(),...driverEventsSince(matrix.started)}};
 if(summary.driverFinal.events.length)throw new Error('New driver event during presentation generation');
 await writeFile(resolve(out,'atlas.json'),JSON.stringify(atlas)+'\n');summary.atlasSha256=hash(await readFile(resolve(out,'atlas.json')));

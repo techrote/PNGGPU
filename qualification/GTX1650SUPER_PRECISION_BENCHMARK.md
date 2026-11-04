@@ -169,13 +169,16 @@ driver query. The complete primary run window is 15:01:34.612–15:39:17.270 UTC
 the final recorded driver query at 15:41:01.187 UTC found no new events.
 
 The folder also preserves [CSV measurements](GTX_PRECISION_BENCHMARK/results.csv),
-52 unique exact-font PNG previews, 210 original-encoder ANSI files, glyph atlas
+52 exact-font PNG preview files (51 distinct PNG hashes), 210 original-encoder ANSI files, glyph atlas
 and all tuples in [outputs.bin](GTX_PRECISION_BENCHMARK/outputs.bin).
 Each tuple occupies four bytes: little-endian uint16 glyph index, uint8 foreground
 index, uint8 background index. Summary offsets, cell counts and SHA-256 values
 identify each output. FP64-identical outputs share PNG paths. Previews are made
 with the original workbench renderer and bundled font, not generated illustrations.
-The inline view reconstructs those same pixels with synchronized zoom.
+The inline view reconstructs those same pixels with synchronized zoom. Different
+tuples can render identical pixels: the 320x160 clothing/boots FP32 and FP64
+previews are byte-identical despite a tuple difference. File deduplication uses
+geometry and tuple hash, so that pair retains separate preview paths.
 
 Local raw inputs/reports remain under ignored `build/qualification/precision-matrix/`
 and `build/qualification/precision-large-packed/`; the interrupted attempt is
@@ -219,6 +222,13 @@ Local checks passed 15 original application tests, 70 overlay tests, 45
 bridge/planning/image tests, seven host-only arithmetic CLI checks and independent
 CPU golden regeneration. Gallery QA exercised all 70 image/setting selections,
 all zoom/focus controls, narrow layouts down to a 328-pixel content width and
-all 52 unique previews. Its 105,447,424 reconstructed pixels matched the original
+all 52 preview files. Its 105,447,424 reconstructed pixels matched the original
 renderer PNGs exactly, with no browser script errors or horizontal overflow;
 see [QA receipt](GTX_PRECISION_BENCHMARK/gallery-qa.json).
+
+Independent review checked every packed tuple/ANSI/preview hash, reconstructed
+all gallery outputs, verified all CSV rows and table statistics, checked
+source/worker provenance, and recomputed the original CPU result for all 15
+prepared modest datasets used by the 60 CPU-checked fits. No supported material
+issue remained after correcting the distinction between preview file count and
+distinct PNG hashes. Review performed no GPU work.

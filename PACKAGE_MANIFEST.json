@@ -54,8 +54,8 @@
   "hardware_GPU_validation": "Not performed in container; high-resolution streaming exact-reference parity unverified",
   "files": {
     ".gitattributes": {
-      "sha256": "d39e0e6459617fb832da163191916daf17f22519763a25458dd3cd946951e8e8",
-      "bytes": 339
+      "sha256": "282745c08c20b8a854212c44f7ca9840c8da6a8345d47f77ccf76bca62fdaec8",
+      "bytes": 357
     },
     ".github/workflows/verify.yml": {
       "sha256": "ab93967b3966aa024f5eef82615d0e185924073ad25626144c8f89c9f179399c",
@@ -290,8 +290,8 @@
       "bytes": 9482
     },
     "qualification/GTX1650SUPER_PRECISION_BENCHMARK.md": {
-      "sha256": "cd525c1c82d60a1723af83e7f380b2848a07b43de2f15e3b1ffe9eaba4f921fb",
-      "bytes": 13572
+      "sha256": "5a74533db58915a4628b56706d6a00f99b3bdf1aece30424805c10296141dd34",
+      "bytes": 14269
     },
     "qualification/GTX1650SUPER_REAL_IMAGES.md": {
       "sha256": "4e8c91f2641ce9d1085f7dfb1931a8148e7e54103ef405811214f89e954bdb39",
@@ -1150,12 +1150,12 @@
       "bytes": 38057
     },
     "qualification/GTX_PRECISION_BENCHMARK/export_results.mjs": {
-      "sha256": "f56da199083b3b5799cc67eb98503a1d073a5d8fbe98c415bbf4236ca1030668",
-      "bytes": 11125
+      "sha256": "e2e7b2caf8c425d2d945523881219b3d6d070d0cafc6109a9bf112b9b3391729",
+      "bytes": 11278
     },
     "qualification/GTX_PRECISION_BENCHMARK/gallery-qa.json": {
-      "sha256": "44e70d4caf3dce78b1077875d42f036e3afbc055453b2cf2280c4a15663efe94",
-      "bytes": 491
+      "sha256": "11e2fe6af132184e17b280cddfe85f2d3102dcbc61b712c88116d40efa103297",
+      "bytes": 520
     },
     "qualification/GTX_PRECISION_BENCHMARK/interrupted-attempt-index.json": {
       "sha256": "f5442561a01c402c1fca3c2f5ee41c98c63ea6c7417f4350b1ba7eeec64039c7",
@@ -1386,8 +1386,8 @@
       "bytes": 2369
     },
     "qualification/GTX_PRECISION_BENCHMARK/summary.json": {
-      "sha256": "451fcafe4e24a093712d0737251255360dea772636770dc2b1e7ee6db31c7e8f",
-      "bytes": 894293
+      "sha256": "08809a78fa9a87cb887b641cf7e766a3487619e47cf6d905f9467836ad6517ba",
+      "bytes": 894421
     },
     "qualification/README.md": {
       "sha256": "299ee60327c73f9d10f3f5ca45bfcc2ebf87cc28e3aa310cdc2d3fa4f40cbaf5",

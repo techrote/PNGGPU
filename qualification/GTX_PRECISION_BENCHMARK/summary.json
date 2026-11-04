@@ -21925,12 +21925,14 @@
     }
   ],
   "outputsSha256": "fb98edb322bc72ec9b044f6f13e7120d2c5c3deace87c52833b09f716a49f1a4",
-  "uniquePreviews": 52,
   "driverFinal": {
     "since": "2026-11-04T15:01:34.612Z",
     "recorded": "2026-11-04T15:41:01.187Z",
     "supported": true,
     "events": []
   },
-  "atlasSha256": "088bd26cfe5396ef9a84700fa0a3c266341b0f6c61fa1eb2ebc966b31b8f62be"
+  "atlasSha256": "088bd26cfe5396ef9a84700fa0a3c266341b0f6c61fa1eb2ebc966b31b8f62be",
+  "previewFiles": 52,
+  "distinctPreviewHashes": 51,
+  "previewDeduplication": "geometry and tuple hash; different tuples can render identical pixels"
 }

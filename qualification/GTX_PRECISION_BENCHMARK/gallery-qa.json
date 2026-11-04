@@ -1,6 +1,5 @@
 {
   "selections": 70,
-  "uniquePreviews": 52,
   "pixelsChecked": 105447424,
   "layouts": [
     {
@@ -32,5 +31,7 @@
     "bl",
     "br"
   ],
-  "sharedImageClickTested": true
+  "sharedImageClickTested": true,
+  "previewFiles": 52,
+  "distinctPreviewHashes": 51
 }
