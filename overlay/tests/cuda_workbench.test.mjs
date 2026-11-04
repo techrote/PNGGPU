@@ -3,12 +3,32 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {PhotographicCudaFitter} from '../src/gpu/cuda.js';
+import {referencePhotoFit} from '../src/gpu/reference_photo.js';
 import {estimateGpuMemory,evaluateVramBudget,validateDeclaredVramGiB} from '../src/gpu/memory.js';
 import {requiresStreamedSamples,PREVIEW_MAX_PIXELS} from '../src/gpu/streamed_samples.js';
 import {validateWorkbenchInputs,WORKBENCH_LIMITS} from '../src/gpu/workload.js';
 import {milliseconds,bytes,gpuProfileStages,compareCells,compareAnsi} from '../src/gpu/metrics.js';
 
 const html=await readFile(new URL('../experiments/webgpu/photographic.html',import.meta.url),'utf8');
+test('physical precision fixture retains the independent CPU winner and records the unresolved CUDA result',async()=>{
+  const saved=JSON.parse(await readFile(new URL('../fixtures/cuda/precision-cutoff.json',import.meta.url),'utf8'));
+  const result=referencePhotoFit({pixels:Uint8Array.from(saved.fixture.pixels),
+    masks:saved.atlas.masks.map(m=>Float32Array.from(m)),palette:saved.atlas.palette,
+    config:{canvas:{columns:1,rows:1,sample_width:1,sample_height:1},fit:{foreground_candidates:6,background_candidates:5}}});
+  assert.deepEqual([result.chosen[0],result.fg[0],result.bg[0]],saved.fixture.cpu);
+  assert.notDeepEqual(saved.fixture.cpu,saved.fixture.cuda,'This is a recorded acceptance failure, not a relaxed GPU equality test');
+});
+test('physical shortlist-cutoff fixture preserves the CPU winner and material reconstruction error difference',async()=>{
+  const saved=JSON.parse(await readFile(new URL('../fixtures/cuda/shortlist-cutoff.json',import.meta.url),'utf8'));
+  const {fixture,atlas,job}=saved;
+  const result=referencePhotoFit({pixels:Uint8Array.from(fixture.pixels),masks:atlas.masks.map(m=>Float32Array.from(m)),palette:atlas.palette,
+    config:{canvas:{columns:1,rows:1,sample_width:job.sampleW,sample_height:job.sampleH},fit:{foreground_candidates:6,background_candidates:5}}});
+  assert.deepEqual([result.chosen[0],result.fg[0],result.bg[0]],fixture.cpu);
+  const directSse=([glyph,fg,bg])=>atlas.masks[glyph].reduce((sum,coverage,i)=>sum+
+    atlas.palette[fg].reduce((error,channel,k)=>error+(fixture.pixels[i*4+k]-(atlas.palette[bg][k]+coverage*(channel-atlas.palette[bg][k])))**2,0),0);
+  assert.ok(Math.abs(directSse(fixture.cpu)-29571.557975248234)<1e-6);
+  assert.ok(Math.abs(directSse(fixture.cuda)-69283.9180124473)<1e-6);
+});
 function declaration(name){
   const found=html.match(new RegExp(`(?:async )?function ${name}\\([^]*?\\n}`));
   assert.ok(found,`workbench function ${name}`);return found[0];

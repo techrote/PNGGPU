@@ -129,6 +129,14 @@
       "sha256": "d85f997c977e9f94bd3a4af6350ea87254672cea84f1cbbb1f2c411d2a8b51c7",
       "bytes": 74872
     },
+    "overlay/fixtures/cuda/precision-cutoff.json": {
+      "sha256": "3d5a45d8583f7c8d8907c94213666bdf3a8055187563ba8d9d8dbb8fd2a040d9",
+      "bytes": 13591
+    },
+    "overlay/fixtures/cuda/shortlist-cutoff.json": {
+      "sha256": "6ee6e0943d07869922471785326a88fab54f2103ac078a4df3d06c6e22a077c6",
+      "bytes": 129130
+    },
     "overlay/fixtures/hardmode/bland-blocks-2048.png": {
       "sha256": "245f1afb99155229b9ad584b2c582ede314e5e0e44b2b440d465a8732d7b4725",
       "bytes": 11106309
@@ -222,8 +230,8 @@
       "bytes": 20508
     },
     "overlay/tests/cuda_workbench.test.mjs": {
-      "sha256": "4193438e67e3d585072e4572e86e53ccf6ffbb7ad4fa5745e3c491e54afd5841",
-      "bytes": 10058
+      "sha256": "0ffdb4a75f81f85c05be416b428388e536dbee9fa07b86058cc15f678a116d16",
+      "bytes": 11894
     },
     "overlay/tests/gpu007_extended.test.mjs": {
       "sha256": "86afc13f9346ce368dac02646f7cda36af2212b353ac12b56fd3154351745510",
@@ -265,9 +273,25 @@
       "sha256": "ec2cdbc4ea4752653cb200c248d1c93988915713450806ae2142be266ddd4090",
       "bytes": 2058
     },
+    "qualification/README.md": {
+      "sha256": "2bc637ea4cf99566c7efaf3e6abc8f1c474cc8e8a568e6d129723fe6a05a093b",
+      "bytes": 9158
+    },
+    "qualification/arithmetic-37706c3.json": {
+      "sha256": "cef91fd8c138ab11f02ed80506b046250d0385ec4540ee1c23416e2ad00c13d5",
+      "bytes": 42134
+    },
+    "qualification/memcheck-37706c3.txt": {
+      "sha256": "6218bf138585d3d523759efc0cadc8a64e5a97857e2f45f7eafd158f23fd7e65",
+      "bytes": 324
+    },
+    "qualification/turing-37706c3.json": {
+      "sha256": "9f2c0fb6fead155a16f1df3869bc9f80b9e79d690166ebcaba36d8b8936e91c9",
+      "bytes": 467276
+    },
     "scripts/analyze_cuda_fixture.mjs": {
-      "sha256": "aede1aa6574083f50a69d06a09321bb6a13c5d212a1e82b3c7e1e2e0f20afbd5",
-      "bytes": 2442
+      "sha256": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
+      "bytes": 3882
     },
     "scripts/build-cuda.ps1": {
       "sha256": "3d52f85345c3732a6fda9116c90517aa21eb4e8b997fb0bcc2d84e4f089f2a18",
