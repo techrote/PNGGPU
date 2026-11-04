@@ -206,8 +206,8 @@
       "bytes": 2120
     },
     "overlay/src/gpu/cuda.js": {
-      "sha256": "528dfe157199037e97ad13752bf9e3e06021ecdefaec31107c2ba1ab12c6683c",
-      "bytes": 37018
+      "sha256": "c8f685aff7f1ae28fe76ec43efab52f547170bcc770d706a1c697229ab3740d1",
+      "bytes": 37195
     },
     "overlay/src/gpu/memory.js": {
       "sha256": "b1446b9f79a3efb348228d20ae40e9c764d42665084657f8c18786a61dcd5e51",
@@ -2150,8 +2150,8 @@
       "bytes": 4164
     },
     "scripts/benchmark_cuda_video.mjs": {
-      "sha256": "cb368e74def9945d6528637b965422e5aa162567b4cfd8fb4281d3b6580fce79",
-      "bytes": 13893
+      "sha256": "944cbe4e0435cd9bd6904fa7f6fba61e2ebe67d5435e7c1b5f0ce33bcf45e087",
+      "bytes": 14034
     },
     "scripts/benchmark_cuda_video_matrix.mjs": {
       "sha256": "f68a4d68103fe763696519d3269b0559144613ef34eafe39e3eb089cee2a6637",
@@ -2214,8 +2214,8 @@
       "bytes": 1513
     },
     "scripts/cuda_timing_breakdown.mjs": {
-      "sha256": "2a697f60ed22aeeb753482257300d6803a90f4bcbeed2393343d69fc9afb581c",
-      "bytes": 1211
+      "sha256": "d7f2a9d73013f0f57b32afe78790dd94bbc483dc7efda3fe5eb05e844b4374df",
+      "bytes": 1673
     },
     "scripts/cuda_video_plan.mjs": {
       "sha256": "0f707d2850acbb42bf0197ca71a7b13a8f45aa9e4900fe72aaefc8936b4606d7",
@@ -2318,8 +2318,8 @@
       "bytes": 706
     },
     "tests/cuda_bridge.test.mjs": {
-      "sha256": "e6409ad2a7db6d73b5429390409024f76b0b934b58dcec5d17e0c8e25cd9982f",
-      "bytes": 21436
+      "sha256": "77b87b2b5b08c61421f6d3733b43aa94a7bef8161fd777598d068bd91d8c982b",
+      "bytes": 21804
     },
     "tests/cuda_direct.test.mjs": {
       "sha256": "9742f99b44af16447e4194eef9a33b0deaaa69772cfa03c12bf31a4abbe8543c",
@@ -2342,8 +2342,8 @@
       "bytes": 3168
     },
     "tests/cuda_timing_breakdown.test.mjs": {
-      "sha256": "78b25f6789e1ffe9eb21f9381524159f776bf960dae48800f6523ba7bd373c66",
-      "bytes": 1524
+      "sha256": "e465dfbbd2d65a469cad4c31615ea8fe073a0de51d1f4644ada99f88e55ae5fa",
+      "bytes": 2052
     },
     "tests/fixtures/cuda_worker_source.mjs": {
       "sha256": "0319ac0684b18d02d6e8b21ee1ed5a93cb076e25494578a8a6e1db63d22a0ccb",

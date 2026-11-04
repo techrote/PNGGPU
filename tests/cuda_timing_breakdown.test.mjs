@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {warmTimingBreakdown} from '../scripts/cuda_timing_breakdown.mjs';
+import {warmTimingBreakdown,packingTimingBreakdown} from '../scripts/cuda_timing_breakdown.mjs';
 const frame=()=>({fitMs:440,stats:{sessionReused:true,timing:{nativeInitMs:0,atlasUploadMs:0,
   nativeTotalMs:300,bridgeRoundTripMs:400,tilePackMs:30,decodeCellsMs:5,
   gpuProjectionMs:100,gpuSelectionMs:100,uploadMs:6,readbackMs:4}}});
@@ -19,4 +19,10 @@ test('cold initialization and atlas transfers are excluded rather than misattrib
 test('clock/interval residuals retain their sign for diagnosis',()=>{
   const f=frame();f.stats.timing.nativeTotalMs=500;
   assert.equal(warmTimingBreakdown(f).bridgeRemainderMs,-100);
+});
+test('native packing is extracted from the bridge remainder rather than counted twice',()=>{
+  const f=frame();assert.throws(()=>packingTimingBreakdown(f),/nativePackingMs/);
+  f.stats.timing.nativePackingMs=7;const r=packingTimingBreakdown(f);
+  assert.equal(r.bridgeRemainderMs,100);assert.equal(r.bridgeAfterNativePackingMs,93);
+  assert.equal(r.packingMs+r.projectionMs+r.selectionMs+r.transferMs+r.nativeResidualMs+r.nativePackingMs+r.bridgeAfterNativePackingMs+r.decodeMs+r.otherFitMs,r.fitMs);
 });

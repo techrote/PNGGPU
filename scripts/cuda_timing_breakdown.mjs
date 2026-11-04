@@ -16,3 +16,10 @@ export function warmTimingBreakdown(frame) {
     bridgeRemainderMs:bridgeMs-nativeTotalMs,
     otherFitMs:fitMs-packingMs-bridgeMs-decodeMs};
 }
+
+/** Native packing is already inside bridgeRemainderMs; separate it once. */
+export function packingTimingBreakdown(frame) {
+  const r=warmTimingBreakdown(frame),nativePackingMs=frame.stats.timing.nativePackingMs;
+  if(typeof nativePackingMs!=='number'||!Number.isFinite(nativePackingMs)||nativePackingMs<0)throw new Error('Unavailable/invalid nativePackingMs');
+  return {...r,nativePackingMs,bridgeAfterNativePackingMs:r.bridgeRemainderMs-nativePackingMs};
+}

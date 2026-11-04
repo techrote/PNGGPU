@@ -48,6 +48,7 @@ const report={schema:'pnggpu-cuda-video-latency-v1',sourceCommit:execFileSync('g
   batchPath,batchSha256:hash(batchBytes),batch,mode,tileMiB:Number(tile),scope,cpuComparison:{skipped:true},qualificationAccepted:false,
   frameDepth:1,frames:[],processes:[],benchmarkCompleted:false};
 report.transport=direct?'direct-pipe':'http';report.packing=prepacked?'prepacked':nativePack?'native-raster':'js-raster';
+report.packetAllocation=(direct||prepacked||nativePack||livePack)?'retained-per-frame':'reused-tile-buffer';report.livePackControl=livePack;
 report.queueMode=continuous?'continuously-refilled':'diagnostic-gaps';report.queueScope=queueScope;
 const check=()=>{const r=driverEventsSince(batch.started);if(r.events.length)throw new Error('New GPU driver error; video stopped');return r;};
 const spawnProcess=(executable,args,options)=>{const child=spawn(executable,args,options),p={pid:child.pid,args,started:new Date().toISOString(),exited:null};report.processes.push(p);child.once('close',(code,signal)=>Object.assign(p,{exited:new Date().toISOString(),code,signal}));return child;};

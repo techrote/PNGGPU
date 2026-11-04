@@ -136,6 +136,13 @@ test('default device auto-selection is preserved by omitting --device', async t 
   await app.open();
   assert.deepEqual(app.launches.map(item => item.args), [['--info'], ['--stdio']]);
 });
+
+test('HTTP tile endpoint retains canonical command2 and rejects native raster extension',async t=>{
+  const app=await fixture(t),id=await app.open(),packet=Buffer.alloc(28);
+  [3,1,1,1,0].forEach((v,i)=>packet.writeUInt32LE(v,i*4));
+  const response=await app.send(`/api/cuda/session/${id}/tile`,{method:'POST',body:packet});
+  assert.equal(response.status,400);
+});
 test('direct arithmetic mode is an explicit server option carried through probe and framed session',async t=>{
   assert.throws(()=>createWorkbenchServer({cudaOptions:{arithmeticMode:'--test-fault'}}),/Unsupported CUDA arithmetic mode/);
   const app=await fixture(t,{cudaOptions:{arithmeticMode:'binary64-direct'}});
