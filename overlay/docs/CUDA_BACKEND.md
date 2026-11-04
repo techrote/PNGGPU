@@ -307,6 +307,29 @@ host-only CLI checks and protocol tests do not establish physical parity.
 
 ### Precision benchmarks for visual comparison
 
+For bounded warm-frame latency experiments, `PhotographicCudaFitter.createFrameSession(config)`
+captures fixed geometry, masks, palette, search counts and tile target. Await each
+`session.fitFrame(rgbaPixels)` before submitting the next frame, then **await
+`session.close()`** to release the worker/context/buffers. It holds no input queue;
+concurrent refill is rejected. Returned result arrays have independent ownership.
+Frame 0 includes initialization; later frames report `sessionReused:true` and
+zero native initialization/atlas upload. Sequence cleanup is separate. The normal
+`fit()` API still closes after each image, and the workbench defaults are unchanged.
+Errors/aborts close the sequence, the bridge idle timeout remains active, and
+existing allocation admission, bounded kernels and depth one remain intact.
+
+`scripts/benchmark_cuda_frames.mjs WORKER PLAN_JSON OUTPUT_JSON` validates a
+finite plan before device discovery: at most six frames, 307,200 aggregate cells,
+18 billion conservative work visits, fixed 4x8 sampling and 16/32 MiB targets.
+Plans select explicit input paths/order, FP32 or FP64, and lower per-run limits.
+The runner checks driver events around each frame, applies a 10-second whole-frame
+deadline and records actual worker PIDs to prove reuse. Diagnostic log-query gaps
+are excluded from frame latency; this is not end-to-end streaming throughput.
+Prepared inputs must retain matching source receipts. Historical cold-baseline
+hash comparison is required unless a plan explicitly sets `requireColdReference:false`;
+that skip is limited to at most 512 cells/frame and reported as null, not parity. No stress loop or self-test
+is part of this path.
+
 `--cuda-mode float32-direct` runs the original unguarded float32 matcher.
 `--cuda-mode float16-mixed` is an exploratory mode with actual FP16 products
 and FP32 accumulation/statistics/scoring, not a full-FP16 or Tensor Core path.

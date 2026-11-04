@@ -425,3 +425,56 @@ test('UTF-8 JSON byte length need not align the native results to a four-byte bo
   const result = await fitter.fit(sample());
   assert.deepEqual([...result.chosen], Array.from({length:10}, (_, i) => i % 3));
 });
+
+test('frame sessions retain one atlas/worker and reuse upload storage while replacing input/results',async()=>{
+  const data=sample(),bridge=fakeBridge(),fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl});
+  const frames=fitter.createFrameSession(data);
+  // The atlas/config is captured; mutations by the caller cannot reconfigure a live worker.
+  data.masks[0][0]=1;data.palette[0][0]=255;data.columns=1;
+  const first=await frames.fitFrame(sample().pixels);
+  const next=sample().pixels.map((v,i)=>i%4===0?v+1:v);
+  const second=await frames.fitFrame(next);
+  assert.equal(bridge.inits.length,1);assert.equal(bridge.deletions.length,0);
+  assert.equal(first.stats.sessionReused,false);assert.equal(second.stats.sessionReused,true);
+  assert.equal(first.stats.frameIndex,0);assert.equal(second.stats.frameIndex,1);
+  assert.equal(second.stats.timing.nativeInitMs,0);assert.equal(second.stats.timing.atlasUploadMs,0);
+  assert.equal(second.stats.uploadedBytes,10*4*4);
+  assert.notDeepEqual([...first.chosen],[...second.chosen]);assert.notEqual(first.chosen.buffer,second.chosen.buffer);
+  const posts=bridge.calls.filter(c=>c.url.endsWith('/tile'));
+  assert.equal(posts[0].options.body.buffer,posts.at(-1).options.body.buffer,'one retained upload buffer');
+  assert.equal(new DataView(bridge.inits[0].bytes.buffer).getFloat32(32,true),0,'snapshot masks retained');
+  await assert.rejects(fitter.fit(sample()),/owns a frame session/);
+  await frames.close();await frames.close();assert.equal(bridge.deletions.length,1);
+  await assert.rejects(frames.fitFrame(sample().pixels),/closed/);
+  await fitter.fit(sample());assert.equal(bridge.inits.length,2);assert.equal(bridge.deletions.length,2);
+});
+
+test('frame session refuses concurrent refill, closes idle sessions, and cancels active frames',async()=>{
+  let enter;const entered=new Promise(r=>enter=r);
+  const bridge=fakeBridge({onTile:({options})=>new Promise((resolve,reject)=>{
+    enter();options.signal.addEventListener('abort',()=>reject(options.signal.reason),{once:true});
+  })});
+  const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl});const frames=fitter.createFrameSession(sample());
+  const pending=frames.fitFrame(sample().pixels);const rejected=assert.rejects(pending,{name:'AbortError'});await entered;
+  await assert.rejects(frames.fitFrame(sample().pixels),/await it before refilling/);
+  assert.throws(()=>fitter.createFrameSession(sample()),/already converting/);
+  await frames.close();await rejected;assert.equal(bridge.deletions.length,1);
+  const idleBridge=fakeBridge(),idleFitter=await PhotographicCudaFitter.create({fetchImpl:idleBridge.fetchImpl});
+  await idleFitter.createFrameSession(sample()).fitFrame(sample().pixels);await idleFitter.close();
+  assert.equal(idleBridge.deletions.length,1);
+});
+
+test('frame failure poisons the sequence and cleanup failure cannot silently pass close',async()=>{
+  const bridge=fakeBridge({onTile:()=>jsonResponse({error:'device lost'},503)});
+  const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl}),frames=fitter.createFrameSession(sample());
+  await assert.rejects(frames.fitFrame(sample().pixels),/device lost/);
+  await assert.rejects(frames.fitFrame(sample().pixels),/closed/);await frames.close();
+  assert.equal(bridge.deletions.length,1);
+  const bad=fakeBridge({onDelete:()=>jsonResponse({error:'release failed'},500)});
+  const f=await PhotographicCudaFitter.create({fetchImpl:bad.fetchImpl}),s=f.createFrameSession(sample());
+  await s.fitFrame(sample().pixels);await assert.rejects(s.close(),/release failed/);
+  const invalid=fakeBridge(),f2=await PhotographicCudaFitter.create({fetchImpl:invalid.fetchImpl}),s2=f2.createFrameSession(sample());
+  await s2.fitFrame(sample().pixels);await assert.rejects(s2.fitFrame(new Uint8Array(1)),/geometry/);
+  assert.equal(invalid.deletions.length,1);await assert.rejects(s2.fitFrame(sample().pixels),/closed/);
+  await s2.close();assert.equal(f2.frameSession,null);
+});

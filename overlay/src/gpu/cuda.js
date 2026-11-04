@@ -8,7 +8,9 @@
  * using the original CPU's binary64 grouping and strict tie order.
  *
  * The local bridge owns one persistent native worker per fit; atlas/device
- * allocations are reused across tiles. CUDA-001 uses one tile at a time. A
+ * allocations are reused across tiles. Explicit frame sessions also retain
+ * those allocations between frames with fixed geometry/atlas/settings.
+ * CUDA-001 uses one tile at a time. A
  * requested WebGPU pipeline depth is reported separately from this actual
  * depth, and a failed CUDA request never silently changes the chosen backend.
  */
@@ -317,6 +319,7 @@ export class PhotographicCudaFitter {
     this.fetchImpl = fetchImpl;
     this.closed = false;
     this.activeController = null;
+    this.frameSession = null;
   }
 
   static tilePlan(info, {columns, rows, sampleWidth, sampleHeight, glyphCount,
@@ -362,9 +365,73 @@ export class PhotographicCudaFitter {
 
   tilePlan(options) { return PhotographicCudaFitter.tilePlan(this.info, options); }
 
-  async fit(data) {
+  /** One caller owns the sequence; await each frame before supplying the next.
+   * No unbounded input queue is created. Outputs have independent ownership.
+   * Initialization is charged to frame 0; close() releases the retained worker.
+   */
+  createFrameSession(data) {
+    if (this.closed) throw new Error('CUDA fitter is closed');
+    if (this.activeController || this.frameSession) throw new Error('CUDA fitter is already converting an image or owns a frame session');
+    const keys = ['columns','rows','sampleWidth','sampleHeight','foregroundCandidates',
+      'backgroundCandidates','preferredTileCells','preferredTileMiB','inFlightTiles'];
+    const config = Object.fromEntries(keys.filter(k => data[k] !== undefined).map(k => [k,data[k]]));
+    config.masks = data.masks?.map(mask => Array.from(mask));
+    config.palette = data.palette?.map(rgb => Array.from(rgb));
+    const {glyphCount} = inputGeometry({...config,sampleProvider:() => {}}, this.info);
+    const plan = this.tilePlan({...config,glyphCount});
+    const state = {config,sessionId:null,cudaInfo:null,closed:false,done:null,index:0,
+      payload:new Uint8Array(8 + plan.tileCells * config.sampleWidth * config.sampleHeight * 4),cleanupError:null};
+    this.frameSession = state;
+    return Object.freeze({
+      fitFrame:(pixels,{signal,onProgress} = {}) => {
+        if (state.closed) return Promise.reject(new Error('CUDA frame session is closed'));
+        if (state.done) return Promise.reject(new Error('CUDA frame session is already converting a frame; await it before refilling'));
+        const operation = this.fit({...config,pixels,signal,onProgress},state);
+        state.done = operation;
+        operation.finally(() => { if (state.done === operation) state.done = null; }).catch(() => {});
+        return operation.catch(async error => {
+          // Input validation can fail before fit() enters its request cleanup.
+          // Even that failure ends the retained sequence, rather than leaving
+          // an earlier frame's native allocations alive until idle expiry.
+          try { await this.endFrameSession(state); } catch { /* close() retains cleanup errors */ }
+          throw error;
+        });
+      },
+      close:() => this.endFrameSession(state)
+    });
+  }
+
+  async endFrameSession(state) {
+    if (state.closing) return state.closing;
+    state.closed = true;
+    state.closing = (async () => {
+      if (state.done) {
+        if (this.frameSession === state) this.activeController?.abort(abortError());
+        await state.done.catch(() => {});
+      }
+      const started = clock();
+      try {
+        if (state.sessionId) {
+          const result = await request(this.fetchImpl, `/api/cuda/session/${state.sessionId}`, {
+            method:'DELETE',timeoutMs:this.cleanupTimeoutMs
+          });
+          if (result.ok !== true) throw new Error('CUDA bridge did not acknowledge session cleanup');
+        }
+        if (state.cleanupError) throw state.cleanupError;
+        return {cleanupMs:clock()-started};
+      } finally {
+        state.sessionId = null;
+        if (this.frameSession === state) this.frameSession = null;
+      }
+    })();
+    return state.closing;
+  }
+
+  async fit(data, frameState = null) {
     if (this.closed) throw new Error('CUDA fitter is closed');
     if (this.activeController) throw new Error('CUDA fitter is already converting an image');
+    if (this.frameSession && this.frameSession !== frameState) throw new Error('CUDA fitter owns a frame session; use fitFrame');
+    if (frameState && (frameState !== this.frameSession || frameState.closed)) throw new Error('CUDA frame session is closed');
     const {cells, samples, glyphCount} = inputGeometry(data, this.info);
     const plan = this.tilePlan({...data, glyphCount});
     if (data.onProgress != null && typeof data.onProgress !== 'function') throw new TypeError('onProgress must be a function');
@@ -381,33 +448,36 @@ export class PhotographicCudaFitter {
       gpuDirectProjectionMs:0,gpuDirectSelectionMs:0,
       maxProjectionLaunchMs:0,maxSelectionLaunchMs:0,cleanupMs:0
     };
-    let sessionId = null, primaryError = null;
+    let sessionId = frameState?.sessionId ?? null, primaryError = null;
+    const sessionReused = sessionId !== null;
     try {
       throwIfAborted(controller.signal);
       let at = clock();
       const chosen = new Uint16Array(cells), fg = new Uint8Array(cells), bg = new Uint8Array(cells);
       timing.bufferCreateMs = clock() - at;
       at = clock();
-      const init = packInit(data, plan, glyphCount, samples);
-      timing.atlasPackMs = clock() - at;
+      const init = sessionReused ? null : packInit(data, plan, glyphCount, samples);
+      timing.atlasPackMs = sessionReused ? 0 : clock() - at;
       at = clock();
-      const ready = await request(this.fetchImpl, '/api/cuda/session', {
+      const ready = sessionReused ? null : await request(this.fetchImpl, '/api/cuda/session', {
         method:'POST', body:init, signal:controller.signal, timeoutMs:this.requestTimeoutMs
       });
-      timing.nativeInitMs = clock() - at;
-      if (typeof ready.sessionId !== 'string' || !/^[A-Za-z0-9_-]{16,128}$/.test(ready.sessionId)) {
+      timing.nativeInitMs = sessionReused ? 0 : clock() - at;
+      if (!sessionReused && (typeof ready.sessionId !== 'string' || !/^[A-Za-z0-9_-]{16,128}$/.test(ready.sessionId))) {
         throw new Error('CUDA bridge returned an invalid session identifier');
       }
-      sessionId = ready.sessionId;
-      if (ready.ok !== true) throw new Error(`CUDA worker initialization failed: ${ready.error || 'invalid response'}`);
-      const cudaInfo = initializedInfo(ready, this.info);
-      if (ready.atlasUploadMs !== undefined) {
+      sessionId = sessionReused ? sessionId : ready.sessionId;
+      if (!sessionReused && ready.ok !== true) throw new Error(`CUDA worker initialization failed: ${ready.error || 'invalid response'}`);
+      const cudaInfo = sessionReused ? frameState.cudaInfo : initializedInfo(ready, this.info);
+      if (frameState) { frameState.sessionId = sessionId; frameState.cudaInfo = cudaInfo; }
+      if (sessionReused) timing.atlasUploadMs = 0;
+      if (!sessionReused && ready.atlasUploadMs !== undefined) {
         timing.atlasUploadMs = finiteTime(ready.atlasUploadMs, 'atlasUploadMs');
         timing.uploadMs += timing.atlasUploadMs;
       }
       const tileMeasurements = [];
-      let uploadedBytes = init.byteLength - 32, readbackBytes = 0;
-      let requestPayloadBytes = init.byteLength, tileResponseBytes = 0, allocatedBytes = null;
+      let uploadedBytes = init ? init.byteLength - 32 : 0, readbackBytes = 0;
+      let requestPayloadBytes = init?.byteLength ?? 0, tileResponseBytes = 0, allocatedBytes = null;
       for (let tileStart = 0, tileIndex = 0; tileStart < cells; tileStart += plan.tileCells, tileIndex++) {
         throwIfAborted(controller.signal);
         const tileCount = Math.min(plan.tileCells, cells - tileStart), tileStarted = clock();
@@ -426,8 +496,8 @@ export class PhotographicCudaFitter {
           }
         }
         at = clock();
-        const payload = new Uint8Array(8 + tileCount * samples * 4);
-        const packed = new DataView(payload.buffer);
+        const payload = frameState ? frameState.payload.subarray(0,8 + tileCount * samples * 4) : new Uint8Array(8 + tileCount * samples * 4);
+        const packed = new DataView(payload.buffer,payload.byteOffset,payload.byteLength);
         packed.setUint32(0, 2, true); packed.setUint32(4, tileCount, true);
         const putPixel = (source, src, dest) => packed.setUint32(8 + dest * 4,
           source[src] | (source[src + 1] << 8) | (source[src + 2] << 16), true);
@@ -485,6 +555,7 @@ export class PhotographicCudaFitter {
       }
       throwIfAborted(controller.signal);
       return {chosen, fg, bg, stats:{version:'CUDA-001', ...plan, precision:this.precision,
+        sessionReused,frameIndex:frameState ? frameState.index++ : null,
         timing, tileMeasurements, peakInFlightTiles:1, uploadedBytes, readbackBytes, allocatedBytes,
         recoveredCells:tileMeasurements.reduce((sum,tile)=>sum+tile.recoveredCells,0),
         certifiedCells:tileMeasurements.reduce((sum,tile)=>sum+tile.certifiedCells,0),
@@ -497,13 +568,14 @@ export class PhotographicCudaFitter {
         timestampReason:null, timestampSource:'CUDA events; sums of bounded native kernel launches',
         sampleComparisons:cells * glyphCount * samples * 3, glyphCandidates:cells * glyphCount,
         colourCandidates:cells * Math.min(32, glyphCount) * data.foregroundCandidates * data.backgroundCandidates,
-        timingNotes:'Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time.'
+        timingNotes:frameState ? 'Frame wall includes packing, HTTP, CUDA work and decoding. Frame 0 includes initialization/atlas upload; warm frames reuse the same native worker/context/buffers. Sequence cleanup is separate; depth one with caller backpressure.' : 'Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time.'
       }};
     } catch (error) {
       primaryError = error;
+      if (frameState) frameState.closed = true;
       throw error;
     } finally {
-      if (sessionId) {
+      if (sessionId && (!frameState || primaryError || frameState.closed)) {
         const at = clock();
         try {
           const closed = await request(this.fetchImpl, `/api/cuda/session/${sessionId}`, {
@@ -511,10 +583,15 @@ export class PhotographicCudaFitter {
           });
           if (closed.ok !== true) throw new Error('CUDA bridge did not acknowledge session cleanup');
         } catch (error) {
+          if (frameState) frameState.cleanupError = error;
           // Keep the useful compute/abort error if cleanup also fails. An
           // otherwise successful fit must not hide a worker left allocated.
           if (!primaryError) throw new Error(`CUDA session cleanup failed: ${error.message}`);
         } finally {
+          if (frameState) {
+            frameState.sessionId = null;
+            if (this.frameSession === frameState) this.frameSession = null;
+          }
           timing.cleanupMs = clock() - at;
           timing.wallTotalMs = clock() - timedStart;
           stopRelaying();
@@ -531,5 +608,10 @@ export class PhotographicCudaFitter {
   close() {
     this.closed = true;
     this.activeController?.abort(abortError());
+    if (this.frameSession) {
+      const closing = this.endFrameSession(this.frameSession);
+      closing.catch(() => {});
+      return closing;
+    }
   }
 }

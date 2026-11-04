@@ -81,3 +81,18 @@ test('stalled work stops and failing cleanup does not skip subsequent resource d
   ],5);
   assert.equal(disposed,true);assert.equal(errors.length,2);assert.equal(errors[0].step,'browser');
 });
+import {planFrames} from '../scripts/cuda_frame_plan.mjs';
+
+test('warm frame plans cap the entire sequence and require immutable matching geometry before discovery',()=>{
+  const data={columns:320,rows:160,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,
+    masks:Array.from({length:218},()=>new Float32Array(32)),codes:Array.from({length:218},(_,i)=>i),palette:Array.from({length:16},()=>[0,0,0])};
+  const plan={inputs:['a','b'],mode:'float32-direct',tileMiB:16,frameOrder:[0,1,0,1,0,1],
+    limits:{maxFrames:6,maxCells:307200,maxWork:18000000000,timeoutMs:10000}};
+  const summary=planFrames(plan,[data,data]);assert.equal(summary.runs,6);assert.equal(summary.cells,307200);assert.equal(summary.work,17971200000);
+  for(const patch of [{frameOrder:Array(7).fill(0)},{frameOrder:[2]},{mode:'float16-mixed'},{tileMiB:64},
+    {limits:{...plan.limits,maxFrames:5}},{limits:{...plan.limits,maxCells:307199}},
+    {limits:{...plan.limits,maxWork:17971199999}},{limits:{...plan.limits,timeoutMs:10001}}])
+    assert.throws(()=>planFrames({...plan,...patch},[data,data]));
+  assert.throws(()=>planFrames(plan,[data,{...data,foregroundCandidates:5}]),/fixed bounded geometry/);
+  assert.throws(()=>planFrames({...plan,requireColdReference:false},[data,data]),/512-cell smoke/);
+});

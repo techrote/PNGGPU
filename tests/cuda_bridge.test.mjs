@@ -241,6 +241,23 @@ test('browser fitter traverses HTTP, native framing and cleanup with partial fin
   fitter.close();
 });
 
+test('frame refill traverses HTTP with one worker/atlas and releases it after the sequence',async t=>{
+  const app=await fixture(t);
+  const fitter=await PhotographicCudaFitter.create({fetchImpl:(path,options)=>
+    fetch(new URL(path,app.origin),{...options,headers:{...options?.headers,Origin:app.origin}})});
+  const config={columns:3,rows:2,sampleWidth:2,sampleHeight:2,
+    masks:[Float32Array.of(0,1,0,1),Float32Array.of(1,0,1,0)],
+    palette:Array.from({length:16},(_,i)=>[i,i*2,i*3]),foregroundCandidates:6,backgroundCandidates:5,preferredTileCells:4};
+  const frames=fitter.createFrameSession(config);
+  for(let frame=0;frame<3;frame++){
+    const result=await frames.fitFrame(new Uint8Array(3*2*2*2*4).fill(frame+1));
+    assert.equal(result.stats.sessionReused,frame>0);assert.equal(result.stats.frameIndex,frame);
+    assert.equal(result.stats.tileCount,2);assert.equal(app.launches.filter(l=>l.args.includes('--stdio')).length,1);
+    assert.equal(app.children.size,1);
+  }
+  await frames.close();assert.equal(app.children.size,0);await fitter.close();
+});
+
 test('cross-origin, opaque-origin, rebinding and missing-origin mutations are rejected before launching CUDA', async t => {
   const app = await fixture(t);
   for (const requestHeaders of [
