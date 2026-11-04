@@ -28,6 +28,7 @@ namespace {
 using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
+constexpr unsigned selection_block_size = 32;
 bool direct_binary64 = false;
 bool direct_float32 = false, half_mixed = false;
 const char* precision_name() {
@@ -201,14 +202,14 @@ __global__ void recover_select_kernel(const std::uint32_t* pixels,const Float4* 
 }
 
 template<class Kernel>
-std::string kernel_resource_json(Kernel kernel,const DeviceInfo& info) {
+std::string kernel_resource_json(Kernel kernel,const DeviceInfo& info,unsigned threads) {
   cudaFuncAttributes attrs{};int blocks=0;
   cuda_check(cudaFuncGetAttributes(&attrs,kernel),"Kernel resource attributes");
-  cuda_check(cudaOccupancyMaxActiveBlocksPerMultiprocessor(&blocks,kernel,block_size,0),"Theoretical kernel occupancy");
+  cuda_check(cudaOccupancyMaxActiveBlocksPerMultiprocessor(&blocks,kernel,threads,0),"Theoretical kernel occupancy");
   std::ostringstream out;out.imbue(std::locale::classic());
   out << "{\"registersPerThread\":" << attrs.numRegs << ",\"localBytesPerThread\":" << attrs.localSizeBytes
-      << ",\"staticSharedBytesPerBlock\":" << attrs.sharedSizeBytes << ",\"blockThreads\":" << block_size
-      << ",\"theoreticalActiveBlocksPerSM\":" << blocks << ",\"theoreticalActiveThreadsPerSM\":" << blocks*block_size
+      << ",\"staticSharedBytesPerBlock\":" << attrs.sharedSizeBytes << ",\"blockThreads\":" << threads
+      << ",\"theoreticalActiveBlocksPerSM\":" << blocks << ",\"theoreticalActiveThreadsPerSM\":" << blocks*threads
       << ",\"deviceMaxThreadsPerSM\":" << info.properties.maxThreadsPerMultiProcessor
       << ",\"binaryVersion\":" << attrs.binaryVersion << ",\"ptxVersion\":" << attrs.ptxVersion << "}";
   return out.str();
@@ -216,10 +217,10 @@ std::string kernel_resource_json(Kernel kernel,const DeviceInfo& info) {
 
 std::string kernel_resources_json(const DeviceInfo& info) {
   return "{\"source\":\"CUDA function attributes and theoretical occupancy API; not achieved hardware counters\","
-    "\"selectionGuarded\":"+kernel_resource_json(select_kernel<true>,info)+
-    ",\"selectionFP32\":"+kernel_resource_json(select_kernel<false>,info)+
-    ",\"selectionFP64\":"+kernel_resource_json(recover_select_kernel,info)+
-    ",\"projectionShared\":"+kernel_resource_json(project_kernel,info)+"}";
+    "\"selectionGuarded\":"+kernel_resource_json(select_kernel<true>,info,selection_block_size)+
+    ",\"selectionFP32\":"+kernel_resource_json(select_kernel<false>,info,selection_block_size)+
+    ",\"selectionFP64\":"+kernel_resource_json(recover_select_kernel,info,selection_block_size)+
+    ",\"projectionShared\":"+kernel_resource_json(project_kernel,info,block_size)+"}";
 }
 
 struct TileOutput {
@@ -316,11 +317,11 @@ class Worker {
     if(!direct_binary64)for (std::uint32_t start = 0; start < count;) {
       const std::uint32_t end = start+std::min(count-start, cells_per_launch);
       cuda_check(cudaEventRecord(start_.value, stream_.value), "Record selection start");
-      if(direct_float32||half_mixed)select_kernel<false><<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
+      if(direct_float32||half_mixed)select_kernel<false><<<(end-start+selection_block_size-1)/selection_block_size, selection_block_size, 0, stream_.value>>>(
         pixels_.as<std::uint32_t>(), statistics_.as<Float4>(), palette_.as<Float4>(),
         projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
         p.foreground_count, p.background_count, start, end);
-      else select_kernel<true><<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
+      else select_kernel<true><<<(end-start+selection_block_size-1)/selection_block_size, selection_block_size, 0, stream_.value>>>(
         pixels_.as<std::uint32_t>(), statistics_.as<Float4>(), palette_.as<Float4>(),
         projections_.as<Float4>(), results_.as<Result>(), samples, p.glyph_count,
         p.foreground_count, p.background_count, start, end);
@@ -369,7 +370,7 @@ class Worker {
         for(std::uint32_t local=0;local<chunk;) {
           const auto cells=std::min(chunk-local,cells_per_launch);
           cuda_check(cudaEventRecord(start_.value,stream_.value),"Record recovery selection start");
-          recover_select_kernel<<<(cells+block_size-1)/block_size,block_size,0,stream_.value>>>(
+          recover_select_kernel<<<(cells+selection_block_size-1)/selection_block_size,selection_block_size,0,stream_.value>>>(
             pixels_.as<std::uint32_t>(),statistics_.as<Float4>(),palette_.as<Float4>(),
             recovery_.as<precise::Projection>()+std::size_t(local)*p.glyph_count,results_.as<Result>(),
             samples,p.glyph_count,p.foreground_count,p.background_count,offset+local,cells,direct_binary64||verify_guard);
