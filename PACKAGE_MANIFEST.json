@@ -286,8 +286,12 @@
       "bytes": 2058
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "7521c27927f29b231458ee4de445be542be6ba180536f042ae87a3597706a639",
-      "bytes": 9073
+      "sha256": "ca56a46ef4b5222f577af8b25a0e5633714567022e96d0351aca47aa4077f073",
+      "bytes": 9482
+    },
+    "qualification/GTX1650SUPER_PRECISION_BENCHMARK.md": {
+      "sha256": "cd525c1c82d60a1723af83e7f380b2848a07b43de2f15e3b1ffe9eaba4f921fb",
+      "bytes": 13572
     },
     "qualification/GTX1650SUPER_REAL_IMAGES.md": {
       "sha256": "4e8c91f2641ce9d1085f7dfb1931a8148e7e54103ef405811214f89e954bdb39",
@@ -300,6 +304,1090 @@
     "qualification/GTX1650SUPER_STAGED_OUTPUTS.md": {
       "sha256": "7a1c71eeeccc5033a991930b348d2f5ec2e77fde7a04a9076c859f17062be447",
       "bytes": 8418
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s0-binary64-direct.ans": {
+      "sha256": "8f8fe7d09d26204e31bc45f98f98f060b7930cdd829690be419c7a1f22b813d5",
+      "bytes": 4452
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s0-float16-mixed.ans": {
+      "sha256": "8f8fe7d09d26204e31bc45f98f98f060b7930cdd829690be419c7a1f22b813d5",
+      "bytes": 4452
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s0-float32-direct.ans": {
+      "sha256": "8f8fe7d09d26204e31bc45f98f98f060b7930cdd829690be419c7a1f22b813d5",
+      "bytes": 4452
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s1-binary64-direct.ans": {
+      "sha256": "9db57e7fc6d7ed7bf17c9769304de192ce3ae4fcebb2cc2e8b0890def8038bd7",
+      "bytes": 26144
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s1-float16-mixed.ans": {
+      "sha256": "0a5b564f6ecc568b307d3da268f564237d4fe869751e5fb41a03593a664951f1",
+      "bytes": 26154
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s1-float32-direct.ans": {
+      "sha256": "9db57e7fc6d7ed7bf17c9769304de192ce3ae4fcebb2cc2e8b0890def8038bd7",
+      "bytes": 26144
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s10-binary64-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s10-float16-mixed.ans": {
+      "sha256": "78153fff8d364b825e10945be3036fd6f0d7c8ae606891ff868af88a96b15b23",
+      "bytes": 372036
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s10-float32-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s11-binary64-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s11-float16-mixed.ans": {
+      "sha256": "78153fff8d364b825e10945be3036fd6f0d7c8ae606891ff868af88a96b15b23",
+      "bytes": 372036
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s11-float32-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s12-binary64-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s12-float16-mixed.ans": {
+      "sha256": "78153fff8d364b825e10945be3036fd6f0d7c8ae606891ff868af88a96b15b23",
+      "bytes": 372036
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s12-float32-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s13-binary64-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s13-float16-mixed.ans": {
+      "sha256": "78153fff8d364b825e10945be3036fd6f0d7c8ae606891ff868af88a96b15b23",
+      "bytes": 372036
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s13-float32-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s2-binary64-direct.ans": {
+      "sha256": "9db57e7fc6d7ed7bf17c9769304de192ce3ae4fcebb2cc2e8b0890def8038bd7",
+      "bytes": 26144
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s2-float16-mixed.ans": {
+      "sha256": "0a5b564f6ecc568b307d3da268f564237d4fe869751e5fb41a03593a664951f1",
+      "bytes": 26154
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s2-float32-direct.ans": {
+      "sha256": "9db57e7fc6d7ed7bf17c9769304de192ce3ae4fcebb2cc2e8b0890def8038bd7",
+      "bytes": 26144
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s3-binary64-direct.ans": {
+      "sha256": "ff872de8a452472576ebf304bdd686d087a2812dc0e233119239ba9a31fa7085",
+      "bytes": 23666
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s3-float16-mixed.ans": {
+      "sha256": "0c00ae7a5f0ae64ad0e725d8403c3b052f06307e187441872f9d4ec90f3de89b",
+      "bytes": 23624
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s3-float32-direct.ans": {
+      "sha256": "ff872de8a452472576ebf304bdd686d087a2812dc0e233119239ba9a31fa7085",
+      "bytes": 23666
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s4-binary64-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s4-float16-mixed.ans": {
+      "sha256": "bf933c1b56e224e086ddebf59be1b451e07615d30acb43682d86a064c8cb18af",
+      "bytes": 100937
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s4-float32-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s5-binary64-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s5-float16-mixed.ans": {
+      "sha256": "bf933c1b56e224e086ddebf59be1b451e07615d30acb43682d86a064c8cb18af",
+      "bytes": 100937
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s5-float32-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s6-binary64-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s6-float16-mixed.ans": {
+      "sha256": "bf933c1b56e224e086ddebf59be1b451e07615d30acb43682d86a064c8cb18af",
+      "bytes": 100937
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s6-float32-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s7-binary64-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s7-float16-mixed.ans": {
+      "sha256": "bf933c1b56e224e086ddebf59be1b451e07615d30acb43682d86a064c8cb18af",
+      "bytes": 100937
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s7-float32-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s8-binary64-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s8-float16-mixed.ans": {
+      "sha256": "bf933c1b56e224e086ddebf59be1b451e07615d30acb43682d86a064c8cb18af",
+      "bytes": 100937
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s8-float32-direct.ans": {
+      "sha256": "88ad5cfa246ec7e806a1e5859c738588f76fa4e5cef4a414713b3e3cc27c18d3",
+      "bytes": 101022
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s9-binary64-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s9-float16-mixed.ans": {
+      "sha256": "78153fff8d364b825e10945be3036fd6f0d7c8ae606891ff868af88a96b15b23",
+      "bytes": 372036
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i0-s9-float32-direct.ans": {
+      "sha256": "3e5fe0b0490aed286a861649f6b73052709962791856e982497161047ab90fae",
+      "bytes": 372068
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s0-binary64-direct.ans": {
+      "sha256": "fb9a15249e3dffabbe6b8c8a74882036f42c7b12ae45db345c94bfcb8b43f0c8",
+      "bytes": 2402
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s0-float16-mixed.ans": {
+      "sha256": "1346dfa1c739536e98479d47e8b54ec87abfc31c549b55ddd2b5e874bab7f968",
+      "bytes": 2391
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s0-float32-direct.ans": {
+      "sha256": "fb9a15249e3dffabbe6b8c8a74882036f42c7b12ae45db345c94bfcb8b43f0c8",
+      "bytes": 2402
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s1-binary64-direct.ans": {
+      "sha256": "981e00bfc328bb5440782824fd738094c2dce4d2928325d2ceff420b278ee4ec",
+      "bytes": 16381
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s1-float16-mixed.ans": {
+      "sha256": "52475bda06b2c976b369f2467250250e50b7819fe69eb7134a65079a0d5974c5",
+      "bytes": 16349
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s1-float32-direct.ans": {
+      "sha256": "981e00bfc328bb5440782824fd738094c2dce4d2928325d2ceff420b278ee4ec",
+      "bytes": 16381
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s10-binary64-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s10-float16-mixed.ans": {
+      "sha256": "0bf13808c09074843c3b2ddf651fc8e9f0d1c720ed2a8373f4b3656897217855",
+      "bytes": 278833
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s10-float32-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s11-binary64-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s11-float16-mixed.ans": {
+      "sha256": "0bf13808c09074843c3b2ddf651fc8e9f0d1c720ed2a8373f4b3656897217855",
+      "bytes": 278833
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s11-float32-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s12-binary64-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s12-float16-mixed.ans": {
+      "sha256": "0bf13808c09074843c3b2ddf651fc8e9f0d1c720ed2a8373f4b3656897217855",
+      "bytes": 278833
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s12-float32-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s13-binary64-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s13-float16-mixed.ans": {
+      "sha256": "0bf13808c09074843c3b2ddf651fc8e9f0d1c720ed2a8373f4b3656897217855",
+      "bytes": 278833
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s13-float32-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s2-binary64-direct.ans": {
+      "sha256": "981e00bfc328bb5440782824fd738094c2dce4d2928325d2ceff420b278ee4ec",
+      "bytes": 16381
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s2-float16-mixed.ans": {
+      "sha256": "52475bda06b2c976b369f2467250250e50b7819fe69eb7134a65079a0d5974c5",
+      "bytes": 16349
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s2-float32-direct.ans": {
+      "sha256": "981e00bfc328bb5440782824fd738094c2dce4d2928325d2ceff420b278ee4ec",
+      "bytes": 16381
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s3-binary64-direct.ans": {
+      "sha256": "220168e58e50b2721c02b593cdf19d5814d691f77b610ebaa9c474ec4d1f546a",
+      "bytes": 15904
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s3-float16-mixed.ans": {
+      "sha256": "750ddaa994a4fb716f7c1b1b450dff3171db071935a073efc3e6a36ce9b2ac45",
+      "bytes": 15893
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s3-float32-direct.ans": {
+      "sha256": "220168e58e50b2721c02b593cdf19d5814d691f77b610ebaa9c474ec4d1f546a",
+      "bytes": 15904
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s4-binary64-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s4-float16-mixed.ans": {
+      "sha256": "d81c4c3c88af7de4f1cb4fee647339578c85b217f53397087720a228e02930af",
+      "bytes": 66280
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s4-float32-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s5-binary64-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s5-float16-mixed.ans": {
+      "sha256": "d81c4c3c88af7de4f1cb4fee647339578c85b217f53397087720a228e02930af",
+      "bytes": 66280
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s5-float32-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s6-binary64-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s6-float16-mixed.ans": {
+      "sha256": "d81c4c3c88af7de4f1cb4fee647339578c85b217f53397087720a228e02930af",
+      "bytes": 66280
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s6-float32-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s7-binary64-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s7-float16-mixed.ans": {
+      "sha256": "d81c4c3c88af7de4f1cb4fee647339578c85b217f53397087720a228e02930af",
+      "bytes": 66280
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s7-float32-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s8-binary64-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s8-float16-mixed.ans": {
+      "sha256": "d81c4c3c88af7de4f1cb4fee647339578c85b217f53397087720a228e02930af",
+      "bytes": 66280
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s8-float32-direct.ans": {
+      "sha256": "42f164f91b4654d36741428dbde2ece03dd72c11fe0a5339f426b8a9a8f70395",
+      "bytes": 66268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s9-binary64-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s9-float16-mixed.ans": {
+      "sha256": "0bf13808c09074843c3b2ddf651fc8e9f0d1c720ed2a8373f4b3656897217855",
+      "bytes": 278833
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i1-s9-float32-direct.ans": {
+      "sha256": "62a0fc03a67827a03991ea6590869c98a62ac0096d8595f798d3295387f25377",
+      "bytes": 278759
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s0-binary64-direct.ans": {
+      "sha256": "90bef67065c45ac733b2c3597e2ba738f84231bb6cae4ec00059f696a4d6ef01",
+      "bytes": 3343
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s0-float16-mixed.ans": {
+      "sha256": "f9fdc80461cb140c02b2c5eeaf9cf96950f9b4794890e64daebf599e1dba40af",
+      "bytes": 3343
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s0-float32-direct.ans": {
+      "sha256": "90bef67065c45ac733b2c3597e2ba738f84231bb6cae4ec00059f696a4d6ef01",
+      "bytes": 3343
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s1-binary64-direct.ans": {
+      "sha256": "0584f530cfb5522cd76727f89f4fd5396a1472ea5e7d30ddd448828a831d9fd7",
+      "bytes": 23610
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s1-float16-mixed.ans": {
+      "sha256": "8c433bd9d7ce9bdb3903bb4973eb5ae35fe2f1b0196931df9a8c0353c4c010b4",
+      "bytes": 23612
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s1-float32-direct.ans": {
+      "sha256": "0584f530cfb5522cd76727f89f4fd5396a1472ea5e7d30ddd448828a831d9fd7",
+      "bytes": 23610
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s10-binary64-direct.ans": {
+      "sha256": "2364fae2a1f7b5b64820a04c978771f119812f515fa59c7ac9600c2bcae9a7ed",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s10-float16-mixed.ans": {
+      "sha256": "9f5ad169f1b9283f070fa0bab5d7a2078d92818ae432bb93eb4128cf4b713534",
+      "bytes": 407330
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s10-float32-direct.ans": {
+      "sha256": "eb4dc89f50bd9ca8a543d4154bf7503ef17869f9581e94304da892001245f1d1",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s11-binary64-direct.ans": {
+      "sha256": "2364fae2a1f7b5b64820a04c978771f119812f515fa59c7ac9600c2bcae9a7ed",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s11-float16-mixed.ans": {
+      "sha256": "9f5ad169f1b9283f070fa0bab5d7a2078d92818ae432bb93eb4128cf4b713534",
+      "bytes": 407330
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s11-float32-direct.ans": {
+      "sha256": "eb4dc89f50bd9ca8a543d4154bf7503ef17869f9581e94304da892001245f1d1",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s12-binary64-direct.ans": {
+      "sha256": "2364fae2a1f7b5b64820a04c978771f119812f515fa59c7ac9600c2bcae9a7ed",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s12-float16-mixed.ans": {
+      "sha256": "9f5ad169f1b9283f070fa0bab5d7a2078d92818ae432bb93eb4128cf4b713534",
+      "bytes": 407330
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s12-float32-direct.ans": {
+      "sha256": "eb4dc89f50bd9ca8a543d4154bf7503ef17869f9581e94304da892001245f1d1",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s13-binary64-direct.ans": {
+      "sha256": "2364fae2a1f7b5b64820a04c978771f119812f515fa59c7ac9600c2bcae9a7ed",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s13-float16-mixed.ans": {
+      "sha256": "9f5ad169f1b9283f070fa0bab5d7a2078d92818ae432bb93eb4128cf4b713534",
+      "bytes": 407330
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s13-float32-direct.ans": {
+      "sha256": "eb4dc89f50bd9ca8a543d4154bf7503ef17869f9581e94304da892001245f1d1",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s2-binary64-direct.ans": {
+      "sha256": "0584f530cfb5522cd76727f89f4fd5396a1472ea5e7d30ddd448828a831d9fd7",
+      "bytes": 23610
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s2-float16-mixed.ans": {
+      "sha256": "8c433bd9d7ce9bdb3903bb4973eb5ae35fe2f1b0196931df9a8c0353c4c010b4",
+      "bytes": 23612
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s2-float32-direct.ans": {
+      "sha256": "0584f530cfb5522cd76727f89f4fd5396a1472ea5e7d30ddd448828a831d9fd7",
+      "bytes": 23610
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s3-binary64-direct.ans": {
+      "sha256": "a6d7c2b51280d4fbfe5564219aafeef06123da548390022534eb1343629f9e75",
+      "bytes": 16513
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s3-float16-mixed.ans": {
+      "sha256": "3131030a683ef8eb2096b5233113c6bdbcfcefff61c6ab60a3d8d86e909dbd25",
+      "bytes": 16513
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s3-float32-direct.ans": {
+      "sha256": "a6d7c2b51280d4fbfe5564219aafeef06123da548390022534eb1343629f9e75",
+      "bytes": 16513
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s4-binary64-direct.ans": {
+      "sha256": "fb924a3b6227922f272750ab85e8d1239c14100486cbbecac7c639d680935b8e",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s4-float16-mixed.ans": {
+      "sha256": "ae7dab862b6483c1682fd0b92be2c576fcf6095ff07623afe94ee9f07ac7d676",
+      "bytes": 103568
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s4-float32-direct.ans": {
+      "sha256": "7378ae3d2233737eca2c32c18279048114a2515c51cafaf49b79ee7ddedb9bb8",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s5-binary64-direct.ans": {
+      "sha256": "fb924a3b6227922f272750ab85e8d1239c14100486cbbecac7c639d680935b8e",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s5-float16-mixed.ans": {
+      "sha256": "ae7dab862b6483c1682fd0b92be2c576fcf6095ff07623afe94ee9f07ac7d676",
+      "bytes": 103568
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s5-float32-direct.ans": {
+      "sha256": "7378ae3d2233737eca2c32c18279048114a2515c51cafaf49b79ee7ddedb9bb8",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s6-binary64-direct.ans": {
+      "sha256": "fb924a3b6227922f272750ab85e8d1239c14100486cbbecac7c639d680935b8e",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s6-float16-mixed.ans": {
+      "sha256": "ae7dab862b6483c1682fd0b92be2c576fcf6095ff07623afe94ee9f07ac7d676",
+      "bytes": 103568
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s6-float32-direct.ans": {
+      "sha256": "7378ae3d2233737eca2c32c18279048114a2515c51cafaf49b79ee7ddedb9bb8",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s7-binary64-direct.ans": {
+      "sha256": "fb924a3b6227922f272750ab85e8d1239c14100486cbbecac7c639d680935b8e",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s7-float16-mixed.ans": {
+      "sha256": "ae7dab862b6483c1682fd0b92be2c576fcf6095ff07623afe94ee9f07ac7d676",
+      "bytes": 103568
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s7-float32-direct.ans": {
+      "sha256": "7378ae3d2233737eca2c32c18279048114a2515c51cafaf49b79ee7ddedb9bb8",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s8-binary64-direct.ans": {
+      "sha256": "fb924a3b6227922f272750ab85e8d1239c14100486cbbecac7c639d680935b8e",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s8-float16-mixed.ans": {
+      "sha256": "ae7dab862b6483c1682fd0b92be2c576fcf6095ff07623afe94ee9f07ac7d676",
+      "bytes": 103568
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s8-float32-direct.ans": {
+      "sha256": "7378ae3d2233737eca2c32c18279048114a2515c51cafaf49b79ee7ddedb9bb8",
+      "bytes": 103606
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s9-binary64-direct.ans": {
+      "sha256": "2364fae2a1f7b5b64820a04c978771f119812f515fa59c7ac9600c2bcae9a7ed",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s9-float16-mixed.ans": {
+      "sha256": "9f5ad169f1b9283f070fa0bab5d7a2078d92818ae432bb93eb4128cf4b713534",
+      "bytes": 407330
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i2-s9-float32-direct.ans": {
+      "sha256": "eb4dc89f50bd9ca8a543d4154bf7503ef17869f9581e94304da892001245f1d1",
+      "bytes": 407312
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s0-binary64-direct.ans": {
+      "sha256": "da9387f1a98f8413eeb794d36ee649aa79a636dd168ce92a7e2919b7990e1763",
+      "bytes": 3666
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s0-float16-mixed.ans": {
+      "sha256": "925212197af9177214c7b01c4685f5c28605de1074211506573bff83103cf5ad",
+      "bytes": 3676
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s0-float32-direct.ans": {
+      "sha256": "da9387f1a98f8413eeb794d36ee649aa79a636dd168ce92a7e2919b7990e1763",
+      "bytes": 3666
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s1-binary64-direct.ans": {
+      "sha256": "7681f5963a538309875c2d740c7924f0d62de178d21ae70bd529a053fdfed6b4",
+      "bytes": 21126
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s1-float16-mixed.ans": {
+      "sha256": "bd3731a866e214482724dea6b0faeb5dd333ebd1db400d2347d9fc5559a9cfee",
+      "bytes": 21147
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s1-float32-direct.ans": {
+      "sha256": "7681f5963a538309875c2d740c7924f0d62de178d21ae70bd529a053fdfed6b4",
+      "bytes": 21126
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s10-binary64-direct.ans": {
+      "sha256": "4a909bf476c5f5600485281b7471e90e3ddebceda133d50e9a5d2de8e98b1304",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s10-float16-mixed.ans": {
+      "sha256": "088b9775d3378da5fae01adef333e40045e604e0a38d7aa868802a8d1bd05def",
+      "bytes": 289244
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s10-float32-direct.ans": {
+      "sha256": "23b55f91e306af0aeaf0402f1e3bf9c58f0f513a4709a9a012b1ac2c018bc97b",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s11-binary64-direct.ans": {
+      "sha256": "4a909bf476c5f5600485281b7471e90e3ddebceda133d50e9a5d2de8e98b1304",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s11-float16-mixed.ans": {
+      "sha256": "088b9775d3378da5fae01adef333e40045e604e0a38d7aa868802a8d1bd05def",
+      "bytes": 289244
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s11-float32-direct.ans": {
+      "sha256": "23b55f91e306af0aeaf0402f1e3bf9c58f0f513a4709a9a012b1ac2c018bc97b",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s12-binary64-direct.ans": {
+      "sha256": "4a909bf476c5f5600485281b7471e90e3ddebceda133d50e9a5d2de8e98b1304",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s12-float16-mixed.ans": {
+      "sha256": "088b9775d3378da5fae01adef333e40045e604e0a38d7aa868802a8d1bd05def",
+      "bytes": 289244
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s12-float32-direct.ans": {
+      "sha256": "23b55f91e306af0aeaf0402f1e3bf9c58f0f513a4709a9a012b1ac2c018bc97b",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s13-binary64-direct.ans": {
+      "sha256": "4a909bf476c5f5600485281b7471e90e3ddebceda133d50e9a5d2de8e98b1304",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s13-float16-mixed.ans": {
+      "sha256": "088b9775d3378da5fae01adef333e40045e604e0a38d7aa868802a8d1bd05def",
+      "bytes": 289244
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s13-float32-direct.ans": {
+      "sha256": "23b55f91e306af0aeaf0402f1e3bf9c58f0f513a4709a9a012b1ac2c018bc97b",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s2-binary64-direct.ans": {
+      "sha256": "7681f5963a538309875c2d740c7924f0d62de178d21ae70bd529a053fdfed6b4",
+      "bytes": 21126
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s2-float16-mixed.ans": {
+      "sha256": "bd3731a866e214482724dea6b0faeb5dd333ebd1db400d2347d9fc5559a9cfee",
+      "bytes": 21147
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s2-float32-direct.ans": {
+      "sha256": "7681f5963a538309875c2d740c7924f0d62de178d21ae70bd529a053fdfed6b4",
+      "bytes": 21126
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s3-binary64-direct.ans": {
+      "sha256": "dc7d421d1f75398190bd7b56a8121e65ce48aeba7e8adbdf761de7dfdd03a35c",
+      "bytes": 19599
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s3-float16-mixed.ans": {
+      "sha256": "8ac3747a2bdff5eac85d0e544e0c40c72db788725a9b03c62e8282ebda7acc83",
+      "bytes": 19577
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s3-float32-direct.ans": {
+      "sha256": "dc7d421d1f75398190bd7b56a8121e65ce48aeba7e8adbdf761de7dfdd03a35c",
+      "bytes": 19599
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s4-binary64-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s4-float16-mixed.ans": {
+      "sha256": "2474a45e69767f230d419350c7ac857f73fbdc7c17f1222e651fa6e710224c2d",
+      "bytes": 78510
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s4-float32-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s5-binary64-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s5-float16-mixed.ans": {
+      "sha256": "2474a45e69767f230d419350c7ac857f73fbdc7c17f1222e651fa6e710224c2d",
+      "bytes": 78510
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s5-float32-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s6-binary64-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s6-float16-mixed.ans": {
+      "sha256": "2474a45e69767f230d419350c7ac857f73fbdc7c17f1222e651fa6e710224c2d",
+      "bytes": 78510
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s6-float32-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s7-binary64-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s7-float16-mixed.ans": {
+      "sha256": "2474a45e69767f230d419350c7ac857f73fbdc7c17f1222e651fa6e710224c2d",
+      "bytes": 78510
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s7-float32-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s8-binary64-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s8-float16-mixed.ans": {
+      "sha256": "2474a45e69767f230d419350c7ac857f73fbdc7c17f1222e651fa6e710224c2d",
+      "bytes": 78510
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s8-float32-direct.ans": {
+      "sha256": "91533bf6543debddc55169ca7f5f4131651f18081ccde3fc8d49a02eafcbcdad",
+      "bytes": 78521
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s9-binary64-direct.ans": {
+      "sha256": "4a909bf476c5f5600485281b7471e90e3ddebceda133d50e9a5d2de8e98b1304",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s9-float16-mixed.ans": {
+      "sha256": "088b9775d3378da5fae01adef333e40045e604e0a38d7aa868802a8d1bd05def",
+      "bytes": 289244
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i3-s9-float32-direct.ans": {
+      "sha256": "23b55f91e306af0aeaf0402f1e3bf9c58f0f513a4709a9a012b1ac2c018bc97b",
+      "bytes": 289255
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s0-binary64-direct.ans": {
+      "sha256": "4ba441a5db55d576a2477854808c17259a4139c23c8473e9588a636c13dec29c",
+      "bytes": 4172
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s0-float16-mixed.ans": {
+      "sha256": "c5efbb868aef773fd7a31dc6a9524aa469faa4053cd8aa0cdd480fe7ad7749db",
+      "bytes": 4172
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s0-float32-direct.ans": {
+      "sha256": "4ba441a5db55d576a2477854808c17259a4139c23c8473e9588a636c13dec29c",
+      "bytes": 4172
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s1-binary64-direct.ans": {
+      "sha256": "dde67694b4baf8ce168f5916b4b653e24cb358e06b2ce1b88b931f1d40efa192",
+      "bytes": 25688
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s1-float16-mixed.ans": {
+      "sha256": "209848a4943b652924ddb9a2903dbe610405e134b66416ed075910e18617249d",
+      "bytes": 25699
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s1-float32-direct.ans": {
+      "sha256": "dde67694b4baf8ce168f5916b4b653e24cb358e06b2ce1b88b931f1d40efa192",
+      "bytes": 25688
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s10-binary64-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s10-float16-mixed.ans": {
+      "sha256": "a8af8044ac5562ddb2bd37a64e83b711b00582ae1ca0c643d173acea394ffeec",
+      "bytes": 447372
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s10-float32-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s11-binary64-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s11-float16-mixed.ans": {
+      "sha256": "a8af8044ac5562ddb2bd37a64e83b711b00582ae1ca0c643d173acea394ffeec",
+      "bytes": 447372
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s11-float32-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s12-binary64-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s12-float16-mixed.ans": {
+      "sha256": "a8af8044ac5562ddb2bd37a64e83b711b00582ae1ca0c643d173acea394ffeec",
+      "bytes": 447372
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s12-float32-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s13-binary64-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s13-float16-mixed.ans": {
+      "sha256": "a8af8044ac5562ddb2bd37a64e83b711b00582ae1ca0c643d173acea394ffeec",
+      "bytes": 447372
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s13-float32-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s2-binary64-direct.ans": {
+      "sha256": "dde67694b4baf8ce168f5916b4b653e24cb358e06b2ce1b88b931f1d40efa192",
+      "bytes": 25688
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s2-float16-mixed.ans": {
+      "sha256": "209848a4943b652924ddb9a2903dbe610405e134b66416ed075910e18617249d",
+      "bytes": 25699
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s2-float32-direct.ans": {
+      "sha256": "dde67694b4baf8ce168f5916b4b653e24cb358e06b2ce1b88b931f1d40efa192",
+      "bytes": 25688
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s3-binary64-direct.ans": {
+      "sha256": "fa05a976f7da05a6713c534c74c5ff0001ed9800ac7415ea236d2a76fef6d815",
+      "bytes": 23975
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s3-float16-mixed.ans": {
+      "sha256": "01639a312aa5309272ea05afc5a9ca791dbfda2f8e6daf55fa0a88ffc912e4f3",
+      "bytes": 23984
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s3-float32-direct.ans": {
+      "sha256": "fa05a976f7da05a6713c534c74c5ff0001ed9800ac7415ea236d2a76fef6d815",
+      "bytes": 23975
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s4-binary64-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s4-float16-mixed.ans": {
+      "sha256": "7cb7ca5cd22457627483142eadad17a53a68676808eb1d71ffd2140ac9c7df46",
+      "bytes": 108005
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s4-float32-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s5-binary64-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s5-float16-mixed.ans": {
+      "sha256": "7cb7ca5cd22457627483142eadad17a53a68676808eb1d71ffd2140ac9c7df46",
+      "bytes": 108005
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s5-float32-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s6-binary64-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s6-float16-mixed.ans": {
+      "sha256": "7cb7ca5cd22457627483142eadad17a53a68676808eb1d71ffd2140ac9c7df46",
+      "bytes": 108005
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s6-float32-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s7-binary64-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s7-float16-mixed.ans": {
+      "sha256": "7cb7ca5cd22457627483142eadad17a53a68676808eb1d71ffd2140ac9c7df46",
+      "bytes": 108005
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s7-float32-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s8-binary64-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s8-float16-mixed.ans": {
+      "sha256": "7cb7ca5cd22457627483142eadad17a53a68676808eb1d71ffd2140ac9c7df46",
+      "bytes": 108005
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s8-float32-direct.ans": {
+      "sha256": "4ebdd262c2720f42342e03f2f5ca8b03e26b3ba20a80d6c99687eb45f0f74d02",
+      "bytes": 107982
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s9-binary64-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s9-float16-mixed.ans": {
+      "sha256": "a8af8044ac5562ddb2bd37a64e83b711b00582ae1ca0c643d173acea394ffeec",
+      "bytes": 447372
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/ansi/i4-s9-float32-direct.ans": {
+      "sha256": "4f6a1f93eb2d631470f4f3bcd6ab2079e5648a36cb0850295fcf8b065dff9550",
+      "bytes": 447463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/atlas.json": {
+      "sha256": "088bd26cfe5396ef9a84700fa0a3c266341b0f6c61fa1eb2ebc966b31b8f62be",
+      "bytes": 38057
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/export_results.mjs": {
+      "sha256": "f56da199083b3b5799cc67eb98503a1d073a5d8fbe98c415bbf4236ca1030668",
+      "bytes": 11125
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/gallery-qa.json": {
+      "sha256": "44e70d4caf3dce78b1077875d42f036e3afbc055453b2cf2280c4a15663efe94",
+      "bytes": 491
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/interrupted-attempt-index.json": {
+      "sha256": "f5442561a01c402c1fca3c2f5ee41c98c63ea6c7417f4350b1ba7eeec64039c7",
+      "bytes": 11750
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/outputs.bin": {
+      "sha256": "fb98edb322bc72ec9b044f6f13e7120d2c5c3deace87c52833b09f716a49f1a4",
+      "bytes": 19806720
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/preparation-timeout-2148.json": {
+      "sha256": "a45b984f528cadf83b261384d085978a7db70d1974cbc989d8b5741072154049",
+      "bytes": 2390
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s0-float32-direct.png": {
+      "sha256": "c3814d61e9970ead2e5a72185b5a218c9ddb069cc8bf04dec1757c61f7e23909",
+      "bytes": 36218
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s1-binary64-direct.png": {
+      "sha256": "37731b9c78d928d65b4aa14283cc7a15919e590cede21aabd7c98c1a0f9bd6eb",
+      "bytes": 218489
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s1-float16-mixed.png": {
+      "sha256": "dbea5b5c8e631259da7f5b41582380b171aa31a3033a460d31977ae03063a77f",
+      "bytes": 218238
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s3-float16-mixed.png": {
+      "sha256": "bb6768f86d4d865c11f6476c6367f9a3c8a0ebc6162188910264edd0ef0364fe",
+      "bytes": 165250
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s3-float32-direct.png": {
+      "sha256": "c7a969edefc2372b000b2c9c5876cc358810b177120cda0e7aa55ae680fcad13",
+      "bytes": 165370
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s4-float16-mixed.png": {
+      "sha256": "e591e6976d7332d170c7f47aa76b5ed1b162ec09919ed3be4cbc09693febcf20",
+      "bytes": 867701
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s4-float32-direct.png": {
+      "sha256": "e59dcd1689583103eab259b5829db267de73bf0ea16da03ad6167e5e734e279a",
+      "bytes": 868403
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s9-binary64-direct.png": {
+      "sha256": "0e4b242c5dab0fb2468d8c23e9056d82267e1d959c810a9f0e9654e1052635aa",
+      "bytes": 3137941
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i0-s9-float16-mixed.png": {
+      "sha256": "c5f3d4a097efc66d3cc9270645144c536ecf37449a66b4540ce54fb5d9d0ba90",
+      "bytes": 3136784
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s0-binary64-direct.png": {
+      "sha256": "f7c118e74229f5fbecf380f76ada9d4d32c18e434c185fecb84795a24a916c9c",
+      "bytes": 28805
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s0-float16-mixed.png": {
+      "sha256": "fd7da3565306664377addeab0832d9b1b14f4e117e78e78f7965f693f3d5dbb9",
+      "bytes": 29076
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s1-float16-mixed.png": {
+      "sha256": "7bbe5f01750a28934e8cb79820ea136e2123e120276eb66343d37b91131b93c5",
+      "bytes": 162417
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s1-float32-direct.png": {
+      "sha256": "efa6f7e0733723b6a2f6b3c0dc60ac732a05d165e7f8fb900648decf78504dbf",
+      "bytes": 162424
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s3-float16-mixed.png": {
+      "sha256": "61d0c9dd0ab539939bca5ba3f50a4090e1aec656c3919560eb03101ab42267eb",
+      "bytes": 131804
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s3-float32-direct.png": {
+      "sha256": "c2fea33caa4b4f9c8c69d28f0075bc8ae5a06da935c963b7083503a794851865",
+      "bytes": 132158
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s4-binary64-direct.png": {
+      "sha256": "4e4dccdf043e8d9d2a7b835974c506eb35c65dddd53fee1a3d3f93248d60aba9",
+      "bytes": 616888
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s4-float16-mixed.png": {
+      "sha256": "cbfc5256480da7380b018ed6fa9dcdee9953ae10073cd55233c5e4fe5bbf1676",
+      "bytes": 617712
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s9-float16-mixed.png": {
+      "sha256": "62927e1c5bdd156ea2ac8186a19951cd8347aa94c4e62b64f132049d5e569519",
+      "bytes": 2297720
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i1-s9-float32-direct.png": {
+      "sha256": "b335990bdabae0188154eb23c4e5dc3f24f6950688714086e547d743197c85c8",
+      "bytes": 2297661
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s0-float16-mixed.png": {
+      "sha256": "5bc84d296cd4dde2a76732ce15834c7f97bc3a3718e86e681cf1577967a7b888",
+      "bytes": 23817
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s0-float32-direct.png": {
+      "sha256": "d608b07ad56ddbed5ab8d758418cb7aa6471b8dc9acd29963714527498cf143b",
+      "bytes": 23920
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s1-float16-mixed.png": {
+      "sha256": "5b9d8a8de02a1a97c8d388bad0a551809ec0f734795d278eb7b7c5d642519e3f",
+      "bytes": 182883
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s1-float32-direct.png": {
+      "sha256": "5b761418a519f38169a04f0e75b5964c538bfaca4ecb8145bce146628e3807f6",
+      "bytes": 182396
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s3-binary64-direct.png": {
+      "sha256": "101c7b063359958941a981ea59734b3769a8f21526ff3aca86b7c9152b3c27fa",
+      "bytes": 137225
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s3-float16-mixed.png": {
+      "sha256": "681bfc3740a3e84c494a486aecab41bb9970f0e8685737de1dbbb035269a1c80",
+      "bytes": 137381
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s4-binary64-direct.png": {
+      "sha256": "9862dea609ae679c6439b4fb24b6132c7967fa96e4bd7ececf1f07a62dc18047",
+      "bytes": 777728
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s4-float16-mixed.png": {
+      "sha256": "c05771076949660028318ea8ecff5855f1d116d7aea350e201dd188d80fa69fc",
+      "bytes": 777070
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s4-float32-direct.png": {
+      "sha256": "d0038f0dbc775e4b025af74d441edc8a5f25981363702e2146602166ff098484",
+      "bytes": 777779
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s9-binary64-direct.png": {
+      "sha256": "9edf71086dc60815e3c1e276d3b34fd2724a3114331d591923fbb0307faf8ea5",
+      "bytes": 3011396
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s9-float16-mixed.png": {
+      "sha256": "2423dcfdbe21e5813c20983ea50792b09d737865f3ab768b6574119900b71810",
+      "bytes": 3010787
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i2-s9-float32-direct.png": {
+      "sha256": "5c72274852466613660126fe1f910c212cbe76177538936277ead63d67b04a4f",
+      "bytes": 3011603
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s0-float16-mixed.png": {
+      "sha256": "5c5955a95d88b5853f6fe3d13f3f88e38cbeb871558027fe5cc65c08add419c9",
+      "bytes": 33608
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s0-float32-direct.png": {
+      "sha256": "36204fd23b4181b9ce0f1ff63429e84aba87320ae2ce774154a751b28e40b68a",
+      "bytes": 33670
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s1-binary64-direct.png": {
+      "sha256": "81ec626f5b018525386032788e04dd2e4e24c1288ad4c8396f0236b3f528e068",
+      "bytes": 188271
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s1-float16-mixed.png": {
+      "sha256": "77067090da53ea3cc007d31cef7ef55a9174dbe6b63e5489603e488adab766fe",
+      "bytes": 188332
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s3-float16-mixed.png": {
+      "sha256": "3b288b03251e21f2c0b12aea913e8c6433675ef0dc3a27c03dcaeb03304d3867",
+      "bytes": 157044
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s3-float32-direct.png": {
+      "sha256": "6bb8c88b6c5875742d8970a150279802fdcdb80a5ecd6282053c07369adffbd8",
+      "bytes": 156989
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s4-float16-mixed.png": {
+      "sha256": "8b640c5aa4a0ccf8c3f231bd67aa8c05f7d040f1f040de3132f08eea87a7d318",
+      "bytes": 708220
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s4-float32-direct.png": {
+      "sha256": "e2a62301dbcc7996db4ae54294eccb03d8e3908e70b8f5ac763038abddb60c16",
+      "bytes": 708463
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s9-binary64-direct.png": {
+      "sha256": "f5f3e845bdde98a33a0d43d8700fca5bade792ffcf40fbd4c5e7e3d4ef8da813",
+      "bytes": 2426395
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s9-float16-mixed.png": {
+      "sha256": "7a536c433dc4bf08ed14f762c2bc9eaad1970b5b399a87197756e00c7d36067f",
+      "bytes": 2425268
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i3-s9-float32-direct.png": {
+      "sha256": "f5f3e845bdde98a33a0d43d8700fca5bade792ffcf40fbd4c5e7e3d4ef8da813",
+      "bytes": 2426395
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s0-binary64-direct.png": {
+      "sha256": "6ef2b194b5641d76349483eb4d557326a044972eabc19d1091c6509ce46093cb",
+      "bytes": 34237
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s0-float16-mixed.png": {
+      "sha256": "fae1b3b866341ed48eeea71a8da02ca3fe6ee997a4d4248e1e17cf7a9ceffa69",
+      "bytes": 34247
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s1-float16-mixed.png": {
+      "sha256": "6a349b8830c852ee5f77c6bc19bc140e04ca6fe3ba7879eda0f5e52da4b56d4c",
+      "bytes": 200663
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s1-float32-direct.png": {
+      "sha256": "ef617072960ef39ab1d8c32887e98d7836cb8e73697211a56bb4ffac85f1d6dc",
+      "bytes": 200750
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s3-float16-mixed.png": {
+      "sha256": "1969ee47d2c778a57d05b602845239ab4575e0886e07c2b7db85f3f7336bdaee",
+      "bytes": 168506
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s3-float32-direct.png": {
+      "sha256": "2c4466ca238475bfe7f44676d6c4c802f18316c0d4344ba04259d1b1dc81f248",
+      "bytes": 168451
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s4-binary64-direct.png": {
+      "sha256": "27500d9ad495ed3ee12cc8d7e7daf67bfced1bb75bdbceb26c16f5967da24e4c",
+      "bytes": 698232
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s4-float16-mixed.png": {
+      "sha256": "f101da15d5bd79027a3c4feeb1e661b907d52fcca718e2d8668a09d3ecaa4565",
+      "bytes": 697956
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s9-float16-mixed.png": {
+      "sha256": "4eddcb38d23db4cc5635fbf79d8803a7923f276a55aabf86ff13fa0cef6f10c4",
+      "bytes": 2537250
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/previews/i4-s9-float32-direct.png": {
+      "sha256": "f760ecf598e77235681ba7e2a631145562fa03d100f980e8b99395ca400ece65",
+      "bytes": 2537596
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/results.csv": {
+      "sha256": "b72344004a3f1929ac23b0d9c9eeab36469a8d4b4f8bfc6c849e06591421f81b",
+      "bytes": 24688
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/run_tile_comparison.mjs": {
+      "sha256": "a0b4a3949db3a4cff058facea5142629ba174b579f466be77f6972b35ac19619",
+      "bytes": 2369
+    },
+    "qualification/GTX_PRECISION_BENCHMARK/summary.json": {
+      "sha256": "451fcafe4e24a093712d0737251255360dea772636770dc2b1e7ee6db31c7e8f",
+      "bytes": 894293
     },
     "qualification/README.md": {
       "sha256": "299ee60327c73f9d10f3f5ca45bfcc2ebf87cc28e3aa310cdc2d3fa4f40cbaf5",

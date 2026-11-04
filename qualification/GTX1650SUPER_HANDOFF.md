@@ -17,6 +17,12 @@ machine setting. It is additional small-work evidence, not full qualification.
 The later [staged-output report](GTX1650SUPER_STAGED_OUTPUTS.md) advances one
 image to 80×40 characters with explicit caps and unchanged native admission.
 
+The subsequent [precision/tile benchmark](GTX1650SUPER_PRECISION_BENCHMARK.md)
+records all five images through 320x160 characters in explicit FP32, direct FP64
+and FP16-mixed modes, including 1–32 MiB tile sweeps at CUDA depth one. It relaxes
+parity as a benchmark criterion at the user's request, not native admission or
+the default guarded backend. It does not establish realtime or sustained stability.
+
 ## Checkpoint and source authority
 
 Latest engineering checkpoint before this documentation handover:
