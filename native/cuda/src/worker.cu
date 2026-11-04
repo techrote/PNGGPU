@@ -29,6 +29,11 @@ using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
 constexpr unsigned selection_block_size = 64;
+#ifdef PNGGPU_COLOR_MAJOR_FP32
+constexpr bool glyph_major_fp32 = false;
+#else
+constexpr bool glyph_major_fp32 = true;
+#endif
 bool direct_binary64 = false;
 bool direct_float32 = false, half_mixed = false;
 const char* precision_name() {
@@ -118,6 +123,7 @@ std::string device_json(const DeviceInfo& info) {
       << ",\"computeCapability\":" << json_string(std::to_string(info.properties.major)+"."+std::to_string(info.properties.minor))
       << ",\"totalMemoryBytes\":" << info.total_bytes
       << ",\"freeMemoryBytes\":" << info.free_bytes << ",\"index\":" << info.index
+      << ",\"multiprocessorCount\":" << info.properties.multiProcessorCount
       << ",\"kernelExecTimeoutEnabled\":" << (info.properties.kernelExecTimeoutEnabled ? "true" : "false") << "}";
   return out.str();
 }
@@ -130,6 +136,7 @@ std::string info_json(const DeviceInfo& info) {
   out << "{\"schema\":\"pnggpu-cuda-info-v1\",\"available\":true,\"backend\":\"cuda\","
          "\"protocolVersion\":1,\"precision\":" << json_string(precision_name()) << ",\"device\":" << device_json(info)
       << ",\"runtimeVersion\":" << info.runtime_version << ",\"driverVersion\":" << info.driver_version
+      << ",\"directFP32SelectionTraversal\":" << json_string(glyph_major_fp32?"glyph-major-stable-rank":"color-major-original")
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
       << ",\"maxProjectionBytes\":" << max_projection_bytes << ",\"maxPixelBytes\":" << max_pixel_bytes
@@ -178,7 +185,7 @@ __global__ void select_kernel(const std::uint32_t* pixels, const Float4* statist
   if (cell < end) {
     if constexpr(Guarded)results[cell] = guard::select(pixels+std::size_t(cell)*samples, statistics, palette,
       projections+std::size_t(cell)*glyph_count, samples,glyph_count,foreground_count,background_count);
-    else results[cell]=arithmetic::select<true>(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
+    else results[cell]=arithmetic::select<glyph_major_fp32>(pixels,statistics,palette,projections,samples,glyph_count,foreground_count,background_count,cell);
   }
 }
 

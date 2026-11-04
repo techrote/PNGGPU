@@ -24,9 +24,19 @@ void check(CUptiResult r,const char* where) {
 std::ofstream output;
 std::mutex output_mutex;
 std::atomic<unsigned> failures{0};
+std::atomic<unsigned> buffers{0};
+constexpr unsigned max_buffers=4; // at most 4 MiB of outstanding client record buffers
+void status_row(const char* kind,unsigned value) {
+  output << kind << ",0,0,0,0,0,0,0," << value << '\n';output.flush();
+  if(!output){++failures;std::fprintf(stderr,"CUPTI activity output write failed\n");}
+}
 void CUPTIAPI requested(std::uint8_t** p,std::size_t* size,std::size_t* maximum) {
-  *size=1024*1024;*p=static_cast<std::uint8_t*>(std::malloc(*size));*maximum=0;
-  if(!*p){*size=0;++failures;}
+  *size=0;*p=nullptr;*maximum=0;
+  auto count=buffers.load();
+  do {if(count>=max_buffers){++failures;std::lock_guard<std::mutex> lock(output_mutex);status_row("traceError",unsigned(CUPTI_ERROR_OUT_OF_MEMORY));return;}}
+  while(!buffers.compare_exchange_weak(count,count+1));
+  *size=1024*1024;*p=static_cast<std::uint8_t*>(std::malloc(*size));
+  if(!*p){*size=0;--buffers;++failures;std::lock_guard<std::mutex> lock(output_mutex);status_row("traceError",unsigned(CUPTI_ERROR_OUT_OF_MEMORY));}
 }
 void CUPTIAPI completed(CUcontext context,std::uint32_t stream,std::uint8_t* buffer,std::size_t,std::size_t valid) {
   std::lock_guard<std::mutex> lock(output_mutex);
@@ -34,7 +44,7 @@ void CUPTIAPI completed(CUcontext context,std::uint32_t stream,std::uint8_t* buf
   for(;;){
     const auto result=cuptiActivityGetNextRecord(buffer,valid,&record);
     if(result==CUPTI_ERROR_MAX_LIMIT_REACHED)break;
-    if(result!=CUPTI_SUCCESS){++failures;break;}
+    if(result!=CUPTI_SUCCESS){++failures;status_row("traceError",unsigned(result));break;}
     if(record->kind==CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL){
       const auto* k=reinterpret_cast<const CUpti_ActivityKernel9*>(record);
       output << "kernel," << k->correlationId << ',' << k->start << ',' << k->end << ','
@@ -47,9 +57,11 @@ void CUPTIAPI completed(CUcontext context,std::uint32_t stream,std::uint8_t* buf
     }
   }
   std::size_t dropped=0;
-  if(cuptiActivityGetNumDroppedRecords(context,stream,&dropped)!=CUPTI_SUCCESS)++failures;
+  const auto drop_status=cuptiActivityGetNumDroppedRecords(context,stream,&dropped);
+  if(drop_status!=CUPTI_SUCCESS){++failures;status_row("traceError",unsigned(drop_status));}
   if(dropped)output << "dropped,0,0,0,0,0,0,0," << dropped << '\n';
-  output.flush();std::free(buffer);
+  output.flush();if(!output){++failures;std::fprintf(stderr,"CUPTI activity output write failed\n");}
+  std::free(buffer);--buffers;
 }
 }
 
@@ -83,8 +95,9 @@ struct ActivityTrace::Impl {
   }
   ~Impl() {
     stop=true;if(flusher.joinable())flusher.join();
-    cuptiActivityFlushAll(0);cuptiActivityDisable(CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL);cuptiActivityDisable(CUPTI_ACTIVITY_KIND_RUNTIME);
-    std::lock_guard<std::mutex> lock(output_mutex);output << "traceErrors,0,0,0,0,0,0,0," << failures.load() << '\n';output.flush();output.close();
+    for(const auto status:{cuptiActivityFlushAll(0),cuptiActivityDisable(CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL),cuptiActivityDisable(CUPTI_ACTIVITY_KIND_RUNTIME)})
+      if(status!=CUPTI_SUCCESS){++failures;std::lock_guard<std::mutex> lock(output_mutex);status_row("traceError",unsigned(status));}
+    std::lock_guard<std::mutex> lock(output_mutex);status_row("traceErrors",failures.load());output.close();
   }
 };
 ActivityTrace::ActivityTrace(bool stdio) {
