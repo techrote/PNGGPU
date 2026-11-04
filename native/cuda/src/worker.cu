@@ -15,6 +15,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <cassert>
 
 #ifdef _WIN32
 #include <fcntl.h>
@@ -25,6 +26,10 @@ namespace {
 using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
+#ifdef PNGGPU_FAULT_INJECTION
+std::string test_fault;
+__global__ void poison_context() { asm("trap;"); }
+#endif
 
 void cuda_check(cudaError_t status, const char* operation) {
   if (status != cudaSuccess)
@@ -192,6 +197,14 @@ class Worker {
     masks_.allocate(atlas_.layout.mask_bytes);
     statistics_.allocate(atlas_.layout.stats_bytes);
     palette_.allocate(16*sizeof(Float4));
+#ifdef PNGGPU_FAULT_INJECTION
+    if(test_fault=="oom") {
+      void* impossible=nullptr;
+      cuda_check(cudaMalloc(&impossible,std::numeric_limits<std::size_t>::max()),"Injected impossible allocation after partial construction");
+      if(impossible)cudaFree(impossible);
+      throw std::runtime_error("Oversized CUDA allocation unexpectedly succeeded");
+    }
+#endif
     pixels_.allocate(atlas_.layout.pixel_bytes);
     projections_.allocate(atlas_.layout.projection_bytes);
     recovery_.allocate(atlas_.layout.recovery_bytes);
@@ -359,6 +372,21 @@ std::string tile_json(const TileOutput& result, std::size_t allocated_bytes) {
 }
 
 int serve(const DeviceInfo& device) {
+#ifdef PNGGPU_FAULT_INJECTION
+  DeviceBuffer pressure;
+  if(test_fault=="pressure") {
+    std::size_t free=0,total=0;cuda_check(cudaMemGetInfo(&free,&total),"Pressure snapshot");
+    constexpr std::size_t retain=memory_reserve_bytes+8u*1024u*1024u;
+    if(free<=retain)throw std::runtime_error("Not enough free memory for bounded pressure test");
+    const auto bytes=free-retain;pressure.allocate(bytes);
+    for(std::size_t offset=0;offset<bytes;offset+=16u*1024u*1024u) {
+      cuda_check(cudaMemset(static_cast<char*>(pressure.data)+offset,0,std::min(bytes-offset,std::size_t(16u*1024u*1024u))),"Commit pressure pages");
+      cuda_check(cudaDeviceSynchronize(),"Pressure chunk completion");
+    }
+    cuda_check(cudaMemGetInfo(&free,&total),"Pressure admission snapshot");
+    std::cerr << "pressureAllocatedBytes=" << bytes << " freeAfterPressureBytes=" << free << '\n';
+  }
+#endif
   std::unique_ptr<Worker> worker;
   std::vector<std::uint8_t> payload;
   while (read_frame(stdin, payload)) {
@@ -375,6 +403,13 @@ int serve(const DeviceInfo& device) {
       write_frame(stdout, make_response(0, json.str()));
     } else if (command == 2) {
       if (!worker) throw std::runtime_error("INIT must precede TILE");
+#ifdef PNGGPU_FAULT_INJECTION
+      if(test_fault=="context") {
+        poison_context<<<1,1>>>();
+        cuda_check(cudaDeviceSynchronize(),"Injected CUDA context fault");
+        throw std::runtime_error("Context fault unexpectedly succeeded");
+      }
+#endif
       std::uint32_t count = 0;
       const auto pixels = parse_tile(payload, worker->atlas(), count);
       const auto result = worker->fit(pixels, count);
@@ -458,7 +493,15 @@ int main(int argc, char** argv) {
         const auto number = std::stoull(index);
         if (number > std::uint64_t(std::numeric_limits<int>::max())) throw std::runtime_error("Device index is too large");
         device_index = int(number);
-      } else if (arg == "--help") {
+      }
+#ifdef PNGGPU_FAULT_INJECTION
+      else if(arg=="--test-fault") {
+        if(++i>=argc)throw std::runtime_error("--test-fault requires context, oom or pressure");
+        test_fault=argv[i];
+        if(test_fault!="context" && test_fault!="oom" && test_fault!="pressure")throw std::runtime_error("Invalid test fault");
+      }
+#endif
+      else if (arg == "--help") {
         std::cout << "PNGGPU optional CUDA worker (Turing sm_75 + compute_75 PTX)\n"
                      "Usage: pnggpu_cuda_worker (--info | --stdio | --self-test) [--device N]\n"
                      "Default device: first permitted GPU of compute capability 7.5 or later.\n";
@@ -474,6 +517,10 @@ int main(int argc, char** argv) {
     }
 #endif
     const auto device = select_device(device_index);
+#ifdef PNGGPU_FAULT_INJECTION
+    if((test_fault=="context" || test_fault=="pressure") && device.properties.kernelExecTimeoutEnabled)
+      throw std::runtime_error("Disruptive diagnostics are disabled on watchdog/display GPUs after observed desktop stalls; use an isolated non-display GPU");
+#endif
     if (mode == "--info") { std::cout << info_json(device) << '\n'; return 0; }
     if (mode == "--self-test") return self_test(device);
     return serve(device);

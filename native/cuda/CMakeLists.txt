@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(PNGGPUCUDA VERSION 1.0.0 LANGUAGES CXX)
 
 option(PNGGPU_ENABLE_CUDA "Build the optional CUDA worker (requires NVIDIA CUDA Toolkit)" OFF)
+option(PNGGPU_BUILD_FAULT_WORKER "Build separate hardware fault-injection qualification worker" OFF)
 include(CTest)
 
 add_library(pnggpu_cuda_common STATIC src/common.cpp)
@@ -48,4 +49,13 @@ if(PNGGPU_ENABLE_CUDA)
   # Deliberately no GPU CTest entry: hosted CPU runners can compile this worker.
   # Actual device qualification is explicit: pnggpu_cuda_worker --self-test.
   install(TARGETS pnggpu_cuda_worker RUNTIME DESTINATION bin)
+  if(PNGGPU_BUILD_FAULT_WORKER)
+    get_target_property(worker_options pnggpu_cuda_worker COMPILE_OPTIONS)
+    add_executable(pnggpu_cuda_fault_worker src/worker.cu)
+    target_compile_definitions(pnggpu_cuda_fault_worker PRIVATE PNGGPU_FAULT_INJECTION=1)
+    target_compile_options(pnggpu_cuda_fault_worker PRIVATE ${worker_options})
+    target_link_libraries(pnggpu_cuda_fault_worker PRIVATE pnggpu_cuda_common CUDA::cudart_static)
+    set_target_properties(pnggpu_cuda_fault_worker PROPERTIES CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED YES
+      CUDA_ARCHITECTURES "75-real;75-virtual" CUDA_RUNTIME_LIBRARY Static)
+  endif()
 endif()

@@ -1,0 +1,1150 @@
+{
+  "schema": "pnggpu-cuda-resilience-v1",
+  "sourceCommit": "0e8993d4fb71bbe740b786385b1f2ddc2b5feb86",
+  "sourceStatus": "M native/cuda/CMakeLists.txt\n M native/cuda/src/worker.cu\n?? scripts/qualify_cuda_resilience.mjs",
+  "started": "2026-11-04T02:28:26.334Z",
+  "workerSha256": "b5cb0423e6baf87dd0da95dc0fe56fac7050f13b88c7ae908f6e55e5238dbb34",
+  "faultWorkerSha256": "d8b85d1ed2bcd89f92e29f5220193c5d1aaa1abecde2b3b7ada2765f331d6d13",
+  "faults": [
+    {
+      "mode": "context",
+      "error": "CUDA request failed (HTTP 422): Injected CUDA context fault: unspecified launch failure",
+      "freeBefore": 24458035200,
+      "freeAfter": 24458035200,
+      "recovered": true,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      }
+    },
+    {
+      "mode": "oom",
+      "error": "CUDA request failed (HTTP 422): Injected impossible allocation after partial construction: out of memory",
+      "freeBefore": 24458035200,
+      "freeAfter": 24458035200,
+      "recovered": true,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      }
+    },
+    {
+      "mode": "pressure",
+      "error": "CUDA request failed (HTTP 422): CUDA allocation exceeds currently reported free memory minus 2 GiB; close GPU workloads or reduce tile/sample size",
+      "freeBefore": 24458035200,
+      "freeAfter": 24458035200,
+      "recovered": true,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      }
+    }
+  ],
+  "runs": [
+    {
+      "wallMs": 2006.188299999998,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08790000000226428,
+        "bufferCreateMs": 0.2727000000013504,
+        "tilePackMs": 149.33099999999467,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 10.905300000002171,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 275.3307999999997,
+        "wallTotalMs": 1858.577400000002,
+        "nativeInitMs": 156.56069999999818,
+        "atlasUploadMs": 2.1964,
+        "bridgeRoundTripMs": 1473.2414000000063,
+        "uploadMs": 7.6095,
+        "readbackMs": 2.8889,
+        "gpuProjectionMs": 153.74543988,
+        "gpuSelectionMs": 1022.5077784000001,
+        "gpuGuardMs": 178.88006427,
+        "gpuRecoveryProjectionMs": 122.539872022,
+        "gpuRecoverySelectionMs": 843.62771415,
+        "maxProjectionLaunchMs": 0.9584640265,
+        "maxSelectionLaunchMs": 4.505440235,
+        "cleanupMs": 67.48979999999938
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1968.786,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08929999999963911,
+        "bufferCreateMs": 0.31929999999920256,
+        "tilePackMs": 178.57970000001296,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 12.275599999997212,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 274.98229999999967,
+        "wallTotalMs": 1890.3601000000017,
+        "nativeInitMs": 150.6347999999998,
+        "atlasUploadMs": 2.0196,
+        "bridgeRoundTripMs": 1510.5445999999974,
+        "uploadMs": 8.0901,
+        "readbackMs": 2.9952000000000005,
+        "gpuProjectionMs": 152.51593605199997,
+        "gpuSelectionMs": 1020.1521296599998,
+        "gpuGuardMs": 180.79967975000002,
+        "gpuRecoveryProjectionMs": 121.40400007299999,
+        "gpuRecoverySelectionMs": 839.35244991,
+        "maxProjectionLaunchMs": 0.9254080057,
+        "maxSelectionLaunchMs": 4.329152107,
+        "cleanupMs": 37.09950000000026
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1781.1396000000022,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08690000000206055,
+        "bufferCreateMs": 0.475800000000163,
+        "tilePackMs": 93.07849999999962,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 5.455500000003667,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 257.6821000000018,
+        "wallTotalMs": 1711.2751000000026,
+        "nativeInitMs": 154.3064000000013,
+        "atlasUploadMs": 2.1732,
+        "bridgeRoundTripMs": 1420.4489000000176,
+        "uploadMs": 8.746799999999999,
+        "readbackMs": 2.581,
+        "gpuProjectionMs": 150.827103886,
+        "gpuSelectionMs": 1005.27830302,
+        "gpuGuardMs": 179.42665587,
+        "gpuRecoveryProjectionMs": 120.350911975,
+        "gpuRecoverySelectionMs": 825.85164713,
+        "maxProjectionLaunchMs": 0.9104319811,
+        "maxSelectionLaunchMs": 4.026368141,
+        "cleanupMs": 37.064400000002934
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1836.0027999999984,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08250000000043656,
+        "bufferCreateMs": 0.27699999999822467,
+        "tilePackMs": 130.31259999999747,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 7.953300000004674,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 249.2572,
+        "wallTotalMs": 1754.2070999999996,
+        "nativeInitMs": 142.41029999999955,
+        "atlasUploadMs": 1.7856,
+        "bridgeRoundTripMs": 1424.7150999999976,
+        "uploadMs": 7.4566,
+        "readbackMs": 2.7713,
+        "gpuProjectionMs": 149.19724817600002,
+        "gpuSelectionMs": 1014.0027513,
+        "gpuGuardMs": 177.52272028000002,
+        "gpuRecoveryProjectionMs": 119.066720067,
+        "gpuRecoverySelectionMs": 836.4800310199998,
+        "maxProjectionLaunchMs": 0.9015039802,
+        "maxSelectionLaunchMs": 4.300000191,
+        "cleanupMs": 47.90699999999924
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1777.1958000000013,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.09720000000015716,
+        "bufferCreateMs": 0.24429999999847496,
+        "tilePackMs": 77.6872000000003,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 5.163299999989249,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 249.64270000000033,
+        "wallTotalMs": 1715.6075999999994,
+        "nativeInitMs": 145.95539999999892,
+        "atlasUploadMs": 1.9935,
+        "bridgeRoundTripMs": 1438.7391000000061,
+        "uploadMs": 9.1332,
+        "readbackMs": 2.6381,
+        "gpuProjectionMs": 150.32019207200003,
+        "gpuSelectionMs": 1016.78185516,
+        "gpuGuardMs": 178.88124828,
+        "gpuRecoveryProjectionMs": 119.92169600800003,
+        "gpuRecoverySelectionMs": 837.9006068699999,
+        "maxProjectionLaunchMs": 0.9594240189,
+        "maxSelectionLaunchMs": 4.308991909,
+        "cleanupMs": 47.27690000000075
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1770.3426,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.0904999999984284,
+        "bufferCreateMs": 0.2577999999994063,
+        "tilePackMs": 97.78560000000289,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 7.687799999996059,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 213.53680000000168,
+        "wallTotalMs": 1704.4979000000021,
+        "nativeInitMs": 113.86859999999797,
+        "atlasUploadMs": 2.0827,
+        "bridgeRoundTripMs": 1444.247000000003,
+        "uploadMs": 8.942499999999999,
+        "readbackMs": 2.4605,
+        "gpuProjectionMs": 150.90694363700004,
+        "gpuSelectionMs": 1013.72358161,
+        "gpuGuardMs": 180.48201589999996,
+        "gpuRecoveryProjectionMs": 120.52460769,
+        "gpuRecoverySelectionMs": 833.2415657200002,
+        "maxProjectionLaunchMs": 0.9134079814,
+        "maxSelectionLaunchMs": 4.28710413,
+        "cleanupMs": 40.08399999999892
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1764.5427999999993,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.06620000000111759,
+        "bufferCreateMs": 0.2055000000000291,
+        "tilePackMs": 128.66420000000653,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 6.319200000001729,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 213.70360000000073,
+        "wallTotalMs": 1706.2086000000018,
+        "nativeInitMs": 117.96710000000166,
+        "atlasUploadMs": 2.1642,
+        "bridgeRoundTripMs": 1407.6872999999978,
+        "uploadMs": 8.4976,
+        "readbackMs": 2.6139,
+        "gpuProjectionMs": 149.100063651,
+        "gpuSelectionMs": 1011.1991378600001,
+        "gpuGuardMs": 179.97452828,
+        "gpuRecoveryProjectionMs": 118.135135679,
+        "gpuRecoverySelectionMs": 831.2246096199999,
+        "maxProjectionLaunchMs": 0.9140160084,
+        "maxSelectionLaunchMs": 4.013376236,
+        "cleanupMs": 44.764899999998306
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1682.1768999999986,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.0867999999973108,
+        "bufferCreateMs": 0.12770000000091386,
+        "tilePackMs": 81.29650000000402,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 5.3945999999850756,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 204.59820000000036,
+        "wallTotalMs": 1623.6303000000007,
+        "nativeInitMs": 117.23449999999866,
+        "atlasUploadMs": 1.8258,
+        "bridgeRoundTripMs": 1383.8437999999915,
+        "uploadMs": 9.1443,
+        "readbackMs": 2.5856999999999997,
+        "gpuProjectionMs": 150.67443184600003,
+        "gpuSelectionMs": 1014.76396573,
+        "gpuGuardMs": 178.62323201000004,
+        "gpuRecoveryProjectionMs": 120.83180784900001,
+        "gpuRecoverySelectionMs": 836.1407337199998,
+        "maxProjectionLaunchMs": 1.125695944,
+        "maxSelectionLaunchMs": 4.295263767,
+        "cleanupMs": 35.32010000000446
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1970.8323000000019,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.0915000000022701,
+        "bufferCreateMs": 0.09249999999883585,
+        "tilePackMs": 190.4776000000129,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 11.90880000001198,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 216.50359999999637,
+        "wallTotalMs": 1906.4663999999975,
+        "nativeInitMs": 120.45279999999912,
+        "atlasUploadMs": 1.8919,
+        "bridgeRoundTripMs": 1514.0705000000307,
+        "uploadMs": 8.107599999999998,
+        "readbackMs": 4.659800000000001,
+        "gpuProjectionMs": 149.919743897,
+        "gpuSelectionMs": 1020.95331299,
+        "gpuGuardMs": 180.11347188999997,
+        "gpuRecoveryProjectionMs": 119.12400004300002,
+        "gpuRecoverySelectionMs": 840.8398411400001,
+        "maxProjectionLaunchMs": 0.9380159974,
+        "maxSelectionLaunchMs": 4.982816219,
+        "cleanupMs": 68.57800000000134
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1860.4631000000008,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.0874000000039814,
+        "bufferCreateMs": 0.24560000000201399,
+        "tilePackMs": 169.70150000000285,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 9.931100000016158,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 235.52070000000094,
+        "wallTotalMs": 1795.7937999999995,
+        "nativeInitMs": 135.0547000000006,
+        "atlasUploadMs": 1.9878,
+        "bridgeRoundTripMs": 1439.145199999999,
+        "uploadMs": 7.9145,
+        "readbackMs": 2.5444999999999993,
+        "gpuProjectionMs": 149.621631875,
+        "gpuSelectionMs": 1016.70684887,
+        "gpuGuardMs": 181.13507225,
+        "gpuRecoveryProjectionMs": 118.806623817,
+        "gpuRecoverySelectionMs": 835.57177663,
+        "maxProjectionLaunchMs": 0.9307519794,
+        "maxSelectionLaunchMs": 4.241216183,
+        "cleanupMs": 40.935099999995145
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1730.4887999999992,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08450000000448199,
+        "bufferCreateMs": 0.3437999999950989,
+        "tilePackMs": 84.12869999999384,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 6.788499999980559,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 214.7713999999978,
+        "wallTotalMs": 1663.5686999999962,
+        "nativeInitMs": 123.47119999999995,
+        "atlasUploadMs": 2.1625,
+        "bridgeRoundTripMs": 1406.4788000000044,
+        "uploadMs": 8.3541,
+        "readbackMs": 2.3876,
+        "gpuProjectionMs": 149.09459184300002,
+        "gpuSelectionMs": 1014.9086702899999,
+        "gpuGuardMs": 178.03974448999998,
+        "gpuRecoveryProjectionMs": 118.965375781,
+        "gpuRecoverySelectionMs": 836.8689257899999,
+        "maxProjectionLaunchMs": 0.9081599712,
+        "maxSelectionLaunchMs": 4.324927807,
+        "cleanupMs": 41.88969999999972
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1828.6814999999988,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08009999999922002,
+        "bufferCreateMs": 0.09079999999812571,
+        "tilePackMs": 156.52769999999873,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 7.842400000001362,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 219.61659999999392,
+        "wallTotalMs": 1760.125899999999,
+        "nativeInitMs": 118.2248000000036,
+        "atlasUploadMs": 1.9047,
+        "bridgeRoundTripMs": 1438.155700000003,
+        "uploadMs": 8.0713,
+        "readbackMs": 2.6776,
+        "gpuProjectionMs": 149.68137556399998,
+        "gpuSelectionMs": 1022.0747187100002,
+        "gpuGuardMs": 178.97712015,
+        "gpuRecoveryProjectionMs": 119.361471832,
+        "gpuRecoverySelectionMs": 843.09759854,
+        "maxProjectionLaunchMs": 0.8856639862,
+        "maxSelectionLaunchMs": 4.620895863,
+        "cleanupMs": 38.43850000000384
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1769.0714999999982,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08159999999770662,
+        "bufferCreateMs": 0.1304999999993015,
+        "tilePackMs": 133.658900000024,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 8.844100000009348,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 214.70640000000276,
+        "wallTotalMs": 1703.5587999999989,
+        "nativeInitMs": 118.78839999999764,
+        "atlasUploadMs": 1.9315,
+        "bridgeRoundTripMs": 1382.151699999995,
+        "uploadMs": 7.9412,
+        "readbackMs": 2.9304,
+        "gpuProjectionMs": 150.08777602000004,
+        "gpuSelectionMs": 1015.98352023,
+        "gpuGuardMs": 179.36496014000005,
+        "gpuRecoveryProjectionMs": 119.962559908,
+        "gpuRecoverySelectionMs": 836.61856006,
+        "maxProjectionLaunchMs": 0.9190400243,
+        "maxSelectionLaunchMs": 4.773952007,
+        "cleanupMs": 59.353299999995215
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1811.328999999998,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.07959999999729916,
+        "bufferCreateMs": 0.23009999999339925,
+        "tilePackMs": 112.69570000000385,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 7.842799999991257,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 226.64360000000306,
+        "wallTotalMs": 1739.7588000000032,
+        "nativeInitMs": 124.86620000000403,
+        "atlasUploadMs": 1.8316,
+        "bridgeRoundTripMs": 1448.7775999999867,
+        "uploadMs": 8.4207,
+        "readbackMs": 2.958,
+        "gpuProjectionMs": 155.124703944,
+        "gpuSelectionMs": 1020.77744071,
+        "gpuGuardMs": 180.15632102000004,
+        "gpuRecoveryProjectionMs": 124.59055990000002,
+        "gpuRecoverySelectionMs": 840.6211197199999,
+        "maxProjectionLaunchMs": 1.097151995,
+        "maxSelectionLaunchMs": 4.515999794,
+        "cleanupMs": 44.78319999999803
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1804.9789999999994,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.12819999999919673,
+        "bufferCreateMs": 0.619299999998475,
+        "tilePackMs": 141.71389999998792,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 7.989899999985937,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 226.64229999999952,
+        "wallTotalMs": 1741.5780000000013,
+        "nativeInitMs": 132.2600999999995,
+        "atlasUploadMs": 2.151,
+        "bridgeRoundTripMs": 1420.8882999999914,
+        "uploadMs": 8.633800000000003,
+        "readbackMs": 2.7036,
+        "gpuProjectionMs": 151.835007892,
+        "gpuSelectionMs": 1008.78118444,
+        "gpuGuardMs": 176.78902363999998,
+        "gpuRecoveryProjectionMs": 120.432191848,
+        "gpuRecoverySelectionMs": 831.9921607800001,
+        "maxProjectionLaunchMs": 0.8992959857,
+        "maxSelectionLaunchMs": 4.138783932,
+        "cleanupMs": 37.40529999999853
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1760.6182999999946,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08709999999700813,
+        "bufferCreateMs": 0.18990000000485452,
+        "tilePackMs": 138.543700000002,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 10.274199999999837,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 209.53770000000077,
+        "wallTotalMs": 1690.7655999999988,
+        "nativeInitMs": 116.68329999999696,
+        "atlasUploadMs": 1.9948,
+        "bridgeRoundTripMs": 1385.0503000000172,
+        "uploadMs": 8.3357,
+        "readbackMs": 2.8518,
+        "gpuProjectionMs": 151.95123215200002,
+        "gpuSelectionMs": 1011.21263688,
+        "gpuGuardMs": 180.19558375999998,
+        "gpuRecoveryProjectionMs": 121.471711964,
+        "gpuRecoverySelectionMs": 831.0170531299999,
+        "maxProjectionLaunchMs": 0.8927680254,
+        "maxSelectionLaunchMs": 4.167551994,
+        "cleanupMs": 39.40539999999601
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1792.923999999999,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08329999999841675,
+        "bufferCreateMs": 0.09380000000237487,
+        "tilePackMs": 109.68649999999616,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 9.783799999997427,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 227.41849999999977,
+        "wallTotalMs": 1716.8798000000024,
+        "nativeInitMs": 124.61480000000302,
+        "atlasUploadMs": 1.8553,
+        "bridgeRoundTripMs": 1434.0014999999912,
+        "uploadMs": 7.826099999999999,
+        "readbackMs": 2.7135000000000002,
+        "gpuProjectionMs": 152.326015905,
+        "gpuSelectionMs": 1010.54489458,
+        "gpuGuardMs": 178.74102389999996,
+        "gpuRecoveryProjectionMs": 121.77715185399998,
+        "gpuRecoverySelectionMs": 831.80387067,
+        "maxProjectionLaunchMs": 1.09651196,
+        "maxSelectionLaunchMs": 4.422751904,
+        "cleanupMs": 38.03280000000086
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    },
+    {
+      "wallMs": 1810.4616999999998,
+      "parity": {
+        "cells": {
+          "glyph": 0,
+          "foreground": 0,
+          "background": 0,
+          "changedCells": 0,
+          "firstChangedCell": null
+        },
+        "ansi": {
+          "mismatches": 0,
+          "firstMismatch": null
+        }
+      },
+      "timing": {
+        "atlasPackMs": 0.08749999999417923,
+        "bufferCreateMs": 0.2525999999998021,
+        "tilePackMs": 123.06429999999818,
+        "sampleProviderMs": 0,
+        "decodeCellsMs": 5.20230000000447,
+        "writeBufferMs": null,
+        "encodeSubmitMs": null,
+        "readbackWaitMs": null,
+        "timestampsReadMs": 0,
+        "slotAvailabilityWaitMs": 0,
+        "firstTileCompletedMs": 246.2974000000031,
+        "wallTotalMs": 1743.3502000000008,
+        "nativeInitMs": 139.72119999999995,
+        "atlasUploadMs": 1.8825,
+        "bridgeRoundTripMs": 1438.6010000000097,
+        "uploadMs": 7.741000000000001,
+        "readbackMs": 2.4473000000000003,
+        "gpuProjectionMs": 152.56236806799998,
+        "gpuSelectionMs": 1019.3583351,
+        "gpuGuardMs": 180.04828792,
+        "gpuRecoveryProjectionMs": 121.80220791600001,
+        "gpuRecoverySelectionMs": 839.31004716,
+        "maxProjectionLaunchMs": 1.121600032,
+        "maxSelectionLaunchMs": 4.664832115,
+        "cleanupMs": 35.88749999999709
+      },
+      "allocatedBytes": 66681760,
+      "recoveredCells": 262144,
+      "projectionSublaunches": 368,
+      "selectionSublaunches": 512
+    }
+  ],
+  "children": [
+    {
+      "pid": 19800,
+      "fault": null,
+      "stderr": "",
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "pid": 38488,
+      "fault": "context",
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 42348,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 40196,
+      "fault": "oom",
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 39984,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 36640,
+      "fault": "pressure",
+      "stderr": "pressureAllocatedBytes=22302162944 freeAfterPressureBytes=1958199296\r\n",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 24260,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 37568,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 41880,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 33672,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 26224,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 22176,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 30488,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 40304,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 39108,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 23960,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 43676,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 35736,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 17956,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 43476,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 40028,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 31096,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 40656,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 40164,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 33672,
+      "fault": null,
+      "stderr": "",
+      "exitCode": null,
+      "signal": "SIGTERM"
+    }
+  ],
+  "before": {
+    "schema": "pnggpu-cuda-info-v1",
+    "available": true,
+    "backend": "cuda",
+    "protocolVersion": 1,
+    "precision": "float32-guarded-binary64",
+    "device": {
+      "name": "NVIDIA TITAN RTX",
+      "computeCapability": "7.5",
+      "totalMemoryBytes": 25769476096,
+      "freeMemoryBytes": 24458035200,
+      "index": 0,
+      "kernelExecTimeoutEnabled": true
+    },
+    "runtimeVersion": 12080,
+    "driverVersion": 13000,
+    "limits": {
+      "maxMessageBytes": 134217728,
+      "maxTileCells": 65536,
+      "maxSamplesPerCell": 2048,
+      "maxGlyphCount": 65535,
+      "maxProjectionBytes": 134217728,
+      "maxPixelBytes": 67108864,
+      "maxProjectionWork": 16777216,
+      "memoryReserveBytes": 2147483648,
+      "maxRecoveryProjectionBytes": 33554432,
+      "maxRecoveryCells": 1024
+    },
+    "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+    "timingSources": {
+      "gpuProjectionMs": "CUDA events, sum of sublaunches",
+      "gpuSelectionMs": "CUDA events, sum of sublaunches",
+      "uploadMs": "host steady clock, transfer plus stream synchronization",
+      "readbackMs": "host steady clock, transfer plus stream synchronization"
+    }
+  },
+  "stressStarted": "2026-11-04T02:28:45.533Z",
+  "accepted": false,
+  "interrupted": true,
+  "stopReason": "User reported two desktop lockups; parent stopped runner and all its native workers. No more GPU tests run.",
+  "qualification": {
+    "contextFaultDetected": true,
+    "allocationFailureDetected": true,
+    "pressureAdmissionRejected": true,
+    "postFaultCpuParity": true,
+    "desktopStabilityPassed": false,
+    "sustainedTdrQualified": false,
+    "actualSystemTdrConfirmed": false
+  },
+  "notes": [
+    "Development run on dirty source based on0e8993d; exact binary hashes retained. Not qualification of a later source commit.",
+    "Pressure requestedretain2GiB+8MiB but actualfree1958199296bytes fell below2GiB. This pressure experiment is unsafe for this interactive displayGPU.",
+    "18 completed stress conversions have zeroCPUtuple/ANSI mismatches; interruption prevents a sustained stability pass."
+  ],
+  "liveWorkersAfterForcedCleanup": 0
+}
