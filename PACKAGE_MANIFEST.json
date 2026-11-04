@@ -285,9 +285,13 @@
       "sha256": "ec2cdbc4ea4752653cb200c248d1c93988915713450806ae2142be266ddd4090",
       "bytes": 2058
     },
+    "qualification/GTX1650SUPER_HANDOFF.md": {
+      "sha256": "927d5500a53b1beb4d0b86e23384ef0bc853e240566ac9a770eab3e2791c8187",
+      "bytes": 8369
+    },
     "qualification/README.md": {
-      "sha256": "572cb7d6b097ab226ff4707b7aebe18ecddf66cac5381c6dc28e1f636e49a283",
-      "bytes": 9748
+      "sha256": "299ee60327c73f9d10f3f5ca45bfcc2ebf87cc28e3aa310cdc2d3fa4f40cbaf5",
+      "bytes": 9917
     },
     "qualification/RECOVERY.md": {
       "sha256": "e06b27994154d40def883618e586ce5645704c0e0c62a7c699ea3cabd97cead4",

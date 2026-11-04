@@ -1,5 +1,9 @@
 # TITAN RTX qualification — 4 November 2026
 
+For continuation on the other computer, read the
+[GTX 1650 SUPER handover and Codex prompt](GTX1650SUPER_HANDOFF.md), including
+the display-GPU stability restrictions.
+
 **Current disposition: CONDITIONAL — PHYSICAL QUALIFICATION REQUIRED. PR #2 remains draft.**
 
 The CUDA parity blocker described below was repaired by guarded binary64 GPU
