@@ -78,12 +78,16 @@
       "bytes": 208
     },
     "native/cuda/CMakeLists.txt": {
-      "sha256": "58c320e63b4254a85e0bd38c1a2c53d8f56089cf97574928832971c9e1bde7ed",
-      "bytes": 3393
+      "sha256": "d9dd47564214015097d9917a4a6b11822ef23878c4bda9baf4f4b5914ad49759",
+      "bytes": 4126
     },
     "native/cuda/README.md": {
       "sha256": "031db49758e9a5177ba7298e9222c8560ef77056a2fcc7fc8d2f1f0f55ddf5fc",
       "bytes": 16447
+    },
+    "native/cuda/include/pnggpu_activity_trace.hpp": {
+      "sha256": "eeb59915f209615de640e5bbb5450af3af7a4d5c53dfd6b07ab797eba1ab9a1a",
+      "bytes": 362
     },
     "native/cuda/include/pnggpu_algorithm.hpp": {
       "sha256": "f22c8b554a3449e8148f82002c4d0114d15845416be9d31eb6cf3ae10a1dec73",
@@ -101,13 +105,17 @@
       "sha256": "dbb6b5f218f5559692bfe0825ddd885bc326992b7719c7114ab1f780d846049b",
       "bytes": 3895
     },
+    "native/cuda/src/activity_trace.cpp": {
+      "sha256": "23e032c1ba3b84413bab01d39c581dba26c544e53e8ca62d3d17827ffeef819f",
+      "bytes": 4056
+    },
     "native/cuda/src/common.cpp": {
       "sha256": "80d03a2d0161239dd9b5f59adc95af495888f4bf1fbb88c1ca881f13c73eb30a",
       "bytes": 17026
     },
     "native/cuda/src/worker.cu": {
-      "sha256": "6672ee1d3f1e9078bdac90a89953865aaecc32cf15ac60d1371678cdb6da788c",
-      "bytes": 33876
+      "sha256": "8f17d45f5f70bb73ed2d372124a2707e18cde2718fd9c87ec2786fc689f95a11",
+      "bytes": 33951
     },
     "native/cuda/tests/fixtures/cpu-parity.bin": {
       "sha256": "717f36620b75d899c103541fb58718002647b5434801128569602272a13bb0f8",

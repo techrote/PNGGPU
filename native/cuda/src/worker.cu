@@ -2,6 +2,7 @@
 #include "pnggpu_algorithm.hpp"
 #include "pnggpu_guard.hpp"
 #include "pnggpu_precise.hpp"
+#include "pnggpu_activity_trace.hpp"
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
@@ -593,6 +594,7 @@ int main(int argc, char** argv) {
         throw std::runtime_error("Could not select binary stdin/stdout mode");
     }
 #endif
+    ActivityTrace trace(binary_mode);
     const auto device = select_device(device_index);
 #ifdef PNGGPU_FAULT_INJECTION
     if((test_fault=="context" || test_fault=="pressure") && device.properties.kernelExecTimeoutEnabled)

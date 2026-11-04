@@ -4,6 +4,7 @@ project(PNGGPUCUDA VERSION 1.0.0 LANGUAGES CXX)
 option(PNGGPU_ENABLE_CUDA "Build the optional CUDA worker (requires NVIDIA CUDA Toolkit)" OFF)
 option(PNGGPU_BUILD_FAULT_WORKER "Build separate hardware fault-injection qualification worker" OFF)
 option(PNGGPU_CUDA_PROFILE "Emit CUDA resource reports and source line information (Release optimizations retained)" OFF)
+option(PNGGPU_CUPTI_ACTIVITY "Build optional process-local CUPTI activity tracing (requires CUPTI_ROOT)" OFF)
 include(CTest)
 
 add_library(pnggpu_cuda_common STATIC src/common.cpp)
@@ -33,6 +34,15 @@ if(PNGGPU_ENABLE_CUDA)
   find_package(CUDAToolkit REQUIRED)
   add_executable(pnggpu_cuda_worker src/worker.cu)
   target_link_libraries(pnggpu_cuda_worker PRIVATE pnggpu_cuda_common CUDA::cudart_static)
+  if(PNGGPU_CUPTI_ACTIVITY)
+    find_path(PNGGPU_CUPTI_INCLUDE cupti.h HINTS "${CUPTI_ROOT}/include" REQUIRED)
+    find_library(PNGGPU_CUPTI_LIBRARY NAMES cupti HINTS "${CUPTI_ROOT}/lib" "${CUPTI_ROOT}/lib64" "${CUPTI_ROOT}/lib/x64" REQUIRED)
+    find_package(Threads REQUIRED)
+    target_sources(pnggpu_cuda_worker PRIVATE src/activity_trace.cpp)
+    target_include_directories(pnggpu_cuda_worker PRIVATE "${PNGGPU_CUPTI_INCLUDE}")
+    target_compile_definitions(pnggpu_cuda_worker PRIVATE PNGGPU_CUPTI_ACTIVITY=1)
+    target_link_libraries(pnggpu_cuda_worker PRIVATE "${PNGGPU_CUPTI_LIBRARY}" Threads::Threads)
+  endif()
   set_target_properties(pnggpu_cuda_worker PROPERTIES
     CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED YES
     CUDA_ARCHITECTURES "75-real;75-virtual"
