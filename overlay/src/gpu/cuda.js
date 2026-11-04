@@ -53,7 +53,7 @@ function validateInfo(info) {
     throw new Error(`CUDA is unavailable: ${info?.error || 'start the optional CUDA server with start-cuda.bat'}`);
   }
   if (info.schema !== 'pnggpu-cuda-info-v1' || info.protocolVersion !== PROTOCOL_VERSION ||
-      info.backend !== 'cuda' || info.precision !== 'float32-guarded-binary64') {
+      info.backend !== 'cuda' || !['float32-guarded-binary64','binary64-direct'].includes(info.precision)) {
     throw new Error('Incompatible CUDA worker; rebuild the native worker from this PNGGPU checkout');
   }
   const capability = /^(\d+)\.(\d+)$/.exec(String(info.device?.computeCapability ?? ''));
@@ -249,7 +249,7 @@ function packInit(data, plan, glyphCount, samples) {
   return bytes;
 }
 
-function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart) {
+function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, precision) {
   if (bytes.byteLength < 8) throw new Error('Truncated CUDA tile response');
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const status = view.getUint32(0, true), jsonBytes = view.getUint32(4, true);
@@ -268,9 +268,14 @@ function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart) {
   integer(metadata.allocatedBytes, 'CUDA allocated bytes', 1, Number.MAX_SAFE_INTEGER);
   integer(metadata.recoveredCells,'CUDA recovered cells',0,count);
   integer(metadata.certifiedCells,'CUDA certified cells',0,count);
-  if(metadata.recoveredCells+metadata.certifiedCells!==count)throw new Error('CUDA recovery counts do not match the tile');
+  metadata.directCells=integer(metadata.directCells??0,'CUDA direct cells',0,count);
+  if(precision==='binary64-direct'?(metadata.directCells!==count||metadata.recoveredCells!==0||metadata.certifiedCells!==0):
+    (metadata.directCells!==0||metadata.recoveredCells+metadata.certifiedCells!==count))throw new Error('CUDA arithmetic counts do not match the tile');
   if(metadata.deviceReadbackBytes!==count*16*(metadata.recoveredCells?2:1))throw new Error('CUDA device readback byte count does not match recovery');
   for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs','maxProjectionLaunchMs','maxSelectionLaunchMs'])finiteTime(metadata.timing?.[key],key);
+  for(const key of ['gpuDirectProjectionMs','gpuDirectSelectionMs'])metadata.timing[key]=finiteTime(metadata.timing[key]??0,key);
+  if(precision==='binary64-direct'&&['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Direct CUDA mode reported guarded/recovery work');
+  if(precision!=='binary64-direct'&&['gpuDirectProjectionMs','gpuDirectSelectionMs'].some(k=>metadata.timing[k]!==0))throw new Error('Guarded CUDA mode reported direct work');
   for (let i = 0; i < count; i++) {
     const at = 8 + jsonBytes + i * 16;
     const glyph = view.getUint32(at, true), foreground = view.getUint32(at + 4, true);
@@ -290,15 +295,16 @@ export class PhotographicCudaFitter {
   static DEFAULT_TILE_MIB = 32;
 
   static async create({fetchImpl = globalThis.fetch, signal,
-    requestTimeoutMs = 120000, infoTimeoutMs = 10000, cleanupTimeoutMs = 5000} = {}) {
+    requestTimeoutMs = 120000, infoTimeoutMs = 10000, cleanupTimeoutMs = 5000, expectedPrecision='float32-guarded-binary64'} = {}) {
     if (typeof fetchImpl !== 'function') throw new Error('CUDA bridge requires browser fetch support');
     integer(infoTimeoutMs, 'CUDA info timeout', 1, 600000);
     const info = await request(fetchImpl, '/api/cuda/info', {signal, timeoutMs:infoTimeoutMs});
-    return new this(info, {fetchImpl, requestTimeoutMs, cleanupTimeoutMs});
+    return new this(info, {fetchImpl, requestTimeoutMs, cleanupTimeoutMs,expectedPrecision});
   }
 
-  constructor(info, {fetchImpl = globalThis.fetch, requestTimeoutMs = 120000, cleanupTimeoutMs = 5000} = {}) {
+  constructor(info, {fetchImpl = globalThis.fetch, requestTimeoutMs = 120000, cleanupTimeoutMs = 5000,expectedPrecision='float32-guarded-binary64'} = {}) {
     const limits = validateInfo(info);
+    if(info.precision!==expectedPrecision)throw new Error('CUDA arithmetic mode differs from explicitly requested precision');
     if (typeof fetchImpl !== 'function') throw new Error('CUDA bridge requires browser fetch support');
     this.info = Object.freeze({...info, limits:Object.freeze({...info.limits, ...limits}), device:Object.freeze({...info.device})});
     this.backend = 'cuda';
@@ -372,6 +378,7 @@ export class PhotographicCudaFitter {
       slotAvailabilityWaitMs:0, firstTileCompletedMs:null, wallTotalMs:0,
       nativeInitMs:0, atlasUploadMs:null, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
       gpuProjectionMs:0, gpuSelectionMs:0, gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,
+      gpuDirectProjectionMs:0,gpuDirectSelectionMs:0,
       maxProjectionLaunchMs:0,maxSelectionLaunchMs:0,cleanupMs:0
     };
     let sessionId = null, primaryError = null;
@@ -446,13 +453,14 @@ export class PhotographicCudaFitter {
         });
         tile.bridgeRoundTripMs = clock() - at; timing.bridgeRoundTripMs += tile.bridgeRoundTripMs;
         at = clock();
-        const native = decodeTile(response, tileCount, glyphCount, chosen, fg, bg, tileStart);
+        const native = decodeTile(response, tileCount, glyphCount, chosen, fg, bg, tileStart,this.precision);
         tile.decodeMs = clock() - at; timing.decodeCellsMs += tile.decodeMs;
         tile.projectionMs = native.timing.gpuProjectionMs; tile.selectionMs = native.timing.gpuSelectionMs;
         tile.uploadMs = native.timing.uploadMs; tile.readbackMs = native.timing.readbackMs;
         tile.recoveredCells=native.recoveredCells;tile.certifiedCells=native.certifiedCells;
+        tile.directCells=native.directCells;
         tile.recoveryReasons=native.recoveryReasons??null;
-        for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs']) {
+        for(const key of ['gpuGuardMs','gpuRecoveryProjectionMs','gpuRecoverySelectionMs','gpuDirectProjectionMs','gpuDirectSelectionMs']) {
           tile[key]=native.timing[key];timing[key]+=native.timing[key];
         }
         for(const key of ['maxProjectionLaunchMs','maxSelectionLaunchMs']) {
@@ -480,6 +488,7 @@ export class PhotographicCudaFitter {
         timing, tileMeasurements, peakInFlightTiles:1, uploadedBytes, readbackBytes, allocatedBytes,
         recoveredCells:tileMeasurements.reduce((sum,tile)=>sum+tile.recoveredCells,0),
         certifiedCells:tileMeasurements.reduce((sum,tile)=>sum+tile.certifiedCells,0),
+        directCells:tileMeasurements.reduce((sum,tile)=>sum+tile.directCells,0),
         requestPayloadBytes, tileResponseBytes, adapterInfo:{...this.adapterInfo, ...cudaInfo.device}, cudaInfo,
         projectionSublaunches:tileMeasurements.every(tile => tile.projectionSublaunches !== null) ?
           tileMeasurements.reduce((sum, tile) => sum + tile.projectionSublaunches, 0) : null,

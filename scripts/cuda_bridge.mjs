@@ -143,7 +143,7 @@ function parseResponse(payload) {
 
 /** Exactly one outstanding request, with bounded framing and no shell invocation. */
 class NativeSession {
-  constructor({ executable, device, spawnProcess, timeoutMs, onFailure }) {
+  constructor({ executable, device, arithmeticMode, spawnProcess, timeoutMs, onFailure }) {
     this.closed = false;
     this.exited = false;
     this.exitPromise = new Promise(resolve => { this.resolveExit = resolve; });
@@ -151,7 +151,8 @@ class NativeSession {
     this.onFailure = onFailure;
     this.timeoutMs = timeoutMs;
     this.stderr = '';
-    const args = ['--stdio', ...(device === null ? [] : ['--device', String(device)])];
+    const args = ['--stdio', ...(device === null ? [] : ['--device', String(device)]),
+      ...(arithmeticMode==='binary64-direct'?['--arithmetic-mode',arithmeticMode]:[])];
     this.child = spawnProcess(executable, args, { stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, shell: false });
     this.child.on('error', () => this.fail(new BridgeError(503, 'Could not start the CUDA worker. Build it and check the --cuda executable path.')));
     this.child.stdin.on('error', () => this.fail(new BridgeError(502, 'CUDA worker input stream closed.')));
@@ -237,7 +238,7 @@ class NativeSession {
   }
 }
 
-function probeWorker({ executable, device, spawnProcess, timeoutMs, signal }) {
+function probeWorker({ executable, device, arithmeticMode, spawnProcess, timeoutMs, signal }) {
   return new Promise((resolve, reject) => {
     let child, output = '', stderr = '', done = false, timer;
     const finish = (error, value) => {
@@ -249,7 +250,8 @@ function probeWorker({ executable, device, spawnProcess, timeoutMs, signal }) {
     const onAbort = () => finish(new BridgeError(499, 'CUDA device detection was stopped.'));
     if (signal?.aborted) { onAbort(); return; }
     signal?.addEventListener('abort', onAbort, { once: true });
-    try { child = spawnProcess(executable, ['--info', ...(device === null ? [] : ['--device', String(device)])],
+    try { child = spawnProcess(executable, ['--info', ...(device === null ? [] : ['--device', String(device)]),
+      ...(arithmeticMode==='binary64-direct'?['--arithmetic-mode',arithmeticMode]:[])],
       { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, shell: false }); }
     catch { finish(new BridgeError(503, 'Could not start the CUDA worker. Build it and check the --cuda executable path.')); return; }
     timer = setTimeout(() => finish(new BridgeError(504, 'CUDA device detection timed out.')), timeoutMs);
@@ -269,7 +271,8 @@ function probeWorker({ executable, device, spawnProcess, timeoutMs, signal }) {
         finish(new BridgeError(503, 'CUDA worker did not return a device report.' + (stderr.trim() ? ` ${stderr.trim()}` : ''))); return;
       }
       if (value?.schema !== INFO_SCHEMA || value.backend !== 'cuda' || value.protocolVersion !== CUDA_PROTOCOL_VERSION ||
-          typeof value.available !== 'boolean' || (code !== 0 && value.available)) {
+          typeof value.available !== 'boolean' || (code !== 0 && value.available)||
+          (value.available&&value.precision!==arithmeticMode)) {
         finish(new BridgeError(502, 'CUDA worker uses an incompatible device-report protocol.')); return;
       }
       finish(null, value);
@@ -277,10 +280,11 @@ function probeWorker({ executable, device, spawnProcess, timeoutMs, signal }) {
   });
 }
 
-export function createCudaBridge({ executable = null, device = null, spawnProcess = spawn,
+export function createCudaBridge({ executable = null, device = null, arithmeticMode='float32-guarded-binary64', spawnProcess = spawn,
     idleTimeoutMs = 120_000, operationTimeoutMs = 120_000, infoTimeoutMs = 15_000,
     uploadTimeoutMs = 30_000, maxRequestBytes = CUDA_LIMITS.maxMessageBytes } = {}) {
   if (device !== null && (!Number.isSafeInteger(device) || device < 0)) throw new RangeError('CUDA device index must be a non-negative integer.');
+  if(!['float32-guarded-binary64','binary64-direct'].includes(arithmeticMode))throw new RangeError('Unsupported CUDA arithmetic mode');
   if (![idleTimeoutMs, operationTimeoutMs, infoTimeoutMs, uploadTimeoutMs].every(n => Number.isSafeInteger(n) && n > 0) ||
       !Number.isSafeInteger(maxRequestBytes) || maxRequestBytes < 32 || maxRequestBytes > CUDA_LIMITS.maxMessageBytes) {
     throw new RangeError('Invalid CUDA bridge limits.');
@@ -332,7 +336,7 @@ export function createCudaBridge({ executable = null, device = null, spawnProces
           if (!executable) { sendJson(res, 200, disabled); return true; }
           if (!infoPromise) {
             infoAbort = new AbortController();
-            infoPromise = probeWorker({ executable, device, spawnProcess, timeoutMs: infoTimeoutMs, signal: infoAbort.signal })
+            infoPromise = probeWorker({ executable, device, arithmeticMode, spawnProcess, timeoutMs: infoTimeoutMs, signal: infoAbort.signal })
               .catch(error => ({ ...disabled, error: error.message })).finally(() => { infoPromise = null; infoAbort = null; });
           }
           sendJson(res, 200, await infoPromise); return true;
@@ -347,7 +351,7 @@ export function createCudaBridge({ executable = null, device = null, spawnProces
           const body = await readBody(req, maxRequestBytes, uploadTimeoutMs);
           if (entry.state === 'closed') throw new BridgeError(499, 'CUDA request was cancelled.');
           entry.config = validateInitPacket(body);
-          entry.worker = new NativeSession({ executable, device, spawnProcess, timeoutMs: operationTimeoutMs,
+          entry.worker = new NativeSession({ executable, device, arithmeticMode, spawnProcess, timeoutMs: operationTimeoutMs,
             onFailure: error => closeSession(entry, error) });
           const response = await entry.worker.request(body, 8 + MAX_JSON_BYTES);
           if (response.payload.length !== response.dataOffset) throw new BridgeError(502, 'CUDA initialization returned unexpected binary data.');

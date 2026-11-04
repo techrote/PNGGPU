@@ -122,6 +122,40 @@ test('CUDA capability lookup is optional and reports unavailable services withou
   assert.equal(bridge.inits.length, 0, 'capabilities do not allocate a render session');
 });
 
+test('direct binary64 requires explicit selection and preserves honest counts/readbacks/timings',async()=>{
+  const info={...nativeInfo(),precision:'binary64-direct'};
+  assert.throws(()=>new PhotographicCudaFitter(info),/explicitly requested precision/);
+  const bridge=fakeBridge({info,readyMetadata:{protocolVersion:1,precision:'binary64-direct'},onTile:({metadata,values,count})=>{
+    Object.assign(metadata,{directCells:count,recoveredCells:0,certifiedCells:0,deviceReadbackBytes:count*16});
+    Object.assign(metadata.timing,{gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,
+      gpuDirectProjectionMs:1.25,gpuDirectSelectionMs:0.5});
+    return new Response(responseFrame(metadata,values));
+  }});
+  const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl,expectedPrecision:'binary64-direct'});
+  const result=await fitter.fit(sample());
+  assert.equal(result.stats.precision,'binary64-direct');assert.equal(result.stats.directCells,10);
+  assert.equal(result.stats.recoveredCells,0);assert.equal(result.stats.certifiedCells,0);
+  assert.equal(result.stats.readbackBytes,10*16);assert.equal(result.stats.timing.gpuGuardMs,0);
+  assert.ok(result.stats.timing.gpuDirectSelectionMs>0);fitter.close();
+});
+
+test('direct mode rejects recovery work or false direct accounting and still closes its session',async()=>{
+  for(const inconsistent of ['counts','timing','readback']) {
+    const info={...nativeInfo(),precision:'binary64-direct'};
+    const bridge=fakeBridge({info,onTile:({metadata,values,count})=>{
+      Object.assign(metadata,{directCells:count,recoveredCells:0,certifiedCells:0,deviceReadbackBytes:count*16});
+      Object.assign(metadata.timing,{gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,gpuDirectProjectionMs:1,gpuDirectSelectionMs:1});
+      if(inconsistent==='counts')metadata.certifiedCells=count;
+      if(inconsistent==='timing')metadata.timing.gpuGuardMs=1;
+      if(inconsistent==='readback')metadata.deviceReadbackBytes=count*32;
+      return new Response(responseFrame(metadata,values));
+    }});
+    const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl,expectedPrecision:'binary64-direct'});
+    await assert.rejects(fitter.fit(sample()),/counts|guarded\/recovery work|readback byte/);
+    assert.equal(bridge.deletions.length,1);fitter.close();
+  }
+});
+
 test('worker version, precision and GPU capability are checked before any rendering', () => {
   for (const patch of [
     {protocolVersion:2}, {schema:'unknown'}, {precision:'fast-math'}, {backend:'cpu'},

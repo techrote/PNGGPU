@@ -15,6 +15,12 @@ test('default exact single-cell scope and conservative full-recovery work',()=>{
   assert.equal(plan.summary.work,2*(218*32*3+32+218*33+16*6+8*5+32*6*5));
   assert.equal(plan.runs[0].data,fixture);
 });
+test('only explicit supported CUDA modes are admitted before GPU discovery',()=>{
+  assert.equal(parseFixtureArgs(args).cudaMode,'float32-guarded-binary64');
+  assert.equal(parseFixtureArgs([...args,'--cuda-mode','binary64-direct']).cudaMode,'binary64-direct');
+  for(const value of ['float32','fast-math','--test-fault',undefined])assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode',...(value?[value]:[])]));
+  assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode','binary64-direct','--cuda-mode','binary64-direct']));
+});
 test('reject invalid numbers, flags, duplicated or ambiguous scope',()=>{
   for(const suffix of [['--repeats','0'],['--max-work','-1'],['--max-cells','1.5'],['--max-runs','9007199254740992'],
     ['--tiles','1,1'],['--tiles','65537'],['--tiles',''],['--timeout-ms','30001'],['--repeats','101'],['--wat'],

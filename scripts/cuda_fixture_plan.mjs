@@ -1,6 +1,6 @@
 /** Pure host-side planning. No worker or browser is opened by this module. */
 export function parseFixtureArgs(args) {
-  const options={cases:[],repeats:1,tiles:[1],maxCells:1,maxWork:10000000,maxRuns:1,timeoutMs:10000};
+  const options={cases:[],repeats:1,tiles:[1],maxCells:1,maxWork:10000000,maxRuns:1,timeoutMs:10000,cudaMode:'float32-guarded-binary64'};
   const positionals=[];
   const integer=(s,name)=>{
     if(!/^[1-9][0-9]*$/.test(s??'')||!Number.isSafeInteger(Number(s)))throw new Error(`${name} must be a positive safe integer`);
@@ -13,8 +13,9 @@ export function parseFixtureArgs(args) {
     if(flag==='--case') {const name=args[++i];if(!name||name.startsWith('--')||options.cases.includes(name))throw new Error('Expected unique exact --case NAME');options.cases.push(name);continue;}
     if(seen.has(flag))throw new Error(`Duplicate flag ${flag}`);seen.add(flag);
     if(flag==='--suite'||flag==='--list'||flag==='--help'){options[flag.slice(2)]=true;continue;}
-    if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file'].includes(flag))throw new Error(`Unknown flag ${flag}`);
+    if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file','--cuda-mode'].includes(flag))throw new Error(`Unknown flag ${flag}`);
     const value=args[++i];
+    if(flag==='--cuda-mode'){if(!['float32-guarded-binary64','binary64-direct'].includes(value))throw new Error('Unsupported CUDA arithmetic mode');options.cudaMode=value;continue;}
     if(flag==='--webgpu'){if(!value||value.startsWith('--'))throw new Error('Expected --webgpu PLAYWRIGHT_MODULE');options.webgpu=value;continue;}
     if(flag==='--fixture-file'){if(!value||value.startsWith('--'))throw new Error('Expected --fixture-file PATH');options.fixtureFile=value;continue;}
     if(flag==='--tiles') {

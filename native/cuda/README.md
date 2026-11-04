@@ -40,6 +40,20 @@ qualification separately compares against the original JS reference.
 The reported arithmetic mode is `float32-guarded-binary64`. An older float32-only
 worker is rejected by the current browser adapter; upgrade both together.
 
+For controlled qualification, the normal worker also accepts
+`--arithmetic-mode binary64-direct`. The default remains guarded. Direct mode
+skips float32 projection, certification and the intermediate result readback,
+then runs the same precise projection/selection kernels unconditionally with
+the existing chunk/sublaunch limits. It preserves float32 input masks/statistics,
+CPU expression grouping, strict ties, shortlist and candidate counts.
+`directCells` and `gpuDirectProjectionMs`/`gpuDirectSelectionMs` identify this
+work; recovered/certified counts and guard/recovery times are zero. There is one
+final device readback. Buffer allocation/admission deliberately remain identical
+to guarded mode for the first A/B experiment, including the unused float32
+projection buffer. Neither the 2 GiB reserve nor display protections change.
+The certification self-test remains guarded-only; direct-mode qualification uses
+bounded independent CPU fixtures, not a claim of certified-fast-path coverage.
+
 For `n <= 2048` RGB8 samples and binary32 masks in `[0,1]`, the bound
 `delta = 2*n*(n+1)*255*2^-24` encloses the difference between each float32 dot and
 the CPU binary64 dot. With `gamma(k,u)=k*u/(1-k*u)`, this exceeds

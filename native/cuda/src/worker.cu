@@ -26,6 +26,8 @@ namespace {
 using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
+bool direct_binary64 = false;
+const char* precision_name() { return direct_binary64 ? "binary64-direct" : "float32-guarded-binary64"; }
 #ifdef PNGGPU_FAULT_INJECTION
 std::string test_fault;
 __global__ void poison_context() { asm("trap;"); }
@@ -118,7 +120,7 @@ std::string info_json(const DeviceInfo& info) {
   std::ostringstream out;
   out.imbue(std::locale::classic());
   out << "{\"schema\":\"pnggpu-cuda-info-v1\",\"available\":true,\"backend\":\"cuda\","
-         "\"protocolVersion\":1,\"precision\":\"float32-guarded-binary64\",\"device\":" << device_json(info)
+         "\"protocolVersion\":1,\"precision\":" << json_string(precision_name()) << ",\"device\":" << device_json(info)
       << ",\"runtimeVersion\":" << info.runtime_version << ",\"driverVersion\":" << info.driver_version
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
@@ -183,6 +185,8 @@ struct TileOutput {
   std::uint32_t projection_launches = 0;
   std::uint32_t selection_launches = 0;
   double guard_ms=0,recovery_projection_ms=0,recovery_selection_ms=0;
+  double direct_projection_ms=0,direct_selection_ms=0;
+  std::uint32_t direct_cells=0;
   double max_projection_launch_ms=0,max_selection_launch_ms=0;
   std::uint32_t recovered_cells=0,shortlist_cells=0,palette_cells=0,selection_cells=0,certified_verified=0;
   std::size_t readback_bytes=0;
@@ -244,7 +248,7 @@ class Worker {
     const std::uint32_t pairs = count*p.glyph_count; // <= max_projection_bytes/16
     const std::uint32_t samples = std::uint32_t(atlas_.layout.samples);
     const auto pairs_per_launch = std::uint32_t(max_projection_work/samples);
-    for (std::uint32_t start = 0; start < pairs;) {
+    if(!direct_binary64)for (std::uint32_t start = 0; start < pairs;) {
       const std::uint32_t end = start+std::min(pairs-start, pairs_per_launch);
       cuda_check(cudaEventRecord(start_.value, stream_.value), "Record projection start");
       project_kernel<<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
@@ -262,7 +266,7 @@ class Worker {
       +16u*p.foreground_count+8u*p.background_count+candidate_work;
     const auto cells_per_launch = std::uint32_t(std::min<std::uint64_t>(1024,
       std::max<std::uint64_t>(1, max_projection_work/work_per_cell)));
-    for (std::uint32_t start = 0; start < count;) {
+    if(!direct_binary64)for (std::uint32_t start = 0; start < count;) {
       const std::uint32_t end = start+std::min(count-start, cells_per_launch);
       cuda_check(cudaEventRecord(start_.value, stream_.value), "Record selection start");
       select_kernel<<<(end-start+block_size-1)/block_size, block_size, 0, stream_.value>>>(
@@ -276,11 +280,15 @@ class Worker {
       start = end;
     }
     result.guard_ms=result.selection_ms;
-    stage = Clock::now();
-    cuda_check(cudaMemcpyAsync(result.results.data(), results_.data, count*sizeof(Result), cudaMemcpyDeviceToHost, stream_.value), "Read back selected cells");
-    cuda_check(cudaStreamSynchronize(stream_.value), "Result readback completion");
-    result.readback_ms = milliseconds(stage);
-    result.readback_bytes=count*sizeof(Result);
+    if(!direct_binary64) {
+      stage = Clock::now();
+      cuda_check(cudaMemcpyAsync(result.results.data(), results_.data, count*sizeof(Result), cudaMemcpyDeviceToHost, stream_.value), "Read back selected cells");
+      cuda_check(cudaStreamSynchronize(stream_.value), "Result readback completion");
+      result.readback_ms = milliseconds(stage);
+      result.readback_bytes=count*sizeof(Result);
+    }
+    // Direct mode's host vector is value-initialized; its device result buffer
+    // is never inspected before the unconditional precise kernels overwrite it.
     const auto guarded=result.results;
     for(const auto record:guarded) {
       if(record.reserved)++result.recovered_cells;
@@ -288,10 +296,10 @@ class Worker {
       if(record.reserved==2)++result.palette_cells;
       if(record.reserved==3)++result.selection_cells;
     }
-    if(result.recovered_cells || verify_guard) {
+    if(direct_binary64 || result.recovered_cells || verify_guard) {
       for(std::uint32_t offset=0;offset<count;offset+=atlas_.layout.recovery_capacity) {
         const auto chunk=std::min(count-offset,atlas_.layout.recovery_capacity);
-        bool needed=verify_guard;
+        bool needed=direct_binary64||verify_guard;
         for(std::uint32_t i=0;i<chunk;++i)needed=needed||guarded[offset+i].reserved!=0;
         if(!needed)continue;
         const auto pairs=chunk*p.glyph_count;
@@ -300,7 +308,7 @@ class Worker {
           cuda_check(cudaEventRecord(start_.value,stream_.value),"Record recovery projection start");
           recover_project_kernel<<<(end-start+block_size-1)/block_size,block_size,0,stream_.value>>>(
             pixels_.as<std::uint32_t>(),masks_.as<float>(),statistics_.as<Float4>(),results_.as<Result>(),
-            recovery_.as<precise::Projection>(),samples,p.glyph_count,offset,start,end,verify_guard);
+            recovery_.as<precise::Projection>(),samples,p.glyph_count,offset,start,end,direct_binary64||verify_guard);
           cuda_check(cudaGetLastError(),"Recovery projection launch");
           const double elapsed=finish_timed_launch("Recovery projection completion");
           result.recovery_projection_ms+=elapsed;result.projection_ms+=elapsed;++result.projection_launches;start=end;
@@ -313,7 +321,7 @@ class Worker {
           recover_select_kernel<<<(cells+block_size-1)/block_size,block_size,0,stream_.value>>>(
             pixels_.as<std::uint32_t>(),statistics_.as<Float4>(),palette_.as<Float4>(),
             recovery_.as<precise::Projection>()+std::size_t(local)*p.glyph_count,results_.as<Result>(),
-            samples,p.glyph_count,p.foreground_count,p.background_count,offset+local,cells,verify_guard);
+            samples,p.glyph_count,p.foreground_count,p.background_count,offset+local,cells,direct_binary64||verify_guard);
           cuda_check(cudaGetLastError(),"Recovery selection launch");
           const double elapsed=finish_timed_launch("Recovery selection completion");
           result.recovery_selection_ms+=elapsed;result.selection_ms+=elapsed;++result.selection_launches;local+=cells;
@@ -325,12 +333,17 @@ class Worker {
       cuda_check(cudaStreamSynchronize(stream_.value),"Recovery readback completion");
       result.readback_ms+=milliseconds(stage);
       result.readback_bytes+=count*sizeof(Result);
-      if(verify_guard)for(std::size_t i=0;i<count;++i)if(guarded[i].reserved==0) {
+      if(verify_guard&&!direct_binary64)for(std::size_t i=0;i<count;++i)if(guarded[i].reserved==0) {
         const auto a=guarded[i],b=result.results[i];
         if(a.glyph!=b.glyph || a.foreground!=b.foreground || a.background!=b.background)
           throw std::runtime_error("Guard certified a tuple that differs from unconditional binary64 GPU recovery");
         ++result.certified_verified;
       }
+    }
+    if(direct_binary64) {
+      result.direct_cells=count;
+      result.direct_projection_ms=result.recovery_projection_ms;result.recovery_projection_ms=0;
+      result.direct_selection_ms=result.recovery_selection_ms;result.recovery_selection_ms=0;
     }
     result.total_ms = milliseconds(begin);
     return result;
@@ -361,11 +374,13 @@ std::string tile_json(const TileOutput& result, std::size_t allocated_bytes) {
       << ",\"nativeTotalMs\":" << result.total_ms
       << ",\"gpuGuardMs\":" << result.guard_ms << ",\"gpuRecoveryProjectionMs\":" << result.recovery_projection_ms
       << ",\"gpuRecoverySelectionMs\":" << result.recovery_selection_ms
+      << ",\"gpuDirectProjectionMs\":" << result.direct_projection_ms << ",\"gpuDirectSelectionMs\":" << result.direct_selection_ms
       << ",\"maxProjectionLaunchMs\":" << result.max_projection_launch_ms << ",\"maxSelectionLaunchMs\":" << result.max_selection_launch_ms
       << "},\"allocatedBytes\":" << allocated_bytes << ",\"projectionSublaunches\":" << result.projection_launches
       << ",\"selectionSublaunches\":" << result.selection_launches
       << ",\"deviceReadbackBytes\":" << result.readback_bytes
-      << ",\"recoveredCells\":" << result.recovered_cells << ",\"certifiedCells\":" << result.results.size()-result.recovered_cells
+      << ",\"directCells\":" << result.direct_cells
+      << ",\"recoveredCells\":" << result.recovered_cells << ",\"certifiedCells\":" << result.results.size()-result.recovered_cells-result.direct_cells
       << ",\"recoveryReasons\":{\"shortlist\":" << result.shortlist_cells << ",\"palette\":" << result.palette_cells
       << ",\"selection\":" << result.selection_cells << "}}";
   return out.str();
@@ -397,7 +412,7 @@ int serve(const DeviceInfo& device) {
       std::ostringstream json;
       json.imbue(std::locale::classic());
       json << std::setprecision(10) << "{\"ok\":true,\"device\":" << device_json(device)
-           << ",\"protocolVersion\":1,\"precision\":\"float32-guarded-binary64\",\"allocatedBytes\":" << worker->atlas().layout.allocated_bytes
+           << ",\"protocolVersion\":1,\"precision\":" << json_string(precision_name()) << ",\"allocatedBytes\":" << worker->atlas().layout.allocated_bytes
            << ",\"recoveryBufferBytes\":" << worker->atlas().layout.recovery_bytes
            << ",\"atlasUploadMs\":" << worker->atlas_upload_ms() << "}";
       write_frame(stdout, make_response(0, json.str()));
@@ -479,12 +494,19 @@ int main(int argc, char** argv) {
   std::string mode;
   int device_index = -1;
   bool binary_mode = false;
+  bool arithmetic_option_seen = false;
   try {
     for (int i = 1; i < argc; ++i) {
       const std::string arg = argv[i];
       if (arg == "--info" || arg == "--stdio" || arg == "--self-test") {
         if (!mode.empty()) throw std::runtime_error("Choose one of --info, --stdio, --self-test");
         mode = arg;
+      } else if (arg == "--arithmetic-mode") {
+        if(arithmetic_option_seen || ++i>=argc)throw std::runtime_error("Specify --arithmetic-mode once");
+        arithmetic_option_seen=true;
+        const std::string arithmetic=argv[i];
+        if(arithmetic!="float32-guarded-binary64" && arithmetic!="binary64-direct")throw std::runtime_error("Unsupported CUDA arithmetic mode");
+        direct_binary64=arithmetic=="binary64-direct";
       } else if (arg == "--device") {
         if (++i >= argc) throw std::runtime_error("--device requires a non-negative ordinal");
         const std::string index = argv[i];
@@ -503,12 +525,13 @@ int main(int argc, char** argv) {
 #endif
       else if (arg == "--help") {
         std::cout << "PNGGPU optional CUDA worker (Turing sm_75 + compute_75 PTX)\n"
-                     "Usage: pnggpu_cuda_worker (--info | --stdio | --self-test) [--device N]\n"
+                     "Usage: pnggpu_cuda_worker (--info | --stdio | --self-test) [--device N] [--arithmetic-mode float32-guarded-binary64|binary64-direct]\n"
                      "Default device: first permitted GPU of compute capability 7.5 or later.\n";
         return 0;
       } else throw std::runtime_error("Unknown argument: "+arg);
     }
     if (mode.empty()) throw std::runtime_error("Use --info, --stdio, --self-test or --help");
+    if(direct_binary64 && mode=="--self-test")throw std::runtime_error("Guard certification self-test requires guarded mode; qualify direct mode with bounded independent CPU fixtures");
     binary_mode = mode == "--stdio";
 #ifdef _WIN32
     if (binary_mode) {

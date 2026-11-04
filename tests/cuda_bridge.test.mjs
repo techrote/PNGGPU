@@ -16,8 +16,9 @@ import { PhotographicCudaFitter } from '../overlay/src/gpu/cuda.js';
 const MOCK_WORKER = `
 const mode = process.env.PNGGPU_MOCK_MODE || 'normal';
 const device = Number(process.argv[process.argv.indexOf('--device') + 1]) || 0;
+const arithmetic = process.argv.includes('--arithmetic-mode') ? process.argv[process.argv.indexOf('--arithmetic-mode')+1] : 'float32-guarded-binary64';
 const info = {schema:'pnggpu-cuda-info-v1',backend:'cuda',protocolVersion:1,available:true,
- precision:'float32-guarded-binary64',device:{name:'test fixture (not a GPU)',index:device,
+ precision:arithmetic,device:{name:'test fixture (not a GPU)',index:device,
  computeCapability:'7.5',totalMemoryBytes:24*1024**3,freeMemoryBytes:20*1024**3},
  limits:{maxMessageBytes:134217728,maxTileCells:65536,maxSamplesPerCell:2048,maxGlyphCount:65535,
  maxProjectionBytes:134217728,maxPixelBytes:67108864,maxProjectionWork:16777216,maxRecoveryProjectionBytes:33554432,maxRecoveryCells:1024}};
@@ -48,7 +49,7 @@ if (process.argv.includes('--info')) {
   if(body.readUInt32LE(0)===1) {
    config={samples:body.readUInt32LE(8)*body.readUInt32LE(12),glyphs:body.readUInt32LE(16)};
    if(mode==='init-error') {reply({ok:false,error:'test initialization rejection'},Buffer.alloc(0),1);return;}
-   const init=()=>reply({ok:true,device:info.device,allocatedBytes:4096});
+   const init=()=>reply({ok:true,device:info.device,precision:arithmetic,allocatedBytes:4096});
    if(mode==='slow-init') setTimeout(init,250); else init();
   } else {
    if(mode==='tile-stall') return;
@@ -59,8 +60,11 @@ if (process.argv.includes('--info')) {
      out.writeUInt32LE(3,i*16+4);out.writeUInt32LE(2,i*16+8);
     }
     reply({ok:true,cellCount:mode==='wrong-count'?count+1:count,
-      recoveredCells:count,certifiedCells:0,deviceReadbackBytes:count*32,
-      timing:{gpuProjectionMs:1.25,gpuSelectionMs:2.5,uploadMs:0.1,readbackMs:0.2,gpuGuardMs:0.1,gpuRecoveryProjectionMs:0.2,gpuRecoverySelectionMs:0.3,maxProjectionLaunchMs:1,maxSelectionLaunchMs:0.3},allocatedBytes:4096},out);
+      directCells:arithmetic==='binary64-direct'?count:0,recoveredCells:arithmetic==='binary64-direct'?0:count,certifiedCells:0,deviceReadbackBytes:count*(arithmetic==='binary64-direct'?16:32),
+      timing:{gpuProjectionMs:1.25,gpuSelectionMs:2.5,uploadMs:0.1,readbackMs:0.2,
+        gpuGuardMs:arithmetic==='binary64-direct'?0:0.1,gpuRecoveryProjectionMs:arithmetic==='binary64-direct'?0:0.2,gpuRecoverySelectionMs:arithmetic==='binary64-direct'?0:0.3,
+        gpuDirectProjectionMs:arithmetic==='binary64-direct'?1.25:0,gpuDirectSelectionMs:arithmetic==='binary64-direct'?2.5:0,
+        maxProjectionLaunchMs:1,maxSelectionLaunchMs:0.3},allocatedBytes:4096},out);
    };
    if(mode==='slow-tile') setTimeout(tile,250);else tile();
   }
@@ -194,6 +198,21 @@ test('default device auto-selection is preserved by omitting --device', async t 
   await app.send('/api/cuda/info');
   await app.open();
   assert.deepEqual(app.launches.map(item => item.args), [['--info'], ['--stdio']]);
+});
+test('direct arithmetic mode is an explicit server option carried through probe and framed session',async t=>{
+  assert.throws(()=>createWorkbenchServer({cudaOptions:{arithmeticMode:'--test-fault'}}),/Unsupported CUDA arithmetic mode/);
+  const app=await fixture(t,{cudaOptions:{arithmeticMode:'binary64-direct'}});
+  const fetchImpl=(path,options)=>fetch(new URL(path,app.origin),{...options,headers:{...options?.headers,Origin:app.origin}});
+  await assert.rejects(PhotographicCudaFitter.create({fetchImpl}),/explicitly requested precision/);
+  const fitter=await PhotographicCudaFitter.create({fetchImpl,expectedPrecision:'binary64-direct'});
+  const result=await fitter.fit({pixels:new Uint8Array(12),columns:3,rows:1,sampleWidth:1,sampleHeight:1,
+    masks:[Float32Array.of(0),Float32Array.of(1)],palette:Array.from({length:16},()=>[0,0,0]),
+    foregroundCandidates:6,backgroundCandidates:5,preferredTileCells:2});
+  assert.equal(result.stats.directCells,3);assert.equal(result.stats.recoveredCells,0);assert.equal(result.stats.readbackBytes,48);
+  assert.deepEqual(app.launches.map(l=>l.args),[['--info','--arithmetic-mode','binary64-direct'],
+    ['--info','--arithmetic-mode','binary64-direct'],['--stdio','--arithmetic-mode','binary64-direct']]);
+  assert.ok(app.launches.every(l=>l.shell===false));fitter.close();
+  await waitFor(()=>app.children.size===0);
 });
 
 test('browser fitter traverses HTTP, native framing and cleanup with partial final tiles', async t => {

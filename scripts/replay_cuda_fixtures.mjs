@@ -24,6 +24,7 @@ if(options.help) {
   --timeout-ms N               Per request timeout, default 10000, maximum 30000
   --webgpu PLAYWRIGHT_MODULE   Also compare the same inputs in installed Chrome
   --fixture-file PATH         Use a validated prepare_cuda_image.mjs output; exact --case required
+  --cuda-mode MODE            float32-guarded-binary64 (default) or explicit binary64-direct
   --suite                     Explicitly select all fixtures; still requires sufficient caps
 Preserve SOURCE_COMMIT.txt, worker-sha256.json and runtime licenses from the CI artifact.
 No native self-test, cancellation workload, fault injection or hidden replay is run.
@@ -43,6 +44,7 @@ const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
 const report={schema:'pnggpu-cuda-bounded-fixtures-v2',sourceCommit:git('rev-parse','HEAD'),sourceStatus:git('status','--porcelain'),
   workerSourceCommit:provenance.sourceCommit,workerSha256:provenance.sha256,workerReceipt:provenance.receipt,
   started:new Date().toISOString(),scope:summary,qualificationAccepted:false,cases:[],sourceFiles:{}};
+report.requestedCudaMode=options.cudaMode;
 if(imageInput)report.imageInput=imageInput.input;
 report.driverSince=imageInput?.input.provenance.started??report.started;
 for(const name of [...git('ls-files','scripts','overlay/src/gpu','qualification/turing-37706c3.json').split('\n'),
@@ -53,7 +55,7 @@ for(const name of [...git('ls-files','scripts','overlay/src/gpu','qualification/
     throw new Error(`Installed overlay differs: ${name}; run setup.bat`);
 }
 const server=createWorkbenchServer({appDirectory:'PNG2ANSI',cudaExecutable:resolve(options.worker),cudaDevice:0,
-  cudaOptions:{operationTimeoutMs:options.timeoutMs,infoTimeoutMs:options.timeoutMs}});
+  cudaOptions:{operationTimeoutMs:options.timeoutMs,infoTimeoutMs:options.timeoutMs,arithmeticMode:options.cudaMode}});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const origin=`http://127.0.0.1:${server.address().port}`;
 const fetchImpl=(url,opts)=>fetch(new URL(url,origin),{...opts,headers:{...opts?.headers,Origin:origin}});
@@ -65,7 +67,7 @@ const started=performance.now();
 try {
   report.driverBaseline=driverEventsSince(report.driverSince);
   if(report.driverBaseline.events.length)throw new Error('New GPU driver error; scope stopped before CUDA');
-  fitter=await PhotographicCudaFitter.create({fetchImpl,infoTimeoutMs:options.timeoutMs,requestTimeoutMs:options.timeoutMs});
+  fitter=await PhotographicCudaFitter.create({fetchImpl,infoTimeoutMs:options.timeoutMs,requestTimeoutMs:options.timeoutMs,expectedPrecision:options.cudaMode});
   report.workerInfo=fitter.info;
   if(options.webgpu) {
     const {chromium}=await import(pathToFileURL(resolve(options.webgpu)).href);

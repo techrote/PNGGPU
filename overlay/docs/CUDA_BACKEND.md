@@ -284,6 +284,27 @@ on a 4 GiB display card is legitimate. No synthetic capacity declaration is
 needed by this direct fitter runner; it records native total/free bytes. The UI's
 VRAM-minus-4-GiB warning policy remains distinct and unchanged.
 
+### Explicit direct-binary64 experiment
+
+The guarded path remains the default. Bounded replay can explicitly request
+`--cuda-mode binary64-direct` from a matching new normal worker. The bridge
+passes only that validated mode through its trusted launch configuration, and
+the fitter must explicitly expect it. There is no HTTP command to switch a
+running session's arithmetic. The ordinary workbench does not silently opt in.
+
+Direct mode bypasses float32 projection/certification and the intermediate
+readback, then runs the existing CPU-grouped binary64 matcher for every cell.
+It retains the same allocations and memory admission for a controlled comparison.
+Reports distinguish direct cells/times from recovered and certified cells; direct
+execution never claims certification. All existing tuple/ANSI, work, timeout,
+driver-error and cleanup criteria remain. Use the same saved prepared input,
+worker binary, candidate counts, tile size and pipeline depth in both modes.
+Source/binary and installed-overlay checks still apply.
+
+The native certification self-test is guarded-only; run no full self-test or
+stress workload as part of this bounded direct experiment. Compilation, five
+host-only CLI checks and protocol tests do not establish physical parity.
+
 ### Complete suite on a suitably isolated qualification system
 
 The reproducible acceptance runner uses a real Chrome browser, the installed
