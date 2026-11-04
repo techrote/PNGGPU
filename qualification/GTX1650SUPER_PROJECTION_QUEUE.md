@@ -132,7 +132,7 @@ change to the aspect-correct output policy.
 
 Letterboxing has 77.8% more cells than 160x45 and roughly 44% padded area. In the
 final fast-search/integer-total columns its whole-warm-span average time is about
-1.66x/1.65x longer, or about 7% less time per cell. These ratios use the FPS/span
+1.66x/1.65x that of 160x45, or about 7% less time per cell. These ratios use the FPS/span
 averages, not median fit times. Resampling/alignment, tile count and content
 coverage change together, so this does not isolate a causal uniform-region
 effect. Absolute latency still increases.
