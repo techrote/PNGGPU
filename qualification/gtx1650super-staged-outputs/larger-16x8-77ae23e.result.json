@@ -1,0 +1,3417 @@
+{
+  "schema": "pnggpu-cuda-bounded-fixtures-v2",
+  "sourceCommit": "77ae23e10c8b5ae658e21af5905eaa0db50830a1",
+  "sourceStatus": "",
+  "workerSourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+  "workerSha256": "938ea7b9bf5ef509cd2551e6527322bd650c9c8151913ffe5152e838fa564b1e",
+  "workerReceipt": {
+    "sourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+    "worker": "pnggpu_cuda_worker.exe",
+    "sha256": "938ea7b9bf5ef509cd2551e6527322bd650c9c8151913ffe5152e838fa564b1e"
+  },
+  "started": "2026-11-04T14:19:34.165Z",
+  "scope": {
+    "caseNames": [
+      "image-holo-stealth-cloak-1024-16x8-4x8"
+    ],
+    "repeats": 1,
+    "tiles": [
+      16
+    ],
+    "backendCount": 2,
+    "runs": 2,
+    "cells": 256,
+    "work": 14976000,
+    "workUnit": "conservative logical projection/shortlist/candidate visits including full recovery, across all backends",
+    "limits": {
+      "maxRuns": 2,
+      "maxCells": 256,
+      "maxWork": 15000000,
+      "timeoutMs": 10000
+    }
+  },
+  "qualificationAccepted": false,
+  "cases": [
+    {
+      "name": "image-holo-stealth-cloak-1024-16x8-4x8",
+      "backend": "cuda",
+      "tileCells": 16,
+      "repeat": 0,
+      "columns": 16,
+      "rows": 8,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 94.54459999999995,
+      "wallMs": 272.3324,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          46,
+          11,
+          5
+        ],
+        [
+          139,
+          15,
+          0
+        ],
+        [
+          152,
+          8,
+          0
+        ],
+        [
+          53,
+          8,
+          0
+        ],
+        [
+          111,
+          12,
+          0
+        ],
+        [
+          185,
+          8,
+          0
+        ],
+        [
+          140,
+          4,
+          3
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          112,
+          8,
+          0
+        ],
+        [
+          77,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          45,
+          1,
+          6
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          46,
+          13,
+          2
+        ],
+        [
+          25,
+          2,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          162,
+          8,
+          0
+        ],
+        [
+          149,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          149,
+          2,
+          5
+        ],
+        [
+          54,
+          5,
+          6
+        ],
+        [
+          45,
+          14,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          111,
+          7,
+          0
+        ],
+        [
+          134,
+          8,
+          0
+        ],
+        [
+          45,
+          8,
+          0
+        ],
+        [
+          46,
+          10,
+          5
+        ],
+        [
+          182,
+          8,
+          2
+        ],
+        [
+          167,
+          13,
+          2
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          5
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          112,
+          12,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          188,
+          14,
+          0
+        ],
+        [
+          140,
+          1,
+          2
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          3,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          29,
+          0,
+          5
+        ],
+        [
+          148,
+          8,
+          5
+        ],
+        [
+          71,
+          8,
+          0
+        ],
+        [
+          87,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          45,
+          7,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          45,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          141,
+          8,
+          6
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          217,
+          0,
+          5
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          139,
+          2,
+          5
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          46,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          6,
+          0
+        ],
+        [
+          24,
+          2,
+          5
+        ],
+        [
+          46,
+          2,
+          5
+        ],
+        [
+          112,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          32,
+          8,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          46,
+          15,
+          0
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          23,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          77,
+          2,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          132,
+          7,
+          0
+        ],
+        [
+          19,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          186,
+          8,
+          7
+        ],
+        [
+          145,
+          7,
+          0
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          3,
+          0,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          77,
+          0,
+          5
+        ],
+        [
+          217,
+          0,
+          7
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          63,
+          8,
+          0
+        ],
+        [
+          64,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          148,
+          2,
+          5
+        ],
+        [
+          182,
+          8,
+          0
+        ]
+      ],
+      "actualTuples": [
+        [
+          46,
+          11,
+          5
+        ],
+        [
+          139,
+          15,
+          0
+        ],
+        [
+          152,
+          8,
+          0
+        ],
+        [
+          53,
+          8,
+          0
+        ],
+        [
+          111,
+          12,
+          0
+        ],
+        [
+          185,
+          8,
+          0
+        ],
+        [
+          140,
+          4,
+          3
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          112,
+          8,
+          0
+        ],
+        [
+          77,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          45,
+          1,
+          6
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          46,
+          13,
+          2
+        ],
+        [
+          25,
+          2,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          162,
+          8,
+          0
+        ],
+        [
+          149,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          149,
+          2,
+          5
+        ],
+        [
+          54,
+          5,
+          6
+        ],
+        [
+          45,
+          14,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          111,
+          7,
+          0
+        ],
+        [
+          134,
+          8,
+          0
+        ],
+        [
+          45,
+          8,
+          0
+        ],
+        [
+          46,
+          10,
+          5
+        ],
+        [
+          182,
+          8,
+          2
+        ],
+        [
+          167,
+          13,
+          2
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          5
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          112,
+          12,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          188,
+          14,
+          0
+        ],
+        [
+          140,
+          1,
+          2
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          3,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          29,
+          0,
+          5
+        ],
+        [
+          148,
+          8,
+          5
+        ],
+        [
+          71,
+          8,
+          0
+        ],
+        [
+          87,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          45,
+          7,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          45,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          141,
+          8,
+          6
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          217,
+          0,
+          5
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          139,
+          2,
+          5
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          46,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          6,
+          0
+        ],
+        [
+          24,
+          2,
+          5
+        ],
+        [
+          46,
+          2,
+          5
+        ],
+        [
+          112,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          32,
+          8,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          46,
+          15,
+          0
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          23,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          77,
+          2,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          132,
+          7,
+          0
+        ],
+        [
+          19,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          186,
+          8,
+          7
+        ],
+        [
+          145,
+          7,
+          0
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          3,
+          0,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          77,
+          0,
+          5
+        ],
+        [
+          217,
+          0,
+          7
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          63,
+          8,
+          0
+        ],
+        [
+          64,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          148,
+          2,
+          5
+        ],
+        [
+          182,
+          8,
+          0
+        ]
+      ],
+      "cpuAnsiBytes": 1129,
+      "cpuAnsiSha256": "180bf214043bbec9175e5bddc93c47e7ab040ff805ec7cf0313ccd3ebac89549",
+      "stats": {
+        "version": "CUDA-001",
+        "backend": "cuda",
+        "requestedTileCells": 16,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.05322265625,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "tileCells": 16,
+        "tileCount": 8,
+        "projectionBufferBytes": 55808,
+        "rasterBufferBytes": 2048,
+        "recoveryTileCells": 16,
+        "recoveryProjectionBytes": 111616,
+        "maxStorageBindingBytes": null,
+        "maxBufferBytes": 134217728,
+        "maxMessageBytes": 134217728,
+        "maxKernelProjectionWork": 16777216,
+        "nativeBufferBytes": 201376,
+        "pipelineNote": "One persistent native CUDA worker; sequential tiles; native kernel sublaunches are bounded independently.",
+        "precision": "float32-guarded-binary64",
+        "timing": {
+          "atlasPackMs": 0.8550999999999931,
+          "bufferCreateMs": 0.008499999999912689,
+          "tilePackMs": 0.6668999999999414,
+          "sampleProviderMs": 0,
+          "decodeCellsMs": 0.5480999999999767,
+          "writeBufferMs": null,
+          "encodeSubmitMs": null,
+          "readbackWaitMs": null,
+          "timestampsReadMs": 0,
+          "slotAvailabilityWaitMs": 0,
+          "firstTileCompletedMs": 193.59730000000013,
+          "wallTotalMs": 270.6961000000001,
+          "nativeInitMs": 182.9688000000001,
+          "atlasUploadMs": 0.2126,
+          "bridgeRoundTripMs": 46.38000000000034,
+          "uploadMs": 0.9742999999999999,
+          "readbackMs": 0.5059,
+          "gpuProjectionMs": 1.34355199698,
+          "gpuSelectionMs": 17.386272013,
+          "gpuGuardMs": 6.331935941999999,
+          "gpuRecoveryProjectionMs": 0.57375999537,
+          "gpuRecoverySelectionMs": 11.05433607,
+          "maxProjectionLaunchMs": 0.4450879991,
+          "maxSelectionLaunchMs": 1.460224032,
+          "cleanupMs": 38.40339999999992
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.2641999999998461,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.264699999999948,
+            "wallMs": 9.414400000000114,
+            "projectionMs": 0.5466559976,
+            "selectionMs": 2.357248008,
+            "bridgeRoundTripMs": 8.67690000000016,
+            "uploadMs": 0.0874,
+            "readbackMs": 0.0859,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.8970239758,
+            "gpuRecoveryProjectionMs": 0.1015679985,
+            "gpuRecoverySelectionMs": 1.460224032,
+            "maxProjectionLaunchMs": 0.4450879991,
+            "maxSelectionLaunchMs": 1.460224032,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 2,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.13380000000006476,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.053900000000112414,
+            "wallMs": 6.488299999999981,
+            "projectionMs": 0.1245759986,
+            "selectionMs": 2.220063984,
+            "bridgeRoundTripMs": 6.261400000000094,
+            "uploadMs": 0.1299,
+            "readbackMs": 0.0487,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.8280959725,
+            "gpuRecoveryProjectionMs": 0.05625599995,
+            "gpuRecoverySelectionMs": 1.391968012,
+            "maxProjectionLaunchMs": 0.06831999868,
+            "maxSelectionLaunchMs": 1.391968012,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 3,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.04079999999999018,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.05590000000006512,
+            "wallMs": 5.009999999999991,
+            "projectionMs": 0.09683199972,
+            "selectionMs": 2.179103971,
+            "bridgeRoundTripMs": 4.8974000000000615,
+            "uploadMs": 0.082,
+            "readbackMs": 0.0361,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7905600071,
+            "gpuRecoveryProjectionMs": 0.05465599895,
+            "gpuRecoverySelectionMs": 1.388543963,
+            "maxProjectionLaunchMs": 0.05465599895,
+            "maxSelectionLaunchMs": 1.388543963,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 4,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.04219999999986612,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.030699999999797,
+            "wallMs": 4.854000000000042,
+            "projectionMs": 0.09289599955,
+            "selectionMs": 2.100864053,
+            "bridgeRoundTripMs": 4.772600000000011,
+            "uploadMs": 0.0707,
+            "readbackMs": 0.0376,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7516160011,
+            "gpuRecoveryProjectionMs": 0.05702399835,
+            "gpuRecoverySelectionMs": 1.349248052,
+            "maxProjectionLaunchMs": 0.05702399835,
+            "maxSelectionLaunchMs": 1.349248052,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 5,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.041600000000016735,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.03749999999990905,
+            "wallMs": 5.410099999999829,
+            "projectionMs": 0.1112000011,
+            "selectionMs": 2.147008002,
+            "bridgeRoundTripMs": 5.320599999999786,
+            "uploadMs": 0.077,
+            "readbackMs": 0.0369,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7728000283,
+            "gpuRecoveryProjectionMs": 0.07238399982,
+            "gpuRecoverySelectionMs": 1.374207973,
+            "maxProjectionLaunchMs": 0.07238399982,
+            "maxSelectionLaunchMs": 1.374207973,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 6,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.044000000000096406,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.028999999999996362,
+            "wallMs": 4.907500000000027,
+            "projectionMs": 0.1175360009,
+            "selectionMs": 2.025215983,
+            "bridgeRoundTripMs": 4.822300000000041,
+            "uploadMs": 0.0858,
+            "readbackMs": 0.0601,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7167999744,
+            "gpuRecoveryProjectionMs": 0.0802880004,
+            "gpuRecoverySelectionMs": 1.308416009,
+            "maxProjectionLaunchMs": 0.0802880004,
+            "maxSelectionLaunchMs": 1.308416009,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 7,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.042799999999942884,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.04970000000002983,
+            "wallMs": 5.629200000000083,
+            "projectionMs": 0.09673600271,
+            "selectionMs": 2.148864031,
+            "bridgeRoundTripMs": 5.524800000000141,
+            "uploadMs": 0.0776,
+            "readbackMs": 0.0704,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7721920013,
+            "gpuRecoveryProjectionMs": 0.0639680028,
+            "gpuRecoverySelectionMs": 1.376672029,
+            "maxProjectionLaunchMs": 0.0639680028,
+            "maxSelectionLaunchMs": 1.376672029,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          },
+          {
+            "index": 8,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.057500000000118234,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.026700000000118962,
+            "wallMs": 6.197000000000116,
+            "projectionMs": 0.1571199968,
+            "selectionMs": 2.207903981,
+            "bridgeRoundTripMs": 6.104000000000042,
+            "uploadMs": 0.1513,
+            "readbackMs": 0.1302,
+            "recoveredCells": 16,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 16,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.8028479815,
+            "gpuRecoveryProjectionMs": 0.0876159966,
+            "gpuRecoverySelectionMs": 1.405056,
+            "maxProjectionLaunchMs": 0.0876159966,
+            "maxSelectionLaunchMs": 1.405056,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 512
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 48032,
+        "readbackBytes": 4096,
+        "allocatedBytes": 201376,
+        "recoveredCells": 128,
+        "certifiedCells": 0,
+        "requestPayloadBytes": 48128,
+        "tileResponseBytes": 6379,
+        "adapterInfo": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "kernelExecTimeoutEnabled": true,
+          "vendor": "NVIDIA",
+          "architecture": "compute_75",
+          "description": "NVIDIA GeForce GTX 1650 SUPER",
+          "backend": "cuda"
+        },
+        "cudaInfo": {
+          "schema": "pnggpu-cuda-info-v1",
+          "available": true,
+          "backend": "cuda",
+          "protocolVersion": 1,
+          "precision": "float32-guarded-binary64",
+          "device": {
+            "name": "NVIDIA GeForce GTX 1650 SUPER",
+            "computeCapability": "7.5",
+            "totalMemoryBytes": 4294508544,
+            "freeMemoryBytes": 3441950720,
+            "index": 0,
+            "kernelExecTimeoutEnabled": true
+          },
+          "runtimeVersion": 12080,
+          "driverVersion": 13040,
+          "limits": {
+            "maxMessageBytes": 134217728,
+            "maxTileCells": 65536,
+            "maxSamplesPerCell": 2048,
+            "maxGlyphCount": 65535,
+            "maxProjectionBytes": 134217728,
+            "maxPixelBytes": 67108864,
+            "maxProjectionWork": 16777216,
+            "memoryReserveBytes": 2147483648,
+            "maxRecoveryProjectionBytes": 33554432,
+            "maxRecoveryCells": 1024,
+            "maxKernelProjectionWork": 16777216
+          },
+          "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+          "timingSources": {
+            "gpuProjectionMs": "CUDA events, sum of sublaunches",
+            "gpuSelectionMs": "CUDA events, sum of sublaunches",
+            "uploadMs": "host steady clock, transfer plus stream synchronization",
+            "readbackMs": "host steady clock, transfer plus stream synchronization"
+          }
+        },
+        "projectionSublaunches": 16,
+        "selectionSublaunches": 16,
+        "timestampReason": null,
+        "timestampSource": "CUDA events; sums of bounded native kernel launches",
+        "sampleComparisons": 2678784,
+        "glyphCandidates": 27904,
+        "colourCandidates": 122880,
+        "timingNotes": "Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time."
+      }
+    },
+    {
+      "name": "image-holo-stealth-cloak-1024-16x8-4x8",
+      "backend": "webgpu",
+      "tileCells": 16,
+      "repeat": 0,
+      "columns": 16,
+      "rows": 8,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 94.54459999999995,
+      "wallMs": 417.2774999999997,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          46,
+          11,
+          5
+        ],
+        [
+          139,
+          15,
+          0
+        ],
+        [
+          152,
+          8,
+          0
+        ],
+        [
+          53,
+          8,
+          0
+        ],
+        [
+          111,
+          12,
+          0
+        ],
+        [
+          185,
+          8,
+          0
+        ],
+        [
+          140,
+          4,
+          3
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          112,
+          8,
+          0
+        ],
+        [
+          77,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          45,
+          1,
+          6
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          46,
+          13,
+          2
+        ],
+        [
+          25,
+          2,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          162,
+          8,
+          0
+        ],
+        [
+          149,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          149,
+          2,
+          5
+        ],
+        [
+          54,
+          5,
+          6
+        ],
+        [
+          45,
+          14,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          111,
+          7,
+          0
+        ],
+        [
+          134,
+          8,
+          0
+        ],
+        [
+          45,
+          8,
+          0
+        ],
+        [
+          46,
+          10,
+          5
+        ],
+        [
+          182,
+          8,
+          2
+        ],
+        [
+          167,
+          13,
+          2
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          5
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          112,
+          12,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          188,
+          14,
+          0
+        ],
+        [
+          140,
+          1,
+          2
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          3,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          29,
+          0,
+          5
+        ],
+        [
+          148,
+          8,
+          5
+        ],
+        [
+          71,
+          8,
+          0
+        ],
+        [
+          87,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          45,
+          7,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          45,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          141,
+          8,
+          6
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          217,
+          0,
+          5
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          139,
+          2,
+          5
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          46,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          6,
+          0
+        ],
+        [
+          24,
+          2,
+          5
+        ],
+        [
+          46,
+          2,
+          5
+        ],
+        [
+          112,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          32,
+          8,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          46,
+          15,
+          0
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          23,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          77,
+          2,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          132,
+          7,
+          0
+        ],
+        [
+          19,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          186,
+          8,
+          7
+        ],
+        [
+          145,
+          7,
+          0
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          3,
+          0,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          77,
+          0,
+          5
+        ],
+        [
+          217,
+          0,
+          7
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          63,
+          8,
+          0
+        ],
+        [
+          64,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          148,
+          2,
+          5
+        ],
+        [
+          182,
+          8,
+          0
+        ]
+      ],
+      "actualTuples": [
+        [
+          46,
+          11,
+          5
+        ],
+        [
+          139,
+          15,
+          0
+        ],
+        [
+          152,
+          8,
+          0
+        ],
+        [
+          53,
+          8,
+          0
+        ],
+        [
+          111,
+          12,
+          0
+        ],
+        [
+          185,
+          8,
+          0
+        ],
+        [
+          140,
+          4,
+          3
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          112,
+          8,
+          0
+        ],
+        [
+          77,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          45,
+          1,
+          6
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          46,
+          13,
+          2
+        ],
+        [
+          25,
+          2,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          162,
+          8,
+          0
+        ],
+        [
+          149,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          149,
+          2,
+          5
+        ],
+        [
+          54,
+          5,
+          6
+        ],
+        [
+          45,
+          14,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          111,
+          7,
+          0
+        ],
+        [
+          134,
+          8,
+          0
+        ],
+        [
+          45,
+          8,
+          0
+        ],
+        [
+          46,
+          10,
+          5
+        ],
+        [
+          182,
+          8,
+          2
+        ],
+        [
+          167,
+          13,
+          2
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          5
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          112,
+          12,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          188,
+          14,
+          0
+        ],
+        [
+          140,
+          1,
+          2
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          3,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          29,
+          0,
+          5
+        ],
+        [
+          148,
+          8,
+          5
+        ],
+        [
+          71,
+          8,
+          0
+        ],
+        [
+          87,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          45,
+          7,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          112,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          32,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          45,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          141,
+          8,
+          6
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          164,
+          8,
+          0
+        ],
+        [
+          217,
+          0,
+          5
+        ],
+        [
+          140,
+          2,
+          5
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          139,
+          2,
+          5
+        ],
+        [
+          162,
+          2,
+          5
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          46,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          6,
+          0
+        ],
+        [
+          24,
+          2,
+          5
+        ],
+        [
+          46,
+          2,
+          5
+        ],
+        [
+          112,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          5
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          32,
+          8,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          46,
+          15,
+          0
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          23,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          77,
+          2,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          183,
+          0,
+          5
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          0
+        ],
+        [
+          169,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          132,
+          7,
+          0
+        ],
+        [
+          19,
+          8,
+          0
+        ],
+        [
+          45,
+          2,
+          5
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          186,
+          8,
+          7
+        ],
+        [
+          145,
+          7,
+          0
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          186,
+          8,
+          5
+        ],
+        [
+          77,
+          7,
+          0
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          186,
+          0,
+          5
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          3,
+          0,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          77,
+          0,
+          5
+        ],
+        [
+          217,
+          0,
+          7
+        ],
+        [
+          140,
+          8,
+          0
+        ],
+        [
+          217,
+          8,
+          0
+        ],
+        [
+          63,
+          8,
+          0
+        ],
+        [
+          64,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          5
+        ],
+        [
+          148,
+          2,
+          5
+        ],
+        [
+          182,
+          8,
+          0
+        ]
+      ],
+      "cpuAnsiBytes": 1129,
+      "cpuAnsiSha256": "180bf214043bbec9175e5bddc93c47e7ab040ff805ec7cf0313ccd3ebac89549",
+      "stats": {
+        "version": "GPU-007",
+        "requestedTileCells": 16,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.05322265625,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "projectWorkgroupsX": 55,
+        "projectWorkgroupsY": 1,
+        "tileCells": 16,
+        "tileCount": 8,
+        "projectionBufferBytes": 55808,
+        "rasterBufferBytes": 2048,
+        "maxStorageBindingBytes": 134217728,
+        "maxBufferBytes": 268435456,
+        "maxWorkgroups": 65535,
+        "timing": {
+          "atlasPackMs": 1,
+          "bufferCreateMs": 0.7000000001862645,
+          "tilePackMs": 0.19999999925494194,
+          "writeBufferMs": 0.20000000018626451,
+          "encodeSubmitMs": 0.10000000055879354,
+          "readbackWaitMs": 34.299999999813735,
+          "decodeCellsMs": 0.09999999962747097,
+          "sampleProviderMs": 0,
+          "timestampsReadMs": 0.7000000001862645,
+          "gpuProjectionMs": 0.12364800000000001,
+          "gpuSelectionMs": 21.127008000000004,
+          "slotAvailabilityWaitMs": 33.90000000037253,
+          "firstTileCompletedMs": 10.700000000186265,
+          "wallTotalMs": 37.700000000186265
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.09999999962747097,
+            "uploadEnqueueMs": 0.10000000055879354,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 8.299999999813735,
+            "decodeMs": 0.09999999962747097,
+            "wallMs": 8.700000000186265,
+            "projectionMs": 0.023328,
+            "selectionMs": 2.77504
+          },
+          {
+            "index": 2,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.7000000001862645,
+            "decodeMs": 0,
+            "wallMs": 3.7999999998137355,
+            "projectionMs": 0.015328,
+            "selectionMs": 2.785312
+          },
+          {
+            "index": 3,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0.09999999962747097,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.900000000372529,
+            "decodeMs": 0,
+            "wallMs": 4,
+            "projectionMs": 0.014336,
+            "selectionMs": 2.709504
+          },
+          {
+            "index": 4,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.2999999998137355,
+            "decodeMs": 0,
+            "wallMs": 3.2999999998137355,
+            "projectionMs": 0.014048,
+            "selectionMs": 2.543456
+          },
+          {
+            "index": 5,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0.10000000055879354,
+            "mapWaitMs": 3.7999999998137355,
+            "decodeMs": 0,
+            "wallMs": 3.900000000372529,
+            "projectionMs": 0.014336,
+            "selectionMs": 2.650112
+          },
+          {
+            "index": 6,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.2999999998137355,
+            "decodeMs": 0,
+            "wallMs": 3.2999999998137355,
+            "projectionMs": 0.014336,
+            "selectionMs": 2.39536
+          },
+          {
+            "index": 7,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 4.099999999627471,
+            "decodeMs": 0,
+            "wallMs": 4.099999999627471,
+            "projectionMs": 0.01392,
+            "selectionMs": 2.64672
+          },
+          {
+            "index": 8,
+            "cells": 16,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.900000000372529,
+            "decodeMs": 0,
+            "wallMs": 3.900000000372529,
+            "projectionMs": 0.014016,
+            "selectionMs": 2.621504
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 48320,
+        "readbackBytes": 2048,
+        "allocatedBytes": 90560,
+        "timestampReason": null,
+        "adapterInfo": {
+          "vendor": "nvidia",
+          "architecture": "turing",
+          "device": "",
+          "description": ""
+        },
+        "sampleComparisons": 2678784,
+        "glyphCandidates": 27904,
+        "colourCandidates": 122880
+      }
+    }
+  ],
+  "sourceFiles": {
+    "overlay/src/gpu/benchmark_zip.js": "22a567dbadb417da4fda21accb8a96b0dc079ab6fe1bdddb3c6b5f87cbdaf7d8",
+    "overlay/src/gpu/cpu_worker_host.js": "83a7bf07464ff7926ee61ed6bb3cf325603c8b75b210dca367e438d428377460",
+    "overlay/src/gpu/cuda.js": "5adde8328e7d23ef4d75edb535615064effa34ed5f96307eaba288fd84876b01",
+    "overlay/src/gpu/memory.js": "b1446b9f79a3efb348228d20ae40e9c764d42665084657f8c18786a61dcd5e51",
+    "overlay/src/gpu/metrics.js": "28d9b8e1d6357f16539d01db1f75968ecce07d532aa5bd3b4919aea6b16db664",
+    "overlay/src/gpu/photographic.js": "91c03b79846b2690f97c2aebbd22170b37feb0732c7a09b4a13eb57dd16bac0c",
+    "overlay/src/gpu/photographic.wgsl": "5e561bdb1dab75e11ce11a37ce1c9b6e3f4129af2af964fedf0713435160e4d4",
+    "overlay/src/gpu/progress.js": "db2545757d016596a1d09536f803a4100a36236f5486cb08c614801340a2c6cf",
+    "overlay/src/gpu/reference_photo.js": "fd027d6b5c053af644b8741b0ccb9df954ecbd57a2f210317233b79b598e9d86",
+    "overlay/src/gpu/reference_photo.worker.js": "c2d1bf9e84e3e19166167e533f8b22de087d1c981729fadd65bd068e9dfd4020",
+    "overlay/src/gpu/streamed_samples.js": "be36abbdac360c4b557feff4bd0e1fc695ba13efb44f82082adc4bb78b847d8e",
+    "overlay/src/gpu/workload.js": "d94b23552d91a627396b96ae7c877c34c6ac5224aeaed785564b33dde0706039",
+    "qualification/turing-37706c3.json": "9f2c0fb6fead155a16f1df3869bc9f80b9e79d690166ebcaba36d8b8936e91c9",
+    "scripts/analyze_cuda_fixture.mjs": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
+    "scripts/build-cuda.ps1": "db0bea9d4a2dd3c5facc67e24494cd69be6b02a7d18c06e0b1be51b7f7548963",
+    "scripts/cuda_bridge.mjs": "72e708587a3e66eb6f3d8a57ebedf0601e5da9b60cbdfa488dc651b28c157431",
+    "scripts/cuda_driver_events.mjs": "4ff06083bf823ea106b4ddcb59018082a52deb13c4bed48ab2bb6bb049c9076b",
+    "scripts/cuda_fixture_plan.mjs": "1deab55b3e22b4663333a708bbc115a63e0ac0b6f173b97ef5f30598190941c3",
+    "scripts/cuda_fixtures.mjs": "30c19cc2ca4136002952dfa81ce296f3f134efe6a7fb2ca48f9c487dbef11dbc",
+    "scripts/cuda_image_fixture.mjs": "dcb5072fc68897ce316d9d5105f9a23c40ecafcbb120973a7c8d284f945e0ca8",
+    "scripts/cuda_worker_provenance.mjs": "283d33c6ade0985ea90710a753404fc860a94ecbbbfdc955d5edcd29570b399d",
+    "scripts/fetch_cuda_toolchain.py": "c87f36f40703ae29dc0a1efda6c6baa83b53841ab7183a300aeb5327b4c4f618",
+    "scripts/generate_cuda_regressions.mjs": "12e25ad5d97602560acf67b2b0c44eadeb9d879ebde9cd93996e5973cb71244b",
+    "scripts/package_manifest.py": "04e7a59749a79f006e99504688e23fdeb6d6899675064106dc91936481f9463a",
+    "scripts/prepare_cuda_image.mjs": "126720f6dc20a1c09114f3d569074e6ebe7ba00bf14f03cab0bae2dc81127930",
+    "scripts/qualification_lifecycle.mjs": "e7201dd2fbeef8734fe6d147390f4f2ca8761298840b7f1ba3d312fa63bf083e",
+    "scripts/qualify_cuda.mjs": "e1e9e34669ee4273d2d42d48ff3305739d9291ae3bafffee6786182f26b4dade",
+    "scripts/qualify_cuda_resilience.mjs": "96ca610e494ddff83963b13d021f27fd530540b3ec0d8c25e7f8df3f18211ee9",
+    "scripts/replay_cuda_fixtures.mjs": "5dbc316039af645e73e550c92307b9c1c2002630ab240e0d76ff820f6fa108b9",
+    "scripts/serve.mjs": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
+    "scripts/serve.py": "f313e0f4ef7f485f2a2a1d095773d64a2708e439cd0d84c9ceee93a8dc8c5e5d",
+    "scripts/setup.ps1": "f7ff2fadabd4467bbfaf92f32bc18e676b7f763349e2073037605f4740047fc3",
+    "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9"
+  },
+  "imageInput": {
+    "sha256": "e3305f3144c149abcad904226b17d588a893d448a781561f113f67c9f0e01b8f",
+    "fixtureSha256": "b661e062cf93478bac5efa1884bda79cb68d85f9802e57b64954daef04f904e8",
+    "provenance": {
+      "sourceCommit": "77ae23e10c8b5ae658e21af5905eaa0db50830a1",
+      "sourceStatus": "",
+      "sourceFiles": {
+        "overlay/fixtures/hardmode/manifest.json": "09a9fc5fab3554e87325ff89e5a325f42ed03c8d6ede901649f642ca38c6e0a8",
+        "overlay/fixtures/hardmode/holo-stealth-cloak-1024.png": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+        "overlay/experiments/webgpu/photographic.html": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
+        "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9",
+        "PNG2ANSI/assets/DejaVuSansMono.ttf": "b4a6c3e4faab8773f4ff761d56451646409f29abedd68f05d38c2df667d3c582",
+        "scripts/prepare_cuda_image.mjs": "126720f6dc20a1c09114f3d569074e6ebe7ba00bf14f03cab0bae2dc81127930",
+        "scripts/cuda_image_fixture.mjs": "dcb5072fc68897ce316d9d5105f9a23c40ecafcbb120973a7c8d284f945e0ca8"
+      },
+      "started": "2026-11-04T14:19:31.247Z",
+      "geometry": {
+        "columns": 16,
+        "rows": 8,
+        "sampleWidth": 4,
+        "sampleHeight": 8
+      },
+      "maxPreparationCells": 128,
+      "image": {
+        "file": "holo-stealth-cloak-1024.png",
+        "title": "Holographic cloak / tiled geometry",
+        "description": "High saturation against monochrome geometry; thin edges and complex surfaces",
+        "width": 1024,
+        "height": 1024,
+        "size_bytes": 2935057,
+        "sha256": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+        "stress": [
+          "saturated gradients",
+          "repeating diagonals",
+          "fine outlines"
+        ],
+        "sourceWidth": 1024,
+        "sourceHeight": 1024
+      },
+      "sourceSamplingMode": "full-reference-canvas",
+      "matchingRuns": 0,
+      "driverBaseline": {
+        "supported": true,
+        "events": []
+      },
+      "browserVersion": "156.0.8078.80",
+      "preparationMs": 215.6000000005588,
+      "config": {
+        "schema_version": 2,
+        "style": "photographic",
+        "vocabulary": "full-cp437",
+        "canvas": {
+          "columns": 16,
+          "rows": 8,
+          "cell_width": 8,
+          "cell_height": 16,
+          "sample_width": 4,
+          "sample_height": 8,
+          "font_size": 14,
+          "resampler": "lanczos"
+        },
+        "image": {
+          "brightness": 1,
+          "contrast": 1,
+          "saturation": 1,
+          "gamma": 1,
+          "sharpness": 1
+        },
+        "fit": {
+          "foreground_candidates": 6,
+          "background_candidates": 5
+        },
+        "derez": {
+          "enabled": false,
+          "width": 160,
+          "height": 160
+        },
+        "nl_filter": {
+          "enabled": false,
+          "mode": "edge-enhancement",
+          "radius": 1,
+          "alpha": 0.9
+        },
+        "industrial": {
+          "structure_blur": 0.85,
+          "texture_blur": 1.85,
+          "edge_threshold": 11,
+          "edge_range": 57,
+          "texture_threshold": 24,
+          "texture_range": 62,
+          "highlight_threshold": 138,
+          "highlight_range": 110,
+          "highlight_exponent": 2.2,
+          "accent_luminance_scale": 145,
+          "edge_weight": 0.92,
+          "texture_weight": 0.18,
+          "highlight_weight": 0.05,
+          "accent_weight": 0.7,
+          "sparsity_threshold": 0.14,
+          "sparsity_range": 0.86,
+          "ink_exponent": 0.92,
+          "saturation_threshold": 0.1,
+          "saturation_range": 0.34
+        }
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      },
+      "cleanupErrors": [],
+      "driverFinal": {
+        "supported": true,
+        "events": []
+      },
+      "finished": "2026-11-04T14:19:33.860Z"
+    }
+  },
+  "driverSince": "2026-11-04T14:19:31.247Z",
+  "driverBaseline": {
+    "supported": true,
+    "events": []
+  },
+  "workerInfo": {
+    "schema": "pnggpu-cuda-info-v1",
+    "available": true,
+    "backend": "cuda",
+    "protocolVersion": 1,
+    "precision": "float32-guarded-binary64",
+    "device": {
+      "name": "NVIDIA GeForce GTX 1650 SUPER",
+      "computeCapability": "7.5",
+      "totalMemoryBytes": 4294508544,
+      "freeMemoryBytes": 3441950720,
+      "index": 0,
+      "kernelExecTimeoutEnabled": true
+    },
+    "runtimeVersion": 12080,
+    "driverVersion": 13040,
+    "limits": {
+      "maxMessageBytes": 134217728,
+      "maxTileCells": 65536,
+      "maxSamplesPerCell": 2048,
+      "maxGlyphCount": 65535,
+      "maxProjectionBytes": 134217728,
+      "maxPixelBytes": 67108864,
+      "maxProjectionWork": 16777216,
+      "memoryReserveBytes": 2147483648,
+      "maxRecoveryProjectionBytes": 33554432,
+      "maxRecoveryCells": 1024,
+      "maxKernelProjectionWork": 16777216
+    },
+    "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+    "timingSources": {
+      "gpuProjectionMs": "CUDA events, sum of sublaunches",
+      "gpuSelectionMs": "CUDA events, sum of sublaunches",
+      "uploadMs": "host steady clock, transfer plus stream synchronization",
+      "readbackMs": "host steady clock, transfer plus stream synchronization"
+    }
+  },
+  "browserVersion": "156.0.8078.80",
+  "driverAfter": {
+    "supported": true,
+    "events": []
+  },
+  "scopedParityPassed": true,
+  "cudaScopedParityPassed": true,
+  "cleanupErrors": [],
+  "afterWorkerInfo": {
+    "schema": "pnggpu-cuda-info-v1",
+    "available": true,
+    "backend": "cuda",
+    "protocolVersion": 1,
+    "precision": "float32-guarded-binary64",
+    "device": {
+      "name": "NVIDIA GeForce GTX 1650 SUPER",
+      "computeCapability": "7.5",
+      "totalMemoryBytes": 4294508544,
+      "freeMemoryBytes": 3441950720,
+      "index": 0,
+      "kernelExecTimeoutEnabled": true
+    },
+    "runtimeVersion": 12080,
+    "driverVersion": 13040,
+    "limits": {
+      "maxMessageBytes": 134217728,
+      "maxTileCells": 65536,
+      "maxSamplesPerCell": 2048,
+      "maxGlyphCount": 65535,
+      "maxProjectionBytes": 134217728,
+      "maxPixelBytes": 67108864,
+      "maxProjectionWork": 16777216,
+      "memoryReserveBytes": 2147483648,
+      "maxRecoveryProjectionBytes": 33554432,
+      "maxRecoveryCells": 1024
+    },
+    "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+    "timingSources": {
+      "gpuProjectionMs": "CUDA events, sum of sublaunches",
+      "gpuSelectionMs": "CUDA events, sum of sublaunches",
+      "uploadMs": "host steady clock, transfer plus stream synchronization",
+      "readbackMs": "host steady clock, transfer plus stream synchronization"
+    }
+  },
+  "wallTotalMs": 3135.9825,
+  "finished": "2026-11-04T14:19:37.410Z"
+}

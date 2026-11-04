@@ -14,6 +14,9 @@ The next [bounded real-image pass](GTX1650SUPER_REAL_IMAGES.md) compares all
 five original images at 8×4 cells without weakening admission or changing any
 machine setting. It is additional small-work evidence, not full qualification.
 
+The later [staged-output report](GTX1650SUPER_STAGED_OUTPUTS.md) advances one
+image to 80×40 characters with explicit caps and unchanged native admission.
+
 ## Checkpoint and source authority
 
 Latest engineering checkpoint before this documentation handover:

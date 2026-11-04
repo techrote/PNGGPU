@@ -4,6 +4,9 @@ Recorded 4 November 2026. **All selected CPU/CUDA/WebGPU comparisons passed.
 PR #2 remains draft; full qualification remains incomplete.** Read
 [WDDM_RESILIENCE.md](WDDM_RESILIENCE.md) before further GPU work.
 
+The subsequent [staged-output pass](GTX1650SUPER_STAGED_OUTPUTS.md) advances one
+image through 16×8, 32×16 and 80×40 characters with separate receipts and costs.
+
 ## Scope and source identity
 
 Engineering and application source was the clean checkout
