@@ -6,7 +6,7 @@ import {PhotographicCudaFitter} from '../src/gpu/cuda.js';
 import {estimateGpuMemory,evaluateVramBudget,validateDeclaredVramGiB} from '../src/gpu/memory.js';
 import {requiresStreamedSamples,PREVIEW_MAX_PIXELS} from '../src/gpu/streamed_samples.js';
 import {validateWorkbenchInputs,WORKBENCH_LIMITS} from '../src/gpu/workload.js';
-import {milliseconds,bytes,gpuProfileStages} from '../src/gpu/metrics.js';
+import {milliseconds,bytes,gpuProfileStages,compareCells,compareAnsi} from '../src/gpu/metrics.js';
 
 const html=await readFile(new URL('../experiments/webgpu/photographic.html',import.meta.url),'utf8');
 function declaration(name){
@@ -22,6 +22,68 @@ const info={schema:'pnggpu-cuda-info-v1',available:true,backend:'cuda',protocolV
     totalMemoryBytes:24*1024**3,freeMemoryBytes:22*1024**3},limits:{
     maxMessageBytes:128*1024**2,maxTileCells:65536,maxSamplesPerCell:2048,maxGlyphCount:65535,
     maxProjectionBytes:128*1024**2,maxPixelBytes:64*1024**2,maxProjectionWork:16777216}};
+
+function conversionContext(fit){
+  const config={canvas:{columns:1,rows:1,sample_width:1,sample_height:1,cell_width:8,cell_height:16},vocabulary:'test'};
+  const bitmap={width:1,height:1,closed:false,close(){this.closed=true;}};
+  const controls={};
+  const gpu={fit};
+  const context=vm.createContext({performance,AbortController,DOMException,Uint8Array,
+    activeConversion:null,stopping:false,maskCache:new Map(),backendName:()=> 'CUDA',status:{},
+    byId:id=>controls[id]??(controls[id]={checked:false}),makeConfig:()=>config,
+    PNG2ANSI:{vocabularies:()=>({test:[32,65]}),PALETTE:[],ansiBytes:(_m,c)=>Uint8Array.of(c.chosen[0],c.fg[0],c.bg[0])},
+    createImageBitmap:async()=>bitmap,masksFor:async()=>({codes:[32,65],low:[[0],[1]]}),
+    validateGpuBudget:()=>1,createGpuFitter:async()=>gpu,makeMemoryEstimate:()=>({plan:{},estimate:{},budget:{}}),
+    memoryGate(){},resetProgress(){},updateProgress(){},requiresStreamedSamples:()=>false,
+    PREVIEW_MAX_PIXELS:0,format:String,currentWorkUnits:null,currentGlyphCount:0,
+    OffscreenCanvas:class{getContext(){return {drawImage(){},getImageData(){return {data:new Uint8Array(4)};}};}},
+    summarizeTimings:()=>({}),compareCells,compareAnsi});
+  vm.runInContext(declaration('compareImage')+'\n'+declaration('stopConversion')+'\n'+declaration('metricText'),context);
+  return {context,bitmap,settings:{backend:'cuda',columns:1,rows:1,sampleW:1,sampleH:1,gpuRepeats:2}};
+}
+const selection=(glyph=0)=>({chosen:Uint16Array.of(glyph),fg:Uint8Array.of(0),bg:Uint8Array.of(0),stats:{timing:{}}});
+
+test('Stop aborts an active CUDA conversion, releases it, and permits a subsequent conversion',async()=>{
+  let signal,started;
+  const ready=new Promise(r=>started=r);
+  const fixture=conversionContext(async data=>{
+    signal=data.signal;started();
+    return new Promise((_resolve,reject)=>signal.addEventListener('abort',()=>reject(signal.reason),{once:true}));
+  });
+  const {context,settings,bitmap}=fixture;
+  const pending=context.compareImage({},settings,{previews:false,cpuEnabled:false});
+  await ready;context.stopConversion();
+  await assert.rejects(pending,{name:'AbortError'});
+  assert.equal(signal.aborted,true);assert.equal(bitmap.closed,true);assert.equal(context.activeConversion,null);
+  context.stopping=false;
+  context.createGpuFitter=async()=>({fit:async()=>selection()});
+  const result=await context.compareImage({},settings,{previews:false,cpuEnabled:false});
+  assert.equal(result.repeatability.deterministic,true);
+});
+
+test('changed repeated tuples and ANSI bytes are reported while the first run stays canonical',async()=>{
+  let calls=0;
+  const {context,settings}=conversionContext(async()=>selection(calls++));
+  const result=await context.compareImage({},settings,{previews:false,cpuEnabled:false,returnAnsi:true});
+  assert.equal(result.repeatability.deterministic,false);
+  assert.equal(result.repeatability.comparedRuns,1);
+  assert.equal(result.gpuRender.repeatDetails[1].repeatCellDiff.glyph,1);
+  assert.equal(result.gpuRender.repeatDetails[1].repeatAnsiDiff.mismatches,1);
+  assert.equal(result.ansiBytes[0],0);
+  assert.match(context.metricText(result),/FAILED.*repeated GPU runs/);
+});
+
+test('ZIP summary and repeated-run CSV preserve nondeterminism failures',()=>{
+  const context=vm.createContext({csvRows:rows=>rows});
+  vm.runInContext(declaration('zipSummaryCsv')+'\n'+declaration('zipRepeatsCsv'),context);
+  const job={image:'test.png',result:{mismatches:0,repeatability:{deterministic:false},
+    gpuRender:{repeatDetails:[{repeatCellDiff:{changedCells:1},repeatAnsiDiff:{mismatches:2}}]}}};
+  const summary=context.zipSummaryCsv([job]);
+  assert.equal(summary[1][summary[0].indexOf('status')],'NONDETERMINISTIC');
+  const repeats=context.zipRepeatsCsv([job]);
+  assert.equal(repeats[1][repeats[0].indexOf('repeat_changed_cells')],1);
+  assert.equal(repeats[1][repeats[0].indexOf('repeat_ansi_mismatches')],2);
+});
 
 test('CUDA memory preflight works without a navigator.gpu or fake WebGPU device',()=>{
   const context=vm.createContext({estimateGpuMemory,evaluateVramBudget,requiresStreamedSamples,

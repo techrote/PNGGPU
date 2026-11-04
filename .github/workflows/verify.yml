@@ -82,6 +82,21 @@ jobs:
           Set-Content -LiteralPath $script -Value $commands -Encoding ascii
           & cmd.exe /d /c $script
           if ($LASTEXITCODE -ne 0) { throw 'CUDA build or native host tests failed' }
+      - name: Bind worker to source revision
+        shell: python
+        env:
+          PNGGPU_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          import hashlib, json, os
+          from pathlib import Path
+          directory = Path('build/cuda')
+          worker = directory / ('pnggpu_cuda_worker.exe' if os.name == 'nt' else 'pnggpu_cuda_worker')
+          (directory / 'SOURCE_COMMIT.txt').write_text(os.environ['PNGGPU_SOURCE_SHA'] + '\n')
+          (directory / 'worker-sha256.json').write_text(json.dumps({
+              'sourceCommit': os.environ['PNGGPU_SOURCE_SHA'],
+              'worker': worker.name,
+              'sha256': hashlib.sha256(worker.read_bytes()).hexdigest()
+          }, indent=2) + '\n')
       - name: Preserve source-bound worker for hardware qualification
         uses: actions/upload-artifact@v4
         with:
@@ -92,5 +107,7 @@ jobs:
           path: |
             build/cuda/pnggpu_cuda_worker
             build/cuda/pnggpu_cuda_worker.exe
+            build/cuda/SOURCE_COMMIT.txt
+            build/cuda/worker-sha256.json
             overlay/docs/CUDA_BACKEND.md
             .cuda-toolchain/licenses/cuda_cudart/

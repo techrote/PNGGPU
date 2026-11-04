@@ -36,7 +36,9 @@ one; WebGPU's 1–24 depth control is preserved separately.
 CUDA reports device identity, full local-bridge/initialization overhead and
 actual kernel timings. The existing CPU/ANSI comparison, hardmode benchmark,
 ZIP exports and folder-batch paths work with the selected backend. **CUDA
-hardware parity and speedup remain unqualified until run on a real target GPU.**
+hardware qualification remains incomplete.** Physical TITAN RTX tests pass the
+five modest hardmode cases but expose CPU/CUDA/WebGPU parity failures at
+512×512; PR #2 remains draft. See the CUDA guide for the acceptance runner.
 Host tests and compiler CI are not physical GPU acceptance.
 
 See the [CUDA setup, usage and qualification guide](overlay/docs/CUDA_BACKEND.md)

@@ -120,6 +120,7 @@ const fitterCache=new Map();
 const backendName=backend=>backend==='cuda'?'CUDA':'WebGPU';
 let selectedFile=null,corpus=null,running=false,stopping=false,preflightTimer=null,preflightEpoch=0;
 let currentWorkUnits=null,currentGlyphCount=0;
+let activeConversion=null;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const TILE_TARGETS_MIB=[4,8,16,32,64,128,256,512,1024];
 const BENCHMARK_SWEEP_MIB=[8,16,32,64,128,256];
@@ -323,6 +324,7 @@ function cpuGeometrySupported(settings){
   return settings.columns<=512&&settings.rows<=512&&settings.sampleW<=16&&settings.sampleH<=32;
 }
 async function compareImage(file,settings,{previews=true,approvalScope=null,returnAnsi=false,cpuEnabled=null}={}){
+  if(stopping)throw new DOMException('Conversion cancelled','AbortError');
   const now=()=>performance.now();
   const prepStart=now();
   const compareCpu=cpuEnabled??byId('compare-cpu').checked;
@@ -330,7 +332,10 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
     'CPU oracle is limited to 512×512 cells and 16×32 samples. Disable CPU comparison for GPU-only extended resolutions.');
   const config=makeConfig(settings),codes=PNG2ANSI.vocabularies()[config.vocabulary];
   const decodeStart=now(),bitmap=await createImageBitmap(file),decodeMs=now()-decodeStart;
+  const controller=new AbortController();activeConversion=controller;
+  const signal=controller.signal;
   try{
+    if(stopping)controller.abort();signal.throwIfAborted();
     const atlasStart=now();
     const atlasKey=`${codes.join(',')}|${config.canvas.cell_width}x${config.canvas.cell_height}|${config.canvas.sample_width}x${config.canvas.sample_height}|${config.canvas.font_size}`;
     const atlasCached=maskCache.has(atlasKey),masks=await masksFor(codes,config.canvas),atlasMs=now()-atlasStart;
@@ -367,7 +372,8 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       // The reference algorithm remains exactly the same, but executes in a
       // dedicated worker so the browser can repaint a real progress bar.
       // Worker startup and input clone belong to the CPU fit wall time.
-      const cpuResult=await runCpuReferenceInWorker({pixels,masks:masks.low,config,
+      signal.throwIfAborted();
+      const cpuResult=await runCpuReferenceInWorker({pixels,masks:masks.low,config,signal,
         palette:PNG2ANSI.PALETTE,onProgress:event=>updateProgress('cpu',event)});
       cpuCells=cpuResult.cells;cpuFitMs=cpuResult.wallMs;cpuComputeMs=cpuResult.computeMs;
       const encoded=now();cpuAnsi=PNG2ANSI.ansiBytes(masks,cpuCells,config);cpuAnsiMs=now()-encoded;
@@ -379,16 +385,18 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
     const runs=[];
     let cells=null,firstGpuCells=null;
     for(let i=0;i<settings.gpuRepeats;i++){
+      signal.throwIfAborted();
       status.textContent=`${file.name}: GPU run ${i+1}/${settings.gpuRepeats}…`;
       byId('progress-gpu').value=0;
       const t=now();
-      cells=await gpu.fit({pixels,sampleProvider,masks:masks.low,palette:PNG2ANSI.PALETTE,
+      cells=await gpu.fit({pixels,sampleProvider,signal,masks:masks.low,palette:PNG2ANSI.PALETTE,
         columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,sampleHeight:settings.sampleH,
         foregroundCandidates:settings.foreground,backgroundCandidates:settings.background,
         preferredTileMiB:settings.tileMiB,inFlightTiles:settings.inFlightTiles,
         captureGpuTimestamps:settings.captureGpuTimestamps,
         onProgress:event=>updateProgress('gpu',event,{runIndex:i+1,runCount:settings.gpuRepeats})});
       const runWallMs=now()-t;
+      signal.throwIfAborted();
       // Also finish the bar for a successful older backend that lacks tile callbacks.
       updateProgress('gpu',{completedCells:settings.columns*settings.rows,
         totalCells:settings.columns*settings.rows,elapsedMs:runWallMs,
@@ -396,7 +404,9 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
         {runIndex:i+1,runCount:settings.gpuRepeats});
       runs.push({wallMs:runWallMs,stages:cells.stats?.timing??null,
         tileCount:cells.stats?.tileCount??null,peakInFlightTiles:cells.stats?.peakInFlightTiles??null,
-        tileMeasurements:cells.stats?.tileMeasurements??[]});
+        tileMeasurements:cells.stats?.tileMeasurements??[],
+        repeatCellDiff:firstGpuCells?compareCells(firstGpuCells,cells):null,
+        repeatAnsiDiff:firstGpuCells?compareAnsi(PNG2ANSI.ansiBytes(masks,firstGpuCells,config),PNG2ANSI.ansiBytes(masks,cells,config)):null});
       if(i===0)firstGpuCells=cells;
     }
     cells=firstGpuCells;
@@ -432,6 +442,8 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       sharedCpuPreparation:{decodeMs,atlasMs,sampleMs,miscMs:Math.max(0,prepMs-decodeMs-atlasMs-sampleMs),
         totalMs:prepMs,atlasCached},
       cpuRender:{fitMs:cpuFitMs,computeMs:cpuComputeMs,workerOverheadMs:cpuFitMs===null?null:Math.max(0,cpuFitMs-cpuComputeMs),ansiMs:cpuAnsiMs,previewPngMs:cpuPreviewMs},
+      repeatability:{deterministic:runs.every(r=>!r.repeatCellDiff||
+        (r.repeatCellDiff.changedCells===0&&r.repeatAnsiDiff.mismatches===0)),comparedRuns:runs.length-1},
       gpuRender:{fitMs:gpuFitMs,ansiMs:gpuAnsiMs,previewPngMs:gpuPreviewMs,
         pipelineInitMs:gpuInitMs,stageTimings:cells.stats.timing,
         repeatRuns:runs.map(r=>r.wallMs),repeatDetails:runs},
@@ -443,9 +455,10 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       gpuTileCells:cells.stats?.tileCells??null,gpuTiles:cells.stats?.tileCount??null,
       gpuProjectionBytes:cells.stats?.projectionBufferBytes??null,
       gpuStats:cells.stats??{},...(returnAnsi?{ansiBytes:gpuAnsi}:{})};
-  }finally{bitmap.close();}
+  }finally{if(activeConversion===controller)activeConversion=null;bitmap.close();}
 }
 function metricText(result){
+  if(result.repeatability?.deterministic===false)return 'FAILED: repeated GPU runs produced different cell records or ANSI bytes. Save the report for diagnosis.';
   const parity=result.mismatches===null?'CPU comparison disabled':result.mismatches===0?'EXACT ANSI PARITY':
     `${format(result.mismatches)} byte mismatches; first offset ${result.firstMismatch}`;
   const t=result.timings;
@@ -649,6 +662,7 @@ function presentMetrics(result){
 }
 async function run(){
   if(running)return;
+  stopping=false;
   setBusy(true);clearError();byId('metrics').hidden=true;byId('job-progress').hidden=true;
   try{
     const file=selectedFile||byId('image').files[0];
@@ -758,9 +772,9 @@ async function runSuite(){
       profile:settings,gpuWorkUnitCeiling:GPU_MAX_WORK_UNITS,compareCpu:byId('compare-cpu').checked,
       stopped:stopping,results};
     publishReport(report);
-    const exact=results.filter(x=>x.mismatches===0).length,failed=results.filter(x=>x.error||x.mismatches>0).length;
+    const exact=results.filter(x=>x.mismatches===0&&x.repeatability?.deterministic!==false).length,failed=results.filter(x=>x.error||x.mismatches>0||x.repeatability?.deterministic===false).length;
     status.textContent=`Hardmode suite: ${results.length}/${data.images.length} completed · ${exact} exact parity · ${failed} failed/mismatched\n`+
-      results.map(x=>x.error?`${x.image}: ERROR ${x.error}`:`${x.image}: CPU prep ${milliseconds(x.timings.cpuPrepMs)} · CPU fit ${milliseconds(x.timings.cpuFitMs)} · GPU prep ${milliseconds(x.timings.gpuPrepMs)} · GPU fit ${milliseconds(x.timings.gpuFitMs)} · `+
+      results.map(x=>x.error?`${x.image}: ERROR ${x.error}`:x.repeatability?.deterministic===false?`${x.image}: FAILED repeat determinism`:`${x.image}: CPU prep ${milliseconds(x.timings.cpuPrepMs)} · CPU fit ${milliseconds(x.timings.cpuFitMs)} · GPU prep ${milliseconds(x.timings.gpuPrepMs)} · GPU fit ${milliseconds(x.timings.gpuFitMs)} · `+
         (x.mismatches===null?'GPU only':x.mismatches===0?'EXACT ANSI PARITY':`${x.mismatches} byte mismatches`)).join('\n')+
       '\nSave hardmode report (.JSON) for reproducible benchmark records.';
   }catch(error){showError(error);}finally{setBusy(false);stopping=false;}
@@ -850,7 +864,7 @@ function zipSummaryCsv(jobs){
       gpu_stream_sample_ms:g.timing?.sampleProviderMs,uploaded_bytes:g.uploadedBytes,readback_bytes:g.readbackBytes,
       estimated_vram_bytes:r.memoryEstimate?.estimatedWorkingSetBytes,ansi_bytes:r.gpuAnsiBytes,
       ansi_mismatches:r.mismatches,glyph_mismatches:r.cellDiff?.glyph,
-      status:job.error?'ERROR':'OK',error:job.error??''};
+      status:job.error?'ERROR':r.repeatability?.deterministic===false?'NONDETERMINISTIC':r.mismatches>0?'MISMATCH':'OK',error:job.error??''};
     rows.push(columns.map(key=>obj[key]??''));
   }
   return csvRows(rows);
@@ -859,7 +873,7 @@ function zipRepeatsCsv(jobs){
   const fields=['backend','image','tile_target_mib','run','wall_ms','native_init_ms','bridge_round_trip_ms','cuda_upload_ms','cuda_readback_ms','atlas_pack_ms','buffer_create_ms',
     'source_sample_ms','tile_pack_ms','queue_write_buffer_ms','encode_submit_ms','readback_wait_ms',
     'cell_decode_ms','pipeline_slot_wait_ms','first_tile_completed_ms',
-    'gpu_projection_shader_ms','gpu_selection_shader_ms','tile_count','peak_in_flight'];
+    'gpu_projection_shader_ms','gpu_selection_shader_ms','tile_count','peak_in_flight','repeat_changed_cells','repeat_ansi_mismatches'];
   const rows=[fields];
   for(const job of jobs){
     for(const [i,run] of (job.result?.gpuRender?.repeatDetails??[]).entries()){
@@ -872,7 +886,8 @@ function zipRepeatsCsv(jobs){
         cell_decode_ms:t.decodeCellsMs,pipeline_slot_wait_ms:t.slotAvailabilityWaitMs,
         first_tile_completed_ms:t.firstTileCompletedMs,
         gpu_projection_shader_ms:t.gpuProjectionMs,gpu_selection_shader_ms:t.gpuSelectionMs,
-        tile_count:run.tileCount,peak_in_flight:run.peakInFlightTiles};
+        tile_count:run.tileCount,peak_in_flight:run.peakInFlightTiles,
+        repeat_changed_cells:run.repeatCellDiff?.changedCells,repeat_ansi_mismatches:run.repeatAnsiDiff?.mismatches};
       rows.push(fields.map(k=>values[k]??''));
     }
   }
@@ -944,7 +959,7 @@ async function runZipBenchmarks(){
       summary:jobs.map(j=>({image:j.image,tileTargetMiB:j.tileTargetMiB,
         gpuFitMs:j.result?.timings.gpuFitMs??null,gpuMedianMs:j.result?.timings.gpuMedianMs??null,
         requestedInFlight:j.result?.gpuStats?.requestedInFlightTiles??null,
-        effectiveInFlight:j.result?.gpuStats?.inFlightTiles??null,error:j.error??null}))};
+        effectiveInFlight:j.result?.gpuStats?.inFlightTiles??null,repeatability:j.result?.repeatability??null,error:j.error??null}))};
     const entries=[
       {name:'README.txt',content:`PNGGPU ${backendName(settings.backend)} benchmark ZIP\nGPU fitting stage, host transfers and shader times are separate.\n`+
         'GPU shader timestamps are optional. CPU oracle is disabled by default and may be very slow.\n'+
@@ -968,7 +983,7 @@ async function runZipBenchmarks(){
     a.download=`png2ansi-gpu007-${byId('zip-scope').value}-${date}.zip`;
     a.hidden=false;a.click();
     // Keep the manual link visible if the browser refuses an async-triggered download.
-    status.textContent=`ZIP benchmark ${jobs.length}/${total} cases (${jobs.filter(j=>!!j.error).length} errors) · `+
+    status.textContent=`ZIP benchmark ${jobs.length}/${total} cases (${jobs.filter(j=>!!j.error||j.result?.repeatability?.deterministic===false).length} errors/repeat failures) · `+
       `archive ${format(archive.size)} bytes · ${stopping?'partial/stopped':'complete'}. `+
       `Use "Save benchmark ZIP" if the download did not begin automatically.`;
     publishReport(manifest);
@@ -1066,7 +1081,11 @@ byId('batch-run').addEventListener('click',runFolderBatch);
 byId('suite-zip').addEventListener('click',runZipBenchmarks);
 
 byId('suite').addEventListener('click',runSuite);
-byId('stop').addEventListener('click',()=>{stopping=true;status.textContent='Stop requested; finishing the active benchmark then archiving completed results…';});
+function stopConversion(){
+  stopping=true;activeConversion?.abort(new DOMException('Conversion cancelled','AbortError'));
+  status.textContent='Stop requested; cancelling the active conversion and archiving completed results…';
+}
+byId('stop').addEventListener('click',stopConversion);
 byId('load-hardmode').addEventListener('click',loadHardmode);
 byId('apply-preset').addEventListener('click',applyPreset);
 byId('image').addEventListener('change',event=>{

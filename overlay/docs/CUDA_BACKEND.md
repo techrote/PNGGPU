@@ -172,6 +172,50 @@ backend's JSON/ZIP report. No CUDA speedup claim is made without physical result
 
 ## Physical qualification
 
+Physical testing on a TITAN RTX / driver 581.80 has now exercised the baseline
+worker. All five 80×40 / 4×8 hardmode cases and a 17×9 partial-tile case matched
+CPU, CUDA and WebGPU exactly. **This is not blanket qualification:** 512×512
+tests exposed cell and ANSI mismatches at both 1×1 and 4×8 sampling. Keep PR #2
+in draft pending parity recovery. The arithmetic/search/precision contract has
+not been changed to hide those failures.
+
+The reproducible acceptance runner uses a real Chrome browser, the installed
+reference application and a real native worker. It refuses stale installed
+overlay files, checks the hardmode hashes, records worker/source identities,
+compares every cell component and ANSI byte, changes tile sizes, checks repeats,
+and exercises cancellation followed by another conversion. Exit code 2 is an
+acceptance failure and still preserves the report. A single-cell fixture with
+the complete mask atlas is saved for each captured discrepancy.
+
+```powershell
+.\setup.bat
+npm.cmd install --prefix build/qualification-tools playwright@1.56.1 --no-audit --no-fund
+node scripts/qualify_cuda.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification-tools/node_modules/playwright/index.mjs build/qualification/turing.json "C:\Program Files\Google\Chrome\Application\chrome.exe" --large
+node scripts/analyze_cuda_fixture.mjs build/qualification/turing.json build/qualification/arithmetic.json
+```
+
+Keep `SOURCE_COMMIT.txt` beside the matching CI worker. For older artifacts,
+append `--worker-commit` followed by the artifact's exact 40-character source
+SHA. The runner rejects native source differences against that revision. Worker
+hashes and source revision assertions are evidence labels, not signed binary
+attestations. CI artifacts now also contain `worker-sha256.json`. The optional
+`--large` cases are 512×512 with 1×1 and 4×8 samples; they take longer and can
+fail parity. No fallback worker or simulated GPU is used.
+
+Reports record full per-tile measurements. Copies of upload/readback times are
+host-clock intervals; device `allocatedBytes` is the declared buffer sum, not
+measured peak total VRAM. The NVIDIA snapshot records clocks, power and VRAM at
+the start; it is not an integrated energy measurement. Every CUDA fit creates
+a new process/context; a second run is a cache-repeat observation, not a warm
+persistent CUDA context. Pipeline depth remains one: observed startup/bridge
+costs dominate small conversions and copy time alone does not justify streams.
+
+The workbench Stop control now aborts active CUDA and CPU fitting, then retains
+completed suite/batch records. WebGPU work already submitted is allowed to
+finish before its cancelled result is discarded. Repeated workbench fits compare
+cell tuples and ANSI bytes against the first run; nondeterminism is a failure
+in detailed reports, suite counts and ZIP summary/repeat CSVs.
+
 Run these from the repository root on the Turing machine:
 
 ```powershell
