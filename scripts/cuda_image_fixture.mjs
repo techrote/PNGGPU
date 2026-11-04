@@ -3,6 +3,12 @@ import {createHash} from 'node:crypto';
 import {resolve,relative,isAbsolute} from 'node:path';
 
 export const sha256=bytes=>createHash('sha256').update(bytes).digest('hex');
+export function decodeRgbaTransport(base64,expectedBytes) {
+  if(typeof base64!=='string'||!Number.isSafeInteger(expectedBytes)||expectedBytes<1||expectedBytes>51200*32*4)throw new Error('Invalid packed RGBA transport');
+  const bytes=Buffer.from(base64,'base64');
+  if(bytes.length!==expectedBytes||bytes.toString('base64')!==base64)throw new Error('Packed RGBA length/encoding mismatch');
+  return bytes;
+}
 export function imageGeometry(columns,rows,sampleWidth=4,sampleHeight=8,maxPreparationCells=64) {
   if(!Number.isSafeInteger(maxPreparationCells)||maxPreparationCells<1||maxPreparationCells>51200)throw new Error('Preparation cell limit must be 1–51200');
   for(const [name,value,max] of [['columns',columns,320],['rows',rows,160],['sampleWidth',sampleWidth,8],['sampleHeight',sampleHeight,16]])

@@ -4,7 +4,7 @@ import {resolve,dirname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {createWorkbenchServer} from './serve.mjs';
-import {parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,sha256} from './cuda_image_fixture.mjs';
+import {parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,sha256,decodeRgbaTransport} from './cuda_image_fixture.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
 
@@ -56,13 +56,16 @@ try {
     try {
       const canvas=new OffscreenCanvas(columns*sampleW,rows*sampleH),ctx=canvas.getContext('2d',{willReadFrequently:true});
       ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
-      return {pixels:Array.from(ctx.getImageData(0,0,canvas.width,canvas.height).data),masks:masks.low.map(m=>Array.from(m)),
+      const rgba=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+      const pixelsBase64=await new Promise(resolve=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.readAsDataURL(new Blob([rgba]));});
+      return {pixelsBase64,masks:masks.low.map(m=>Array.from(m)),
         palette:PNG2ANSI.PALETTE,codes:masks.codes,config,sourceWidth:bitmap.width,sourceHeight:bitmap.height,preparationMs:performance.now()-start};
     }finally{bitmap.close();}
   },{image,geometry}),10000,()=>browser.close());
   const fixture={name:`image-${image.slice(0,-4)}-${geometry.columns}x${geometry.rows}-${geometry.sampleWidth}x${geometry.sampleHeight}`,
-    ...geometry,pixels:prepared.pixels,masks:prepared.masks,palette:prepared.palette,codes:prepared.codes,foregroundCandidates:6,backgroundCandidates:5};
-  Object.assign(provenance,{preparationMs:prepared.preparationMs,config:prepared.config,
+    ...geometry,pixels:Array.from(decodeRgbaTransport(prepared.pixelsBase64,geometry.columns*geometry.rows*geometry.sampleWidth*geometry.sampleHeight*4)),
+    masks:prepared.masks,palette:prepared.palette,codes:prepared.codes,foregroundCandidates:6,backgroundCandidates:5};
+  Object.assign(provenance,{transport:'packed-rgba8-base64',preparationMs:prepared.preparationMs,config:prepared.config,
     image:{...item,sourceWidth:prepared.sourceWidth,sourceHeight:prepared.sourceHeight},driverAfter:driverEventsSince(started)});
   document={schema:'pnggpu-real-image-fixture-v1',fixture,fixtureSha256:sha256(JSON.stringify(fixture)),provenance};
   if(provenance.driverAfter.events.length)throw new Error('New GPU driver error; preparation stopped');

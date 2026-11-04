@@ -4,7 +4,7 @@ import {readFile,mkdtemp,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {imageGeometry,parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,loadImageFixture,sha256} from '../scripts/cuda_image_fixture.mjs';
+import {imageGeometry,parseImagePreparationArgs,imagePreparationHtml,validateImageFixture,loadImageFixture,sha256,decodeRgbaTransport} from '../scripts/cuda_image_fixture.mjs';
 import {parseFixtureArgs,planFixtures} from '../scripts/cuda_fixture_plan.mjs';
 const makeDocument=()=>{
   const fixture={name:'image-test-1x1-1x1',columns:1,rows:1,sampleWidth:1,sampleHeight:1,pixels:[1,2,3,255],
@@ -15,6 +15,13 @@ const makeDocument=()=>{
   return {schema:'pnggpu-real-image-fixture-v1',fixture,fixtureSha256:sha256(JSON.stringify(fixture)),
     provenance:{sourceSamplingMode:'full-reference-canvas',sourceFiles,sourceCommit:'a'.repeat(40),started:'2026-11-04T14:00:00.000Z',image:{file:'test.png',sha256:'a'.repeat(64)}}};
 };
+test('packed RGBA transfer preserves every byte at 320x160/4x8 and rejects truncation',()=>{
+  const bytes=Buffer.alloc(320*160*4*8*4);for(let i=0;i<bytes.length;i++)bytes[i]=(i*13)>>>0;
+  const encoded=bytes.toString('base64'),decoded=decodeRgbaTransport(encoded,bytes.length);
+  assert.equal(sha256(decoded),sha256(bytes));
+  assert.throws(()=>decodeRgbaTransport(encoded,bytes.length-1));
+  assert.throws(()=>decodeRgbaTransport(encoded+'!',bytes.length));
+});
 test('small real-image geometry rejects oversized, unsafe and non-integer requests',()=>{
   assert.deepEqual(imageGeometry(8,4),{columns:8,rows:4,sampleWidth:4,sampleHeight:8});
   for(const dims of [[8,9],[0,1],[1,1,9,8],[1,1,8,17],[1.5,1],[Number.MAX_SAFE_INTEGER,1]])assert.throws(()=>imageGeometry(...dims));
