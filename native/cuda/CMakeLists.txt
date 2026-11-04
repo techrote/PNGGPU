@@ -3,6 +3,7 @@ project(PNGGPUCUDA VERSION 1.0.0 LANGUAGES CXX)
 
 option(PNGGPU_ENABLE_CUDA "Build the optional CUDA worker (requires NVIDIA CUDA Toolkit)" OFF)
 option(PNGGPU_BUILD_FAULT_WORKER "Build separate hardware fault-injection qualification worker" OFF)
+option(PNGGPU_CUDA_PROFILE "Emit CUDA resource reports and source line information (Release optimizations retained)" OFF)
 include(CTest)
 
 add_library(pnggpu_cuda_common STATIC src/common.cpp)
@@ -41,6 +42,9 @@ if(PNGGPU_ENABLE_CUDA)
     $<$<COMPILE_LANGUAGE:CUDA>:--ftz=false>
     $<$<COMPILE_LANGUAGE:CUDA>:--prec-div=true>
     $<$<COMPILE_LANGUAGE:CUDA>:--prec-sqrt=true>)
+  if(PNGGPU_CUDA_PROFILE)
+    target_compile_options(pnggpu_cuda_worker PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--resource-usage> $<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>)
+  endif()
   if(MSVC)
     target_compile_options(pnggpu_cuda_worker PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/fp:strict>)
   else()

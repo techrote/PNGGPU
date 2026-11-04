@@ -120,6 +120,8 @@ std::string device_json(const DeviceInfo& info) {
   return out.str();
 }
 
+std::string kernel_resources_json(const DeviceInfo& info);
+
 std::string info_json(const DeviceInfo& info) {
   std::ostringstream out;
   out.imbue(std::locale::classic());
@@ -135,7 +137,8 @@ std::string info_json(const DeviceInfo& info) {
          "\"timingSources\":{\"gpuProjectionMs\":\"CUDA events, sum of sublaunches\","
          "\"gpuSelectionMs\":\"CUDA events, sum of sublaunches\","
          "\"uploadMs\":\"host steady clock, transfer plus stream synchronization\","
-         "\"readbackMs\":\"host steady clock, transfer plus stream synchronization\"}}";
+         "\"readbackMs\":\"host steady clock, transfer plus stream synchronization\"},\"kernelResources\":"
+      << kernel_resources_json(info) << "}";
   return out.str();
 }
 
@@ -193,6 +196,27 @@ __global__ void recover_select_kernel(const std::uint32_t* pixels,const Float4* 
   const auto cell=cell_offset+local;
   if(!verify && results[cell].reserved==0)return;
   results[cell]=precise::select(pixels+std::size_t(cell)*n,stats,palette,projections+std::size_t(local)*gc,n,gc,nf,nb);
+}
+
+template<class Kernel>
+std::string kernel_resource_json(Kernel kernel,const DeviceInfo& info) {
+  cudaFuncAttributes attrs{};int blocks=0;
+  cuda_check(cudaFuncGetAttributes(&attrs,kernel),"Kernel resource attributes");
+  cuda_check(cudaOccupancyMaxActiveBlocksPerMultiprocessor(&blocks,kernel,block_size,0),"Theoretical kernel occupancy");
+  std::ostringstream out;out.imbue(std::locale::classic());
+  out << "{\"registersPerThread\":" << attrs.numRegs << ",\"localBytesPerThread\":" << attrs.localSizeBytes
+      << ",\"staticSharedBytesPerBlock\":" << attrs.sharedSizeBytes << ",\"blockThreads\":" << block_size
+      << ",\"theoreticalActiveBlocksPerSM\":" << blocks << ",\"theoreticalActiveThreadsPerSM\":" << blocks*block_size
+      << ",\"deviceMaxThreadsPerSM\":" << info.properties.maxThreadsPerMultiProcessor
+      << ",\"binaryVersion\":" << attrs.binaryVersion << ",\"ptxVersion\":" << attrs.ptxVersion << "}";
+  return out.str();
+}
+
+std::string kernel_resources_json(const DeviceInfo& info) {
+  return "{\"source\":\"CUDA function attributes and theoretical occupancy API; not achieved hardware counters\","
+    "\"selectionShared\":"+kernel_resource_json(select_kernel,info)+
+    ",\"selectionFP64\":"+kernel_resource_json(recover_select_kernel,info)+
+    ",\"projectionShared\":"+kernel_resource_json(project_kernel,info)+"}";
 }
 
 struct TileOutput {

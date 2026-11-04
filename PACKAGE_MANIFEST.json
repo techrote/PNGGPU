@@ -78,8 +78,8 @@
       "bytes": 208
     },
     "native/cuda/CMakeLists.txt": {
-      "sha256": "eb5634b0a4ebb18772c7407da15abffce8256039d2beb39ffbf9891941d4e770",
-      "bytes": 3038
+      "sha256": "e031dccb4ad3936b784288872e3ed26802ba6c98bc79ed777d104975b951279b",
+      "bytes": 3334
     },
     "native/cuda/README.md": {
       "sha256": "031db49758e9a5177ba7298e9222c8560ef77056a2fcc7fc8d2f1f0f55ddf5fc",
@@ -106,8 +106,8 @@
       "bytes": 17026
     },
     "native/cuda/src/worker.cu": {
-      "sha256": "a3f173fe0ea29a5ff623666e6a0d3c36cad5ada349a0842a2fae14e76d34f50b",
-      "bytes": 31965
+      "sha256": "c567ffd1310ee0c6a0365651003ec752bd0417594fad7b7fa6422175bf2e8309",
+      "bytes": 33434
     },
     "native/cuda/tests/fixtures/cpu-parity.bin": {
       "sha256": "717f36620b75d899c103541fb58718002647b5434801128569602272a13bb0f8",
