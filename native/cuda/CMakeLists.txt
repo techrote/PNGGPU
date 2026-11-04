@@ -23,7 +23,7 @@ if(BUILD_TESTING)
   else()
     target_compile_options(pnggpu_cuda_host_tests PRIVATE -Wall -Wextra -Wpedantic -ffp-contract=off)
   endif()
-  add_test(NAME cuda_host_protocol_and_arithmetic COMMAND pnggpu_cuda_host_tests "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cpu-parity.bin")
+  add_test(NAME cuda_host_protocol_and_arithmetic COMMAND pnggpu_cuda_host_tests "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cpu-parity.bin" "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/fp32-seed.bin")
 endif()
 
 if(PNGGPU_ENABLE_CUDA)

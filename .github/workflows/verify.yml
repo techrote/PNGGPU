@@ -27,6 +27,8 @@ jobs:
         run: python scripts/package_manifest.py --check
       - name: Verify native regression fixtures against independent CPU
         run: node scripts/generate_cuda_regressions.mjs --check
+      - name: Verify frozen pre-optimization FP32 seed packets
+        run: node scripts/generate_cuda_fp32_seed_regressions.mjs --check
       - name: Verify benchmark image hashes
         shell: pwsh
         run: |

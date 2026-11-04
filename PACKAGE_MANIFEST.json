@@ -58,8 +58,8 @@
       "bytes": 370
     },
     ".github/workflows/verify.yml": {
-      "sha256": "ab93967b3966aa024f5eef82615d0e185924073ad25626144c8f89c9f179399c",
-      "bytes": 5332
+      "sha256": "663abcfe77e6b867cb657915566d030b70640be7da067c257d65b0605cb75fbb",
+      "bytes": 5469
     },
     ".gitignore": {
       "sha256": "b0ee05b6dd0bb4a0eb11169e9f0a79bc11593c337244e5d61575e37c81f7f0b3",
@@ -78,16 +78,16 @@
       "bytes": 208
     },
     "native/cuda/CMakeLists.txt": {
-      "sha256": "e031dccb4ad3936b784288872e3ed26802ba6c98bc79ed777d104975b951279b",
-      "bytes": 3334
+      "sha256": "58c320e63b4254a85e0bd38c1a2c53d8f56089cf97574928832971c9e1bde7ed",
+      "bytes": 3393
     },
     "native/cuda/README.md": {
       "sha256": "031db49758e9a5177ba7298e9222c8560ef77056a2fcc7fc8d2f1f0f55ddf5fc",
       "bytes": 16447
     },
     "native/cuda/include/pnggpu_algorithm.hpp": {
-      "sha256": "dc2bda45d3bfe8379b74ae4132953b67cb57a3ba2fe79d8c4b261bc1c955f0de",
-      "bytes": 6784
+      "sha256": "f22c8b554a3449e8148f82002c4d0114d15845416be9d31eb6cf3ae10a1dec73",
+      "bytes": 7201
     },
     "native/cuda/include/pnggpu_common.hpp": {
       "sha256": "e5ad3b10467b2a7961687b8c1053bd8ddf109105933df281c2fe4b06e2c9f19a",
@@ -113,9 +113,17 @@
       "sha256": "717f36620b75d899c103541fb58718002647b5434801128569602272a13bb0f8",
       "bytes": 36532
     },
+    "native/cuda/tests/fixtures/fp32-seed.bin": {
+      "sha256": "cf79fdfdd43e9e2982033d141c9a88514465a6b3bafb929ec79f1ef9feab20d6",
+      "bytes": 382128
+    },
+    "native/cuda/tests/fixtures/fp32-seed.json": {
+      "sha256": "c88fc46f6c554a3092d7b32cf3d4528b6de87b3d640e88a327d1e250fbedde6e",
+      "bytes": 159645
+    },
     "native/cuda/tests/host_tests.cpp": {
-      "sha256": "ccd2bb30148c8cff782a2490ca6a52cd0d4d6dd74fb69412122b78fe16260ce4",
-      "bytes": 14157
+      "sha256": "ddfeac9c7c71ceb7b3c68b35a78c82913ecbf475739accf05b0013fc1b0df20f",
+      "bytes": 15176
     },
     "overlay/GPU006_INSTALL.md": {
       "sha256": "c4d8b5b3fad99b4a6554716fc8d5c7ce52a48c1528986f88eb709360f2e3dcca",
@@ -1828,6 +1836,10 @@
     "scripts/fetch_cuda_toolchain.py": {
       "sha256": "c87f36f40703ae29dc0a1efda6c6baa83b53841ab7183a300aeb5327b4c4f618",
       "bytes": 4674
+    },
+    "scripts/generate_cuda_fp32_seed_regressions.mjs": {
+      "sha256": "982917b7d7f188e78f9c8e0b0f04c8c3d8def5f975c93a90d857ed9a565596e6",
+      "bytes": 1503
     },
     "scripts/generate_cuda_regressions.mjs": {
       "sha256": "12e25ad5d97602560acf67b2b0c44eadeb9d879ebde9cd93996e5973cb71244b",

@@ -68,7 +68,7 @@ PNGGPU_HD inline Result select(const std::uint32_t* pixels, const Float4* statis
   float shortlist_scores[32];
   std::uint32_t shortlist_size = 0;
   float best_seed_score = 3.402823466e+38f;
-  Vec3 seed_fg{0.0f, 0.0f, 0.0f}, seed_bg{0.0f, 0.0f, 0.0f};
+  std::uint32_t seed_glyph = glyph_count;
   for (std::uint32_t glyph = 0; glyph < glyph_count; ++glyph) {
     const Float4 projection = projections[std::size_t(cell)*glyph_count+glyph];
     const float score = projection.w;
@@ -86,12 +86,20 @@ PNGGPU_HD inline Result select(const std::uint32_t* pixels, const Float4* statis
     }
     if (score < best_seed_score) {
       best_seed_score = score;
-      const Float4 stats = statistics[glyph];
-      const Vec3 beta = divide(subtract(xyz(projection), multiply(totals, stats.x)),
-                               variance(stats.z));
-      seed_bg = clamp(subtract(divide(totals, float(samples)), multiply(beta, stats.x)));
-      seed_fg = clamp(add(seed_bg, beta));
+      seed_glyph = glyph;
     }
+  }
+  // Intermediate record minima never affect the shortlist or color search.
+  // Evaluate the final seed once, preserving its expression grouping, first
+  // strict winner and the original zero seed if no score beats the sentinel.
+  Vec3 seed_fg{0.0f, 0.0f, 0.0f}, seed_bg{0.0f, 0.0f, 0.0f};
+  if (seed_glyph < glyph_count) {
+    const Float4 stats = statistics[seed_glyph];
+    const Float4 projection = projections[std::size_t(cell)*glyph_count+seed_glyph];
+    const Vec3 beta = divide(subtract(xyz(projection), multiply(totals, stats.x)),
+                             variance(stats.z));
+    seed_bg = clamp(subtract(divide(totals, float(samples)), multiply(beta, stats.x)));
+    seed_fg = clamp(add(seed_bg, beta));
   }
   std::uint32_t fg_ids[16];
   float fg_scores[16];

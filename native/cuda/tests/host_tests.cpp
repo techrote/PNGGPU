@@ -250,6 +250,24 @@ int main(int argc,char** argv) {
       }
       require(fixtures==2,"Both historical parity defects are native regressions");
     }
+    if(argc>2) {
+      std::FILE* stream=nullptr;
+#ifdef _WIN32
+      if(fopen_s(&stream,argv[2],"rb")!=0)stream=nullptr;
+#else
+      stream=std::fopen(argv[2],"rb");
+#endif
+      File input(stream,std::fclose);require(bool(input),"Open frozen optional FP32 seed regressions");
+      std::vector<std::uint8_t> init,tile,expected;unsigned fixtures=0;
+      while(read_frame(input.get(),init)) {
+        require(read_frame(input.get(),tile)&&read_frame(input.get(),expected),"Complete frozen FP32 frames");
+        const auto atlas=parse_init(init);std::uint32_t count=0;const auto pixels=parse_tile(tile,atlas,count);
+        require(expected.size()==16&&count==1,"Frozen FP32 fixture geometry");
+        const Result golden{read_u32(expected,0),read_u32(expected,4),read_u32(expected,8),read_u32(expected,12)};
+        require(equal(reference_fit(atlas,pixels,count)[0],golden),"Optional FP32 retains pre-optimization tuple");++fixtures;
+      }
+      require(fixtures==12,"All frozen seed regressions checked");
+    }
     for(const auto n:{1u,2u,32u,64u,512u,2048u}) {
       auto atlas=make_fixture(40,1,n<=64?n:64,17);
       if(n>64)atlas=make_fixture(40,n/64,64,17);
