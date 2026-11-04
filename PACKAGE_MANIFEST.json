@@ -505,6 +505,10 @@
       "sha256": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
       "bytes": 3882
     },
+    "scripts/benchmark_cuda_precisions.mjs": {
+      "sha256": "a91a057fd528104438e862d9d1dec831e026ab20b5f2ab921c9247afec467725",
+      "bytes": 4164
+    },
     "scripts/build-cuda.ps1": {
       "sha256": "3d52f85345c3732a6fda9116c90517aa21eb4e8b997fb0bcc2d84e4f089f2a18",
       "bytes": 1564
@@ -566,8 +570,8 @@
       "bytes": 6581
     },
     "scripts/replay_cuda_fixtures.mjs": {
-      "sha256": "4858f6f200c7c5e39793f6f1aa6e059d4cc8bc98806fa4b7b53ca6c04b0a093c",
-      "bytes": 10134
+      "sha256": "79c16e2522b77e03d7675dae381a71369d1cf487189c1056a5304a3064c05dbb",
+      "bytes": 10184
     },
     "scripts/serve.mjs": {
       "sha256": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",

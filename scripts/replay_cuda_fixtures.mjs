@@ -88,7 +88,7 @@ try {
     const tuple=r=>Array.from(r.chosen,(g,i)=>[g,r.fg[i],r.bg[i]]);
     for(const backend of options.webgpu?['cuda','webgpu']:['cuda']) {
       const start=performance.now();
-      const actual=backend==='cuda'?await fitter.fit({...data,preferredTileCells:tileCells}):await browserWork(page.evaluate(async ({data,tileCells})=>{
+      const actual=backend==='cuda'?await withTimeout(fitter.fit({...data,preferredTileCells:tileCells}),options.timeoutMs,()=>fitter.close()):await browserWork(page.evaluate(async ({data,tileCells})=>{
         const {PhotographicWebGpuFitter}=await import('/src/gpu/photographic.js');
         const gpu=await PhotographicWebGpuFitter.create(await (await fetch('/src/gpu/photographic.wgsl')).text());
         try {
