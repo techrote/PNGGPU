@@ -118,7 +118,9 @@ skipped; `qualificationAccepted:false` remains. FP32/FP64 differences in the
 cropped data range from 96–687 tuples/frame at 160x45 (120 frames) and
 1,098–5,560 at 320x90 (30 frames); counts are not perceptual scores.
 
-Preparation source is `4427a4a` (full source commit in its receipts); matching
+Preparation source is `4427a4afc14d4645485f4ad5fa15c40a18bee5d9` for the
+160x45 batch and `fbf1ee09976a368d6eab9338280f1ccd4c4eab98` for the 320x90
+batch. Preparation files are unchanged between those commits. Matching
 source is `8d6edecd942e8865c7998ee447b888540e411144`.
 [Its CI passed all three jobs](https://github.com/techrote/PNGGPU/actions/runs/41876774371).
 Native sources and the adapter
