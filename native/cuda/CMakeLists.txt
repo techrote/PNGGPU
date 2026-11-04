@@ -6,8 +6,8 @@ option(PNGGPU_BUILD_FAULT_WORKER "Build separate hardware fault-injection qualif
 option(PNGGPU_CUDA_PROFILE "Emit CUDA resource reports and source line information (Release optimizations retained)" OFF)
 option(PNGGPU_CUPTI_ACTIVITY "Build optional process-local CUPTI activity tracing (requires CUPTI_ROOT)" OFF)
 option(PNGGPU_COLOR_MAJOR_FP32 "Use original direct FP32 traversal (OFF experiments with glyph-major)" ON)
-option(PNGGPU_SAMPLE_MAJOR_MASKS "Transpose device glyph masks for contiguous projection reads" OFF)
-option(PNGGPU_INTEGER_PROJECTION_SUMS "Use exact uint32 RGB totals in binary64 projection" OFF)
+option(PNGGPU_SAMPLE_MAJOR_MASKS "Transpose device glyph masks for contiguous projection reads" ON)
+option(PNGGPU_INTEGER_PROJECTION_SUMS "Use exact uint32 RGB totals in binary64 projection" ON)
 include(CTest)
 
 add_library(pnggpu_cuda_common STATIC src/common.cpp)

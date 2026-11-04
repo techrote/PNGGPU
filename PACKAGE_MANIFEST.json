@@ -78,8 +78,8 @@
       "bytes": 208
     },
     "native/cuda/CMakeLists.txt": {
-      "sha256": "db9c05adab92ecde376ff7fd609f966404648ef80cac1f0a61144b02b3f99c93",
-      "bytes": 4823
+      "sha256": "77eb4f4d8fd2fd6818be64be6374e0e69b7f18427016409db95a29afc175abbb",
+      "bytes": 4821
     },
     "native/cuda/README.md": {
       "sha256": "ecaf3fe355758e252a3c704b20a6d2765999da1fed4f183c293f2fd2e9cf4b15",
