@@ -267,6 +267,10 @@ function decodeTile(bytes, count, glyphCount, chosen, fg, bg, tileStart, precisi
   for (const key of ['gpuProjectionMs', 'gpuSelectionMs', 'uploadMs', 'readbackMs']) {
     finiteTime(metadata.timing?.[key], key);
   }
+  // Older protocol-v1 workers may omit this optional host-clock interval.
+  // Keep absence distinct from a measured zero; reject malformed measurements.
+  metadata.timing.nativeTotalMs = metadata.timing.nativeTotalMs === undefined ? null :
+    finiteTime(metadata.timing.nativeTotalMs, 'nativeTotalMs');
   integer(metadata.allocatedBytes, 'CUDA allocated bytes', 1, Number.MAX_SAFE_INTEGER);
   integer(metadata.recoveredCells,'CUDA recovered cells',0,count);
   integer(metadata.certifiedCells,'CUDA certified cells',0,count);
@@ -443,7 +447,7 @@ export class PhotographicCudaFitter {
       atlasPackMs:0, bufferCreateMs:0, tilePackMs:0, sampleProviderMs:0, decodeCellsMs:0,
       writeBufferMs:null, encodeSubmitMs:null, readbackWaitMs:null, timestampsReadMs:0,
       slotAvailabilityWaitMs:0, firstTileCompletedMs:null, wallTotalMs:0,
-      nativeInitMs:0, atlasUploadMs:null, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
+      nativeInitMs:0, atlasUploadMs:null, nativeTotalMs:0, bridgeRoundTripMs:0, uploadMs:0, readbackMs:0,
       gpuProjectionMs:0, gpuSelectionMs:0, gpuGuardMs:0,gpuRecoveryProjectionMs:0,gpuRecoverySelectionMs:0,
       gpuDirectProjectionMs:0,gpuDirectSelectionMs:0,
       maxProjectionLaunchMs:0,maxSelectionLaunchMs:0,cleanupMs:0
@@ -526,6 +530,9 @@ export class PhotographicCudaFitter {
         const native = decodeTile(response, tileCount, glyphCount, chosen, fg, bg, tileStart,this.precision);
         tile.decodeMs = clock() - at; timing.decodeCellsMs += tile.decodeMs;
         tile.projectionMs = native.timing.gpuProjectionMs; tile.selectionMs = native.timing.gpuSelectionMs;
+        tile.nativeTotalMs = native.timing.nativeTotalMs;
+        timing.nativeTotalMs = timing.nativeTotalMs === null || tile.nativeTotalMs === null ? null :
+          timing.nativeTotalMs + tile.nativeTotalMs;
         tile.uploadMs = native.timing.uploadMs; tile.readbackMs = native.timing.readbackMs;
         tile.recoveredCells=native.recoveredCells;tile.certifiedCells=native.certifiedCells;
         tile.directCells=native.directCells;
@@ -568,7 +575,7 @@ export class PhotographicCudaFitter {
         timestampReason:null, timestampSource:'CUDA events; sums of bounded native kernel launches',
         sampleComparisons:cells * glyphCount * samples * 3, glyphCandidates:cells * glyphCount,
         colourCandidates:cells * Math.min(32, glyphCount) * data.foregroundCandidates * data.backgroundCandidates,
-        timingNotes:frameState ? 'Frame wall includes packing, HTTP, CUDA work and decoding. Frame 0 includes initialization/atlas upload; warm frames reuse the same native worker/context/buffers. Sequence cleanup is separate; depth one with caller backpressure.' : 'Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time.'
+        timingNotes:(frameState ? 'Frame wall includes packing, HTTP, CUDA work and decoding. Frame 0 includes initialization/atlas upload; warm frames reuse the same native worker/context/buffers. Sequence cleanup is separate; depth one with caller backpressure.' : 'Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time.') + ' nativeTotalMs sums worker fit intervals (GPU, transfers, launch/synchronization and bookkeeping), excluding INIT, packet parsing, pre-timer result allocation and response serialization/pipe writes; null if unavailable on any tile.'
       }};
     } catch (error) {
       primaryError = error;

@@ -122,6 +122,43 @@ test('CUDA capability lookup is optional and reports unavailable services withou
   assert.equal(bridge.inits.length, 0, 'capabilities do not allocate a render session');
 });
 
+test('native fit host intervals sum partial tiles and reset on warm refill',async()=>{
+  let serial=0;
+  const bridge=fakeBridge({onTile:({metadata,values})=>{
+    metadata.timing.nativeTotalMs=++serial;return new Response(responseFrame(metadata,values));
+  }});
+  const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl}),frames=fitter.createFrameSession(sample());
+  const first=await frames.fitFrame(sample().pixels),second=await frames.fitFrame(sample().pixels);
+  assert.deepEqual(first.stats.tileMeasurements.map(t=>t.cells),[3,3,3,1]);
+  assert.deepEqual(first.stats.tileMeasurements.map(t=>t.nativeTotalMs),[1,2,3,4]);
+  assert.equal(first.stats.timing.nativeTotalMs,10);assert.equal(second.stats.timing.nativeTotalMs,26);
+  assert.equal(second.stats.timing.nativeInitMs,0);await frames.close();
+});
+
+test('native fit timing distinguishes missing, partial and measured zero intervals',async()=>{
+  for(const mode of ['missing','partial','zero']){
+    let tile=0;const bridge=fakeBridge({onTile:({metadata,values})=>{
+      if(mode==='zero')metadata.timing.nativeTotalMs=0;
+      if(mode==='partial'&&++tile===2)metadata.timing.nativeTotalMs=3;
+      return new Response(responseFrame(metadata,values));
+    }});
+    const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl}),r=await fitter.fit(sample());
+    assert.equal(r.stats.timing.nativeTotalMs,mode==='zero'?0:null);
+    if(mode==='partial')assert.deepEqual(r.stats.tileMeasurements.map(t=>t.nativeTotalMs),[null,3,null,null]);
+    await fitter.close();
+  }
+});
+
+test('invalid optional native fit measurements fail and release the session',async()=>{
+  for(const invalid of [-1,null,'3',NaN,Infinity]){
+    const bridge=fakeBridge({onTile:({metadata,values})=>{
+      metadata.timing.nativeTotalMs=invalid;return new Response(responseFrame(metadata,values));
+    }});
+    const fitter=await PhotographicCudaFitter.create({fetchImpl:bridge.fetchImpl});
+    await assert.rejects(fitter.fit(sample()),/nativeTotalMs/);assert.equal(bridge.deletions.length,1);await fitter.close();
+  }
+});
+
 test('direct binary64 requires explicit selection and preserves honest counts/readbacks/timings',async()=>{
   const info={...nativeInfo(),precision:'binary64-direct'};
   assert.throws(()=>new PhotographicCudaFitter(info),/explicitly requested precision/);
