@@ -191,11 +191,20 @@ std::vector<std::uint32_t> parse_raster_tile(const std::vector<std::uint8_t>& pa
   std::size_t source=20;std::uint32_t consumed=0;
   while(consumed<count){
     const auto span=std::min(count-consumed,columns-(start+consumed)%columns);
-    for(std::uint32_t sy=0;sy<sh;++sy){
-      for(std::uint32_t cell=0;cell<span;++cell)for(std::uint32_t sx=0;sx<sw;++sx)
-        pixels[std::size_t(consumed+cell)*atlas.layout.samples+sy*sw+sx]=read_u32(payload,source+std::size_t(cell*sw+sx)*4)&0x00ffffffu;
-      source+=std::size_t(span)*sw*4;
+    const auto block=std::uint32_t(std::max<std::size_t>(1,std::min<std::size_t>(32,4096/(atlas.layout.samples*4))));
+    const auto row_bytes=std::size_t(span)*sw*4;
+    // The complete extent/byte count was checked above. Small cell blocks keep
+    // both source row slices and destination cell rows local; repeated generic
+    // per-word range checks are unnecessary. Byte loads remain endian-neutral.
+    for(std::uint32_t first=0;first<span;first+=block)for(std::uint32_t sy=0;sy<sh;++sy){
+      const auto* row=payload.data()+source+sy*row_bytes;
+      for(std::uint32_t cell=first;cell<std::min(span,first+block);++cell){
+        const auto* p=row+std::size_t(cell)*sw*4;
+        auto* out=pixels.data()+std::size_t(consumed+cell)*atlas.layout.samples+sy*sw;
+        for(std::uint32_t sx=0;sx<sw;++sx,p+=4)out[sx]=std::uint32_t(p[0])|(std::uint32_t(p[1])<<8)|(std::uint32_t(p[2])<<16);
+      }
     }
+    source+=row_bytes*sh;
     consumed+=span;
   }
   return pixels;
