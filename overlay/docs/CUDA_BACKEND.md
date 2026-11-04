@@ -190,7 +190,7 @@ cells and deterministic fixtures against the independent JS CPU, with exact
 cell and ANSI comparisons and tile sizes 1, 3 and 64:
 
 ```powershell
-node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/recovery-fixtures.json
+node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/recovery-fixtures.json --suite --tiles 1,3,64 --max-runs 81 --max-cells 945 --max-work 10000000000
 node scripts/generate_cuda_regressions.mjs --check
 ```
 
@@ -211,12 +211,53 @@ include both guard inspection and recovered results, whereas HTTP response
 bytes contain only the final tuples. Launch maxima are measured event intervals,
 not a watchdog guarantee.
 
-Physical testing on a TITAN RTX / driver 581.80 has now exercised the baseline
-worker. All five 80×40 / 4×8 hardmode cases and a 17×9 partial-tile case matched
-CPU, CUDA and WebGPU exactly. **This is not blanket qualification:** 512×512
-tests exposed cell and ANSI mismatches at both 1×1 and 4×8 sampling. Keep PR #2
-in draft pending parity recovery. The arithmetic/search/precision contract has
-not been changed to hide those failures.
+TITAN RTX recovery results and the later failed desktop-stability experiment
+are separate evidence. See `qualification/RECOVERY.md` and
+`qualification/WDDM_RESILIENCE.md` in the repository. Keep PR #2 in draft.
+
+### Bounded first run on an interactive display GPU
+
+Read `qualification/GTX1650SUPER_HANDOFF.md` and `qualification/WDDM_RESILIENCE.md`
+first. The full browser runner below executes a native self-test, repeated image
+fits and cancellation/recovery work; it is not a smoke mode. Do not run it, the
+complete fixture suite, fault injection, pressure or sustained stress as an
+initial test on the GTX display PC.
+
+The fixture runner now requires exact case names (or explicit `--suite`) and
+preflights aggregate limits before opening a worker. Preserve the normal CI
+worker with `SOURCE_COMMIT.txt`, `worker-sha256.json` and licenses. It rejects a
+changed binary or native sources that differ from the worker's recorded commit.
+
+```powershell
+node scripts/replay_cuda_fixtures.mjs --list
+node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/one-cell.json --case historical-4x8-cell-105420 --repeats 1 --tiles 1 --max-runs 1 --max-cells 1 --max-work 100000 --timeout-ms 10000
+```
+
+Each tile choice and repeat is a separate fit. Defaults permit one conversion
+of one cell; missing case names, unknown names and over-budget plans fail before
+CUDA discovery. `--max-cells` and `--max-runs` include all repeats, tile choices
+and backends. `--max-work` bounds conservative logical projection, shortlist and
+candidate visits including full binary64 recovery, not FLOPs or elapsed time.
+Every CUDA tuple and ANSI byte is compared directly with the independent JS CPU.
+Any CUDA mismatch, request stall or new Windows NVIDIA/Display warning/error
+stops later fits. System-log query failure also stops the run. Windows checks
+use the built-in Windows PowerShell Diagnostics module; no registry writes.
+
+After that passes without observed stalls or new driver errors, optionally add
+`--webgpu build/qualification-tools/node_modules/playwright/index.mjs` with
+`--max-runs 2 --max-cells 2 --max-work 200000`. Install Playwright locally first;
+the runner uses installed Chrome. WebGPU receives the identical saved samples
+and atlas. Its baseline differences remain visible separately. The timeout
+closes the browser on stalled work; it does not guarantee driver responsiveness.
+Reports retain `qualificationAccepted:false`; `cudaScopedParityPassed` describes
+only the selected CUDA comparisons and carries no full lifecycle/stability claim.
+
+Native admission still reserves 2 GiB against actual free memory. A rejection
+on a 4 GiB display card is legitimate. No synthetic capacity declaration is
+needed by this direct fitter runner; it records native total/free bytes. The UI's
+VRAM-minus-4-GiB warning policy remains distinct and unchanged.
+
+### Complete suite on a suitably isolated qualification system
 
 The reproducible acceptance runner uses a real Chrome browser, the installed
 reference application and a real native worker. It refuses stale installed

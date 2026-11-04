@@ -16,7 +16,7 @@ call npm test
 set "RESULT=%ERRORLEVEL%"
 if not "%RESULT%"=="0" goto finished
 cd /d "%~dp0"
-node --test tests/cuda_bridge.test.mjs
+node --test tests/cuda_bridge.test.mjs tests/cuda_fixture_plan.test.mjs
 set "RESULT=%ERRORLEVEL%"
 :finished
 echo.

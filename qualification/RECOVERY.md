@@ -160,11 +160,17 @@ Use the matching CI worker with its provenance files, or build the same source.
 From the repository root after `setup.bat`:
 
 ```powershell
-node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/recovery-fixtures.json
+node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/recovery-fixtures.json --suite --tiles 1,3,64 --max-runs 81 --max-cells 945 --max-work 10000000000
 node scripts/qualify_cuda.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification-tools/node_modules/playwright/index.mjs build/qualification/recovery.json "C:\Program Files\Google\Chrome\Application\chrome.exe" --large
 ```
 
-The full runner can exit with failure because its strict all-backend aggregate
+These are complete historical-suite reproduction commands, not the GTX
+interactive-PC starting scope. The bounded fixture CLI now requires explicit
+selection and limits; its scoped results never assert full qualification. Read
+[the GTX handoff](GTX1650SUPER_HANDOFF.md) and
+[the WDDM restrictions](WDDM_RESILIENCE.md) first.
+
+The full browser runner can exit with failure because its strict all-backend aggregate
 includes WebGPU. Inspect both `cudaAccepted` and the unchanged detailed
 comparisons; do not label the joint run exact. See the
 [CUDA setup guide](../overlay/docs/CUDA_BACKEND.md#physical-qualification) for

@@ -79,7 +79,7 @@ workbench's existing VRAM-minus-4-GiB warning policy can warn for every positive
 estimate on a 4-GiB card; this is distinct from the native free-memory hard gate.
 
 Start with read-only device discovery, host tests and matching-worker provenance.
-Then add or use a narrowly scoped, ordinary one-cell parity smoke test. Current
+Then add or use a narrowly scoped, ordinary one-cell parity smoke test. At handover,
 `replay_cuda_fixtures.mjs` runs all 81 cases, and `qualify_cuda.mjs --large` runs
 both large suites; neither is a one-cell smoke mode. Implement explicit case,
 repeat, tile and work limits if necessary before using them on the smaller PC.
