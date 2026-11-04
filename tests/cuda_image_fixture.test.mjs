@@ -31,11 +31,14 @@ test('larger preparation requires an explicit bounded limit before any browser s
     assert.equal(planFixtures([fixture],options).summary.work,117000*columns*rows);
     assert.throws(()=>planFixtures([fixture],{...options,maxCells:2*columns*rows-1}));
   }
-  for(const value of ['3201','9007199254740992','0','-1','1.5'])assert.throws(()=>parseImagePreparationArgs([...base,'80','40','--max-preparation-cells',value]));
+  for(const value of ['51201','9007199254740992','0','-1','1.5'])assert.throws(()=>parseImagePreparationArgs([...base,'80','40','--max-preparation-cells',value]));
   assert.throws(()=>parseImagePreparationArgs([...base,'1','1','--max-preparation-cells','64','--max-preparation-cells','128']));
-  assert.throws(()=>imageGeometry(81,1,4,8,3200));assert.throws(()=>imageGeometry(80,41,4,8,3200));
+  assert.throws(()=>imageGeometry(321,1,4,8,51200));assert.throws(()=>imageGeometry(80,41,4,8,3200));
   assert.equal(imageGeometry(80,40,8,16,3200).sampleHeight,16);
   assert.throws(()=>imageGeometry(80,40,8,8,3200));
+  assert.equal(imageGeometry(160,80,4,8,12800).columns,160);
+  assert.equal(imageGeometry(320,160,4,8,51200).rows,160);
+  assert.throws(()=>imageGeometry(320,160,8,16,51200));
 });
 test('prepared larger inputs must retain a valid preparation limit when replayed',()=>{
   const d=makeDocument();
@@ -45,7 +48,7 @@ test('prepared larger inputs must retain a valid preparation limit when replayed
   assert.equal(validateImageFixture(d),d.fixture);
   delete d.provenance.maxPreparationCells;assert.throws(()=>validateImageFixture(d),/preparation cell/);
   d.provenance.maxPreparationCells=64;assert.throws(()=>validateImageFixture(d));
-  d.provenance.maxPreparationCells=3201;assert.throws(()=>validateImageFixture(d));
+  d.provenance.maxPreparationCells=51201;assert.throws(()=>validateImageFixture(d));
 });
 test('preparation page uses existing font/mask/config functions without matcher or UI preflight',async()=>{
   const source=await readFile('overlay/experiments/webgpu/photographic.html','utf8'),html=imagePreparationHtml(source);

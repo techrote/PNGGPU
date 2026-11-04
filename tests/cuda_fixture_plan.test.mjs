@@ -24,6 +24,8 @@ test('only explicit supported CUDA modes are admitted before GPU discovery',()=>
   }
   for(const value of ['float32','fast-math','--test-fault',undefined])assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode',...(value?[value]:[])]));
   assert.throws(()=>parseFixtureArgs([...args,'--cuda-mode','binary64-direct','--cuda-mode','binary64-direct']));
+  assert.throws(()=>parseFixtureArgs([...args,'--skip-cpu']));
+  assert.equal(parseFixtureArgs([...args,'--skip-cpu','--allow-parity-differences']).skipCpu,true);
 });
 test('reject invalid numbers, flags, duplicated or ambiguous scope',()=>{
   for(const suffix of [['--repeats','0'],['--max-work','-1'],['--max-cells','1.5'],['--max-runs','9007199254740992'],
@@ -40,6 +42,14 @@ test('aggregate budgets include repeats, tiles and both backends, without unsafe
   assert.equal(plan.summary.work,planFixtures([fixture],parseFixtureArgs(args)).summary.work*8);
   for(const key of ['maxRuns','maxCells','maxWork'])assert.throws(()=>planFixtures([fixture],{...options,[key]:1}));
   assert.throws(()=>planFixtures([{...fixture,columns:Number.MAX_SAFE_INTEGER,rows:Number.MAX_SAFE_INTEGER}],options));
+});
+test('MiB tile budgets convert before GPU discovery and cannot bypass aggregate limits',()=>{
+  const options=parseFixtureArgs([...args,'--tile-mib','16']);
+  const plan=planFixtures([fixture],options);assert.equal(plan.runs[0].tileCells,Math.floor(16*1024*1024/(218*16)));
+  assert.equal(plan.summary.tileMiB,16);
+  assert.deepEqual(plan.summary.tiles,[Math.floor(16*1024*1024/(218*16))]);
+  assert.throws(()=>parseFixtureArgs([...args,'--tile-mib','33']));
+  assert.throws(()=>parseFixtureArgs([...args,'--tile-mib','16','--tiles','16']));
 });
 test('legacy complete suite still explicitly plans all 81 fits',()=>{
   const fixtures=Array.from({length:27},(_,i)=>({...fixture,name:String(i)}));

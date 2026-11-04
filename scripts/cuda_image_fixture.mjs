@@ -4,11 +4,12 @@ import {resolve,relative,isAbsolute} from 'node:path';
 
 export const sha256=bytes=>createHash('sha256').update(bytes).digest('hex');
 export function imageGeometry(columns,rows,sampleWidth=4,sampleHeight=8,maxPreparationCells=64) {
-  if(!Number.isSafeInteger(maxPreparationCells)||maxPreparationCells<1||maxPreparationCells>3200)throw new Error('Preparation cell limit must be 1–3200');
-  for(const [name,value,max] of [['columns',columns,80],['rows',rows,64],['sampleWidth',sampleWidth,8],['sampleHeight',sampleHeight,16]])
+  if(!Number.isSafeInteger(maxPreparationCells)||maxPreparationCells<1||maxPreparationCells>51200)throw new Error('Preparation cell limit must be 1–51200');
+  for(const [name,value,max] of [['columns',columns,320],['rows',rows,160],['sampleWidth',sampleWidth,8],['sampleHeight',sampleHeight,16]])
     if(!Number.isSafeInteger(value)||value<1||value>max)throw new Error(`Invalid small-image ${name}`);
   if(columns*rows>maxPreparationCells||sampleWidth*sampleHeight>128)throw new Error('Image exceeds explicit preparation cell/sample limits (default 64 cells / 128 samples)');
   if(columns*rows>64&&!((sampleWidth===4&&sampleHeight===8)||(sampleWidth===8&&sampleHeight===16)))throw new Error('Larger bounded stages require 4x8 or 8x16 samples/cell');
+  if(columns*rows>3200&&(sampleWidth!==4||sampleHeight!==8))throw new Error('Outputs above 3200 cells require 4x8 samples/cell');
   return {columns,rows,sampleWidth,sampleHeight};
 }
 
@@ -70,7 +71,7 @@ export function validateImageFixture(document) {
 
 export async function loadImageFixture(path,root,palette) {
   const bytes=await readFile(path);
-  if(bytes.length>8*1024*1024)throw new Error('Prepared image fixture exceeds 8 MiB');
+  if(bytes.length>32*1024*1024)throw new Error('Prepared image fixture exceeds 32 MiB');
   const document=JSON.parse(bytes),f=validateImageFixture(document);
   if(JSON.stringify(f.palette)!==JSON.stringify(palette))throw new Error('Image palette differs from independent original CPU');
   for(const [name,hash] of Object.entries(document.provenance.sourceFiles)) {

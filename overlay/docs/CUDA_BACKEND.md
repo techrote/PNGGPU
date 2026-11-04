@@ -270,7 +270,7 @@ image only after a responsive result and no new driver errors; do not substitute
 the full browser qualifier or a corpus stress loop.
 
 For staged ordinary outputs beyond 64 characters, preparation requires explicit
-`--max-preparation-cells N` (hard ceiling 3,200). The chosen cap is recorded and
+`--max-preparation-cells N` (hard ceiling 51,200). The chosen cap is recorded and
 validated again by replay; replay's separate aggregate limits still include all
 backends, repeats and tile choices. For example, 16×8, 32×16 and 80×40 character
 outputs need preparation caps 128, 512 and 3,200. Larger preparation currently
@@ -319,12 +319,26 @@ or treating differences as a failed experiment. `benchmarkCompleted` is separate
 from parity, and `qualificationAccepted` remains false. Invalid outputs,
 timeouts, driver events and cleanup failures still stop the run. Input geometry
 and source checks still precede device discovery. Prepared fixture files are
-bounded to 8 MiB for the allowed 80×40 / 8×16 sample case.
+bounded to 32 MiB, with samples above 3,200 cells restricted to 4×8.
 
 Current fit wall time includes context/process creation and bridge overhead.
 Kernel time alone is not streaming frame latency; persistent-frame reuse and
 frame-time distributions need separate engineering and measurement before a
 realtime claim. Benchmark figures here do not promise imperceptible lag.
+
+Larger requested visual benchmarks may explicitly prepare up to 320×160
+characters (51,200 cells). The default remains 64; above 3,200 cells only 4×8
+sampling is admitted, and fixture serialization is capped at 32 MiB. Native
+device admission, payload, recovery and sublaunch limits remain unchanged.
+`--tile-mib 1|4|8|16|32` requests a projection budget, converted from the actual
+glyph count and clamped by native limits. It is distinct from total VRAM.
+CUDA still has one in-flight tile; depth 4/8 observations from the older WebGPU
+pipeline do not describe this implementation.
+
+For larger visual/performance runs, `--skip-cpu --allow-parity-differences`
+explicitly skips CPU fitting and records null/skipped comparison fields, never
+zero mismatches or successful parity. FP64 GPU output can then serve as the
+visual comparison reference. Qualification acceptance remains false.
 
 ### Complete suite on a suitably isolated qualification system
 

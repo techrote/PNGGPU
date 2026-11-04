@@ -14,8 +14,10 @@ export function parseFixtureArgs(args) {
     if(seen.has(flag))throw new Error(`Duplicate flag ${flag}`);seen.add(flag);
     if(flag==='--suite'||flag==='--list'||flag==='--help'){options[flag.slice(2)]=true;continue;}
     if(flag==='--allow-parity-differences'){options.allowParityDifferences=true;continue;}
-    if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file','--cuda-mode'].includes(flag))throw new Error(`Unknown flag ${flag}`);
+    if(flag==='--skip-cpu'){options.skipCpu=true;continue;}
+    if(!['--repeats','--tiles','--tile-mib','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file','--cuda-mode'].includes(flag))throw new Error(`Unknown flag ${flag}`);
     const value=args[++i];
+    if(flag==='--tile-mib'){options.tileMiB=integer(value,flag);if(options.tileMiB>32)throw new Error('Benchmark projection tile cap is 32 MiB');continue;}
     if(flag==='--cuda-mode'){if(!['float32-guarded-binary64','binary64-direct','float32-direct','float16-mixed'].includes(value))throw new Error('Unsupported CUDA arithmetic mode');options.cudaMode=value;continue;}
     if(flag==='--webgpu'){if(!value||value.startsWith('--'))throw new Error('Expected --webgpu PLAYWRIGHT_MODULE');options.webgpu=value;continue;}
     if(flag==='--fixture-file'){if(!value||value.startsWith('--'))throw new Error('Expected --fixture-file PATH');options.fixtureFile=value;continue;}
@@ -30,6 +32,8 @@ export function parseFixtureArgs(args) {
   if(options.repeats>100||options.timeoutMs>30000)throw new Error('At most 100 repeats and 30000 ms timeout');
   if(options.suite&&options.cases.length)throw new Error('--suite and --case are mutually exclusive');
   if(options.suite&&options.fixtureFile)throw new Error('Prepared image input requires an exact --case');
+  if(options.skipCpu&&!options.allowParityDifferences)throw new Error('--skip-cpu requires explicit --allow-parity-differences');
+  if(options.tileMiB&&seen.has('--tiles'))throw new Error('Choose --tiles or --tile-mib, not both');
   if(!options.help&&!options.list&&(!positionals[0]||!positionals[1]||positionals.length!==2||(!options.suite&&!options.cases.length)))
     throw new Error('Specify WORKER OUTPUT_JSON and exact --case NAME (or explicit --suite). Use --help.');
   return {...options,worker:positionals[0],output:positionals[1]};
@@ -43,7 +47,7 @@ export function planFixtures(fixtures,options) {
   const backendCount=options.webgpu?2n:1n;
   let cells=0n,work=0n;
   const runs=[];
-  for(const data of selected)for(const tileCells of options.tiles)for(let repeat=0;repeat<options.repeats;repeat++) {
+  for(const data of selected)for(const tileCells of options.tileMiB?[Math.max(1,Math.floor(options.tileMiB*1024*1024/(data.masks.length*16)))]:options.tiles)for(let repeat=0;repeat<options.repeats;repeat++) {
     const count=BigInt(data.columns)*BigInt(data.rows),glyphs=BigInt(data.masks.length),samples=BigInt(data.sampleWidth)*BigInt(data.sampleHeight);
     // Conservative logical visits for BOTH float32/guard and binary64 recovery:
     // RGB projection samples, shortlist glyphs and every retained glyph/color pair.
@@ -55,8 +59,8 @@ export function planFixtures(fixtures,options) {
       throw new Error('Planned aggregate exceeds --max-runs, --max-cells or --max-work; no GPU work started');
     runs.push({data,tileCells,repeat});
   }
-  return {runs,summary:{caseNames:selected.map(f=>f.name),repeats:options.repeats,tiles:options.tiles,
-    backendCount:Number(backendCount),runs:runs.length*Number(backendCount),cells:Number(cells),work:Number(work),
+  return {runs,summary:{caseNames:selected.map(f=>f.name),repeats:options.repeats,tiles:options.tileMiB?[...new Set(runs.map(r=>r.tileCells))]:options.tiles,
+    tileMiB:options.tileMiB??null,backendCount:Number(backendCount),runs:runs.length*Number(backendCount),cells:Number(cells),work:Number(work),
     workUnit:'conservative logical projection/shortlist/candidate visits including full recovery, across all backends',
     limits:{maxRuns:options.maxRuns,maxCells:options.maxCells,maxWork:options.maxWork,timeoutMs:options.timeoutMs}}};
 }

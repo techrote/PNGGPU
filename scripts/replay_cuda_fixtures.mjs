@@ -20,12 +20,14 @@ if(options.help) {
   console.log(`Usage: node scripts/replay_cuda_fixtures.mjs WORKER OUTPUT_JSON --case EXACT_NAME [--case EXACT_NAME ...]
   --list                       List exact names without opening a worker
   --repeats N --tiles 1,3       Defaults: one repeat, tile 1
+  --tile-mib N                 Explicit projection budget (1–32 MiB), alternative to --tiles
   --max-cells N --max-work N --max-runs N  Aggregate caps (defaults: 1 / 10000000 / 1)
   --timeout-ms N               Per request timeout, default 10000, maximum 30000
   --webgpu PLAYWRIGHT_MODULE   Also compare the same inputs in installed Chrome
   --fixture-file PATH         Use a validated prepare_cuda_image.mjs output; exact --case required
   --cuda-mode MODE            guarded default, binary64-direct, float32-direct, float16-mixed
   --allow-parity-differences  Record quality differences while benchmarking; parity/qualification still separate
+  --skip-cpu                  Explicit benchmark-only skip; CPU comparisons are marked skipped
   --suite                     Explicitly select all fixtures; still requires sufficient caps
 Preserve SOURCE_COMMIT.txt, worker-sha256.json and runtime licenses from the CI artifact.
 No native self-test, cancellation workload, fault injection or hidden replay is run.
@@ -83,12 +85,12 @@ try {
     const config={canvas:{columns:data.columns,rows:data.rows,sample_width:data.sampleWidth,sample_height:data.sampleHeight},
       fit:{foreground_candidates:data.foregroundCandidates,background_candidates:data.backgroundCandidates}};
     const cpuStart=performance.now();
-    const expected=referencePhotoFit({pixels:data.pixels,masks:data.masks,palette:data.palette,config});
-    const cpuMs=performance.now()-cpuStart,cpuAnsi=PNG2ANSI.ansiBytes({codes:data.codes},expected,config);
+    const expected=options.skipCpu?null:referencePhotoFit({pixels:data.pixels,masks:data.masks,palette:data.palette,config});
+    const cpuMs=expected?performance.now()-cpuStart:null,cpuAnsi=expected?PNG2ANSI.ansiBytes({codes:data.codes},expected,config):null;
     const tuple=r=>Array.from(r.chosen,(g,i)=>[g,r.fg[i],r.bg[i]]);
     for(const backend of options.webgpu?['cuda','webgpu']:['cuda']) {
       const start=performance.now();
-      const actual=backend==='cuda'?await withTimeout(fitter.fit({...data,preferredTileCells:tileCells}),options.timeoutMs,()=>fitter.close()):await browserWork(page.evaluate(async ({data,tileCells})=>{
+      const actual=backend==='cuda'?await withTimeout(fitter.fit({...data,preferredTileCells:tileCells,preferredTileMiB:options.tileMiB??null}),options.timeoutMs,()=>fitter.close()):await browserWork(page.evaluate(async ({data,tileCells})=>{
         const {PhotographicWebGpuFitter}=await import('/src/gpu/photographic.js');
         const gpu=await PhotographicWebGpuFitter.create(await (await fetch('/src/gpu/photographic.wgsl')).text());
         try {
@@ -98,19 +100,20 @@ try {
         }finally{gpu.close();}
       },{data:{...data,pixels:Array.from(data.pixels),masks:data.masks.map(m=>Array.from(m))},tileCells}));
       const wallMs=performance.now()-start;
-      const cellDiff=compareCells(expected,actual),ansiDiff=compareAnsi(cpuAnsi,PNG2ANSI.ansiBytes({codes:data.codes},actual,config));
+      const cellDiff=expected?compareCells(expected,actual):{skipped:true,changedCells:null};
+      const ansiDiff=expected?compareAnsi(cpuAnsi,PNG2ANSI.ansiBytes({codes:data.codes},actual,config)):{skipped:true,mismatches:null};
       report.cases.push({name:data.name,backend,tileCells,repeat,columns:data.columns,rows:data.rows,
         sampleWidth:data.sampleWidth,sampleHeight:data.sampleHeight,glyphCount:data.masks.length,
         foregroundCandidates:data.foregroundCandidates,backgroundCandidates:data.backgroundCandidates,
-        cpuMs,wallMs,cellDiff,ansiDiff,cpuTuples:tuple(expected),actualTuples:tuple(actual),
-        cpuAnsiBytes:cpuAnsi.length,cpuAnsiSha256:createHash('sha256').update(cpuAnsi).digest('hex'),stats:actual.stats});
+        cpuMs,wallMs,cellDiff,ansiDiff,cpuTuples:expected?tuple(expected):null,actualTuples:tuple(actual),
+        cpuAnsiBytes:cpuAnsi?.length??null,cpuAnsiSha256:cpuAnsi?createHash('sha256').update(cpuAnsi).digest('hex'):null,stats:actual.stats});
       if(backend==='cuda'&&!options.allowParityDifferences&&(cellDiff.changedCells||ansiDiff.mismatches))throw new Error(`CPU parity failed ${data.name}, tile ${tileCells}, repeat ${repeat}`);
       report.driverAfter=driverEventsSince(report.driverSince);
       if(report.driverAfter.events.length)throw new Error('New GPU driver error; scope stopped');
     }
   }
-  report.scopedParityPassed=report.cases.length===summary.runs&&report.cases.every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
-  report.cudaScopedParityPassed=report.cases.length===summary.runs&&report.cases.filter(c=>c.backend==='cuda').every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
+  report.scopedParityPassed=!options.skipCpu&&report.cases.length===summary.runs&&report.cases.every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
+  report.cudaScopedParityPassed=!options.skipCpu&&report.cases.length===summary.runs&&report.cases.filter(c=>c.backend==='cuda').every(c=>!c.cellDiff.changedCells&&!c.ansiDiff.mismatches);
   report.benchmarkCompleted=report.cases.length===summary.runs;
 }catch(error){report.error=error.stack;report.scopedParityPassed=false;report.cudaScopedParityPassed=false;process.exitCode=1;}
 finally {
