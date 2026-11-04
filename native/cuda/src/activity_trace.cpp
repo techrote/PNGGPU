@@ -8,6 +8,7 @@
 #include <fstream>
 #include <mutex>
 #include <stdexcept>
+#include <string>
 #include <thread>
 #ifdef _WIN32
 #include <process.h>
@@ -38,11 +39,11 @@ void CUPTIAPI completed(CUcontext context,std::uint32_t stream,std::uint8_t* buf
       const auto* k=reinterpret_cast<const CUpti_ActivityKernel9*>(record);
       output << "kernel," << k->correlationId << ',' << k->start << ',' << k->end << ','
         << k->gridX << ',' << k->blockX << ',' << k->registersPerThread << ',' << k->localMemoryPerThread
-        << ',' << k->name << '\n';
+        << ",\"" << k->name << "\"\n";
     }else if(record->kind==CUPTI_ACTIVITY_KIND_RUNTIME){
       const auto* a=reinterpret_cast<const CUpti_ActivityAPI*>(record);const char* name=nullptr;
       if(cuptiGetCallbackName(CUPTI_CB_DOMAIN_RUNTIME_API,a->cbid,&name)!=CUPTI_SUCCESS)name="unknown";
-      output << "runtime," << a->correlationId << ',' << a->start << ',' << a->end << ",0,0,0,0," << name << '\n';
+      output << "runtime," << a->correlationId << ',' << a->start << ',' << a->end << ",0,0,0,0,\"" << name << "\"\n";
     }
   }
   std::size_t dropped=0;
@@ -65,15 +66,19 @@ struct ActivityTrace::Impl {
     output.open(path/("activity-"+std::to_string(pid)+".csv"));
     if(!output)throw std::runtime_error("Cannot open CUPTI activity output");
     output << "kind,correlation,startNs,endNs,gridX,blockX,registers,localBytes,name\n";
-    std::size_t size=1024*1024,limit=2;
-    check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_DEVICE_BUFFER_SIZE,sizeof(size),&size),"CUPTI bounded device buffer");
-    check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_DEVICE_BUFFER_POOL_LIMIT,sizeof(limit),&limit),"CUPTI bounded device pool");
+    std::size_t size=1024*1024,limit=2,preallocate=1,value_size=sizeof(std::size_t);
+    check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_DEVICE_BUFFER_SIZE,&value_size,&size),"CUPTI bounded buffer");
+    value_size=sizeof(limit);check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_DEVICE_BUFFER_POOL_LIMIT,&value_size,&limit),"CUPTI bounded pool");
+    value_size=sizeof(preallocate);check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_DEVICE_BUFFER_PRE_ALLOCATE_VALUE,&value_size,&preallocate),"CUPTI preallocation");
+    std::uint8_t pinned=1;value_size=sizeof(pinned);
+    check(cuptiActivitySetAttribute(CUPTI_ACTIVITY_ATTR_MEM_ALLOCATION_TYPE_HOST_PINNED,&value_size,&pinned),"CUPTI host-pinned buffers");
     check(cuptiActivityRegisterCallbacks(requested,completed),"CUPTI activity callbacks");
     check(cuptiActivityEnable(CUPTI_ACTIVITY_KIND_RUNTIME),"CUPTI runtime activity");
     check(cuptiActivityEnable(CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL),"CUPTI kernel activity");
     flusher=std::thread([this]{while(!stop.load()){
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
-      if(cuptiActivityFlushAll(0)!=CUPTI_SUCCESS)++failures;
+      const auto status=cuptiActivityFlushAll(0);
+      if(status!=CUPTI_SUCCESS){++failures;std::lock_guard<std::mutex> lock(output_mutex);output << "traceError,0,0,0,0,0,0,0," << unsigned(status) << '\n';output.flush();}
     }});
   }
   ~Impl() {

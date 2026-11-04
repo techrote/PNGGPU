@@ -106,8 +106,8 @@
       "bytes": 3895
     },
     "native/cuda/src/activity_trace.cpp": {
-      "sha256": "23e032c1ba3b84413bab01d39c581dba26c544e53e8ca62d3d17827ffeef819f",
-      "bytes": 4056
+      "sha256": "012167109cb987073ac8113c4f739be0ce9e5ca437be76a0a7f3832301ec2844",
+      "bytes": 4659
     },
     "native/cuda/src/common.cpp": {
       "sha256": "80d03a2d0161239dd9b5f59adc95af495888f4bf1fbb88c1ca881f13c73eb30a",
