@@ -1,0 +1,5 @@
+{
+  "sourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+  "worker": "pnggpu_cuda_worker.exe",
+  "sha256": "938ea7b9bf5ef509cd2551e6527322bd650c9c8151913ffe5152e838fa564b1e"
+}

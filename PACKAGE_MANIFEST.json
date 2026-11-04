@@ -286,8 +286,12 @@
       "bytes": 2058
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "6ec6e85c0ee214409ba10dd1b360cc27589a86380439bf6c5e78a0816a3a3d37",
-      "bytes": 8374
+      "sha256": "f47190cc0febd53a8913fce97a54d14761b0c0d4e8010c140c64f58f9eb24de0",
+      "bytes": 8680
+    },
+    "qualification/GTX1650SUPER_RESULTS.md": {
+      "sha256": "9196cc729cd6d39f721e1398f209483ddae5d63b29011b4c3b6815e80b08ac77",
+      "bytes": 11473
     },
     "qualification/README.md": {
       "sha256": "299ee60327c73f9d10f3f5ca45bfcc2ebf87cc28e3aa310cdc2d3fa4f40cbaf5",
@@ -304,6 +308,50 @@
     "qualification/arithmetic-37706c3.json": {
       "sha256": "cef91fd8c138ab11f02ed80506b046250d0385ec4540ee1c23416e2ad00c13d5",
       "bytes": 42134
+    },
+    "qualification/gtx1650super/gtx-exact-ci-cell-905db75.json": {
+      "sha256": "d22f084ba350f233c73d7621585b71a43b4e989f252627718eb3b53f4475929d",
+      "bytes": 13937
+    },
+    "qualification/gtx1650super/gtx-exact-ci-small-905db75.json": {
+      "sha256": "db6cee21054f582ff4cea91c84abe4b6ac72dfde13a5609b86c9592afe170c7b",
+      "bytes": 35681
+    },
+    "qualification/gtx1650super/gtx-first-cell.json": {
+      "sha256": "6a3e734846dc9691ca5462f76dd491cf6e9226904d34ac338dc7fd15d5101df9",
+      "bytes": 14086
+    },
+    "qualification/gtx1650super/gtx-hardware-905db75.json": {
+      "sha256": "2a64f90831e75d67dc0e51be24969a620eefea9bdbb5638c72c58bde05831b8e",
+      "bytes": 746
+    },
+    "qualification/gtx1650super/gtx-saved-cell-905db75.json": {
+      "sha256": "02819f2a5508ef5a088242f3858134f5f86e223c1784fbc512d93210588f64fa",
+      "bytes": 16994
+    },
+    "qualification/gtx1650super/gtx-small-905db75.json": {
+      "sha256": "b4bc05dc71d5a6c1f114b92086e2168f1acdb34f0895f4e24d7e3e89d935fd8f",
+      "bytes": 124288
+    },
+    "qualification/gtx1650super/host-app-905db75.txt": {
+      "sha256": "8e8721bd0b57e8ad7d975ff5290c4bdbf6558a5d488211edc33932d70f0302e2",
+      "bytes": 8593
+    },
+    "qualification/gtx1650super/host-bridge-limits-905db75.txt": {
+      "sha256": "01ccedf0ca89e09baade20cfbc3d6d3fdefa580ebf7fc59fc706e2076e105cc7",
+      "bytes": 3250
+    },
+    "qualification/gtx1650super/host-native-905db75.txt": {
+      "sha256": "c0560a27418dc2e3f69a0f9e9d1c1138eae5ca0977db4e8720fbb78c5205a1a0",
+      "bytes": 223
+    },
+    "qualification/gtx1650super/worker-905db75.json": {
+      "sha256": "6c1bdd5ee4cf6b21a25e0e46b66d48c5165fe2a48fc09fad60fb22d9f00b6e32",
+      "bytes": 183
+    },
+    "qualification/gtx1650super/worker-c60d79d.json": {
+      "sha256": "4d8d9b6cdde55e34dd63e412e571828798d638ebe777f1af35e66e544bbcc6a2",
+      "bytes": 183
     },
     "qualification/memcheck-0e8993d.txt": {
       "sha256": "a9d061cee538182f762e132abeea7bac7bddb844338f25751bbbb043f242c425",

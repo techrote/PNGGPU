@@ -4,6 +4,12 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+Continuation completed a bounded first GTX pass. Read
+[GTX1650SUPER_RESULTS.md](GTX1650SUPER_RESULTS.md) for the explicit limited CLI,
+hardware/binary provenance and independent CPU/CUDA/WebGPU comparisons. The
+historical starting instructions below do not imply permission for larger or
+disruptive work.
+
 ## Checkpoint and source authority
 
 Latest engineering checkpoint before this documentation handover:

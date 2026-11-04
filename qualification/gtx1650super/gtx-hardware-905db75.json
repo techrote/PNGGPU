@@ -1,0 +1,20 @@
+{
+  "recordedUtc": "2026-11-04T13:31:55.0577310Z",
+  "sourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+  "nvidiaSmi": "index, name, compute_cap, memory.total [MiB], memory.free [MiB], driver_version, display_active\r\n0, NVIDIA GeForce GTX 1650 SUPER, 7.5, 4096 MiB, 3371 MiB, 616.92, Enabled\r\n",
+  "node": "v24.21.0",
+  "cmake": "cmake version 4.4.3",
+  "localHostCompiler": "MSVC 19.44.35228.0",
+  "cudaToolkit": "absent",
+  "computeSanitizer": "absent",
+  "debuggerRegistryKeyPresent": false,
+  "chrome": "156.0.8078.80",
+  "edge": "156.0.4314.58",
+  "playwright": "1.64.1",
+  "windows": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.26200",
+    "BuildNumber": "26200"
+  },
+  "nativeReserveBytes": 2147483648
+}
