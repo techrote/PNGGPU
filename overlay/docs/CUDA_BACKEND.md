@@ -330,6 +330,18 @@ hash comparison is required unless a plan explicitly sets `requireColdReference:
 that skip is limited to at most 512 cells/frame and reported as null, not parity. No stress loop or self-test
 is part of this path.
 
+The separately scoped local-video workflow uses `prepare_cuda_video.mjs` to
+prepare at most 120 consecutive PNGs, at 160x80 or 320x160 and 4x8 samples. It
+preserves source aspect with black letterboxing, records each source/decoded
+RGBA hash, and writes a bounded raw batch without invoking a matcher. The
+video runner verifies the batch and pinned preparation identities before
+discovery, reuses one worker and one input buffer, and measures fit separately
+from input read/hash and ANSI encoding. This path explicitly skips CPU parity
+for the user's quality/performance experiment. No frame queue or repeats are
+hidden: `benchmark_cuda_video_matrix.mjs` runs exactly 30 frames in each of eight
+size/mode/tile configurations. Each frame still has a 10-second deadline and
+driver-event checks; these diagnostic gaps prohibit a live-throughput claim.
+
 `--cuda-mode float32-direct` runs the original unguarded float32 matcher.
 `--cuda-mode float16-mixed` is an exploratory mode with actual FP16 products
 and FP32 accumulation/statistics/scoring, not a full-FP16 or Tensor Core path.

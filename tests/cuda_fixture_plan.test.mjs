@@ -82,6 +82,7 @@ test('stalled work stops and failing cleanup does not skip subsequent resource d
   assert.equal(disposed,true);assert.equal(errors.length,2);assert.equal(errors[0].step,'browser');
 });
 import {planFrames} from '../scripts/cuda_frame_plan.mjs';
+import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES} from '../scripts/cuda_video_plan.mjs';
 
 test('warm frame plans cap the entire sequence and require immutable matching geometry before discovery',()=>{
   const data={columns:320,rows:160,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,
@@ -95,4 +96,20 @@ test('warm frame plans cap the entire sequence and require immutable matching ge
     assert.throws(()=>planFrames({...plan,...patch},[data,data]));
   assert.throws(()=>planFrames(plan,[data,{...data,foregroundCandidates:5}]),/fixed bounded geometry/);
   assert.throws(()=>planFrames({...plan,requireColdReference:false},[data,data]),/512-cell smoke/);
+});
+
+test('video scope explicitly bounds 120-frame characterization and 30-frame comparisons before discovery',()=>{
+  const a={columns:320,rows:160,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,
+    masks:Array.from({length:218},()=>Array(32).fill(0)),codes:Array.from({length:218},(_,i)=>i),palette:Array.from({length:16},()=>[0,0,0])};
+  assert.equal(videoPlan(a,120,'float32-direct',32).work,359424000000);
+  assert.equal(videoPlan(a,30,'binary64-direct',16).cells,1536000);
+  for(const n of [0,121,1.5])assert.throws(()=>videoGeometry(320,160,n));
+  assert.throws(()=>videoGeometry(640,320,30));assert.throws(()=>videoPlan(a,30,'float16-mixed',32));
+  const g=videoGeometry(320,160,1),digest='a'.repeat(64),bytes=320*160*32*4;
+  const b={schema:'pnggpu-video-frames-v1',completed:true,cleanupErrors:[],fitMode:'contain-black',atlas:a,geometry:g,
+    sourceCommit:'a'.repeat(40),started:new Date().toISOString(),sourceFiles:Object.fromEntries(VIDEO_SOURCE_FILES.map(p=>[p,digest])),
+    frames:[{index:0,name:'frame_0001.png',rgbaOffset:0,rgbaBytes:bytes,rgbaSha256:digest,sourceSha256:digest}],rgbaBytes:bytes,rgbaSha256:digest};
+  assert.equal(validateVideoManifest(b),a);
+  for(const patch of [{sourceFiles:{}},{rgbaBytes:bytes-1},{completed:false},{frames:[]},{atlas:{...a,codes:Array(218).fill(0)}}])
+    assert.throws(()=>validateVideoManifest({...b,...patch}));
 });
