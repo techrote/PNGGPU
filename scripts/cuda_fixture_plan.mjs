@@ -13,9 +13,10 @@ export function parseFixtureArgs(args) {
     if(flag==='--case') {const name=args[++i];if(!name||name.startsWith('--')||options.cases.includes(name))throw new Error('Expected unique exact --case NAME');options.cases.push(name);continue;}
     if(seen.has(flag))throw new Error(`Duplicate flag ${flag}`);seen.add(flag);
     if(flag==='--suite'||flag==='--list'||flag==='--help'){options[flag.slice(2)]=true;continue;}
-    if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu'].includes(flag))throw new Error(`Unknown flag ${flag}`);
+    if(!['--repeats','--tiles','--max-cells','--max-work','--max-runs','--timeout-ms','--webgpu','--fixture-file'].includes(flag))throw new Error(`Unknown flag ${flag}`);
     const value=args[++i];
     if(flag==='--webgpu'){if(!value||value.startsWith('--'))throw new Error('Expected --webgpu PLAYWRIGHT_MODULE');options.webgpu=value;continue;}
+    if(flag==='--fixture-file'){if(!value||value.startsWith('--'))throw new Error('Expected --fixture-file PATH');options.fixtureFile=value;continue;}
     if(flag==='--tiles') {
       options.tiles=(value??'').split(',').map(v=>integer(v,flag));
       if(new Set(options.tiles).size!==options.tiles.length||options.tiles.some(v=>v>65536))throw new Error('Tiles must be unique and at most 65536');
@@ -26,6 +27,7 @@ export function parseFixtureArgs(args) {
   }
   if(options.repeats>100||options.timeoutMs>30000)throw new Error('At most 100 repeats and 30000 ms timeout');
   if(options.suite&&options.cases.length)throw new Error('--suite and --case are mutually exclusive');
+  if(options.suite&&options.fixtureFile)throw new Error('Prepared image input requires an exact --case');
   if(!options.help&&!options.list&&(!positionals[0]||!positionals[1]||positionals.length!==2||(!options.suite&&!options.cases.length)))
     throw new Error('Specify WORKER OUTPUT_JSON and exact --case NAME (or explicit --suite). Use --help.');
   return {...options,worker:positionals[0],output:positionals[1]};

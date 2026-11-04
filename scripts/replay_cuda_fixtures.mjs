@@ -13,6 +13,7 @@ import {loadCudaFixtures} from './cuda_fixtures.mjs';
 import {verifyWorker} from './cuda_worker_provenance.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
+import {loadImageFixture} from './cuda_image_fixture.mjs';
 
 const options=parseFixtureArgs(process.argv.slice(2));
 if(options.help) {
@@ -22,6 +23,7 @@ if(options.help) {
   --max-cells N --max-work N --max-runs N  Aggregate caps (defaults: 1 / 10000000 / 1)
   --timeout-ms N               Per request timeout, default 10000, maximum 30000
   --webgpu PLAYWRIGHT_MODULE   Also compare the same inputs in installed Chrome
+  --fixture-file PATH         Use a validated prepare_cuda_image.mjs output; exact --case required
   --suite                     Explicitly select all fixtures; still requires sufficient caps
 Preserve SOURCE_COMMIT.txt, worker-sha256.json and runtime licenses from the CI artifact.
 No native self-test, cancellation workload, fault injection or hidden replay is run.
@@ -31,7 +33,8 @@ Scoped passes are not full qualification. Work units are logical visits, not a t
 const root=resolve(import.meta.dirname,'..');
 process.chdir(root);
 await import('../PNG2ANSI/src/core.js');
-const fixtures=await loadCudaFixtures(PNG2ANSI.PALETTE);
+const imageInput=options.fixtureFile?await loadImageFixture(resolve(options.fixtureFile),root,PNG2ANSI.PALETTE):null;
+const fixtures=imageInput?[imageInput.data]:await loadCudaFixtures(PNG2ANSI.PALETTE);
 if(options.list){console.log(fixtures.map(f=>f.name).join('\n'));process.exit(0);}
 // All scope/aggregate validation happens before even a capability probe.
 const {runs,summary}=planFixtures(fixtures,options);
@@ -40,6 +43,8 @@ const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
 const report={schema:'pnggpu-cuda-bounded-fixtures-v2',sourceCommit:git('rev-parse','HEAD'),sourceStatus:git('status','--porcelain'),
   workerSourceCommit:provenance.sourceCommit,workerSha256:provenance.sha256,workerReceipt:provenance.receipt,
   started:new Date().toISOString(),scope:summary,qualificationAccepted:false,cases:[],sourceFiles:{}};
+if(imageInput)report.imageInput=imageInput.input;
+report.driverSince=imageInput?.input.provenance.started??report.started;
 for(const name of [...git('ls-files','scripts','overlay/src/gpu','qualification/turing-37706c3.json').split('\n'),
   ...git('ls-files','--others','--exclude-standard','scripts').split('\n'),'PNG2ANSI/src/core.js']) {
   if(!name)continue;
@@ -58,7 +63,7 @@ async function browserWork(operation) {
 }
 const started=performance.now();
 try {
-  report.driverBaseline=driverEventsSince(report.started);
+  report.driverBaseline=driverEventsSince(report.driverSince);
   if(report.driverBaseline.events.length)throw new Error('New GPU driver error; scope stopped before CUDA');
   fitter=await PhotographicCudaFitter.create({fetchImpl,infoTimeoutMs:options.timeoutMs,requestTimeoutMs:options.timeoutMs});
   report.workerInfo=fitter.info;
@@ -67,7 +72,8 @@ try {
     browser=await chromium.launch({channel:'chrome',headless:true,timeout:options.timeoutMs,args:['--enable-unsafe-webgpu']});
     report.browserVersion=browser.version();page=await browser.newPage();
     page.setDefaultTimeout(options.timeoutMs);
-    await page.goto(origin+'/experiments/webgpu/photographic.html');
+    await page.route('**/bounded-fixture.html',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><meta charset="utf-8"><title>Bounded comparison</title>'}));
+    await page.goto(origin+'/bounded-fixture.html');
   }
   for(const {data,tileCells,repeat} of runs) {
     const config={canvas:{columns:data.columns,rows:data.rows,sample_width:data.sampleWidth,sample_height:data.sampleHeight},
@@ -95,7 +101,7 @@ try {
         cpuMs,wallMs,cellDiff,ansiDiff,cpuTuples:tuple(expected),actualTuples:tuple(actual),
         cpuAnsiBytes:cpuAnsi.length,cpuAnsiSha256:createHash('sha256').update(cpuAnsi).digest('hex'),stats:actual.stats});
       if(backend==='cuda'&&(cellDiff.changedCells||ansiDiff.mismatches))throw new Error(`CPU parity failed ${data.name}, tile ${tileCells}, repeat ${repeat}`);
-      report.driverAfter=driverEventsSince(report.started);
+      report.driverAfter=driverEventsSince(report.driverSince);
       if(report.driverAfter.events.length)throw new Error('New GPU driver error; scope stopped');
     }
   }

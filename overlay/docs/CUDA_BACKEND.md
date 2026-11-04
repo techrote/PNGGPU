@@ -252,6 +252,23 @@ closes the browser on stalled work; it does not guarantee driver responsiveness.
 Reports retain `qualificationAccepted:false`; `cudaScopedParityPassed` describes
 only the selected CUDA comparisons and carries no full lifecycle/stability claim.
 
+For a small real-image comparison, prepare one exact hardmode image using the
+existing workbench font/mask functions and full-reference Canvas sampling:
+
+```powershell
+node scripts/prepare_cuda_image.mjs build/qualification-tools/node_modules/playwright/index.mjs build/qualification/image-one.json holo-stealth-cloak-1024.png 1 1
+node scripts/replay_cuda_fixtures.mjs build/cuda/pnggpu_cuda_worker.exe build/qualification/image-one-result.json --fixture-file build/qualification/image-one.json --case image-holo-stealth-cloak-1024-1x1-4x8 --repeats 1 --tiles 1 --max-runs 2 --max-cells 2 --max-work 200000 --timeout-ms 10000 --webgpu build/qualification-tools/node_modules/playwright/index.mjs
+```
+
+Preparation caps geometry at 64 cells and 128 samples/cell, keeps six/five color
+candidates, verifies the manifest image bytes, and records source/font/config/
+browser identities plus exact prepared samples and float32 masks. It launches
+no matching backend. Replay validates those bytes, geometry and source hashes
+before worker discovery. Both paths use minimal pages without the workbench's
+automatic GPU memory estimate. Advance to another explicitly bounded small
+image only after a responsive result and no new driver errors; do not substitute
+the full browser qualifier or a corpus stress loop.
+
 Native admission still reserves 2 GiB against actual free memory. A rejection
 on a 4 GiB display card is legitimate. No synthetic capacity declaration is
 needed by this direct fitter runner; it records native total/free bytes. The UI's
