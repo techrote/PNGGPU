@@ -331,7 +331,7 @@ that skip is limited to at most 512 cells/frame and reported as null, not parity
 is part of this path.
 
 The separately scoped local-video workflow uses `prepare_cuda_video.mjs` to
-prepare at most 120 consecutive PNGs, at 160x80 or 320x160 and 4x8 samples. It
+prepare at most 120 consecutive PNGs, at 160x45/80 or 320x90/160 and 4x8 samples. It
 preserves source aspect with black letterboxing, records each source/decoded
 RGBA hash, and writes a bounded raw batch without invoking a matcher. The
 video runner verifies the batch and pinned preparation identities before
@@ -341,6 +341,16 @@ for the user's quality/performance experiment. No frame queue or repeats are
 hidden: `benchmark_cuda_video_matrix.mjs` runs exactly 30 frames in each of eight
 size/mode/tile configurations. Each frame still has a 10-second deadline and
 driver-event checks; these diagnostic gaps prohibit a live-throughput claim.
+
+For aspect-correct 8x16 glyph output, choose 160x45 or 320x90 and the explicit
+`crop-16:9` preparation argument. This records a small exact source crop rather
+than distorting the source or adding bars. CUDA video benchmarks also accept
+64/128 MiB tile targets within existing native caps. The finite adaptive
+`benchmark_cuda_larger_tiles.mjs` tests 64 MiB, then 128 only when its recorded
+paired improvement criterion is met. For 320x90 a full frame needs about 95.8 MiB
+of projection storage; no larger effective tile is possible on this geometry.
+See the [cropped-motion report](../../qualification/GTX1650SUPER_CROPPED_MOTION.md)
+for measured ranges, actual allocations and limitations of the letterbox comparison.
 
 `--cuda-mode float32-direct` runs the original unguarded float32 matcher.
 `--cuda-mode float16-mixed` is an exploratory mode with actual FP16 products

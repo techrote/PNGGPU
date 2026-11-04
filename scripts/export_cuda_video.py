@@ -17,6 +17,7 @@ paths=[RAW/(prefix+'-initial.json'),RAW/(prefix+'-initial-fp64.json')]+[Path(e['
 summary={'schema':'pnggpu-cuda-motion-results-v1','qualificationAccepted':False,'cpuComparison':{'skipped':True},
          'batches':{},'sessions':[],'sourceVideo':json.loads((ROOT/'qualification/gtx1650super-warm-frames/motion-candidate.json').read_text())}
 summary['sourceVideo']['usedInMotionMeasurements']=True
+summary['sourceVideo'].pop('usedInWarmMeasurements',None)
 summary['layout']='cropped' if cropped else 'letterboxed'
 summary['sourceVideo']['nextScope']='First120framesperprecision; eight30-frame comparisons'
 packed=bytearray();offsets={};all_rows=[];word_frames={}

@@ -86,7 +86,7 @@ also need profiling. No arithmetic/search reduction was introduced here.
 ## Output comparisons and evidence
 
 All first-30 outputs are bit-identical across 16/32 MiB tiles **within each
-precision**. They also match the first 30 outputs of the longer characterization
+precision**. The 160x80 sequences also match the first 30 outputs of the longer characterization
 runs in that precision. Worker PID/session counters prove a single retained
 `--stdio` process per sequence, with separate before/after information probes.
 

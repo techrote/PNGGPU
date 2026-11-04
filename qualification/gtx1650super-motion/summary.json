@@ -146295,10 +146295,10 @@
       "frameRate": "30/1",
       "reportedFrames": 719
     },
-    "usedInWarmMeasurements": false,
     "nextScope": "First120framesperprecision; eight30-frame comparisons",
     "usedInMotionMeasurements": true
   },
+  "layout": "letterboxed",
   "quality": [
     {
       "columns": 160,

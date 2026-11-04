@@ -31,6 +31,11 @@ The [motion report](GTX1650SUPER_MOTION.md) adds aligned 120-frame parkour previ
 and eight 30-frame comparisons. Video reveals larger precision differences and
 timing variation; the earlier still-image conclusions are not universal.
 
+The [aspect-correct continuation](GTX1650SUPER_CROPPED_MOTION.md) uses 160x45 and
+320x90 characters with a tiny 16:9 crop, plus bounded 64/128 MiB CUDA comparisons.
+It preserves the letterboxed baseline and states the confounds in cell-normalized
+comparisons of uniform regions.
+
 ## Checkpoint and source authority
 
 Latest engineering checkpoint before this documentation handover:
