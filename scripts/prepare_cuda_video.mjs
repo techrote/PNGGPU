@@ -1,12 +1,12 @@
 /** CPU/browser preparation of a finite local PNG sequence; no CUDA or matching. */
-import {readFile,writeFile,open,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,open,mkdir,stat} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {createWorkbenchServer} from './serve.mjs';
 import {imagePreparationHtml,decodeRgbaTransport,sha256} from './cuda_image_fixture.mjs';
-import {videoGeometry,VIDEO_SOURCE_FILES} from './cuda_video_plan.mjs';
+import {videoGeometry,VIDEO_SOURCE_FILES,pngDimensions} from './cuda_video_plan.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
 const [playwright,inputDirectory,c,r,n,output]=process.argv.slice(2);
@@ -40,8 +40,11 @@ try {
   report.highAtlas={...prepared.high,alpha:Buffer.from(prepared.high.alpha).toString('base64')};
   file=await open(resolve(out,'frames.rgba'),'w');
   for(let index=0;index<geometry.count;index++){
-    check();const name=`frame_${String(index+1).padStart(4,'0')}.png`,start=performance.now(),png=await readFile(resolve(input,name));
-    if(png.length>16*1024*1024)throw new Error('PNG exceeds 16 MiB frame cap');const sourceReadMs=performance.now()-start;
+    check();const name=`frame_${String(index+1).padStart(4,'0')}.png`,start=performance.now(),path=resolve(input,name);
+    if((await stat(path)).size>16*1024*1024)throw new Error('PNG exceeds 16 MiB frame cap');
+    const png=await readFile(path);
+    if(png.length>16*1024*1024)throw new Error('PNG exceeds 16 MiB frame cap');
+    const dimensions=pngDimensions(png),sourceReadMs=performance.now()-start;
     const transportStart=performance.now();
     const f=await withTimeout(page.evaluate(async({png,geometry})=>{
       const bytes=Uint8Array.from(atob(png),c=>c.charCodeAt(0)),begin=performance.now(),bitmap=await createImageBitmap(new Blob([bytes]));
@@ -58,6 +61,7 @@ try {
       }finally{bitmap.close();}
     },{png:png.toString('base64'),geometry}),10000,()=>browser.close());
     const rgba=decodeRgbaTransport(f.base64,geometry.columns*geometry.rows*32*4);
+    if(f.width!==dimensions.width||f.height!==dimensions.height)throw new Error('Decoded PNG dimensions differ from header');
     const transportMs=performance.now()-transportStart;rgbaHash.update(rgba);await file.writeFile(rgba);
     report.frames.push({index,name,sourceSha256:sha256(png),sourceBytes:png.length,sourceReadMs,width:f.width,height:f.height,
       decodeMs:f.decodeMs,resampleMs:f.resampleMs,transportMs,rgbaOffset:offset,rgbaBytes:rgba.length,rgbaSha256:sha256(rgba)});offset+=rgba.length;

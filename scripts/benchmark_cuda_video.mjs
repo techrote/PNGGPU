@@ -10,6 +10,7 @@ import {videoPlan,validateVideoManifest} from './cuda_video_plan.mjs';
 import {verifyWorker} from './cuda_worker_provenance.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
+import {checkedAfterInfo} from './cuda_after_info.mjs';
 import '../PNG2ANSI/src/core.js';
 const [worker,batchDirectory,mode,tile,count,output]=process.argv.slice(2);
 if(!output||process.argv.length!==8)throw new Error('Usage: node scripts/benchmark_cuda_video.mjs WORKER BATCH_DIRECTORY MODE TILE_MIB FRAME_COUNT OUTPUT_JSON');
@@ -69,7 +70,7 @@ try{
 finally{
   report.cleanupErrors=await cleanupSteps([['frames',()=>frames?.close()],['fitter',()=>fitter?.close()],['native',()=>server.closeCuda()],['input',()=>input?.close()],['output',()=>tuplesFile?.close()]],10000);
   if(!report.error&&!report.cleanupErrors.length)report.cleanupErrors.push(...await cleanupSteps([
-    ['after-info',async()=>{report.deviceAfter=await(await fetchImpl('/api/cuda/info')).json();}],['driver-final',()=>{report.driverFinal=check();}]],10000));
+    ['after-info',async()=>{report.deviceAfter=checkedAfterInfo(await(await fetchImpl('/api/cuda/info')).json(),report.deviceBefore,mode);}],['driver-final',()=>{report.driverFinal=check();}]],10000));
   report.cleanupErrors.push(...await cleanupSteps([['final-native',()=>server.closeCuda()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]],10000));
   if(report.cleanupErrors.length){report.benchmarkCompleted=false;process.exitCode=1;}
   report.outputsPath=binary;report.outputsBytes=offset;report.outputsSha256=outputHash.digest('hex');report.finished=new Date().toISOString();

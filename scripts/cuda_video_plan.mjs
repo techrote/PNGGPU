@@ -1,6 +1,13 @@
 import {planFixtures} from './cuda_fixture_plan.mjs';
 export const VIDEO_SOURCE_FILES=['overlay/experiments/webgpu/photographic.html','PNG2ANSI/src/core.js','PNG2ANSI/assets/DejaVuSansMono.ttf',
   'scripts/cuda_image_fixture.mjs','scripts/prepare_cuda_video.mjs','scripts/cuda_video_plan.mjs'];
+export function pngDimensions(bytes) {
+  if(bytes.length<24||!bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||
+    bytes.readUInt32BE(8)!==13||bytes.toString('ascii',12,16)!=='IHDR')throw new Error('Invalid PNG header');
+  const width=bytes.readUInt32BE(16),height=bytes.readUInt32BE(20);
+  if(width<1||height<1||width>4096||height>4096)throw new Error('Source PNG dimensions exceed 1–4096');
+  return {width,height};
+}
 export function videoGeometry(columns,rows,count) {
   if(!((columns===160&&rows===80)||(columns===320&&rows===160))||!Number.isSafeInteger(count)||count<1||count>120)
     throw new Error('Video scope is 160x80 or 320x160 and 1–120 consecutive frames');

@@ -82,7 +82,8 @@ test('stalled work stops and failing cleanup does not skip subsequent resource d
   assert.equal(disposed,true);assert.equal(errors.length,2);assert.equal(errors[0].step,'browser');
 });
 import {planFrames} from '../scripts/cuda_frame_plan.mjs';
-import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES} from '../scripts/cuda_video_plan.mjs';
+import {videoGeometry,videoPlan,validateVideoManifest,VIDEO_SOURCE_FILES,pngDimensions} from '../scripts/cuda_video_plan.mjs';
+import {checkedAfterInfo} from '../scripts/cuda_after_info.mjs';
 
 test('warm frame plans cap the entire sequence and require immutable matching geometry before discovery',()=>{
   const data={columns:320,rows:160,sampleWidth:4,sampleHeight:8,foregroundCandidates:6,backgroundCandidates:5,
@@ -112,4 +113,21 @@ test('video scope explicitly bounds 120-frame characterization and 30-frame comp
   assert.equal(validateVideoManifest(b),a);
   for(const patch of [{sourceFiles:{}},{rgbaBytes:bytes-1},{completed:false},{frames:[]},{atlas:{...a,codes:Array(218).fill(0)}}])
     assert.throws(()=>validateVideoManifest({...b,...patch}));
+});
+
+test('PNG dimension caps reject oversized headers before browser decoding',()=>{
+  const b=Buffer.alloc(24);Buffer.from([137,80,78,71,13,10,26,10]).copy(b);b.writeUInt32BE(13,8);b.write('IHDR',12);b.writeUInt32BE(854,16);b.writeUInt32BE(480,20);
+  assert.deepEqual(pngDimensions(b),{width:854,height:480});
+  b.writeUInt32BE(4097,16);assert.throws(()=>pngDimensions(b),/dimensions/);
+  assert.throws(()=>pngDimensions(Buffer.alloc(24)),/header/);
+});
+
+test('failed or changed post-cleanup device probes cannot silently allow another sequence',()=>{
+  const M=1024**2,info={schema:'pnggpu-cuda-info-v1',available:true,backend:'cuda',protocolVersion:1,precision:'float32-direct',
+    device:{index:0,name:'test',computeCapability:'7.5',totalMemoryBytes:4*1024**3,freeMemoryBytes:3*1024**3},
+    limits:{maxMessageBytes:128*M,maxTileCells:65536,maxSamplesPerCell:2048,maxGlyphCount:65535,maxProjectionBytes:128*M,maxPixelBytes:64*M,maxRecoveryProjectionBytes:32*M,maxRecoveryCells:1024}};
+  assert.equal(checkedAfterInfo(info,info,'float32-direct').available,true);
+  assert.throws(()=>checkedAfterInfo({available:false,error:'probe failed'},info,'float32-direct'),/unavailable/);
+  assert.throws(()=>checkedAfterInfo({...info,device:{...info.device,index:1}},info,'float32-direct'),/device changed/);
+  assert.throws(()=>checkedAfterInfo(info,info,'binary64-direct'),/explicitly requested/);
 });

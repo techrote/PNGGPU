@@ -9,6 +9,7 @@ import {verifyWorker} from './cuda_worker_provenance.mjs';
 import {loadImageFixture} from './cuda_image_fixture.mjs';
 import {planFrames} from './cuda_frame_plan.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
+import {checkedAfterInfo} from './cuda_after_info.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import '../PNG2ANSI/src/core.js';
 const [worker,planPath,output]=process.argv.slice(2);
@@ -73,7 +74,7 @@ try {
 finally {
   report.cleanupErrors=await cleanupSteps([['frames',()=>frames?.close()],['fitter',()=>fitter?.close()],['native',()=>server.closeCuda()]],10000);
   if(!report.error&&!report.cleanupErrors.length)report.cleanupErrors.push(...await cleanupSteps([
-    ['after-info',async()=>{report.deviceAfter=await (await fetchImpl('/api/cuda/info')).json();}],
+    ['after-info',async()=>{report.deviceAfter=checkedAfterInfo(await (await fetchImpl('/api/cuda/info')).json(),report.deviceBefore,plan.mode);}],
     ['driver-final',()=>{report.driverFinal=checkDriver();}]
   ],10000));
   report.cleanupErrors.push(...await cleanupSteps([['final-native',()=>server.closeCuda()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]],10000));

@@ -12,6 +12,7 @@ import {parseFixtureArgs,planFixtures} from './cuda_fixture_plan.mjs';
 import {loadCudaFixtures} from './cuda_fixtures.mjs';
 import {verifyWorker} from './cuda_worker_provenance.mjs';
 import {driverEventsSince} from './cuda_driver_events.mjs';
+import {checkedAfterInfo} from './cuda_after_info.mjs';
 import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 import {loadImageFixture} from './cuda_image_fixture.mjs';
 
@@ -122,7 +123,7 @@ finally {
   ],options.timeoutMs);
   // A stall/error in conversion or cleanup forbids another device probe.
   if(report.workerInfo&&!report.error&&!report.cleanupErrors.length)report.cleanupErrors.push(...await cleanupSteps([
-    ['after-info',async()=>{report.afterWorkerInfo=await (await fetchImpl('/api/cuda/info')).json();}]
+    ['after-info',async()=>{report.afterWorkerInfo=checkedAfterInfo(await (await fetchImpl('/api/cuda/info')).json(),report.workerInfo,options.cudaMode);}]
   ],options.timeoutMs));
   report.cleanupErrors.push(...await cleanupSteps([
     ['final-native',()=>server.closeCuda()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]
