@@ -4,6 +4,10 @@
 draft.** No production-readiness, sustained-TDR or performance benefit is claimed.
 Read [WDDM restrictions](WDDM_RESILIENCE.md) before further GPU work.
 
+Subsequent [bounded small real-image comparisons](GTX1650SUPER_REAL_IMAGES.md)
+cover all five original images at 8×4 cells. They retain separate source,
+binary and timing identities from this initial saved/synthetic-input session.
+
 ## Source and hardware
 
 Engineering/application source: `905db75cc8ae85671bfec49bcf433a64cb94d543`.

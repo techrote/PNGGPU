@@ -1,0 +1,2453 @@
+{
+  "schema": "pnggpu-cuda-bounded-fixtures-v2",
+  "sourceCommit": "684a86d04b46728ac8cb7e016d0f00e2f09f8db6",
+  "sourceStatus": "",
+  "workerSourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+  "workerSha256": "938ea7b9bf5ef509cd2551e6527322bd650c9c8151913ffe5152e838fa564b1e",
+  "workerReceipt": {
+    "sourceCommit": "905db75cc8ae85671bfec49bcf433a64cb94d543",
+    "worker": "pnggpu_cuda_worker.exe",
+    "sha256": "938ea7b9bf5ef509cd2551e6527322bd650c9c8151913ffe5152e838fa564b1e"
+  },
+  "started": "2026-11-04T13:57:10.930Z",
+  "scope": {
+    "caseNames": [
+      "image-colour-blocks-2048-8x4-4x8"
+    ],
+    "repeats": 2,
+    "tiles": [
+      7
+    ],
+    "backendCount": 2,
+    "runs": 4,
+    "cells": 128,
+    "work": 7488000,
+    "workUnit": "conservative logical projection/shortlist/candidate visits including full recovery, across all backends",
+    "limits": {
+      "maxRuns": 4,
+      "maxCells": 128,
+      "maxWork": 8000000,
+      "timeoutMs": 10000
+    }
+  },
+  "qualificationAccepted": false,
+  "cases": [
+    {
+      "name": "image-colour-blocks-2048-8x4-4x8",
+      "backend": "cuda",
+      "tileCells": 7,
+      "repeat": 0,
+      "columns": 8,
+      "rows": 4,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 28.622299999999996,
+      "wallMs": 250.6036999999999,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "actualTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "cpuAnsiBytes": 277,
+      "cpuAnsiSha256": "0b3e3d12a401b38111a406ab7fe54b54d4306799599945bdc1ad8d768634a612",
+      "stats": {
+        "version": "CUDA-001",
+        "backend": "cuda",
+        "requestedTileCells": 7,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.023284912109375,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "tileCells": 7,
+        "tileCount": 5,
+        "projectionBufferBytes": 24416,
+        "rasterBufferBytes": 896,
+        "recoveryTileCells": 7,
+        "recoveryProjectionBytes": 48832,
+        "maxStorageBindingBytes": null,
+        "maxBufferBytes": 134217728,
+        "maxMessageBytes": 134217728,
+        "maxKernelProjectionWork": 16777216,
+        "nativeBufferBytes": 105904,
+        "pipelineNote": "One persistent native CUDA worker; sequential tiles; native kernel sublaunches are bounded independently.",
+        "precision": "float32-guarded-binary64",
+        "timing": {
+          "atlasPackMs": 0.8360999999999876,
+          "bufferCreateMs": 0.0025000000000545697,
+          "tilePackMs": 0.2972999999997228,
+          "sampleProviderMs": 0,
+          "decodeCellsMs": 0.577900000000227,
+          "writeBufferMs": null,
+          "encodeSubmitMs": null,
+          "readbackWaitMs": null,
+          "timestampsReadMs": 0,
+          "slotAvailabilityWaitMs": 0,
+          "firstTileCompletedMs": 191.16730000000007,
+          "wallTotalMs": 248.86210000000005,
+          "nativeInitMs": 182.34660000000008,
+          "atlasUploadMs": 0.3472,
+          "bridgeRoundTripMs": 26.366999999999962,
+          "uploadMs": 0.8337000000000001,
+          "readbackMs": 0.3101,
+          "gpuProjectionMs": 0.95046400279,
+          "gpuSelectionMs": 9.451776086999999,
+          "gpuGuardMs": 3.3943360448,
+          "gpuRecoveryProjectionMs": 0.28924799711,
+          "gpuRecoverySelectionMs": 6.057440043,
+          "maxProjectionLaunchMs": 0.454016,
+          "maxSelectionLaunchMs": 1.273856044,
+          "cleanupMs": 37.4849999999999
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.10369999999988977,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.3988000000001648,
+            "wallMs": 7.683099999999968,
+            "projectionMs": 0.5387199968,
+            "selectionMs": 2.031776071,
+            "bridgeRoundTripMs": 6.826199999999972,
+            "uploadMs": 0.0815,
+            "readbackMs": 0.0687,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7579200268,
+            "gpuRecoveryProjectionMs": 0.08470399678,
+            "gpuRecoverySelectionMs": 1.273856044,
+            "maxProjectionLaunchMs": 0.454016,
+            "maxSelectionLaunchMs": 1.273856044,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 2,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.09829999999988104,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.052500000000009095,
+            "wallMs": 5.85389999999984,
+            "projectionMs": 0.07356800139,
+            "selectionMs": 1.904800057,
+            "bridgeRoundTripMs": 5.647600000000011,
+            "uploadMs": 0.1453,
+            "readbackMs": 0.0385,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.6780480146,
+            "gpuRecoveryProjectionMs": 0.04012800008,
+            "gpuRecoverySelectionMs": 1.226752043,
+            "maxProjectionLaunchMs": 0.04012800008,
+            "maxSelectionLaunchMs": 1.226752043,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 3,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.05150000000003274,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.03530000000000655,
+            "wallMs": 4.40059999999994,
+            "projectionMs": 0.1108800024,
+            "selectionMs": 1.80627197,
+            "bridgeRoundTripMs": 4.29989999999998,
+            "uploadMs": 0.0765,
+            "readbackMs": 0.051,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.6327679753,
+            "gpuRecoveryProjectionMs": 0.04217600077,
+            "gpuRecoverySelectionMs": 1.173503995,
+            "maxProjectionLaunchMs": 0.06870400161,
+            "maxSelectionLaunchMs": 1.173503995,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 4,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.02060000000005857,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.06889999999998508,
+            "wallMs": 4.664399999999887,
+            "projectionMs": 0.0979520008,
+            "selectionMs": 1.94777602,
+            "bridgeRoundTripMs": 4.557500000000118,
+            "uploadMs": 0.0585,
+            "readbackMs": 0.0454,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7147520185,
+            "gpuRecoveryProjectionMs": 0.05888000131,
+            "gpuRecoverySelectionMs": 1.233024001,
+            "maxProjectionLaunchMs": 0.05888000131,
+            "maxSelectionLaunchMs": 1.233024001,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 5,
+            "cells": 4,
+            "sourceSampleMs": 0,
+            "packMs": 0.023199999999860665,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.022400000000061482,
+            "wallMs": 5.0896000000000186,
+            "projectionMs": 0.1293440014,
+            "selectionMs": 1.761151969,
+            "bridgeRoundTripMs": 5.035799999999881,
+            "uploadMs": 0.1247,
+            "readbackMs": 0.1065,
+            "recoveredCells": 4,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 4,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.6108480096,
+            "gpuRecoveryProjectionMs": 0.06335999817,
+            "gpuRecoverySelectionMs": 1.15030396,
+            "maxProjectionLaunchMs": 0.06598400325,
+            "maxSelectionLaunchMs": 1.15030396,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 128
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 35744,
+        "readbackBytes": 1024,
+        "allocatedBytes": 105904,
+        "recoveredCells": 32,
+        "certifiedCells": 0,
+        "requestPayloadBytes": 35816,
+        "tileResponseBytes": 3203,
+        "adapterInfo": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "kernelExecTimeoutEnabled": true,
+          "vendor": "NVIDIA",
+          "architecture": "compute_75",
+          "description": "NVIDIA GeForce GTX 1650 SUPER",
+          "backend": "cuda"
+        },
+        "cudaInfo": {
+          "schema": "pnggpu-cuda-info-v1",
+          "available": true,
+          "backend": "cuda",
+          "protocolVersion": 1,
+          "precision": "float32-guarded-binary64",
+          "device": {
+            "name": "NVIDIA GeForce GTX 1650 SUPER",
+            "computeCapability": "7.5",
+            "totalMemoryBytes": 4294508544,
+            "freeMemoryBytes": 3441950720,
+            "index": 0,
+            "kernelExecTimeoutEnabled": true
+          },
+          "runtimeVersion": 12080,
+          "driverVersion": 13040,
+          "limits": {
+            "maxMessageBytes": 134217728,
+            "maxTileCells": 65536,
+            "maxSamplesPerCell": 2048,
+            "maxGlyphCount": 65535,
+            "maxProjectionBytes": 134217728,
+            "maxPixelBytes": 67108864,
+            "maxProjectionWork": 16777216,
+            "memoryReserveBytes": 2147483648,
+            "maxRecoveryProjectionBytes": 33554432,
+            "maxRecoveryCells": 1024,
+            "maxKernelProjectionWork": 16777216
+          },
+          "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+          "timingSources": {
+            "gpuProjectionMs": "CUDA events, sum of sublaunches",
+            "gpuSelectionMs": "CUDA events, sum of sublaunches",
+            "uploadMs": "host steady clock, transfer plus stream synchronization",
+            "readbackMs": "host steady clock, transfer plus stream synchronization"
+          }
+        },
+        "projectionSublaunches": 10,
+        "selectionSublaunches": 10,
+        "timestampReason": null,
+        "timestampSource": "CUDA events; sums of bounded native kernel launches",
+        "sampleComparisons": 669696,
+        "glyphCandidates": 6976,
+        "colourCandidates": 30720,
+        "timingNotes": "Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time."
+      }
+    },
+    {
+      "name": "image-colour-blocks-2048-8x4-4x8",
+      "backend": "webgpu",
+      "tileCells": 7,
+      "repeat": 0,
+      "columns": 8,
+      "rows": 4,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 28.622299999999996,
+      "wallMs": 328.6133,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "actualTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "cpuAnsiBytes": 277,
+      "cpuAnsiSha256": "0b3e3d12a401b38111a406ab7fe54b54d4306799599945bdc1ad8d768634a612",
+      "stats": {
+        "version": "GPU-007",
+        "requestedTileCells": 7,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.023284912109375,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "projectWorkgroupsX": 24,
+        "projectWorkgroupsY": 1,
+        "tileCells": 7,
+        "tileCount": 5,
+        "projectionBufferBytes": 24416,
+        "rasterBufferBytes": 896,
+        "maxStorageBindingBytes": 134217728,
+        "maxBufferBytes": 268435456,
+        "maxWorkgroups": 65535,
+        "timing": {
+          "atlasPackMs": 1.2999999998137355,
+          "bufferCreateMs": 0.7000000001862645,
+          "tilePackMs": 0,
+          "writeBufferMs": 0.20000000018626451,
+          "encodeSubmitMs": 0.30000000167638063,
+          "readbackWaitMs": 22.799999998882413,
+          "decodeCellsMs": 0.19999999925494194,
+          "sampleProviderMs": 0,
+          "timestampsReadMs": 0.7000000001862645,
+          "gpuProjectionMs": 0.057824,
+          "gpuSelectionMs": 10.435168,
+          "slotAvailabilityWaitMs": 22.69999999832362,
+          "firstTileCompletedMs": 11.399999999441206,
+          "wallTotalMs": 26.59999999962747
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0.10000000055879354,
+            "mapWaitMs": 8.5,
+            "decodeMs": 0.19999999925494194,
+            "wallMs": 9,
+            "projectionMs": 0.016992,
+            "selectionMs": 2.048
+          },
+          {
+            "index": 2,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0.10000000055879354,
+            "mapWaitMs": 4.2000000001862645,
+            "decodeMs": 0,
+            "wallMs": 4.300000000745058,
+            "projectionMs": 0.01024,
+            "selectionMs": 2.162688
+          },
+          {
+            "index": 3,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.2999999998137355,
+            "decodeMs": 0,
+            "wallMs": 3.2999999998137355,
+            "projectionMs": 0.010112,
+            "selectionMs": 1.94224
+          },
+          {
+            "index": 4,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.3999999994412065,
+            "decodeMs": 0,
+            "wallMs": 3.3999999994412065,
+            "projectionMs": 0.01024,
+            "selectionMs": 2.609152
+          },
+          {
+            "index": 5,
+            "cells": 4,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0.10000000055879354,
+            "mapWaitMs": 3.3999999994412065,
+            "decodeMs": 0,
+            "wallMs": 3.5,
+            "projectionMs": 0.01024,
+            "selectionMs": 1.673088
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 35936,
+        "readbackBytes": 512,
+        "allocatedBytes": 57536,
+        "timestampReason": null,
+        "adapterInfo": {
+          "vendor": "nvidia",
+          "architecture": "turing",
+          "device": "",
+          "description": ""
+        },
+        "sampleComparisons": 669696,
+        "glyphCandidates": 6976,
+        "colourCandidates": 30720
+      }
+    },
+    {
+      "name": "image-colour-blocks-2048-8x4-4x8",
+      "backend": "cuda",
+      "tileCells": 7,
+      "repeat": 1,
+      "columns": 8,
+      "rows": 4,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 56.26290000000017,
+      "wallMs": 194.2095000000004,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "actualTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "cpuAnsiBytes": 277,
+      "cpuAnsiSha256": "0b3e3d12a401b38111a406ab7fe54b54d4306799599945bdc1ad8d768634a612",
+      "stats": {
+        "version": "CUDA-001",
+        "backend": "cuda",
+        "requestedTileCells": 7,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.023284912109375,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "tileCells": 7,
+        "tileCount": 5,
+        "projectionBufferBytes": 24416,
+        "rasterBufferBytes": 896,
+        "recoveryTileCells": 7,
+        "recoveryProjectionBytes": 48832,
+        "maxStorageBindingBytes": null,
+        "maxBufferBytes": 134217728,
+        "maxMessageBytes": 134217728,
+        "maxKernelProjectionWork": 16777216,
+        "nativeBufferBytes": 105904,
+        "pipelineNote": "One persistent native CUDA worker; sequential tiles; native kernel sublaunches are bounded independently.",
+        "precision": "float32-guarded-binary64",
+        "timing": {
+          "atlasPackMs": 0.2219000000000051,
+          "bufferCreateMs": 0.0018000000000029104,
+          "tilePackMs": 0.0896999999995387,
+          "sampleProviderMs": 0,
+          "decodeCellsMs": 0.09360000000015134,
+          "writeBufferMs": null,
+          "encodeSubmitMs": null,
+          "readbackWaitMs": null,
+          "timestampsReadMs": 0,
+          "slotAvailabilityWaitMs": 0,
+          "firstTileCompletedMs": 148.1243999999997,
+          "wallTotalMs": 193.66679999999997,
+          "nativeInitMs": 142.57210000000032,
+          "atlasUploadMs": 0.2612,
+          "bridgeRoundTripMs": 19.840100000000348,
+          "uploadMs": 0.5535,
+          "readbackMs": 0.22890000000000005,
+          "gpuProjectionMs": 0.8606720101499999,
+          "gpuSelectionMs": 9.995584071,
+          "gpuGuardMs": 3.6496000882999997,
+          "gpuRecoveryProjectionMs": 0.34796800086,
+          "gpuRecoverySelectionMs": 6.345983983,
+          "maxProjectionLaunchMs": 0.3905920088,
+          "maxSelectionLaunchMs": 1.457983971,
+          "cleanupMs": 30.696300000000065
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.019699999999829743,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.028099999999994907,
+            "wallMs": 5.260400000000118,
+            "projectionMs": 0.5048960075,
+            "selectionMs": 2.000288069,
+            "bridgeRoundTripMs": 5.195999999999913,
+            "uploadMs": 0.0577,
+            "readbackMs": 0.0567,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.7147520185,
+            "gpuRecoveryProjectionMs": 0.1143039986,
+            "gpuRecoverySelectionMs": 1.285536051,
+            "maxProjectionLaunchMs": 0.3905920088,
+            "maxSelectionLaunchMs": 1.285536051,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 2,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.021200000000135333,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.019400000000132422,
+            "wallMs": 4.782600000000002,
+            "projectionMs": 0.1336640008,
+            "selectionMs": 2.303392053,
+            "bridgeRoundTripMs": 4.735099999999875,
+            "uploadMs": 0.1227,
+            "readbackMs": 0.0798,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 1.042368054,
+            "gpuRecoveryProjectionMs": 0.07631999999,
+            "gpuRecoverySelectionMs": 1.261023998,
+            "maxProjectionLaunchMs": 0.07631999999,
+            "maxSelectionLaunchMs": 1.261023998,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 3,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.018999999999778083,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.017600000000129512,
+            "wallMs": 3.8254000000001724,
+            "projectionMs": 0.06393600255,
+            "selectionMs": 2.089119971,
+            "bridgeRoundTripMs": 3.781800000000203,
+            "uploadMs": 0.0526,
+            "readbackMs": 0.0332,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.6311360002,
+            "gpuRecoveryProjectionMs": 0.03936000168,
+            "gpuRecoverySelectionMs": 1.457983971,
+            "maxProjectionLaunchMs": 0.03936000168,
+            "maxSelectionLaunchMs": 1.457983971,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 4,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.018000000000029104,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.014099999999871216,
+            "wallMs": 3.2240999999999076,
+            "projectionMs": 0.08339199983,
+            "selectionMs": 1.914784014,
+            "bridgeRoundTripMs": 3.185699999999997,
+            "uploadMs": 0.0302,
+            "readbackMs": 0.0316,
+            "recoveredCells": 7,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 7,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.6839680076,
+            "gpuRecoveryProjectionMs": 0.0626880005,
+            "gpuRecoverySelectionMs": 1.230816007,
+            "maxProjectionLaunchMs": 0.0626880005,
+            "maxSelectionLaunchMs": 1.230816007,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 224
+          },
+          {
+            "index": 5,
+            "cells": 4,
+            "sourceSampleMs": 0,
+            "packMs": 0.011799999999766442,
+            "uploadEnqueueMs": null,
+            "encodeSubmitMs": null,
+            "mapWaitMs": null,
+            "decodeMs": 0.014400000000023283,
+            "wallMs": 2.973700000000008,
+            "projectionMs": 0.07478399947,
+            "selectionMs": 1.687999964,
+            "bridgeRoundTripMs": 2.94150000000036,
+            "uploadMs": 0.0291,
+            "readbackMs": 0.0276,
+            "recoveredCells": 4,
+            "certifiedCells": 0,
+            "recoveryReasons": {
+              "shortlist": 4,
+              "palette": 0,
+              "selection": 0
+            },
+            "gpuGuardMs": 0.577376008,
+            "gpuRecoveryProjectionMs": 0.05529600009,
+            "gpuRecoverySelectionMs": 1.110623956,
+            "maxProjectionLaunchMs": 0.05529600009,
+            "maxSelectionLaunchMs": 1.110623956,
+            "projectionSublaunches": 2,
+            "selectionSublaunches": 2,
+            "deviceReadbackBytes": 128
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 35744,
+        "readbackBytes": 1024,
+        "allocatedBytes": 105904,
+        "recoveredCells": 32,
+        "certifiedCells": 0,
+        "requestPayloadBytes": 35816,
+        "tileResponseBytes": 3208,
+        "adapterInfo": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "kernelExecTimeoutEnabled": true,
+          "vendor": "NVIDIA",
+          "architecture": "compute_75",
+          "description": "NVIDIA GeForce GTX 1650 SUPER",
+          "backend": "cuda"
+        },
+        "cudaInfo": {
+          "schema": "pnggpu-cuda-info-v1",
+          "available": true,
+          "backend": "cuda",
+          "protocolVersion": 1,
+          "precision": "float32-guarded-binary64",
+          "device": {
+            "name": "NVIDIA GeForce GTX 1650 SUPER",
+            "computeCapability": "7.5",
+            "totalMemoryBytes": 4294508544,
+            "freeMemoryBytes": 3441950720,
+            "index": 0,
+            "kernelExecTimeoutEnabled": true
+          },
+          "runtimeVersion": 12080,
+          "driverVersion": 13040,
+          "limits": {
+            "maxMessageBytes": 134217728,
+            "maxTileCells": 65536,
+            "maxSamplesPerCell": 2048,
+            "maxGlyphCount": 65535,
+            "maxProjectionBytes": 134217728,
+            "maxPixelBytes": 67108864,
+            "maxProjectionWork": 16777216,
+            "memoryReserveBytes": 2147483648,
+            "maxRecoveryProjectionBytes": 33554432,
+            "maxRecoveryCells": 1024,
+            "maxKernelProjectionWork": 16777216
+          },
+          "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+          "timingSources": {
+            "gpuProjectionMs": "CUDA events, sum of sublaunches",
+            "gpuSelectionMs": "CUDA events, sum of sublaunches",
+            "uploadMs": "host steady clock, transfer plus stream synchronization",
+            "readbackMs": "host steady clock, transfer plus stream synchronization"
+          }
+        },
+        "projectionSublaunches": 10,
+        "selectionSublaunches": 10,
+        "timestampReason": null,
+        "timestampSource": "CUDA events; sums of bounded native kernel launches",
+        "sampleComparisons": 669696,
+        "glyphCandidates": 6976,
+        "colourCandidates": 30720,
+        "timingNotes": "Fit wall includes native initialization, local HTTP transfer, CUDA work, decoding and session cleanup. Projection/selection use CUDA events; upload/readback use native host timers around transfer and synchronization. Atlas upload is included in initialization, and tile CUDA times are included in bridge round-trip time."
+      }
+    },
+    {
+      "name": "image-colour-blocks-2048-8x4-4x8",
+      "backend": "webgpu",
+      "tileCells": 7,
+      "repeat": 1,
+      "columns": 8,
+      "rows": 4,
+      "sampleWidth": 4,
+      "sampleHeight": 8,
+      "glyphCount": 218,
+      "foregroundCandidates": 6,
+      "backgroundCandidates": 5,
+      "cpuMs": 56.26290000000017,
+      "wallMs": 141.85930000000008,
+      "cellDiff": {
+        "glyph": 0,
+        "foreground": 0,
+        "background": 0,
+        "changedCells": 0,
+        "firstChangedCell": null
+      },
+      "ansiDiff": {
+        "mismatches": 0,
+        "firstMismatch": null
+      },
+      "cpuTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "actualTuples": [
+        [
+          183,
+          0,
+          7
+        ],
+        [
+          186,
+          7,
+          5
+        ],
+        [
+          198,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          2
+        ],
+        [
+          184,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          162,
+          0,
+          7
+        ],
+        [
+          182,
+          8,
+          0
+        ],
+        [
+          185,
+          8,
+          5
+        ],
+        [
+          140,
+          7,
+          0
+        ],
+        [
+          48,
+          7,
+          0
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          217,
+          7,
+          0
+        ],
+        [
+          182,
+          8,
+          5
+        ],
+        [
+          45,
+          0,
+          7
+        ],
+        [
+          46,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          0
+        ],
+        [
+          186,
+          7,
+          0
+        ],
+        [
+          167,
+          0,
+          7
+        ],
+        [
+          55,
+          0,
+          7
+        ],
+        [
+          141,
+          8,
+          5
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          186,
+          0,
+          7
+        ],
+        [
+          148,
+          7,
+          0
+        ],
+        [
+          163,
+          7,
+          0
+        ],
+        [
+          103,
+          7,
+          0
+        ],
+        [
+          140,
+          0,
+          7
+        ],
+        [
+          183,
+          8,
+          0
+        ],
+        [
+          141,
+          8,
+          5
+        ]
+      ],
+      "cpuAnsiBytes": 277,
+      "cpuAnsiSha256": "0b3e3d12a401b38111a406ab7fe54b54d4306799599945bdc1ad8d768634a612",
+      "stats": {
+        "version": "GPU-007",
+        "requestedTileCells": 7,
+        "requestedTileMiB": null,
+        "effectiveProjectionMiB": 0.023284912109375,
+        "requestedInFlightTiles": 1,
+        "inFlightTiles": 1,
+        "projectWorkgroupsX": 24,
+        "projectWorkgroupsY": 1,
+        "tileCells": 7,
+        "tileCount": 5,
+        "projectionBufferBytes": 24416,
+        "rasterBufferBytes": 896,
+        "maxStorageBindingBytes": 134217728,
+        "maxBufferBytes": 268435456,
+        "maxWorkgroups": 65535,
+        "timing": {
+          "atlasPackMs": 0.6000000005587935,
+          "bufferCreateMs": 0.09999999962747097,
+          "tilePackMs": 0.09999999962747097,
+          "writeBufferMs": 0.19999999925494194,
+          "encodeSubmitMs": 0,
+          "readbackWaitMs": 17.600000000558794,
+          "decodeCellsMs": 0.09999999962747097,
+          "sampleProviderMs": 0,
+          "timestampsReadMs": 2.400000000372529,
+          "gpuProjectionMs": 0.055104,
+          "gpuSelectionMs": 10.02992,
+          "slotAvailabilityWaitMs": 17.700000000186265,
+          "firstTileCompletedMs": 6.7000000001862645,
+          "wallTotalMs": 21.200000000186265
+        },
+        "tileMeasurements": [
+          {
+            "index": 1,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 5.7000000001862645,
+            "decodeMs": 0.09999999962747097,
+            "wallMs": 5.7999999998137355,
+            "projectionMs": 0.015456,
+            "selectionMs": 2.049344
+          },
+          {
+            "index": 2,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 3.900000000372529,
+            "decodeMs": 0,
+            "wallMs": 3.900000000372529,
+            "projectionMs": 0.01024,
+            "selectionMs": 2.162112
+          },
+          {
+            "index": 3,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0.09999999962747097,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 2.900000000372529,
+            "decodeMs": 0,
+            "wallMs": 3,
+            "projectionMs": 0.010208,
+            "selectionMs": 1.941536
+          },
+          {
+            "index": 4,
+            "cells": 7,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 2.7999999998137355,
+            "decodeMs": 0,
+            "wallMs": 2.7999999998137355,
+            "projectionMs": 0.01024,
+            "selectionMs": 2.205696
+          },
+          {
+            "index": 5,
+            "cells": 4,
+            "sourceSampleMs": 0,
+            "packMs": 0,
+            "uploadEnqueueMs": 0.09999999962747097,
+            "encodeSubmitMs": 0,
+            "mapWaitMs": 2.2999999998137355,
+            "decodeMs": 0,
+            "wallMs": 2.3999999994412065,
+            "projectionMs": 0.00896,
+            "selectionMs": 1.671232
+          }
+        ],
+        "peakInFlightTiles": 1,
+        "uploadedBytes": 35936,
+        "readbackBytes": 512,
+        "allocatedBytes": 57536,
+        "timestampReason": null,
+        "adapterInfo": {
+          "vendor": "nvidia",
+          "architecture": "turing",
+          "device": "",
+          "description": ""
+        },
+        "sampleComparisons": 669696,
+        "glyphCandidates": 6976,
+        "colourCandidates": 30720
+      }
+    }
+  ],
+  "sourceFiles": {
+    "overlay/src/gpu/benchmark_zip.js": "22a567dbadb417da4fda21accb8a96b0dc079ab6fe1bdddb3c6b5f87cbdaf7d8",
+    "overlay/src/gpu/cpu_worker_host.js": "83a7bf07464ff7926ee61ed6bb3cf325603c8b75b210dca367e438d428377460",
+    "overlay/src/gpu/cuda.js": "5adde8328e7d23ef4d75edb535615064effa34ed5f96307eaba288fd84876b01",
+    "overlay/src/gpu/memory.js": "b1446b9f79a3efb348228d20ae40e9c764d42665084657f8c18786a61dcd5e51",
+    "overlay/src/gpu/metrics.js": "28d9b8e1d6357f16539d01db1f75968ecce07d532aa5bd3b4919aea6b16db664",
+    "overlay/src/gpu/photographic.js": "91c03b79846b2690f97c2aebbd22170b37feb0732c7a09b4a13eb57dd16bac0c",
+    "overlay/src/gpu/photographic.wgsl": "5e561bdb1dab75e11ce11a37ce1c9b6e3f4129af2af964fedf0713435160e4d4",
+    "overlay/src/gpu/progress.js": "db2545757d016596a1d09536f803a4100a36236f5486cb08c614801340a2c6cf",
+    "overlay/src/gpu/reference_photo.js": "fd027d6b5c053af644b8741b0ccb9df954ecbd57a2f210317233b79b598e9d86",
+    "overlay/src/gpu/reference_photo.worker.js": "c2d1bf9e84e3e19166167e533f8b22de087d1c981729fadd65bd068e9dfd4020",
+    "overlay/src/gpu/streamed_samples.js": "be36abbdac360c4b557feff4bd0e1fc695ba13efb44f82082adc4bb78b847d8e",
+    "overlay/src/gpu/workload.js": "d94b23552d91a627396b96ae7c877c34c6ac5224aeaed785564b33dde0706039",
+    "qualification/turing-37706c3.json": "9f2c0fb6fead155a16f1df3869bc9f80b9e79d690166ebcaba36d8b8936e91c9",
+    "scripts/analyze_cuda_fixture.mjs": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
+    "scripts/build-cuda.ps1": "db0bea9d4a2dd3c5facc67e24494cd69be6b02a7d18c06e0b1be51b7f7548963",
+    "scripts/cuda_bridge.mjs": "72e708587a3e66eb6f3d8a57ebedf0601e5da9b60cbdfa488dc651b28c157431",
+    "scripts/cuda_driver_events.mjs": "4ff06083bf823ea106b4ddcb59018082a52deb13c4bed48ab2bb6bb049c9076b",
+    "scripts/cuda_fixture_plan.mjs": "1deab55b3e22b4663333a708bbc115a63e0ac0b6f173b97ef5f30598190941c3",
+    "scripts/cuda_fixtures.mjs": "30c19cc2ca4136002952dfa81ce296f3f134efe6a7fb2ca48f9c487dbef11dbc",
+    "scripts/cuda_image_fixture.mjs": "d8184ee5e6328f1e03b682f613badcab78767a9e9cc35293112a6041b0b201db",
+    "scripts/cuda_worker_provenance.mjs": "283d33c6ade0985ea90710a753404fc860a94ecbbbfdc955d5edcd29570b399d",
+    "scripts/fetch_cuda_toolchain.py": "c87f36f40703ae29dc0a1efda6c6baa83b53841ab7183a300aeb5327b4c4f618",
+    "scripts/generate_cuda_regressions.mjs": "12e25ad5d97602560acf67b2b0c44eadeb9d879ebde9cd93996e5973cb71244b",
+    "scripts/package_manifest.py": "04e7a59749a79f006e99504688e23fdeb6d6899675064106dc91936481f9463a",
+    "scripts/prepare_cuda_image.mjs": "b4d63396be56742a76a255fe617b3fea722e076485f42c711222ee24b284bdd2",
+    "scripts/qualification_lifecycle.mjs": "e7201dd2fbeef8734fe6d147390f4f2ca8761298840b7f1ba3d312fa63bf083e",
+    "scripts/qualify_cuda.mjs": "e1e9e34669ee4273d2d42d48ff3305739d9291ae3bafffee6786182f26b4dade",
+    "scripts/qualify_cuda_resilience.mjs": "96ca610e494ddff83963b13d021f27fd530540b3ec0d8c25e7f8df3f18211ee9",
+    "scripts/replay_cuda_fixtures.mjs": "5dbc316039af645e73e550c92307b9c1c2002630ab240e0d76ff820f6fa108b9",
+    "scripts/serve.mjs": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
+    "scripts/serve.py": "f313e0f4ef7f485f2a2a1d095773d64a2708e439cd0d84c9ceee93a8dc8c5e5d",
+    "scripts/setup.ps1": "f7ff2fadabd4467bbfaf92f32bc18e676b7f763349e2073037605f4740047fc3",
+    "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9"
+  },
+  "imageInput": {
+    "sha256": "2d006a0593dfb7f9eeb96b243a93d593d122b9e4b0ff013f4e3886b69141c1fc",
+    "fixtureSha256": "1fa6bcbc6ab4c0eb0397882a546e5ebea2a89bb8937ecb4d30a0838b27c480fc",
+    "provenance": {
+      "sourceCommit": "684a86d04b46728ac8cb7e016d0f00e2f09f8db6",
+      "sourceStatus": "",
+      "sourceFiles": {
+        "overlay/fixtures/hardmode/manifest.json": "09a9fc5fab3554e87325ff89e5a325f42ed03c8d6ede901649f642ca38c6e0a8",
+        "overlay/fixtures/hardmode/colour-blocks-2048.png": "42c18538f3457fa026b93bce4a4884c44400e0288e57c39926cfd4cffe5bd3c6",
+        "overlay/experiments/webgpu/photographic.html": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
+        "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9",
+        "PNG2ANSI/assets/DejaVuSansMono.ttf": "b4a6c3e4faab8773f4ff761d56451646409f29abedd68f05d38c2df667d3c582",
+        "scripts/prepare_cuda_image.mjs": "b4d63396be56742a76a255fe617b3fea722e076485f42c711222ee24b284bdd2",
+        "scripts/cuda_image_fixture.mjs": "d8184ee5e6328f1e03b682f613badcab78767a9e9cc35293112a6041b0b201db"
+      },
+      "started": "2026-11-04T13:57:08.081Z",
+      "geometry": {
+        "columns": 8,
+        "rows": 4,
+        "sampleWidth": 4,
+        "sampleHeight": 8
+      },
+      "image": {
+        "file": "colour-blocks-2048.png",
+        "title": "High-contrast coloured blocks",
+        "description": "Dense high-frequency RGB microtextures, alternating light/dark planes",
+        "width": 2048,
+        "height": 2048,
+        "size_bytes": 10386941,
+        "sha256": "42c18538f3457fa026b93bce4a4884c44400e0288e57c39926cfd4cffe5bd3c6",
+        "stress": [
+          "colour interference",
+          "high spatial frequency",
+          "colour quantisation"
+        ],
+        "sourceWidth": 2048,
+        "sourceHeight": 2048
+      },
+      "sourceSamplingMode": "full-reference-canvas",
+      "matchingRuns": 0,
+      "driverBaseline": {
+        "supported": true,
+        "events": []
+      },
+      "browserVersion": "156.0.8078.80",
+      "preparationMs": 282.59999999962747,
+      "config": {
+        "schema_version": 2,
+        "style": "photographic",
+        "vocabulary": "full-cp437",
+        "canvas": {
+          "columns": 8,
+          "rows": 4,
+          "cell_width": 8,
+          "cell_height": 16,
+          "sample_width": 4,
+          "sample_height": 8,
+          "font_size": 14,
+          "resampler": "lanczos"
+        },
+        "image": {
+          "brightness": 1,
+          "contrast": 1,
+          "saturation": 1,
+          "gamma": 1,
+          "sharpness": 1
+        },
+        "fit": {
+          "foreground_candidates": 6,
+          "background_candidates": 5
+        },
+        "derez": {
+          "enabled": false,
+          "width": 160,
+          "height": 160
+        },
+        "nl_filter": {
+          "enabled": false,
+          "mode": "edge-enhancement",
+          "radius": 1,
+          "alpha": 0.9
+        },
+        "industrial": {
+          "structure_blur": 0.85,
+          "texture_blur": 1.85,
+          "edge_threshold": 11,
+          "edge_range": 57,
+          "texture_threshold": 24,
+          "texture_range": 62,
+          "highlight_threshold": 138,
+          "highlight_range": 110,
+          "highlight_exponent": 2.2,
+          "accent_luminance_scale": 145,
+          "edge_weight": 0.92,
+          "texture_weight": 0.18,
+          "highlight_weight": 0.05,
+          "accent_weight": 0.7,
+          "sparsity_threshold": 0.14,
+          "sparsity_range": 0.86,
+          "ink_exponent": 0.92,
+          "saturation_threshold": 0.1,
+          "saturation_range": 0.34
+        }
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      },
+      "cleanupErrors": [],
+      "driverFinal": {
+        "supported": true,
+        "events": []
+      },
+      "finished": "2026-11-04T13:57:10.622Z"
+    }
+  },
+  "driverSince": "2026-11-04T13:57:08.081Z",
+  "driverBaseline": {
+    "supported": true,
+    "events": []
+  },
+  "workerInfo": {
+    "schema": "pnggpu-cuda-info-v1",
+    "available": true,
+    "backend": "cuda",
+    "protocolVersion": 1,
+    "precision": "float32-guarded-binary64",
+    "device": {
+      "name": "NVIDIA GeForce GTX 1650 SUPER",
+      "computeCapability": "7.5",
+      "totalMemoryBytes": 4294508544,
+      "freeMemoryBytes": 3441950720,
+      "index": 0,
+      "kernelExecTimeoutEnabled": true
+    },
+    "runtimeVersion": 12080,
+    "driverVersion": 13040,
+    "limits": {
+      "maxMessageBytes": 134217728,
+      "maxTileCells": 65536,
+      "maxSamplesPerCell": 2048,
+      "maxGlyphCount": 65535,
+      "maxProjectionBytes": 134217728,
+      "maxPixelBytes": 67108864,
+      "maxProjectionWork": 16777216,
+      "memoryReserveBytes": 2147483648,
+      "maxRecoveryProjectionBytes": 33554432,
+      "maxRecoveryCells": 1024,
+      "maxKernelProjectionWork": 16777216
+    },
+    "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+    "timingSources": {
+      "gpuProjectionMs": "CUDA events, sum of sublaunches",
+      "gpuSelectionMs": "CUDA events, sum of sublaunches",
+      "uploadMs": "host steady clock, transfer plus stream synchronization",
+      "readbackMs": "host steady clock, transfer plus stream synchronization"
+    }
+  },
+  "browserVersion": "156.0.8078.80",
+  "driverAfter": {
+    "supported": true,
+    "events": []
+  },
+  "scopedParityPassed": true,
+  "cudaScopedParityPassed": true,
+  "cleanupErrors": [],
+  "afterWorkerInfo": {
+    "schema": "pnggpu-cuda-info-v1",
+    "available": true,
+    "backend": "cuda",
+    "protocolVersion": 1,
+    "precision": "float32-guarded-binary64",
+    "device": {
+      "name": "NVIDIA GeForce GTX 1650 SUPER",
+      "computeCapability": "7.5",
+      "totalMemoryBytes": 4294508544,
+      "freeMemoryBytes": 3441950720,
+      "index": 0,
+      "kernelExecTimeoutEnabled": true
+    },
+    "runtimeVersion": 12080,
+    "driverVersion": 13040,
+    "limits": {
+      "maxMessageBytes": 134217728,
+      "maxTileCells": 65536,
+      "maxSamplesPerCell": 2048,
+      "maxGlyphCount": 65535,
+      "maxProjectionBytes": 134217728,
+      "maxPixelBytes": 67108864,
+      "maxProjectionWork": 16777216,
+      "memoryReserveBytes": 2147483648,
+      "maxRecoveryProjectionBytes": 33554432,
+      "maxRecoveryCells": 1024
+    },
+    "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+    "timingSources": {
+      "gpuProjectionMs": "CUDA events, sum of sublaunches",
+      "gpuSelectionMs": "CUDA events, sum of sublaunches",
+      "uploadMs": "host steady clock, transfer plus stream synchronization",
+      "readbackMs": "host steady clock, transfer plus stream synchronization"
+    }
+  },
+  "wallTotalMs": 4202.731000000001,
+  "finished": "2026-11-04T13:57:15.242Z"
+}

@@ -1,0 +1,47 @@
+✔ default server serves the workbench and reports CUDA disabled without spawning a process (50.7164ms)
+✔ same-origin HTTP requests reuse one persistent worker and preserve binary tile results (214.4524ms)
+✔ default device auto-selection is preserved by omitting --device (162.2812ms)
+✔ browser fitter traverses HTTP, native framing and cleanup with partial final tiles (221.1262ms)
+✔ cross-origin, opaque-origin, rebinding and missing-origin mutations are rejected before launching CUDA (14.2334ms)
+✔ binary content type, methods, endpoint paths and packet geometry are checked before child creation (82.4811ms)
+✔ initialization tile caps match native memory bounds without confusing kernel chunking with HTTP tile size (0.7086ms)
+✔ declared and streamed oversized HTTP bodies fail without allocating a worker (80.4402ms)
+✔ one active session prevents competing allocations and DELETE permits a new session (183.797ms)
+✔ a session is reserved while its native initialization is pending (349.3777ms)
+✔ tiles are serialized and DELETE cancels a pending tile and releases the worker (134.1141ms)
+✔ disconnecting a tile HTTP request terminates the native worker (198.6811ms)
+✔ disconnecting initialization before receiving the session ID releases the worker (367.8884ms)
+✔ native operation timeout kills the worker and makes a retry possible (1180.9169ms)
+✔ idle sessions expire and release their native allocations (218.5583ms)
+✔ worker truncated response fails the request and releases the session (146.2711ms)
+✔ worker oversized response fails the request and releases the session (139.9163ms)
+✔ worker extra response fails the request and releases the session (141.1387ms)
+✔ worker invalid-json response fails the request and releases the session (145.2404ms)
+✔ worker init-error response fails the request and releases the session (159.6876ms)
+✔ a wrong native result count is rejected before returning binary data (101.1961ms)
+✔ device detection info-invalid reports unavailable while the workbench keeps working (78.9243ms)
+✔ device detection info-overflow reports unavailable while the workbench keeps working (79.9826ms)
+✔ device detection info-stall reports unavailable while the workbench keeps working (1031.6628ms)
+✔ server shutdown cancels an in-flight device probe (18.2885ms)
+✔ a missing executable reports a useful error and leaves the static app usable (11.5991ms)
+✔ CLI accepts explicit optional CUDA/device arguments and rejects malformed options (0.5215ms)
+✔ default exact single-cell scope and conservative full-recovery work (1.3868ms)
+✔ reject invalid numbers, flags, duplicated or ambiguous scope (0.7923ms)
+✔ aggregate budgets include repeats, tiles and both backends, without unsafe arithmetic (1.2743ms)
+✔ legacy complete suite still explicitly plans all 81 fits (0.3506ms)
+✔ CLI over-budget plan fails before reading or launching absent worker (176.0278ms)
+✔ changed binary or inconsistent source receipt is rejected before execution (14.8633ms)
+✔ stalled work stops and failing cleanup does not skip subsequent resource disposal (14.8699ms)
+✔ small real-image geometry rejects oversized, unsafe and non-integer requests (2.0487ms)
+✔ preparation page uses existing font/mask/config functions without matcher or UI preflight (6.1398ms)
+✔ prepared bytes, float32 masks, code order, candidate counts and source hashes are validated (2.1558ms)
+✔ prepared image selection preserves aggregate bounds for repeats, tiles and both backends (0.8803ms)
+✔ bad preparation/source receipts reject before worker discovery (113.3943ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5635.2638
