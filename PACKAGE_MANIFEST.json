@@ -290,8 +290,8 @@
       "bytes": 9748
     },
     "qualification/RECOVERY.md": {
-      "sha256": "ffb26f2018a7c363b7f067497ff32141413e47d65ab190d74f8be274f14ad896",
-      "bytes": 9118
+      "sha256": "e06b27994154d40def883618e586ce5645704c0e0c62a7c699ea3cabd97cead4",
+      "bytes": 9845
     },
     "qualification/arithmetic-37706c3.json": {
       "sha256": "cef91fd8c138ab11f02ed80506b046250d0385ec4540ee1c23416e2ad00c13d5",
@@ -312,6 +312,10 @@
     "qualification/recovery-ci-01fc878-selftest.json": {
       "sha256": "5487feae0fd663b1c26e40890c0a3f55ddad92120009ee729ae2c5b846873c5d",
       "bytes": 426
+    },
+    "qualification/recovery-ci-full-d31b076.json": {
+      "sha256": "cbe883ec8967ce1abebdbf494532319f87b3d275f653002d5446401f1e589662",
+      "bytes": 316902
     },
     "qualification/turing-37706c3.json": {
       "sha256": "9f2c0fb6fead155a16f1df3869bc9f80b9e79d690166ebcaba36d8b8936e91c9",

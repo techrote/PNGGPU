@@ -50,6 +50,16 @@ do not conflate their binary identities.
 | 512×512 / 1×1 | 0 | 0 | 364 |
 | 512×512 / 4×8 | 0 | 0 | 8 |
 
+The complete suite was then repeated with the independently compiled **Windows
+CI worker** against clean application source
+`d31b0763b633ef432a25307e809854471b54c1d6`. It again passed every CUDA-versus-CPU
+tuple and ANSI comparison in all eight jobs and three repetitions, including
+both 512×512 cases; cancellation/recovery also passed. Its native sources are
+identical to the worker's source `01fc878`. The separate
+[CI-binary full-suite report](recovery-ci-full-d31b076.json) preserves both
+source identities and the binary hash. This validates the local and CI compiler
+builds without conflating their measurements.
+
 Every backend ran three fits, including a 64-cell tile variant. Every CUDA
 repeat also matched CPU exactly and retained identical tuples. CUDA recovered
 all cells in these real-image cases: the conservative guard does not currently
@@ -100,7 +110,7 @@ startup. No CUDA-over-WebGPU speedup is claimed.
 
 | Workload | CPU fit ms | CUDA fit ms | CUDA kernel sum ms | Native declared buffer bytes |
 |---|---:|---:|---:|---:|
-| Five 80×40 cases, range | 425.2–511.0 | 219.1–270.0 | 12.2–16.7 | 10,883,632 |
+| Five 80×40 cases, range | 363.3–511.0 | 219.1–270.0 | 12.2–16.7 | 10,883,632 |
 | 512×512 / 1×1 | 10,401.8 | 811.5 | 417.6 | 64,623,112 |
 | 512×512 / 4×8 | 27,652.5 | 4,370.1 | 990.2 | 66,681,760 |
 
@@ -111,8 +121,9 @@ was about 59,986 cells/s for the observed fit. Both guard inspection and final
 results contribute to the 8,388,608 device-readback bytes; HTTP returns only
 final tuples. Copy and kernel intervals overlap in the wall-time hierarchy.
 
-Measured maximum sublaunch intervals in the full suite remain in the low
-milliseconds, with exact values in the report. This is workload-specific
+Measured maximum projection/selection sublaunch intervals in the local full
+suite were 1.40 / 3.13 ms. The CI-worker run records its own maxima separately.
+This is workload-specific
 evidence, not a TDR guarantee for all supported searches. The 64-cell stress
 variant is much slower. Pipeline depth remains one. No occupancy, integrated
 energy or peak total VRAM claim is made; declared buffer sums exclude runtime,
@@ -140,6 +151,7 @@ unchanged WebGPU CPU-parity discrepancy remains a separate baseline limitation.
 - [Full-suite summary and source hashes](recovery-01fc878.json).
 - [CI-worker exact CPU regressions](recovery-ci-01fc878-fixtures.json).
 - [CI-worker GPU self-test](recovery-ci-01fc878-selftest.json).
+- [CI-worker complete browser suite](recovery-ci-full-d31b076.json).
 - Local full per-tile report: `build/qualification/recovery-01fc878.json`; the
   committed summary retains its SHA-256, all comparison results, stage totals,
   tile counts, launch maxima and first/last tile details.
