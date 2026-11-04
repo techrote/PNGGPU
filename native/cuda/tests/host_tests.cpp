@@ -305,6 +305,21 @@ int main(int argc,char** argv) {
         require(equal(a,b),"Glyph-first candidate traversal retains original strict-tie winner");
       }
     }
+    for(unsigned gc:{1u,7u,31u,32u,33u,218u})for(unsigned n:{1u,2u,32u,64u,512u,2048u}) {
+      const auto atlas=make_fixture(gc,n<=64?1u:n/64,n<=64?n:64u,3);
+      const auto pixels=fixture_pixels(atlas,3,0x91ff21u+gc+n);const auto transposed=sample_major_masks(atlas);
+      bool mapping=true;
+      for(unsigned g=0;g<gc;++g)for(unsigned i=0;i<n;++i)mapping=mapping&&transposed[std::size_t(i)*gc+g]==atlas.masks[std::size_t(g)*n+i];
+      require(mapping,"Sample-major mask mapping preserves exact float32 entries");
+      for(unsigned cell=0;cell<3;++cell)for(unsigned g=0;g<gc;++g) {
+        const auto a=arithmetic::project(pixels.data(),atlas.masks.data(),atlas.statistics.data(),n,gc,cell*gc+g);
+        const auto b=arithmetic::project(pixels.data(),transposed.data(),atlas.statistics.data(),n,gc,cell*gc+g,true);
+        require(std::memcmp(&a,&b,sizeof a)==0,"Mask layout retains every FP32 projection bit");
+        const auto c=precise::project(pixels.data()+cell*n,atlas.masks.data()+std::size_t(g)*n,atlas.statistics[g],n);
+        const auto d=precise::project(pixels.data()+cell*n,transposed.data()+g,atlas.statistics[g],n,gc);
+        require(std::memcmp(&c,&d,sizeof c)==0,"Strided mask retains every binary64 projection bit");
+      }
+    }
     std::cout << "PNGGPU CUDA host tests: " << checks << " checks passed (no GPU required).\n";
     return 0;
   } catch (const std::exception& error) {

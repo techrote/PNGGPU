@@ -12,12 +12,12 @@ struct Projection { double x, y, z, score; };
 PNGGPU_EXACT inline double clamp(double x) { return x < 0 ? 0 : (x > 255 ? 255 : x); }
 // This is the original JS CPU expression tree, not the WGSL dot grouping.
 PNGGPU_EXACT inline Projection project(const std::uint32_t* pixels, const float* mask,
-                                       Float4 stats, std::uint32_t n) {
+                                       Float4 stats, std::uint32_t n, std::uint32_t mask_stride=1) {
   double sums[3]{}, dots[3]{};
   for (std::uint32_t i=0; i<n; ++i) {
     const auto p=pixels[i];
     const double channels[3]={double(p&255u), double((p>>8)&255u), double((p>>16)&255u)};
-    for (unsigned k=0; k<3; ++k) { sums[k]+=channels[k]; dots[k]+=channels[k]*double(mask[i]); }
+    for (unsigned k=0; k<3; ++k) { sums[k]+=channels[k]; dots[k]+=channels[k]*double(mask[std::size_t(i)*mask_stride]); }
   }
   double explained=0;
   for (unsigned k=0; k<3; ++k) { const double cov=dots[k]-sums[k]*double(stats.x); explained+=cov*cov/double(stats.z); }

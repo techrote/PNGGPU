@@ -242,6 +242,14 @@ std::string json_string(const std::string& value) {
   return result;
 }
 
+std::vector<float> sample_major_masks(const Atlas& atlas) {
+  const auto gc=atlas.parameters.glyph_count;const auto n=atlas.layout.samples;
+  if(atlas.masks.size()!=checked_product(gc,n,"Mask transpose size"))throw std::runtime_error("Invalid mask transpose geometry");
+  std::vector<float> out(atlas.masks.size());
+  for(std::size_t g=0;g<gc;++g)for(std::size_t i=0;i<n;++i)out[i*gc+g]=atlas.masks[g*n+i];
+  return out;
+}
+
 std::vector<Result> reference_fit(const Atlas& atlas,
                                 const std::vector<std::uint32_t>& pixels, std::uint32_t count) {
   if (count < 1 || count > atlas.parameters.tile_capacity ||

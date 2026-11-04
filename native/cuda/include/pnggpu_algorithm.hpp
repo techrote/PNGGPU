@@ -35,13 +35,14 @@ PNGGPU_HD inline float variance(float a) { return a > 1.0e-8f ? a : 1.0e-8f; }
 
 PNGGPU_HD inline Float4 project(const std::uint32_t* pixels, const float* masks,
                                const Float4* statistics, std::uint32_t samples,
-                               std::uint32_t glyph_count, std::uint32_t linear) {
+                               std::uint32_t glyph_count, std::uint32_t linear,
+                               bool sample_major_masks=false) {
   const std::uint32_t cell = linear / glyph_count;
   const std::uint32_t glyph = linear % glyph_count;
   Vec3 totals{0.0f, 0.0f, 0.0f}, dots{0.0f, 0.0f, 0.0f};
   for (std::uint32_t i = 0; i < samples; ++i) {
     const Vec3 p = rgb(pixels[std::size_t(cell)*samples+i]);
-    const float coverage = masks[std::size_t(glyph)*samples+i];
+    const float coverage = masks[sample_major_masks?std::size_t(i)*glyph_count+glyph:std::size_t(glyph)*samples+i];
     totals = add(totals, p);
     dots = add(dots, multiply(p, coverage));
   }

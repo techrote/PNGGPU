@@ -29,6 +29,11 @@ using namespace pnggpu;
 using Clock = std::chrono::steady_clock;
 constexpr unsigned block_size = 64;
 constexpr unsigned selection_block_size = 64;
+#ifdef PNGGPU_SAMPLE_MAJOR_MASKS
+constexpr bool sample_major_device_masks = true;
+#else
+constexpr bool sample_major_device_masks = false;
+#endif
 #ifdef PNGGPU_COLOR_MAJOR_FP32
 constexpr bool glyph_major_fp32 = false;
 #else
@@ -137,6 +142,7 @@ std::string info_json(const DeviceInfo& info) {
          "\"protocolVersion\":1,\"precision\":" << json_string(precision_name()) << ",\"device\":" << device_json(info)
       << ",\"runtimeVersion\":" << info.runtime_version << ",\"driverVersion\":" << info.driver_version
       << ",\"directFP32SelectionTraversal\":" << json_string(glyph_major_fp32?"glyph-major-stable-rank":"color-major-original")
+      << ",\"deviceMaskLayout\":" << json_string(sample_major_device_masks?"sample-major":"glyph-major")
       << ",\"limits\":{\"maxMessageBytes\":" << max_message_bytes
       << ",\"maxTileCells\":" << max_tile_cells << ",\"maxSamplesPerCell\":2048,\"maxGlyphCount\":" << max_glyph_count
       << ",\"maxProjectionBytes\":" << max_projection_bytes << ",\"maxPixelBytes\":" << max_pixel_bytes
@@ -157,14 +163,14 @@ __global__ void project_kernel(const std::uint32_t* pixels, const float* masks,
                                std::uint32_t start, std::uint32_t end,bool half_products) {
   const std::uint32_t linear = start+blockIdx.x*blockDim.x+threadIdx.x;
   if(linear>=end)return;
-  if(!half_products) { projections[linear]=arithmetic::project(pixels,masks,statistics,samples,glyph_count,linear);return; }
+  if(!half_products) { projections[linear]=arithmetic::project(pixels,masks,statistics,samples,glyph_count,linear,sample_major_device_masks);return; }
   // Experimental mixed precision: actual FP16 products, FP32 accumulation,
   // statistics and scoring. No Tensor Core or all-FP16 throughput claim.
   const auto cell=linear/glyph_count,glyph=linear%glyph_count;
   arithmetic::Vec3 totals{},dots{};
   for(std::uint32_t i=0;i<samples;++i) {
     const auto p=arithmetic::rgb(pixels[std::size_t(cell)*samples+i]);
-    const auto m=__float2half_rn(masks[std::size_t(glyph)*samples+i]);
+    const auto m=__float2half_rn(masks[sample_major_device_masks?std::size_t(i)*glyph_count+glyph:std::size_t(glyph)*samples+i]);
     totals=arithmetic::add(totals,p);
     dots=arithmetic::add(dots,{__half2float(__hmul(__float2half_rn(p.x),m)),
       __half2float(__hmul(__float2half_rn(p.y),m)),__half2float(__hmul(__float2half_rn(p.z),m))});
@@ -196,7 +202,8 @@ __global__ void recover_project_kernel(const std::uint32_t* pixels,const float* 
   if(linear>=end)return;
   const auto cell=cell_offset+linear/gc,g=linear%gc;
   if(!verify && results[cell].reserved==0)return;
-  projections[linear]=precise::project(pixels+std::size_t(cell)*n,masks+std::size_t(g)*n,stats[g],n);
+  const auto* mask=sample_major_device_masks?masks+g:masks+std::size_t(g)*n;
+  projections[linear]=precise::project(pixels+std::size_t(cell)*n,mask,stats[g],n,sample_major_device_masks?gc:1u);
 }
 __global__ void recover_select_kernel(const std::uint32_t* pixels,const Float4* stats,const Float4* palette,
     const precise::Projection* projections,Result* results,std::uint32_t n,std::uint32_t gc,
@@ -227,7 +234,8 @@ std::string kernel_resources_json(const DeviceInfo& info) {
     "\"selectionGuarded\":"+kernel_resource_json(select_kernel<true>,info,selection_block_size)+
     ",\"selectionFP32\":"+kernel_resource_json(select_kernel<false>,info,selection_block_size)+
     ",\"selectionFP64\":"+kernel_resource_json(recover_select_kernel,info,selection_block_size)+
-    ",\"projectionShared\":"+kernel_resource_json(project_kernel,info,block_size)+"}";
+    ",\"projectionShared\":"+kernel_resource_json(project_kernel,info,block_size)+
+    ",\"projectionFP64\":"+kernel_resource_json(recover_project_kernel,info,block_size)+"}";
 }
 
 struct TileOutput {
@@ -269,7 +277,12 @@ class Worker {
     recovery_.allocate(atlas_.layout.recovery_bytes);
     results_.allocate(atlas_.layout.result_bytes);
     const auto start = Clock::now();
-    cuda_check(cudaMemcpyAsync(masks_.data, atlas_.masks.data(), atlas_.layout.mask_bytes, cudaMemcpyHostToDevice, stream_.value), "Upload glyph masks");
+    // Host-only temporary; preserve the original atlas/statistics and GPU byte
+    // count. Its lifetime includes the upload synchronization below.
+    std::vector<float> transposed;
+    if constexpr(sample_major_device_masks)transposed=sample_major_masks(atlas_);
+    const auto* upload_masks=sample_major_device_masks?transposed.data():atlas_.masks.data();
+    cuda_check(cudaMemcpyAsync(masks_.data, upload_masks, atlas_.layout.mask_bytes, cudaMemcpyHostToDevice, stream_.value), "Upload glyph masks");
     cuda_check(cudaMemcpyAsync(statistics_.data, atlas_.statistics.data(), atlas_.layout.stats_bytes, cudaMemcpyHostToDevice, stream_.value), "Upload glyph statistics");
     cuda_check(cudaMemcpyAsync(palette_.data, atlas_.palette.data(), 16*sizeof(Float4), cudaMemcpyHostToDevice, stream_.value), "Upload ANSI palette");
     cuda_check(cudaStreamSynchronize(stream_.value), "Atlas upload completion");

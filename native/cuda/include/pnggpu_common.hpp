@@ -61,6 +61,7 @@ std::size_t checked_sum(std::size_t a, std::size_t b, const char* label);
 Layout validate_parameters(const Parameters& parameters);
 void validate_memory_budget(std::size_t allocation, std::uint64_t free_bytes);
 Float4 compute_statistics(const float* mask, std::size_t samples);
+std::vector<float> sample_major_masks(const Atlas& atlas);
 Atlas parse_init(const std::vector<std::uint8_t>& payload);
 std::vector<std::uint32_t> parse_tile(const std::vector<std::uint8_t>& payload,
                                     const Atlas& atlas, std::uint32_t& count);
