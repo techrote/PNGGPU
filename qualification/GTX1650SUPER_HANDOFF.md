@@ -4,6 +4,12 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [complete-video delivery](GTX1650SUPER_VIDEO_EXPORT.md), dated 5 November,
+exports all 719 parkour frames in FP32 at twelve grids, each with 4x8 and 8x16
+samples. It records 24 MP4 clips with audio and 17,256 ANSI frames in a verified
+local ZIP. These are offline outputs, not realtime or sustained-stability evidence;
+the 2 GiB reserve, depth one and existing defaults remain unchanged.
+
 The [direct-path continuation](GTX1650SUPER_DIRECT_PATH.md) compares identical
 prepacked inputs through HTTP/direct pipes, then measures live JS/native packing
 and a cache-blocked native gather separately. All 1,080 ordinary frames match

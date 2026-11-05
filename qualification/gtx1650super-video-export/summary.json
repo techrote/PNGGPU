@@ -1,0 +1,2060 @@
+{
+  "schema": "pnggpu-complete-video-delivery-v1",
+  "delivery": {
+    "zip": "C:\\pnggpu-CUDA\\build\\exports\\agenticparkour-fp32-delivery.zip",
+    "bytes": 1389965898,
+    "sha256": "ef18065cbb2592532ab906df784fd34eb45c42e8bf889fbdcb35acc6973628cf",
+    "videos": 24,
+    "ansiFrames": 17256,
+    "entries": 17380,
+    "crcVerified": true
+  },
+  "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+  "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+  "sourceVideoSha256": "e444f447d50891af0a1049ed08aef326733bc5dce612258c1a0a4a934d943ada",
+  "frameCount": 719,
+  "fps": 30,
+  "durationSeconds": 23.966666666666665,
+  "arithmetic": "float32-direct",
+  "variants": [
+    {
+      "key": "8x4-samples4x8-fp32",
+      "geometry": {
+        "columns": 8,
+        "rows": 4,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 4096
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "8x4-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 64,
+        "height": 64,
+        "video": "8x4-samples4x8-fp32.mp4",
+        "videoBytes": 881807,
+        "videoSha256": "1eca197cfcb00da7b121e0a893275c0439007ec41eb40bee702798e9eac92da2",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "034c6c9f2cd613c31c9c3711886604bdf980dade22f6b2bbf9b9ec290d57d01d",
+        "tuplesSha256": "49dcdeaf2331b4e7ad9b5859c23009a74e09a3071eae9452c5e794c5bb1afd61",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "fafce2bf5cc8818ce8f96389d38e681f652e4389354aaea2864585934b5d6b8c"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "67bcf75bbe4dc5fdc94e0ed842ae2c8144ec7fc923b6893a15b4ec4f0cae65b6"
+          }
+        ]
+      },
+      "reportSha256": "034c6c9f2cd613c31c9c3711886604bdf980dade22f6b2bbf9b9ec290d57d01d",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 371104,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "49dcdeaf2331b4e7ad9b5859c23009a74e09a3071eae9452c5e794c5bb1afd61",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\8x4-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "72052b878d468566f31f13d2513b21791eee3259bb391e8ab999f3a245487a1b",
+      "lastAnsiSha256": "de02613e973713b6f7620984ed96d48c915b41090a4cee97afb9c261bb73386c"
+    },
+    {
+      "key": "16x8-samples4x8-fp32",
+      "geometry": {
+        "columns": 16,
+        "rows": 8,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 16384
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "16x8-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 128,
+        "height": 128,
+        "video": "16x8-samples4x8-fp32.mp4",
+        "videoBytes": 1566123,
+        "videoSha256": "8d22bc6db742861ed9d527c8d24d2d6a251eebdece1e1266601c8b93be5f8689",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "1d446a42f4e985417bb46f8193be144a607109fd56abef3b3f505dcfd06ae7cc",
+        "tuplesSha256": "bfe2c092146073748b5bd4e9cc55af4502fcbc129f42b06dbbbebfcacbc17d62",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "ff02a0294b939b5b6d814d6681cb48360a8bbb0c40d6b5c3b9de8e8dc565bcbd"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "cbe07140f52498bd53b6eb01cf3dfdc691f47518a19f61d14a81a7be16a6eb01"
+          }
+        ]
+      },
+      "reportSha256": "1d446a42f4e985417bb46f8193be144a607109fd56abef3b3f505dcfd06ae7cc",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 1389472,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "bfe2c092146073748b5bd4e9cc55af4502fcbc129f42b06dbbbebfcacbc17d62",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\16x8-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "882b96b41732be913cfc3352fa2c59dcdee164fbb608900f1e81dc1470867553",
+      "lastAnsiSha256": "6607a716ab247ace2fb10d332a0d7d816340f431b6d9477d5a9c798d0968d172"
+    },
+    {
+      "key": "32x16-samples4x8-fp32",
+      "geometry": {
+        "columns": 32,
+        "rows": 16,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 65536
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "32x16-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 256,
+        "height": 256,
+        "video": "32x16-samples4x8-fp32.mp4",
+        "videoBytes": 3790705,
+        "videoSha256": "ddfd685463e9cd5ead5a9147fa507be3a430142d795de96e2c917679dd9bd0a8",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "7b9afbecf28473bd303fbf7eb71934dc2e4d2911460d67dfb8c5121383e2d3e9",
+        "tuplesSha256": "b56694b0c279eb18102b1cb0bab491fcdc847b2b0452833b5d0c68f4bc0f9f0b",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "5f0d0a8f6a97c1f8805843b5ee88a780a0332312b234079b089efa6f7ef7653e"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "d18beda772fc701c36976cba8e90ad59dbc2a5f2c0cbf4a7efc026d9fe8f6386"
+          }
+        ]
+      },
+      "reportSha256": "7b9afbecf28473bd303fbf7eb71934dc2e4d2911460d67dfb8c5121383e2d3e9",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 5462944,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "b56694b0c279eb18102b1cb0bab491fcdc847b2b0452833b5d0c68f4bc0f9f0b",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\32x16-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "2bb7752d66fa94839308427128fac4933d3df1cecaa90aa48ddf5c9f96388b82",
+      "lastAnsiSha256": "b71baae6fa50131088e32fe1aa177055847dc51fc581cdda9f92f28024e73dce"
+    },
+    {
+      "key": "40x12-samples4x8-fp32",
+      "geometry": {
+        "columns": 40,
+        "rows": 12,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 61440
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "40x12-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 320,
+        "height": 192,
+        "video": "40x12-samples4x8-fp32.mp4",
+        "videoBytes": 5972779,
+        "videoSha256": "708d6429abaab3205e5b7cc68ecb11a7b4fc360c7f6a68f826a224b955da6a59",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "d62eee9d75120e2bb2090860ec376c23ba7011bdb3f19a90c7d558bfe4763d7e",
+        "tuplesSha256": "e2e000f513799a443bfdff01269ab8c1d0508a0089ed375b566973218d267fea",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "8f4f5166470e55f266c59ac7351483145b815e5b854220465150c5f2866496e7"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "a0d0d91285ecc2321711e9831aa4bb4ab80b915987343520c0071cebaa841f45"
+          }
+        ]
+      },
+      "reportSha256": "d62eee9d75120e2bb2090860ec376c23ba7011bdb3f19a90c7d558bfe4763d7e",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 5123488,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "e2e000f513799a443bfdff01269ab8c1d0508a0089ed375b566973218d267fea",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\40x12-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "6d2798878ead21fb8e294e32d05796a0841cc8dc33e9750c403a7721f140a6c9",
+      "lastAnsiSha256": "e6e0de0058b057d2c534ce993d99b1b176165689a1ea10ef1390b20d8d7fbb0e"
+    },
+    {
+      "key": "80x24-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 24,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 245760
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "80x24-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 384,
+        "video": "80x24-samples4x8-fp32.mp4",
+        "videoBytes": 20110166,
+        "videoSha256": "d79deda767d43ef3fb79feec39459392cb2f900af2b3f1ebed8b7e3384ae4ccc",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "7bbc1bf822515fe16d548f784b87dc93fda9821a418e4b3a33d33acddf7421b3",
+        "tuplesSha256": "28d30b7b9eb7da68eb6cb45ac7c1e790464211673bca6b36c74f225ce14a5f29",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "1d375b42883af3f36233efcfd1444942ac0e7f985faf69f5ada20d4768628f39"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "ea88323a19ae82cfc685d9b4c881837048e689d6ebc1ab327e4fb53006a612fc"
+          }
+        ]
+      },
+      "reportSha256": "7bbc1bf822515fe16d548f784b87dc93fda9821a418e4b3a33d33acddf7421b3",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 14148512,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "28d30b7b9eb7da68eb6cb45ac7c1e790464211673bca6b36c74f225ce14a5f29",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x24-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "99572313b6aca4e1940983c6b4a5b02aaac00e0520a09e1bf622aaa6cc2a317a",
+      "lastAnsiSha256": "3b785ca85eaac8b957af26a447d9e6f2e178c3e326a4672171246929c40c5fd0"
+    },
+    {
+      "key": "80x25-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 256000
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "80x25-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 400,
+        "video": "80x25-samples4x8-fp32.mp4",
+        "videoBytes": 20679178,
+        "videoSha256": "8eb7685639772f984385a90f255f119c149de64bea17b3e4d4324acdf3d019f6",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "2721dc0e10e39c47ffc5dcf175494b3beff526b65077b4c80f2734306d9fb15f",
+        "tuplesSha256": "6626e8f18aec8c62b3df90a70f745297e010f0ba275193166501d686d75b3993",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "ee629b0ae24f4aca8b0219594c127e6600e0b0794098d3745c538cca8c34c2b1"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "dd931e1014bfef67de43a48216931a8a120997f6d72751fbc60db688f960d840"
+          }
+        ]
+      },
+      "reportSha256": "2721dc0e10e39c47ffc5dcf175494b3beff526b65077b4c80f2734306d9fb15f",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 14439072,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "6626e8f18aec8c62b3df90a70f745297e010f0ba275193166501d686d75b3993",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x25-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "0e1f5bb93cb2c5f76d46e837c4b6359141ccdec8933b9eb0e51ea9378570dbb7",
+      "lastAnsiSha256": "5180331ca406aec59480319d4cb52e59f44e9b721fa0d740c8b253ef95cb6f98"
+    },
+    {
+      "key": "80x40-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 40,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 409600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "80x40-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 640,
+        "video": "80x40-samples4x8-fp32.mp4",
+        "videoBytes": 18956348,
+        "videoSha256": "c7fd924418abaca1be786eb7df2b8a15e9eba0e647499e5a1c51a292ef943964",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "3c79edd8f0b821abe3ae205478d6caa021ce69347cd69868f7de32649c6d2304",
+        "tuplesSha256": "2caef5b35d930ad9102b52ed7608d15c0c67a748a6da28b40070f72b0b20cfd9",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "8a1dbfdfca31842a9733e8a70b3b6ae61f31bc7296cefe66ab87d9349f0fd55c"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "4391d09f1e8dda15bbdf45f18150fbed3d10132952730928345b9a6bfca1ecdc"
+          }
+        ]
+      },
+      "reportSha256": "3c79edd8f0b821abe3ae205478d6caa021ce69347cd69868f7de32649c6d2304",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 18797472,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "2caef5b35d930ad9102b52ed7608d15c0c67a748a6da28b40070f72b0b20cfd9",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x40-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "c732c4dd361931d733dfc090c5eb9a607db0223987f8766e2f3ae329f1015281",
+      "lastAnsiSha256": "2080352eb43188c5009b1d832e073736570aa329b44e690601cd26a4d8569771"
+    },
+    {
+      "key": "120x34-samples4x8-fp32",
+      "geometry": {
+        "columns": 120,
+        "rows": 34,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 522240
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 7,
+          "y": 2,
+          "width": 840,
+          "height": 476
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "120x34-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 960,
+        "height": 544,
+        "video": "120x34-samples4x8-fp32.mp4",
+        "videoBytes": 39445980,
+        "videoSha256": "4b3ed5f04a55529d47654f5aa52398de40bd90ed9a5b3b3837c7cd58ea33a9c2",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "0a119cba9474ee4d3daa15f21a0da018a3dc2f0dea7718eed0c97e51fb86c334",
+        "tuplesSha256": "7b553a4abe6b1401c27bacf67c5500982cc2e59aa27676a4b80de8e22bcaa225",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "f3cad3e9a6cb19c8943ddd3d13fac699bcc85050be5d7c9a7fa314d7dd6cfd90"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "8522bdc15181987c52822294197f0a486daff7471135643599079f60bf9eafc3"
+          }
+        ]
+      },
+      "reportSha256": "0a119cba9474ee4d3daa15f21a0da018a3dc2f0dea7718eed0c97e51fb86c334",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 21993632,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "7b553a4abe6b1401c27bacf67c5500982cc2e59aa27676a4b80de8e22bcaa225",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\120x34-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "a5ca81cb0bf9f4fa6816557f8d4c8bcec7134a7444ca3ab657d82b90ec28714b",
+      "lastAnsiSha256": "5e7dde6d9d8fb8f2b119f3d17c513bb0fa00a8ce4dd16113c71784e5f3a805ce"
+    },
+    {
+      "key": "160x45-samples4x8-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 45,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 921600
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "160x45-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "video": "160x45-samples4x8-fp32.mp4",
+        "videoBytes": 67216994,
+        "videoSha256": "974b2943a6f32f8aa119bcaa877c799aa04e8cea8855f68acc6004185bbfc5f6",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "0cbf68e41d54088a26da1c4f20f5c728478539ea3f8b4dcc331bb8c461bbf92c",
+        "tuplesSha256": "e6af7c3d0f11d5fda7b3285789ddad8cd5610be07f60ba336b86ae79bd144e58",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "d5661f5369ea9de94a39bc443c9adfd34141b71e6de5acaf33592a91ca4ffd07"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "ca38fc7438d568b9276275a8e3cebcfa160e669b246784f60613893fb7c60659"
+          }
+        ]
+      },
+      "reportSha256": "0cbf68e41d54088a26da1c4f20f5c728478539ea3f8b4dcc331bb8c461bbf92c",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 33325472,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "e6af7c3d0f11d5fda7b3285789ddad8cd5610be07f60ba336b86ae79bd144e58",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\160x45-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "c5e0934139502971495361fd62a4d65ac1b7a16c39f0fdacd40fa3edab702558",
+      "lastAnsiSha256": "bd077e411a8b088b0c82481162694955c183cf757a327a52223c29fb76498529"
+    },
+    {
+      "key": "160x80-samples4x8-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 80,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 1638400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "160x80-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 1280,
+        "height": 1280,
+        "video": "160x80-samples4x8-fp32.mp4",
+        "videoBytes": 65824067,
+        "videoSha256": "31d7c9d2f6e171b83366df0419b89531ea22c181ea9fb598a58254cec933d56d",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "2b538f276738f9c47a36f5a2e01d9fa44875644f6ceff235fce06842c32a2d01",
+        "tuplesSha256": "e873bd132810be6e9972c83c67b5517c7010fd72d606810fafd06ba70f510029",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "f20adcd131fe0e82a81d31f1355a32c6ecd6d4d28d0261cd5d35a2f846fc411a"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "5523b377697d3822b9fbc88d879f0cd23d136e856ee445bf62080d75d5c03af9"
+          }
+        ]
+      },
+      "reportSha256": "2b538f276738f9c47a36f5a2e01d9fa44875644f6ceff235fce06842c32a2d01",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 42111280,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "e873bd132810be6e9972c83c67b5517c7010fd72d606810fafd06ba70f510029",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\160x80-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "a1fb87d5447731ff6ea7c0861b9dbbda4ae2e4a78dc133e29d234f564575a804",
+      "lastAnsiSha256": "f5e8f4a2c0b22773e05fae4775b30744aff63901679167bd7760c8ad5fd4c8af"
+    },
+    {
+      "key": "320x90-samples4x8-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 90,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 3686400
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "320x90-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 2560,
+        "height": 1440,
+        "video": "320x90-samples4x8-fp32.mp4",
+        "videoBytes": 245445008,
+        "videoSha256": "c775247352aa0b8e14ea65b61969b48f258805aef21ff81752a7b59705f1b146",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "25747376013b78624d396e9b738ef816f5e9f0af716c1f3258000587f0ff391d",
+        "tuplesSha256": "941df96621e868e304fd83957a32f9412f55f9e284c076bc89c3f7ffa1d00b72",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "2d836106cd02bff1def35005c31a445344dc7755044e1f23f156750029a9f907"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "a8deba2571fca6c03193f29fdafa19f0b1bdb40121b67c0b91f6d1ab58cf0fe6"
+          }
+        ]
+      },
+      "reportSha256": "25747376013b78624d396e9b738ef816f5e9f0af716c1f3258000587f0ff391d",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 77051120,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "941df96621e868e304fd83957a32f9412f55f9e284c076bc89c3f7ffa1d00b72",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\320x90-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "f3909325e22d7233f6ae52810cbb2c8297c8d21a532180effe1bdff8bc68204a",
+      "lastAnsiSha256": "e72ea532b1275e63bc33efe0475354be3e8aa8a073d48892a984c0b38651727f"
+    },
+    {
+      "key": "320x160-samples4x8-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 160,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 6553600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "320x160-samples4x8-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 2560,
+        "height": 2560,
+        "video": "320x160-samples4x8-fp32.mp4",
+        "videoBytes": 239829138,
+        "videoSha256": "217a3435977160548f49188600441d2433a2cbcb625bc0cfaeca715bc4e5cf3d",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "46190394365e4c320e15652e308d36628170efc838e338cf36b3a84f2bf7a395",
+        "tuplesSha256": "52eab247c825f3b6bb52836456d128f03192d3fdc7aa50062d1fe00feafb6277",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "6dbc8e5bcfa6c4e51aefcdaa81a9f82c1de33ed7e14ecc38b528bf78a3143121"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "d06eb1a6ea9626ee50c922562bdeccaadbd38a4a2cca4258d056f207df3643ea"
+          }
+        ]
+      },
+      "reportSha256": "46190394365e4c320e15652e308d36628170efc838e338cf36b3a84f2bf7a395",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 77051120,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "52eab247c825f3b6bb52836456d128f03192d3fdc7aa50062d1fe00feafb6277",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\320x160-samples4x8-fp32\\report.json",
+      "firstAnsiSha256": "eea67af54949ce5013274e625df6d7c085beebee725dd93f4dc14341cdf2ebfb",
+      "lastAnsiSha256": "60ee2d40536a48a17a43a06290cc35913d86689e320b5d45f1c0047f7caa688d"
+    },
+    {
+      "key": "8x4-samples8x16-fp32",
+      "geometry": {
+        "columns": 8,
+        "rows": 4,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 16384
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "8x4-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 64,
+        "height": 64,
+        "video": "8x4-samples8x16-fp32.mp4",
+        "videoBytes": 833693,
+        "videoSha256": "ed4c329850d1d6fd250106740493287c84681b54cc925708585dc9a8538aa7ca",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "542825646a158c599b1dc24ac62c7b28bb247534838b8a3fe2f6a1321de47508",
+        "tuplesSha256": "bf45312d5f8869659584c52f60edc2c41321b00791a91f049e9a91bbc1e609dc",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "a18c891918eafee4cdb23e69f536635c30877715786d9af0fc45624520895263"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "9a19232c68d278af5e54c0413750a1396584761da03b8b28d144ddc87e8bb79f"
+          }
+        ]
+      },
+      "reportSha256": "542825646a158c599b1dc24ac62c7b28bb247534838b8a3fe2f6a1321de47508",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 467104,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "bf45312d5f8869659584c52f60edc2c41321b00791a91f049e9a91bbc1e609dc",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\8x4-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "e64bf3ee2eb104d9f0c15af9806509961542e1217a2ff5ac45ecd0205a6fc823",
+      "lastAnsiSha256": "3ecdd4e974c555d6a497fb5d0cc1f994d4a227492e701a99b3ab0d94e478bd10"
+    },
+    {
+      "key": "16x8-samples8x16-fp32",
+      "geometry": {
+        "columns": 16,
+        "rows": 8,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 65536
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "16x8-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 128,
+        "height": 128,
+        "video": "16x8-samples8x16-fp32.mp4",
+        "videoBytes": 1333123,
+        "videoSha256": "815af346d25c8f376bcab7df3583f958bf01e27161a97b07dc40317bd83830e8",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "925a82181f3e5e5afe401676040894c5e7c2ebd8e35d3ac14a485da12bb14454",
+        "tuplesSha256": "10a07e1b34f0cf2f47f16dd7c9c04fb0fb649b11fe1f0633786f27cea3d3d44e",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "a1ff048306b0d7fb89b00acfe294368f790390e26e2d6d35ba7e8b4ea6529af7"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "fcf2287ea22e249aac51684053b3796ff739653b84f727fe27510a67b7e91738"
+          }
+        ]
+      },
+      "reportSha256": "925a82181f3e5e5afe401676040894c5e7c2ebd8e35d3ac14a485da12bb14454",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 1522336,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "10a07e1b34f0cf2f47f16dd7c9c04fb0fb649b11fe1f0633786f27cea3d3d44e",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\16x8-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "7edf88ba4887e4f5d47238c8ed995f7604259506e2bec7fe46d93a6d6c376f21",
+      "lastAnsiSha256": "08881a5f2846e3b0bce898af716a4cb8b6b43091158e6063e7ff689d2df09b2f"
+    },
+    {
+      "key": "32x16-samples8x16-fp32",
+      "geometry": {
+        "columns": 32,
+        "rows": 16,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 262144
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "32x16-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 256,
+        "height": 256,
+        "video": "32x16-samples8x16-fp32.mp4",
+        "videoBytes": 3016051,
+        "videoSha256": "a158815ef718d51404e5ccc48f4e909f926bd060dacc57f9feb45d07c8602e86",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "32bcfa7f96d8f1fdaa8f3c55913cd80da106fae112a798f36450d31478914034",
+        "tuplesSha256": "76bea702f7f88c9839ddba6663be97418b60db88215aa3bafc8e5ad152abaa51",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "d55f2e569a6c6db5f0a8babf1740711b19bfe6d4022180214fb5cfc8bfafc61d"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "5208de46eb496aca6606228919db323f2f1665c4e88fe175857abdf8539c249b"
+          }
+        ]
+      },
+      "reportSha256": "32bcfa7f96d8f1fdaa8f3c55913cd80da106fae112a798f36450d31478914034",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 5743264,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "76bea702f7f88c9839ddba6663be97418b60db88215aa3bafc8e5ad152abaa51",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\32x16-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "4ba7673814ea824c653dddf23a59216671311a75772618a9ca1df48ec0f7433f",
+      "lastAnsiSha256": "001179374c9c9c53dc86dab9317074b0f42c9bd49bfe34a5877fe70242c250c7"
+    },
+    {
+      "key": "40x12-samples8x16-fp32",
+      "geometry": {
+        "columns": 40,
+        "rows": 12,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 245760
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "40x12-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 320,
+        "height": 192,
+        "video": "40x12-samples8x16-fp32.mp4",
+        "videoBytes": 4627686,
+        "videoSha256": "d4335b19e73c57ea259fe90e976954a7cedd913b3fce2ec643fffe349e10a08b",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "169fb4cc6d703affe1e36beb8b4852fdb82094d55faac8483f9fee964708d7e4",
+        "tuplesSha256": "a34baf5b909bcbc8b6896a26932567c6cf82d8e2c9e2ec8b1f03ac2c6ca4637e",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "0ccd98be74d290748f87ab31e840449294982f859263ec087486fcd15162af51"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "06305ac15ed6978f1b0d648ec21ec883ea80230e69a535ed0f8959ab737c1120"
+          }
+        ]
+      },
+      "reportSha256": "169fb4cc6d703affe1e36beb8b4852fdb82094d55faac8483f9fee964708d7e4",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 5391520,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "a34baf5b909bcbc8b6896a26932567c6cf82d8e2c9e2ec8b1f03ac2c6ca4637e",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\40x12-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "31ef8023e8a0d614021de99990fd15ad2494420d6fc86521155544b4985c388b",
+      "lastAnsiSha256": "5028fd3a8012528b2fe0546720541ef5fa8bf01f5cc824a4d22716f56579612d"
+    },
+    {
+      "key": "80x24-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 24,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 983040
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "80x24-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 384,
+        "video": "80x24-samples8x16-fp32.mp4",
+        "videoBytes": 15119086,
+        "videoSha256": "c0f2b5b9de2d443f1457daa2d3dc5285a15952b21b60b2b565f5ed73195d8ef0",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "835aa82307220d2b578329b4e008388b0933c0cff176b5a4d4d745f953e92a05",
+        "tuplesSha256": "4a59ceafc40fecc1188463999a5510ba7d182d03758b71d969fee1158691255e",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "28920c0e828ff1b795aadff3508aca4bcbe96421d8269d0dfc8bd3ee85d5bf8d"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "321aeb8627a9dec1416688876aeff45a0414df18448b27bbcf81d339f330ff3b"
+          }
+        ]
+      },
+      "reportSha256": "835aa82307220d2b578329b4e008388b0933c0cff176b5a4d4d745f953e92a05",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 14969504,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "4a59ceafc40fecc1188463999a5510ba7d182d03758b71d969fee1158691255e",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x24-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "0e639cc286c517ee7409422053b4d6048a86e2292b96b0209ec482fe68fc9a82",
+      "lastAnsiSha256": "361f134cb0e240703cd73c66068fff729ffaf762234244075e3a3cc27087ec74"
+    },
+    {
+      "key": "80x25-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 1024000
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "80x25-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 400,
+        "video": "80x25-samples8x16-fp32.mp4",
+        "videoBytes": 15628246,
+        "videoSha256": "d57a96ab5dd88c4a2ef1e30f3389498a6b701d9687f82a7cf98bd5202eac032f",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "0abb2f5775dc6f5364ec3d79ae40665725192bf587ea0514e102ebfb96d20e2d",
+        "tuplesSha256": "3cb160bb1025c5d98a33d5e71b3568406fd18129232b1cae44a1509f57ea8c24",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "0d8fb93dd2e5423657a512854d1509914eb09b42356b6ada5810a66fe8bc8e01"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "6621f422b6e736cce812a2cff0c0547d0c7054e35632d44c24fe253c1cca57c8"
+          }
+        ]
+      },
+      "reportSha256": "0abb2f5775dc6f5364ec3d79ae40665725192bf587ea0514e102ebfb96d20e2d",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 15290784,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "3cb160bb1025c5d98a33d5e71b3568406fd18129232b1cae44a1509f57ea8c24",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x25-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "b0f0c0acc08f303a7507d3d8588bb5f1a4bbee3453e7b68febdaed31d27fcaf9",
+      "lastAnsiSha256": "6fb8bd1c46ed66597cf7870a275a6f22ed267f93555fcff8eb2e81dd724c7a40"
+    },
+    {
+      "key": "80x40-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 40,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 1638400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "80x40-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 640,
+        "height": 640,
+        "video": "80x40-samples8x16-fp32.mp4",
+        "videoBytes": 14359590,
+        "videoSha256": "af0d18348d8ea29cb7548b827f74c9a10f9ac46d0c2394b415af0ab288180272",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "4107cfb2b5e2166e3e8df7578973e16c84cadc11567519631286e683393bbf12",
+        "tuplesSha256": "02cff0c3b03170c4509592ffe95d0cd85a81b55e6f6bf90f9399f6e4ed959364",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "145f4fc233e9af1a19bc31b27303067a0b9d2f89010eacedf1eb9559bc7743ad"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "bf4a9dc7633e8eaef5ea8799bf015aeede67e53391fc42d161ff34dd6cf17909"
+          }
+        ]
+      },
+      "reportSha256": "4107cfb2b5e2166e3e8df7578973e16c84cadc11567519631286e683393bbf12",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 20109984,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "02cff0c3b03170c4509592ffe95d0cd85a81b55e6f6bf90f9399f6e4ed959364",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\80x40-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "734d94807b860f0e6c02b85305dac85d887180df45daacc99ad7c7c2467d16ec",
+      "lastAnsiSha256": "984a8d6c7f10d74e0442769e2acbd4051f0432b9774bffc185456676b4796cf5"
+    },
+    {
+      "key": "120x34-samples8x16-fp32",
+      "geometry": {
+        "columns": 120,
+        "rows": 34,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 2088960
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 7,
+          "y": 2,
+          "width": 840,
+          "height": 476
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "120x34-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 960,
+        "height": 544,
+        "video": "120x34-samples8x16-fp32.mp4",
+        "videoBytes": 29884180,
+        "videoSha256": "837d11104a7153f851c5ab29cc6d766c383855dcd16f668cd30cb409104dc8cf",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "104e6cd366ce36e794b36137368089051880033dc11878f11f6a897ed9ed3218",
+        "tuplesSha256": "d34f855fdd6e6418c7574f24da94389e8cf52b97395e58fee9513efda9aae72e",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "29b306ee3adeaa76607865d18e00021a27ac6aad62ef533f0f88980c98652c74"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "14edf65e8cf8144b3f2aee877560e81e9b9f17d240a6f734d642bd04943864b3"
+          }
+        ]
+      },
+      "reportSha256": "104e6cd366ce36e794b36137368089051880033dc11878f11f6a897ed9ed3218",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 23644064,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "d34f855fdd6e6418c7574f24da94389e8cf52b97395e58fee9513efda9aae72e",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\120x34-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "1dda74d91fd303157e7ea5708c26ec547bd070ee4867c37a18684d98a150ddaf",
+      "lastAnsiSha256": "3a0395fcbda82032f6f7449c031cb3a8f8b17f10b95eb7c47c81f8bd62e41d66"
+    },
+    {
+      "key": "160x45-samples8x16-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 45,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 3686400
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "160x45-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "video": "160x45-samples8x16-fp32.mp4",
+        "videoBytes": 50571149,
+        "videoSha256": "a04f45b828cc416c9928d262b61a1dbd6d2be8491c05a3963367c29f60b34166",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "5303e57f9008fe33897894e20980a6eef0c21c17e99883a0ce9757c4aa6b7f86",
+        "tuplesSha256": "3077f0861636ede8246c1b4db2dd95ed4d6e04a596cb22d686e1edc91ade27b2",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "83abae1843119c78d0e34eac3d20fbc779f7d9631475207e284cd9506e253576"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "310cea92bf816cef41fe0145f2d186945dd77446ed018672fbcf7923042b16f7"
+          }
+        ]
+      },
+      "reportSha256": "5303e57f9008fe33897894e20980a6eef0c21c17e99883a0ce9757c4aa6b7f86",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 36173984,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "3077f0861636ede8246c1b4db2dd95ed4d6e04a596cb22d686e1edc91ade27b2",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\160x45-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "190e5cec3c2106b964d78861dc49d382c109cff90643a99935f87e4370ece4b6",
+      "lastAnsiSha256": "1a474787bb0e5cc2757ae1037df48a9c38ee17420cabdd06d4cf9abaa566a719"
+    },
+    {
+      "key": "160x80-samples8x16-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 80,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 6553600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "160x80-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 1280,
+        "height": 1280,
+        "video": "160x80-samples8x16-fp32.mp4",
+        "videoBytes": 49746967,
+        "videoSha256": "6c4398f8ccc85a59792f3b921a21c6b7fea72e63db7b1e8328ccf8f609d5164e",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "5bb4bec4b5ef28246a0a15cef85309679cbe97f4879effc0c68f272cc9529f06",
+        "tuplesSha256": "8fd5e976de2e2fe3570d7d02561fa58e38acc5c91bf12fbb80ca57cb7403d0c1",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "2da93ed649278e025dc4367fe959461e584988df8b4d6085506335f88a67adb6"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "b6493e6aa1e666c4dced40cef860c0dd10c8a6bac39b49f26e1d03bbd411192a"
+          }
+        ]
+      },
+      "reportSha256": "5bb4bec4b5ef28246a0a15cef85309679cbe97f4879effc0c68f272cc9529f06",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 45888688,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "8fd5e976de2e2fe3570d7d02561fa58e38acc5c91bf12fbb80ca57cb7403d0c1",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\160x80-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "c8bf371cda64df0a77f7e3c89a2dea950748c33793d49a914761109d8d338d18",
+      "lastAnsiSha256": "2ef35050851027fb1cb7e52afbc982e26a7546efcbe5a192ab22c3fb696f5c8d"
+    },
+    {
+      "key": "320x90-samples8x16-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 90,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 14745600
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "render": {
+        "completed": true,
+        "key": "320x90-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 2560,
+        "height": 1440,
+        "video": "320x90-samples8x16-fp32.mp4",
+        "videoBytes": 185887191,
+        "videoSha256": "8b7c48229bdd1be19bc67039060865a0e2c5114e51304b68c648754e57f495b7",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "24b44233945f43fbfccca2f1e96e4b43c784eed2db8d45efee48b8e0fb5ed718",
+        "tuplesSha256": "ff1b58d4ccdd5726d4540954fec5d47ac29120b7f6667a3a60bfea9d12812699",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "00d7df1f05f965fe3f33349364549ddbb425dbb479e7fbfe7e82ad18c19524e5"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "c17d8bd0fa62c46641063ba2cd4c85a89864eaa0d9e4015dca0fe3a965a83022"
+          }
+        ]
+      },
+      "reportSha256": "24b44233945f43fbfccca2f1e96e4b43c784eed2db8d45efee48b8e0fb5ed718",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 84522608,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "ff1b58d4ccdd5726d4540954fec5d47ac29120b7f6667a3a60bfea9d12812699",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\320x90-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "e70b80f9bdb392ce0e0bc462ba4cd23ba0e22ca4d71976bb3b500c3baa327f18",
+      "lastAnsiSha256": "664b07c939d1afea6f0b9272e52470ebffab729adf86390bc46165296c70ec40"
+    },
+    {
+      "key": "320x160-samples8x16-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 160,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 26214400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "render": {
+        "completed": true,
+        "key": "320x160-samples8x16-fp32",
+        "frames": 719,
+        "fps": 30,
+        "width": 2560,
+        "height": 2560,
+        "video": "320x160-samples8x16-fp32.mp4",
+        "videoBytes": 183930920,
+        "videoSha256": "7a77f3838fe717d2e2ad686315104d98643afa235dc65fb03394df0094a8eaf0",
+        "audio": true,
+        "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+        "reportSha256": "db2c97ed2f765c7f37d8845a45e9560445bfd4adb48283e464f5724f6333581f",
+        "tuplesSha256": "bf78b904b832ea521e171f490b955841162c9c2b5e43c84e5cf85d6cff0afff3",
+        "videoDuration": 23.966667,
+        "audioDuration": 23.957333,
+        "rendererMatchesOriginalPng": true,
+        "rendererMatchesScalar": true,
+        "previews": [
+          {
+            "file": "preview_0001.png",
+            "rgbSha256": "f065ca941d023f90a784a272f295892b64628a10bbdf774a761cfffdd7ec777f"
+          },
+          {
+            "file": "preview_0719.png",
+            "rgbSha256": "3ad1e466802f4229e33a05e7544d8172adbd2d943d8de28dccb315a8e6dae15a"
+          }
+        ]
+      },
+      "reportSha256": "db2c97ed2f765c7f37d8845a45e9560445bfd4adb48283e464f5724f6333581f",
+      "ansiFrames": 719,
+      "maxDeclaredGpuBytes": 84522608,
+      "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "tuplesSha256": "bf78b904b832ea521e171f490b955841162c9c2b5e43c84e5cf85d6cff0afff3",
+      "rawReport": "build\\exports\\agenticparkour-fp32-delivery\\320x160-samples8x16-fp32\\report.json",
+      "firstAnsiSha256": "e7843d94ccbd8094b466efc05dcf4c630ba08bca9048dfe60dbb026757107699",
+      "lastAnsiSha256": "97e46cb3170ca488bacdc338ce5011e8f068d940afe5792e3408638c9869ee06"
+    }
+  ],
+  "qualificationAccepted": false,
+  "reserveBytes": 2147483648,
+  "depth": 1,
+  "newDriverErrors": 0,
+  "contexts": 576,
+  "frameFitsIncludingPacketComparisons": 17280,
+  "nativeCellsIncludingPacketComparisons": 161786880,
+  "minFreeBeforeContexts": 3441950720,
+  "maxDeclaredGpuBytes": 84522608,
+  "maxProjectionLaunchMs": 1.406463981,
+  "maxSelectionLaunchMs": 1.415583968
+}

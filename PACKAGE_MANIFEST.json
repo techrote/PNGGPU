@@ -310,8 +310,8 @@
       "bytes": 13953
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "72398e720e208715a4f2401c7d14d6807b8befcfab2d040a0623d2668ba609d9",
-      "bytes": 11896
+      "sha256": "fd5e4cc1bd77198c89e16a9537a0a0d04baf852030e4a8e187789c70a6424d88",
+      "bytes": 12289
     },
     "qualification/GTX1650SUPER_MOTION.md": {
       "sha256": "8ba6fcbc764bc524d26aa683d8363b64c0271eb3488ea7ece151bdcab7d863ba",
@@ -344,6 +344,10 @@
     "qualification/GTX1650SUPER_STAGED_OUTPUTS.md": {
       "sha256": "7a1c71eeeccc5033a991930b348d2f5ec2e77fde7a04a9076c859f17062be447",
       "bytes": 8418
+    },
+    "qualification/GTX1650SUPER_VIDEO_EXPORT.md": {
+      "sha256": "a9d58abcea72c29f7aa43670728f55cafa707b0d96265db245b94e9f19a06fb1",
+      "bytes": 6331
     },
     "qualification/GTX1650SUPER_WARM_FRAMES.md": {
       "sha256": "79f067051f928e3f9d469aa7cbcd24f82b5ad3fb81772c5535f9f72ce9a40cbf",
@@ -2080,6 +2084,34 @@
     "qualification/gtx1650super-staged-outputs/summary.json": {
       "sha256": "073446b902e2740181dc5d25e534a98fb1508df572a36c4ca0110c6af8ffabb2",
       "bytes": 10315
+    },
+    "qualification/gtx1650super-video-export/delivery.json": {
+      "sha256": "58dcd82060487d94fdf530594f7d0fc0f5d0e46b944c0f733a0bf02c1ec051df",
+      "bytes": 266
+    },
+    "qualification/gtx1650super-video-export/device-after.json": {
+      "sha256": "dafbca01ba7592d90580ca6d36417cb7def964f1cb567afbe3aeecd143ffeb1f",
+      "bytes": 2555
+    },
+    "qualification/gtx1650super-video-export/driver-after.json": {
+      "sha256": "b1118650da2a6aa400b34f1e00163ab0337da82f2da42ae89896c903d5d18aed",
+      "bytes": 39
+    },
+    "qualification/gtx1650super-video-export/independent-audit.json": {
+      "sha256": "cfab5b54e9ff897f1f3c7e37cf8d887043980aa46889177ff9d4a3b98d8ad219",
+      "bytes": 35302
+    },
+    "qualification/gtx1650super-video-export/nvidia-after.txt": {
+      "sha256": "b597ac532e2268bae10f6f9552f749c0cac4296894a26ce7c70587f6993ee177",
+      "bytes": 53
+    },
+    "qualification/gtx1650super-video-export/scope-tests.txt": {
+      "sha256": "52c0ffa77b569ad1cbc6113bbfce2eb340b72a956ccd5bce1d6cb8519ba40efa",
+      "bytes": 396
+    },
+    "qualification/gtx1650super-video-export/summary.json": {
+      "sha256": "35cc5aa89147eb1b7c7cad898059c24473ec2b5935311a6a4b62ccd355c118b9",
+      "bytes": 78286
     },
     "qualification/gtx1650super-warm-frames/frames.csv": {
       "sha256": "3b9fff5773424fdc1527e64e091084b8fc7568d167bef1fb1361060c28856b73",

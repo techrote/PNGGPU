@@ -1,0 +1,11 @@
+✔ offline delivery has 24 bounded FP32 geometry/sample variants (1.4456ms)
+✔ legacy square layouts retain the scene and cropped layouts have exact rendered aspect (1.6982ms)
+✔ doubling samples doubles each sample-raster dimension without changing character rendering (0.5735ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 101.183
