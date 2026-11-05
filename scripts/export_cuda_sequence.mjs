@@ -43,7 +43,7 @@ try{
         const go=performance.now();const actual=await Promise.race([withTimeout(frames.fitFrame(pixels,{tilePacketProvider:({data,tileStart,tileCount})=>packRasterTileRgba(data,tileStart,tileCount)}),10000,()=>fit.close()),monitor.failure]);
         const fitMs=performance.now()-go;monitor.assertHealthy();
         // First exported frame in each geometry also checks both packet formats.
-        if(index===0){const canonical=await withTimeout(frames.fitFrame(pixels,{tilePacketProvider:({data,tileStart,tileCount})=>{const p=new Uint8Array(8+tileCount*g.sampleWidth*g.sampleHeight*4);packTileRgba(data,tileStart,tileCount,p);return p;}}),10000,()=>fit.close());assert.deepEqual(actual.chosen,canonical.chosen);assert.deepEqual(actual.fg,canonical.fg);assert.deepEqual(actual.bg,canonical.bg);report.packetEquivalenceFirstFrame=true;}
+        if(index===0){const canonical=await Promise.race([withTimeout(frames.fitFrame(pixels,{tilePacketProvider:({data,tileStart,tileCount})=>{const p=new Uint8Array(8+tileCount*g.sampleWidth*g.sampleHeight*4);packTileRgba(data,tileStart,tileCount,p);return p;}}),10000,()=>fit.close()),monitor.failure]);monitor.assertHealthy();assert.deepEqual(actual.chosen,canonical.chosen);assert.deepEqual(actual.fg,canonical.fg);assert.deepEqual(actual.bg,canonical.bg);report.packetEquivalenceFirstFrame=true;}
         const b=Buffer.alloc(actual.chosen.length*4);for(let i=0;i<actual.chosen.length;i++){b.writeUInt16LE(actual.chosen[i],i*4);b[i*4+2]=actual.fg[i];b[i*4+3]=actual.bg[i];}
         const ansi=PNG2ANSI.ansiBytes({codes:v.codes},actual,v.config),name=`frame_${String(index+1).padStart(4,'0')}.ans`;
         await packed.writeFile(b);tupleHash.update(b);await writeFile(resolve(out,'ansi',name),ansi);

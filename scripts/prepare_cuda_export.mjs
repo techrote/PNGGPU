@@ -3,6 +3,7 @@ import {readFile,writeFile,readdir,mkdir} from 'node:fs/promises';
 import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {execFileSync} from 'node:child_process';
 import {createWorkbenchServer} from './serve.mjs';import {imagePreparationHtml,sha256} from './cuda_image_fixture.mjs';
 import {EXPORT_SIZES,exportGeometry,exportCrop,exportFilter} from './cuda_export_plan.mjs';
+import {withTimeout,cleanupSteps} from './qualification_lifecycle.mjs';
 const [playwright,inputDirectory,output]=process.argv.slice(2);if(!output)throw Error('Usage: PLAYWRIGHT PNG_DIRECTORY OUTPUT_PLAN');
 const root=resolve(import.meta.dirname,'..');process.chdir(root);const input=resolve(inputDirectory);
 const names=(await readdir(input)).filter(n=>/^frame_\d{4}\.png$/.test(n)).sort();
@@ -26,15 +27,20 @@ try{
   plan.browserVersion=browser.version();
   for(const [sw,sh] of [[4,8],[8,16]])for(const [columns,rows] of EXPORT_SIZES){
     const geometry=exportGeometry(columns,rows,sw,sh,names.length),layout=exportCrop(video.width,video.height,columns,rows);
-    const atlas=await page.evaluate(async g=>{
+    const atlas=await withTimeout(page.evaluate(async g=>{
       const config=qualification.makeConfig({columns:g.columns,rows:g.rows,sampleW:g.sampleWidth,sampleH:g.sampleHeight,foreground:6,background:5});
       const m=await qualification.masksFor(PNG2ANSI.vocabularies()[config.vocabulary],config.canvas);
       return {config,masks:m.low.map(v=>Array.from(v)),codes:m.codes,palette:PNG2ANSI.PALETTE,
         highAtlas:{width:config.canvas.cell_width,height:config.canvas.cell_height,alpha:m.hi.flatMap(v=>Array.from(v,x=>Math.round(x*255)))}};
-    },geometry);
+    },geometry),10000,()=>browser.close());
     atlas.highAtlas.alpha=Buffer.from(atlas.highAtlas.alpha).toString('base64');
     plan.variants.push({key:`${columns}x${rows}-samples${sw}x${sh}-fp32`,geometry,layout,filter:exportFilter(geometry,layout),...atlas});
   }
   plan.completed=true;await mkdir(resolve(output,'..'),{recursive:true});await writeFile(output,JSON.stringify(plan,null,2)+'\n');
   console.log(JSON.stringify({plan:output,variants:plan.variants.length,frames:plan.frameCount,totalFrames:plan.frameCount*plan.variants.length}));
-}finally{await browser?.close();server.closeAllConnections();await new Promise(r=>server.close(r));}
+}catch(error){plan.completed=false;plan.error=error.stack;process.exitCode=1;}
+finally{
+  plan.cleanupErrors=await cleanupSteps([['browser',()=>browser?.close()],['server',()=>{server.closeAllConnections();return new Promise(r=>server.close(r));}]],10000);
+  if(plan.cleanupErrors.length){plan.completed=false;process.exitCode=1;}
+  await mkdir(resolve(output,'..'),{recursive:true});await writeFile(output,JSON.stringify(plan,null,2)+'\n');
+}

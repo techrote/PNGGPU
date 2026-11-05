@@ -28,6 +28,7 @@ def render(data,table,columns,rows):
 def main():
     plan_path,key,folder=sys.argv[1:];plan=load(plan_path);v=next(v for v in plan['variants'] if v['key']==key)
     out=Path(folder);r=load(out/'report.json');assert r['completed'] and not r.get('error') and not r['cleanupErrors']
+    assert r['key']==key and r['geometry']==v['geometry'] and r['planSha256']==digest(Path(plan_path).read_bytes())
     raw=(out/'tuples.bin').read_bytes();assert digest(raw)==r['tuplesSha256'] and len(raw)==r['tuplesBytes']
     assert len(r['frames'])==plan['frameCount'];c,rows=v['geometry']['columns'],v['geometry']['rows'];frame_bytes=c*rows*4
     table=lookup_table(v['highAtlas'],v['palette']);width=c*v['highAtlas']['width'];height=rows*v['highAtlas']['height']
@@ -59,8 +60,13 @@ def main():
     video=next(s for s in probe['streams'] if s['codec_type']=='video')
     assert int(video['nb_frames'])==plan['frameCount'] and video['avg_frame_rate']=='30/1'
     assert (video['width'],video['height'])==(width,height)
+    assert abs(float(video['duration'])-plan['frameCount']/30)<1/30+.0001
+    audio=[s for s in probe['streams'] if s['codec_type']=='audio'];assert bool(audio)==plan['hasAudio']
+    if audio: assert abs(float(audio[0]['duration'])-plan['frameCount']/30)<.15
     result={'completed':True,'key':key,'frames':plan['frameCount'],'fps':30,'width':width,'height':height,
             'video':target.name,'videoBytes':target.stat().st_size,'videoSha256':digest(target.read_bytes()),'audio':any(s['codec_type']=='audio' for s in probe['streams']),
+            'planSha256':r['planSha256'],'reportSha256':digest((out/'report.json').read_bytes()),'tuplesSha256':r['tuplesSha256'],
+            'videoDuration':float(video['duration']),'audioDuration':float(audio[0]['duration']) if audio else None,
             'rendererMatchesOriginalPng':True,'rendererMatchesScalar':True,'previews':rendered}
     (out/'render.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result),flush=True)
 
