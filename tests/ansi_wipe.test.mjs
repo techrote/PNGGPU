@@ -1,0 +1,12 @@
+import test from 'node:test';import assert from 'node:assert/strict';import '../overlay/experiments/ansi-compare/parser.js';
+const api=globalThis.AnsiCompare;
+function image(width,height){const pixels=new Uint8ClampedArray(width*height*4);for(let i=0;i<width*height;i++)pixels.set([i,i+10,i+20,255],i*4);return{width,height,pixels};}
+test('quarter rotations preserve every RGBA pixel and inverse coordinates',()=>{
+ const src=image(3,2),expected={90:[3,0,4,1,5,2],180:[5,4,3,2,1,0],270:[2,5,1,4,0,3]};
+ for(const degrees of [90,180,270]){const out=api.rotateRgba(src,degrees);assert.deepEqual(Array.from(out.pixels).filter((_,i)=>i%4===0),expected[degrees]);for(let y=0;y<out.height;y++)for(let x=0;x<out.width;x++){const p=api.displayToNative(x,y,3,2,degrees);assert.equal(out.pixels[(y*out.width+x)*4],src.pixels[(p.y*3+p.x)*4]);}assert.deepEqual(api.rotateRgba(out,360-degrees).pixels,src.pixels);}
+ assert.equal(api.rotateRgba(src,0),src);assert.equal(api.displayToNative(-1,0,3,2,90),null);assert.throws(()=>api.rotateRgba(src,45));
+});
+test('25x80 swapped-cell portrait rotates back to the 80x25 comparison raster',()=>{assert.deepEqual(api.displayDimensions(25*16,80*8,270),{width:640,height:400});assert.deepEqual(api.displayToNative(0,0,400,640,270),{x:399,y:0});assert.deepEqual(api.displayToNative(639,399,400,640,270),{x:0,y:639});});
+test('wipe boundaries cover entire B at zero and entire A at one hundred without a pixel gap',()=>{assert.equal(api.wipeBoundary(640,0),0);assert.equal(api.wipeBoundary(640,100),640);assert.equal(api.wipeBoundary(3,50),2);assert.equal(api.wipeBoundary(640,-8),0);assert.equal(api.wipeBoundary(640,180),640);assert.throws(()=>api.wipeBoundary(640,NaN));});
+test('fit keeps complete images at one common scale and never silently upsamples',()=>{assert.equal(api.fitScale([{width:640,height:400},{width:640,height:400}],320,600),.5);assert.equal(api.fitScale([{width:640,height:400},{width:1280,height:800}],640,400),.5);assert.equal(api.fitScale([{width:640,height:400}],2000,2000),1);assert.throws(()=>api.fitScale([],400,400));});
+test('cell differences are disabled for mismatched native grids or display rotation',()=>{const a={frame:{columns:80,rows:25},variant:{atlas:{width:8,height:16}}},b=structuredClone(a);assert(api.cellsComparable(a,b));b.variant.displayRotationDegrees=90;assert(!api.cellsComparable(a,b));b.variant.displayRotationDegrees=0;b.frame={columns:25,rows:80};assert(!api.cellsComparable(a,b));});

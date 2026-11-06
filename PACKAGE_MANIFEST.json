@@ -58,8 +58,8 @@
       "bytes": 388
     },
     ".github/workflows/verify.yml": {
-      "sha256": "8e86a43b5e0f8984b471cc583d124c6495969ebdcee80dc004802b3a51951672",
-      "bytes": 5686
+      "sha256": "9e7a88995c8d952f093121cd7e1b675f2d7c0c6ec210e943a7f79bb004404d5a",
+      "bytes": 5745
     },
     ".gitignore": {
       "sha256": "b0ee05b6dd0bb4a0eb11169e9f0a79bc11593c337244e5d61575e37c81f7f0b3",
@@ -154,28 +154,28 @@
       "bytes": 9761
     },
     "overlay/experiments/ansi-compare/README.md": {
-      "sha256": "112353ea57eaf2739982da11cbf92d5ce20809cf08b041c2d0119e6919eebc11",
-      "bytes": 2885
+      "sha256": "c8ae598083f8dd55414d334732a639e169a102ab859b7020393e9f9145828ba5",
+      "bytes": 4419
     },
     "overlay/experiments/ansi-compare/app.js": {
-      "sha256": "bec06e527c951d02dd45056fe54fa4984afa57acc5b529a2f70d1262c9d7ac5a",
-      "bytes": 17065
+      "sha256": "4aa970cbc5c3275c4d2f1907f2841f75f480ab22d565a810f603ef2866d459c2",
+      "bytes": 23356
     },
     "overlay/experiments/ansi-compare/demo.js": {
       "sha256": "82307fc49c70ba39a7f141b10432f6f80dd6c54fce9483ad84a6622d3bfdaa81",
       "bytes": 85
     },
     "overlay/experiments/ansi-compare/index.html": {
-      "sha256": "64d1cbff89d6d03648c2aa5b6759ad452e024c02c098064e0db2b3f3b4bf5004",
-      "bytes": 3707
+      "sha256": "5061295cfc2b31ff66c1d3cfa904e019b3c800a16523818430adde2a16223f7f",
+      "bytes": 5452
     },
     "overlay/experiments/ansi-compare/parser.js": {
-      "sha256": "44d40e475d922c0c9eb114cbcf6a6d8e55504c591b4da908d5f08582bd07c020",
-      "bytes": 6245
+      "sha256": "ffbee836f3d6f3ae10f18a42bd456e9a4256429596904ac73a59a5256e3b9bf2",
+      "bytes": 8800
     },
     "overlay/experiments/ansi-compare/styles.css": {
-      "sha256": "28cb921b77ff85a50dfa2f587d75db29925c2b5f2fa149a85f4fa6540155f425",
-      "bytes": 3957
+      "sha256": "6cd2d8b02ad8fead4dd635ab4c732a4c353dd812465ff49e9028c51197ae57fd",
+      "bytes": 5506
     },
     "overlay/experiments/webgpu/photographic.html": {
       "sha256": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
@@ -2397,6 +2397,10 @@
       "sha256": "5bc8bb204f376e4fa5854c3257eeda15436e70d04f804dec1ab5456f44fc5bee",
       "bytes": 1513
     },
+    "scripts/cuda_sampling_plan.mjs": {
+      "sha256": "d7ed650b57b3a0f6ffc5c18e4c6ba6ca11ceb1f60179842d3250aba4ae79f457",
+      "bytes": 3368
+    },
     "scripts/cuda_timing_breakdown.mjs": {
       "sha256": "d7f2a9d73013f0f57b32afe78790dd94bbc483dc7efda3fe5eb05e844b4374df",
       "bytes": 1673
@@ -2446,8 +2450,8 @@
       "bytes": 2170
     },
     "scripts/package_ansi_comparison.py": {
-      "sha256": "8f9835e782210f1c863b98287981aecbf6bb7f54bd3c47106bf0fd4031ec8fcb",
-      "bytes": 3478
+      "sha256": "527e014667e8e09228b4adc2c775e8858cdc2468a7aa1f23452167efa7756335",
+      "bytes": 4422
     },
     "scripts/package_manifest.py": {
       "sha256": "6090067c7359cebf6cbd3de583b651d2edf623ccb51bf12f295b72808fb920a4",
@@ -2464,6 +2468,10 @@
     "scripts/prepare_cuda_quality.mjs": {
       "sha256": "6b21fb44b601e5ba749d291fda6071a768a462c4c322b8d416030b8851f3891b",
       "bytes": 6290
+    },
+    "scripts/prepare_cuda_sampling.mjs": {
+      "sha256": "17a18718af46e7d02253e2e8b375320ffbb7c9b18a40f1a6ef885fc8789abf2d",
+      "bytes": 7791
     },
     "scripts/prepare_cuda_video.mjs": {
       "sha256": "cc62e06b1fd8fb28bc22c4f60dc352ac15ac7a6e7f90a036e485ab2c0fff858a",
@@ -2501,6 +2509,10 @@
       "sha256": "44eeacd6acf214ba12caf7884886c2bcc899c30fd82fc5a061ef3948a4145911",
       "bytes": 9826
     },
+    "scripts/run_cuda_sampling.mjs": {
+      "sha256": "f7de7ca0b43d2bca56239637bec5bdf1e33d670ff5fc0849ee84e3f17529642d",
+      "bytes": 9747
+    },
     "scripts/serve.mjs": {
       "sha256": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
       "bytes": 5391
@@ -2537,6 +2549,10 @@
       "sha256": "e5b050c1674bcc2a47fcee080643509252b12e08b1d59c9618a99afcf2bb0907",
       "bytes": 4786
     },
+    "tests/ansi_wipe.test.mjs": {
+      "sha256": "efb96880816ee01556f99517c8daf592b081896f95b6d730546552aa8ad02f9e",
+      "bytes": 2467
+    },
     "tests/cuda_bridge.test.mjs": {
       "sha256": "77b87b2b5b08c61421f6d3733b43aa94a7bef8161fd777598d068bd91d8c982b",
       "bytes": 21804
@@ -2568,6 +2584,10 @@
     "tests/cuda_raster_packet.test.mjs": {
       "sha256": "04091ad530dc557ac7905bf428ecaedf63a852d97b66bf6215209fcbe261ad9f",
       "bytes": 3168
+    },
+    "tests/cuda_sampling_plan.test.mjs": {
+      "sha256": "f123a3a874f4dee451231c54be883712c5935e72f277570204d519a8a92bc4fd",
+      "bytes": 1215
     },
     "tests/cuda_timing_breakdown.test.mjs": {
       "sha256": "e465dfbbd2d65a469cad4c31615ea8fe073a0de51d1f4644ada99f88e55ae5fa",
