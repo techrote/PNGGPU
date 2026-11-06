@@ -1,0 +1,3214 @@
+{
+  "schema": "pnggpu-export-sample-latency-v1",
+  "analysisScope": "offline existing export receipts; no new GPU run",
+  "manifestPath": "C:\\pnggpu-CUDA\\build\\exports\\agenticparkour-fp32-delivery\\manifest.json",
+  "manifestSha256": "eff6a896801e45cc120fbba6011e5f8a5f018ea9e03509a62637d5f318e44ae4",
+  "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+  "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+  "sourceVideoSha256": "e444f447d50891af0a1049ed08aef326733bc5dce612258c1a0a4a934d943ada",
+  "frameCount": 719,
+  "timingDefinition": "fitMs spans frames.fitFrame only, including JS tile packing, direct-pipe requests, native work and result decode. Excludes nextFrame source read/decode, worker info probes, between-chunk driver queries, ANSI/file writing and video encoding.",
+  "warmDefinition": "Exclude each chunks.first frame: 24 INIT/context-first frame fits, leaving 695 warm delivered frames per variant. The extra command-2 comparison after frame 0 has no stored fitMs and is not a latency observation.",
+  "fpsDefinition": "inferredConversionFPS = 1000 / arithmetic mean fitMs. Conversion-only reciprocal, not measured continuous queue throughput, actual export FPS or end-to-end realtime rate.",
+  "distributionDefinition": "Median averages the middle values for even N; p95 is nearest rank. No independence/confidence interval claim for temporally adjacent frames.",
+  "orderCaveat": "All 4x8 variants ran before all 8x16 variants, with a fresh context each chunk. Single sequence per arm; paired source frames do not remove drift, JIT, driver or scheduling confounds.",
+  "variants": [
+    {
+      "key": "8x4-samples4x8-fp32",
+      "geometry": {
+        "columns": 8,
+        "rows": 4,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 4096
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "034c6c9f2cd613c31c9c3711886604bdf980dade22f6b2bbf9b9ec290d57d01d",
+      "tuplesSha256": "49dcdeaf2331b4e7ad9b5859c23009a74e09a3071eae9452c5e794c5bb1afd61",
+      "videoSha256": "1eca197cfcb00da7b121e0a893275c0439007ec41eb40bee702798e9eac92da2",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.043864812239229,
+        "median": 1.5448999999998705,
+        "p95": 2.4262000000003354,
+        "min": 0.9338000000025204,
+        "max": 207.50199999999995,
+        "inferredConversionFPS": 141.96751735814507
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.5948064748201591,
+        "median": 1.5338000000010652,
+        "p95": 2.1288000000004104,
+        "min": 0.9338000000025204,
+        "max": 3.1739999999990687,
+        "inferredConversionFPS": 627.0353273507787
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 164.83951249999978,
+        "median": 161.00574999999935,
+        "p95": 194.9281000000001,
+        "min": 143.60579999999754,
+        "max": 207.50199999999995,
+        "inferredConversionFPS": 6.066506657498161
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.006529928057553951,
+        "median": 0.0064,
+        "p95": 0.0089,
+        "min": 0.0025,
+        "max": 0.0174
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 32463,
+      "observedConversionStageFPS": 22.148291901549456,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 881807,
+      "ansiBytes": 180664,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "16x8-samples4x8-fp32",
+      "geometry": {
+        "columns": 16,
+        "rows": 8,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 16384
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "1d446a42f4e985417bb46f8193be144a607109fd56abef3b3f505dcfd06ae7cc",
+      "tuplesSha256": "bfe2c092146073748b5bd4e9cc55af4502fcbc129f42b06dbbbebfcacbc17d62",
+      "videoSha256": "8d22bc6db742861ed9d527c8d24d2d6a251eebdece1e1266601c8b93be5f8689",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.3332656467315,
+        "median": 1.6781000000009954,
+        "p95": 2.7515999999995984,
+        "min": 1.2199000000000524,
+        "max": 213.21240000000034,
+        "inferredConversionFPS": 136.36489501041171
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.754790791366832,
+        "median": 1.6707000000005792,
+        "p95": 2.42870000000039,
+        "min": 1.2199000000000524,
+        "max": 3.0645999999999276,
+        "inferredConversionFPS": 569.8685022281691
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 168.87660000000002,
+        "median": 165.23289999999906,
+        "p95": 195.08990000000085,
+        "min": 147.8751000000011,
+        "max": 213.21240000000034,
+        "inferredConversionFPS": 5.92148349741764
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.013250647482014388,
+        "median": 0.0132,
+        "p95": 0.0173,
+        "min": 0.007,
+        "max": 0.0528
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 32494,
+      "observedConversionStageFPS": 22.12716193758848,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 1566123,
+      "ansiBytes": 527562,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "32x16-samples4x8-fp32",
+      "geometry": {
+        "columns": 32,
+        "rows": 16,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 65536
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "7b9afbecf28473bd303fbf7eb71934dc2e4d2911460d67dfb8c5121383e2d3e9",
+      "tuplesSha256": "b56694b0c279eb18102b1cb0bab491fcdc847b2b0452833b5d0c68f4bc0f9f0b",
+      "videoSha256": "ddfd685463e9cd5ead5a9147fa507be3a430142d795de96e2c917679dd9bd0a8",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.1473194714882125,
+        "median": 1.8334999999988213,
+        "p95": 2.7076999999999316,
+        "min": 1.4537000000018452,
+        "max": 196.21120000000155,
+        "inferredConversionFPS": 139.91259296427955
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.8819106474820422,
+        "median": 1.8215000000000146,
+        "p95": 2.320199999999886,
+        "min": 1.4537000000018452,
+        "max": 3.7927999999992608,
+        "inferredConversionFPS": 531.3748563663102
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 159.62478333333354,
+        "median": 156.2804500000002,
+        "p95": 180.433,
+        "min": 145.46700000000055,
+        "max": 196.21120000000155,
+        "inferredConversionFPS": 6.264691353796661
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.03674230215827337,
+        "median": 0.0374,
+        "p95": 0.0455,
+        "min": 0.0208,
+        "max": 0.0995
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 31497,
+      "observedConversionStageFPS": 22.827570879766327,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 3790705,
+      "ansiBytes": 1499022,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "40x12-samples4x8-fp32",
+      "geometry": {
+        "columns": 40,
+        "rows": 12,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 61440
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "reportSha256": "d62eee9d75120e2bb2090860ec376c23ba7011bdb3f19a90c7d558bfe4763d7e",
+      "tuplesSha256": "e2e000f513799a443bfdff01269ab8c1d0508a0089ed375b566973218d267fea",
+      "videoSha256": "708d6429abaab3205e5b7cc68ecb11a7b4fc360c7f6a68f826a224b955da6a59",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.423038386648105,
+        "median": 1.841100000001461,
+        "p95": 2.977100000000064,
+        "min": 1.3863000000019383,
+        "max": 212.6245999999992,
+        "inferredConversionFPS": 134.7157252748026
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.9203572661870347,
+        "median": 1.8333000000020547,
+        "p95": 2.432300000000396,
+        "min": 1.3863000000019383,
+        "max": 6.302500000000009,
+        "inferredConversionFPS": 520.7364367077122
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 166.77151249999994,
+        "median": 168.3419500000009,
+        "p95": 183.28909999999996,
+        "min": 144.71190000000206,
+        "max": 212.6245999999992,
+        "inferredConversionFPS": 5.996227922919392
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.03682992805755393,
+        "median": 0.0363,
+        "p95": 0.0479,
+        "min": 0.0199,
+        "max": 0.0949
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 32472,
+      "observedConversionStageFPS": 22.142153239714215,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 5972779,
+      "ansiBytes": 1975010,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x24-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 24,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 245760
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "reportSha256": "7bbc1bf822515fe16d548f784b87dc93fda9821a418e4b3a33d33acddf7421b3",
+      "tuplesSha256": "28d30b7b9eb7da68eb6cb45ac7c1e790464211673bca6b36c74f225ce14a5f29",
+      "videoSha256": "d79deda767d43ef3fb79feec39459392cb2f900af2b3f1ebed8b7e3384ae4ccc",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 8.209303337969473,
+        "median": 3.014499999997497,
+        "p95": 4.2576999999982945,
+        "min": 2.473599999999351,
+        "max": 193.2976000000001,
+        "inferredConversionFPS": 121.81301613924094
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 3.0971752517986295,
+        "median": 3.003700000000208,
+        "p95": 3.8162000000011176,
+        "min": 2.473599999999351,
+        "max": 7.539600000000064,
+        "inferredConversionFPS": 322.87485166338837
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 156.2480125000002,
+        "median": 152.71715000000177,
+        "p95": 170.5077000000001,
+        "min": 145.9313000000002,
+        "max": 193.2976000000001,
+        "inferredConversionFPS": 6.400081409035515
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.11199640287769799,
+        "median": 0.1117,
+        "p95": 0.1599,
+        "min": 0.0746,
+        "max": 0.2989
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 31773,
+      "observedConversionStageFPS": 22.62927642967299,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 20110166,
+      "ansiBytes": 6366714,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x25-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 256000
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        }
+      },
+      "reportSha256": "2721dc0e10e39c47ffc5dcf175494b3beff526b65077b4c80f2734306d9fb15f",
+      "tuplesSha256": "6626e8f18aec8c62b3df90a70f745297e010f0ba275193166501d686d75b3993",
+      "videoSha256": "8eb7685639772f984385a90f255f119c149de64bea17b3e4d4324acdf3d019f6",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 8.287311404728776,
+        "median": 3.0703000000012253,
+        "p95": 4.290799999998853,
+        "min": 2.4012000000002445,
+        "max": 192.77869999999893,
+        "inferredConversionFPS": 120.66639603157614
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 3.134759280575525,
+        "median": 3.049200000001292,
+        "p95": 3.867599999999584,
+        "min": 2.4012000000002445,
+        "max": 6.030800000000454,
+        "inferredConversionFPS": 319.003760893693
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 157.49663333333334,
+        "median": 153.79574999999932,
+        "p95": 185.21209999999996,
+        "min": 146.60949999999866,
+        "max": 192.77869999999893,
+        "inferredConversionFPS": 6.349342070592408
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.11710187050359709,
+        "median": 0.1182,
+        "p95": 0.1651,
+        "min": 0.0783,
+        "max": 0.3238
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 32091,
+      "observedConversionStageFPS": 22.40503567978561,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 20679178,
+      "ansiBytes": 6553062,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x40-samples4x8-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 40,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 409600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "3c79edd8f0b821abe3ae205478d6caa021ce69347cd69868f7de32649c6d2304",
+      "tuplesSha256": "2caef5b35d930ad9102b52ed7608d15c0c67a748a6da28b40070f72b0b20cfd9",
+      "videoSha256": "c7fd924418abaca1be786eb7df2b8a15e9eba0e647499e5a1c51a292ef943964",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 9.739426147426984,
+        "median": 4.477100000000064,
+        "p95": 6.543100000000777,
+        "min": 3.7960999999995693,
+        "max": 183.77570000000014,
+        "inferredConversionFPS": 102.67545385763673
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 4.595079568345326,
+        "median": 4.450299999998606,
+        "p95": 5.714400000000069,
+        "min": 3.7960999999995693,
+        "max": 7.659499999999753,
+        "inferredConversionFPS": 217.62408792413947
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 158.71112916666667,
+        "median": 155.5282500000003,
+        "p95": 183.07279999999992,
+        "min": 145.71640000000116,
+        "max": 183.77570000000014,
+        "inferredConversionFPS": 6.300755373933948
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.20572748201438842,
+        "median": 0.1901,
+        "p95": 0.3023,
+        "min": 0.1331,
+        "max": 0.4771
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 33397,
+      "observedConversionStageFPS": 21.528879839506544,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 18956348,
+      "ansiBytes": 7211468,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "120x34-samples4x8-fp32",
+      "geometry": {
+        "columns": 120,
+        "rows": 34,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 522240
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 7,
+          "y": 2,
+          "width": 840,
+          "height": 476
+        }
+      },
+      "reportSha256": "0a119cba9474ee4d3daa15f21a0da018a3dc2f0dea7718eed0c97e51fb86c334",
+      "tuplesSha256": "7b553a4abe6b1401c27bacf67c5500982cc2e59aa27676a4b80de8e22bcaa225",
+      "videoSha256": "4b3ed5f04a55529d47654f5aa52398de40bd90ed9a5b3b3837c7cd58ea33a9c2",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 10.426911821974924,
+        "median": 5.154399999999441,
+        "p95": 8.39060000000245,
+        "min": 4.437999999994645,
+        "max": 188.61990000000014,
+        "inferredConversionFPS": 95.9056734221613
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 5.375365467625851,
+        "median": 5.141600000000835,
+        "p95": 7.031600000000253,
+        "min": 4.437999999994645,
+        "max": 11.888800000000174,
+        "inferredConversionFPS": 186.03386244576075
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 156.71127500000014,
+        "median": 154.0709000000004,
+        "p95": 172.4994000000006,
+        "min": 148.3125,
+        "max": 188.61990000000014,
+        "inferredConversionFPS": 6.381161789411764
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.2706482014388491,
+        "median": 0.2403,
+        "p95": 0.3999,
+        "min": 0.189,
+        "max": 0.8874
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 33976,
+      "observedConversionStageFPS": 21.161996703555452,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 39445980,
+      "ansiBytes": 12043149,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "160x45-samples4x8-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 45,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 921600
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "reportSha256": "0cbf68e41d54088a26da1c4f20f5c728478539ea3f8b4dcc331bb8c461bbf92c",
+      "tuplesSha256": "e6af7c3d0f11d5fda7b3285789ddad8cd5610be07f60ba336b86ae79bd144e58",
+      "videoSha256": "974b2943a6f32f8aa119bcaa877c799aa04e8cea8855f68acc6004185bbfc5f6",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 13.801410292072317,
+        "median": 8.465700000000652,
+        "p95": 11.943900000000212,
+        "min": 7.1525000000001455,
+        "max": 192.3053,
+        "inferredConversionFPS": 72.45636343225091
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 8.680268776978405,
+        "median": 8.420099999999366,
+        "p95": 10.804700000000594,
+        "min": 7.1525000000001455,
+        "max": 13.378700000000208,
+        "inferredConversionFPS": 115.20380597570612
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 162.10113333333356,
+        "median": 158.63015000000087,
+        "p95": 191.49659999999994,
+        "min": 152.05969999999797,
+        "max": 192.3053,
+        "inferredConversionFPS": 6.16898833115293
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.4333058992805755,
+        "median": 0.3885,
+        "p95": 0.6263,
+        "min": 0.3016,
+        "max": 1.0313
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 37375,
+      "observedConversionStageFPS": 19.237458193979933,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 67216994,
+      "ansiBytes": 19460964,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "160x80-samples4x8-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 80,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 1638400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "2b538f276738f9c47a36f5a2e01d9fa44875644f6ceff235fce06842c32a2d01",
+      "tuplesSha256": "e873bd132810be6e9972c83c67b5517c7010fd72d606810fafd06ba70f510029",
+      "videoSha256": "31d7c9d2f6e171b83366df0419b89531ea22c181ea9fb598a58254cec933d56d",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 17.55981668984706,
+        "median": 12.155399999999645,
+        "p95": 16.60669999999982,
+        "min": 10.09320000000298,
+        "max": 202.07130000000006,
+        "inferredConversionFPS": 56.94820268700138
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 12.358716690647515,
+        "median": 12.106100000004517,
+        "p95": 14.844600000000355,
+        "min": 10.09320000000298,
+        "max": 20.45470000000023,
+        "inferredConversionFPS": 80.91455003226606
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 168.17500416666712,
+        "median": 164.49370000000272,
+        "p95": 201.6533000000004,
+        "min": 155.54149999999936,
+        "max": 202.07130000000006,
+        "inferredConversionFPS": 5.946186860259959
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.8496772661870502,
+        "median": 0.7649,
+        "p95": 1.2709,
+        "min": 0.6615,
+        "max": 1.9775
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 41162,
+      "observedConversionStageFPS": 17.467567173606724,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 65824067,
+      "ansiBytes": 23493339,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "320x90-samples4x8-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 90,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 3686400
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "reportSha256": "25747376013b78624d396e9b738ef816f5e9f0af716c1f3258000587f0ff391d",
+      "tuplesSha256": "941df96621e868e304fd83957a32f9412f55f9e284c076bc89c3f7ffa1d00b72",
+      "videoSha256": "c775247352aa0b8e14ea65b61969b48f258805aef21ff81752a7b59705f1b146",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 32.30814784422806,
+        "median": 26.59929999999804,
+        "p95": 33.92519999999968,
+        "min": 22.911099999997532,
+        "max": 218.86170000000016,
+        "inferredConversionFPS": 30.951944531808028
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 26.95518848920859,
+        "median": 26.52560000000085,
+        "p95": 32.73699999999917,
+        "min": 22.911099999997532,
+        "max": 41.497299999999996,
+        "inferredConversionFPS": 37.098609063718705
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 187.32092916666693,
+        "median": 183.65124999999898,
+        "p95": 213.44940000000042,
+        "min": 176.51980000000185,
+        "max": 218.86170000000016,
+        "inferredConversionFPS": 5.338431772940118
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 1.8761356834532386,
+        "median": 1.6864,
+        "p95": 2.814,
+        "min": 1.4743,
+        "max": 3.7502999999999997
+      },
+      "warmFramesOver30FPSBudget": 22,
+      "conversionStageWallMs": 55793,
+      "observedConversionStageFPS": 12.886921298370764,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 245445008,
+      "ansiBytes": 64238123,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "320x160-samples4x8-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 160,
+        "sampleWidth": 4,
+        "sampleHeight": 8,
+        "count": 719,
+        "frameBytes": 6553600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "46190394365e4c320e15652e308d36628170efc838e338cf36b3a84f2bf7a395",
+      "tuplesSha256": "52eab247c825f3b6bb52836456d128f03192d3fdc7aa50062d1fe00feafb6277",
+      "videoSha256": "217a3435977160548f49188600441d2433a2cbcb625bc0cfaeca715bc4e5cf3d",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 46.19341223922119,
+        "median": 40.26339999999982,
+        "p95": 51.36459999999988,
+        "min": 34.82970000000205,
+        "max": 254.93129999999996,
+        "inferredConversionFPS": 21.648108496971684
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 40.85781856115112,
+        "median": 40.197299999999814,
+        "p95": 47.60009999999602,
+        "min": 34.82970000000205,
+        "max": 59.37509999999929,
+        "inferredConversionFPS": 24.475119700855274
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 200.70331250000038,
+        "median": 196.1148000000012,
+        "p95": 227.73369999999886,
+        "min": 185.95810000000347,
+        "max": 254.93129999999996,
+        "inferredConversionFPS": 4.982478801888226
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 3.242148057553962,
+        "median": 3.0488,
+        "p95": 4.2543999999999995,
+        "min": 2.5987999999999998,
+        "max": 7.0329999999999995
+      },
+      "warmFramesOver30FPSBudget": 695,
+      "conversionStageWallMs": 69853,
+      "observedConversionStageFPS": 10.293043963752451,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 239829138,
+      "ansiBytes": 80043837,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "8x4-samples8x16-fp32",
+      "geometry": {
+        "columns": 8,
+        "rows": 4,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 16384
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "542825646a158c599b1dc24ac62c7b28bb247534838b8a3fe2f6a1321de47508",
+      "tuplesSha256": "bf45312d5f8869659584c52f60edc2c41321b00791a91f049e9a91bbc1e609dc",
+      "videoSha256": "ed4c329850d1d6fd250106740493287c84681b54cc925708585dc9a8538aa7ca",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.3860617524339895,
+        "median": 1.7469999999993888,
+        "p95": 2.6083000000000993,
+        "min": 1.1836000000002969,
+        "max": 191.23270000000048,
+        "inferredConversionFPS": 135.39014883953033
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.7919169784173283,
+        "median": 1.7432000000007974,
+        "p95": 2.2186000000001513,
+        "min": 1.1836000000002969,
+        "max": 4.024899999999889,
+        "inferredConversionFPS": 558.0615687247008
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 169.38317083333314,
+        "median": 171.01519999999982,
+        "p95": 183.8357999999971,
+        "min": 149.45390000000043,
+        "max": 191.23270000000048,
+        "inferredConversionFPS": 5.903774236130952
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.01307467625899281,
+        "median": 0.013,
+        "p95": 0.0171,
+        "min": 0.0059,
+        "max": 0.0388
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 32767,
+      "observedConversionStageFPS": 21.942808313241983,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 833693,
+      "ansiBytes": 172675,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "16x8-samples8x16-fp32",
+      "geometry": {
+        "columns": 16,
+        "rows": 8,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 65536
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "925a82181f3e5e5afe401676040894c5e7c2ebd8e35d3ac14a485da12bb14454",
+      "tuplesSha256": "10a07e1b34f0cf2f47f16dd7c9c04fb0fb649b11fe1f0633786f27cea3d3d44e",
+      "videoSha256": "815af346d25c8f376bcab7df3583f958bf01e27161a97b07dc40317bd83830e8",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.0597741307371065,
+        "median": 1.8858000000000175,
+        "p95": 2.922500000000582,
+        "min": 1.4693000000006577,
+        "max": 189.62079999999992,
+        "inferredConversionFPS": 141.64759119504447
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 1.9358450359711947,
+        "median": 1.8761000000013155,
+        "p95": 2.4724000000005617,
+        "min": 1.4693000000006577,
+        "max": 4.290999999999258,
+        "inferredConversionFPS": 516.5702736625867
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 155.4402208333333,
+        "median": 151.28130000000056,
+        "p95": 171.8662000000004,
+        "min": 141.48500000000058,
+        "max": 189.62079999999992,
+        "inferredConversionFPS": 6.433341349097951
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.03337467625899279,
+        "median": 0.0345,
+        "p95": 0.0424,
+        "min": 0.0213,
+        "max": 0.0702
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 30578,
+      "observedConversionStageFPS": 23.513637255543202,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 1333123,
+      "ansiBytes": 461408,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "32x16-samples8x16-fp32",
+      "geometry": {
+        "columns": 32,
+        "rows": 16,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 262144
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "32bcfa7f96d8f1fdaa8f3c55913cd80da106fae112a798f36450d31478914034",
+      "tuplesSha256": "76bea702f7f88c9839ddba6663be97418b60db88215aa3bafc8e5ad152abaa51",
+      "videoSha256": "a158815ef718d51404e5ccc48f4e909f926bd060dacc57f9feb45d07c8602e86",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.281526147427077,
+        "median": 2.2327000000004773,
+        "p95": 3.6182000000007974,
+        "min": 1.8688999999976659,
+        "max": 184.86040000000003,
+        "inferredConversionFPS": 137.33384729427215
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 2.3123716546763475,
+        "median": 2.217899999999645,
+        "p95": 2.9378999999998996,
+        "min": 1.8688999999976659,
+        "max": 5.917799999999943,
+        "inferredConversionFPS": 432.4564340588086
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 151.17995833333364,
+        "median": 147.5544,
+        "p95": 164.91270000000077,
+        "min": 141.8788999999997,
+        "max": 184.86040000000003,
+        "inferredConversionFPS": 6.614633388078598
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.09986978417266178,
+        "median": 0.0871,
+        "p95": 0.1433,
+        "min": 0.0723,
+        "max": 0.2116
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 30011,
+      "observedConversionStageFPS": 23.95788210989304,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 3016051,
+      "ansiBytes": 1344801,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "40x12-samples8x16-fp32",
+      "geometry": {
+        "columns": 40,
+        "rows": 12,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 245760
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "reportSha256": "169fb4cc6d703affe1e36beb8b4852fdb82094d55faac8483f9fee964708d7e4",
+      "tuplesSha256": "a34baf5b909bcbc8b6896a26932567c6cf82d8e2c9e2ec8b1f03ac2c6ca4637e",
+      "videoSha256": "d4335b19e73c57ea259fe90e976954a7cedd913b3fce2ec643fffe349e10a08b",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 7.3248771905423995,
+        "median": 2.222700000002078,
+        "p95": 3.632799999999861,
+        "min": 1.8328000000001339,
+        "max": 172.24450000000002,
+        "inferredConversionFPS": 136.5210602153387
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 2.2960877697841484,
+        "median": 2.214400000000751,
+        "p95": 2.9521999999997206,
+        "min": 1.8328000000001339,
+        "max": 4.408599999999751,
+        "inferredConversionFPS": 435.5234208202801
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 152.95023750000007,
+        "median": 150.2868000000003,
+        "p95": 165.95570000000043,
+        "min": 142.89740000000165,
+        "max": 172.24450000000002,
+        "inferredConversionFPS": 6.538074188998886
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.09456848920863312,
+        "median": 0.0817,
+        "p95": 0.1393,
+        "min": 0.0706,
+        "max": 0.2704
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 29923,
+      "observedConversionStageFPS": 24.028339404471478,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 4627686,
+      "ansiBytes": 1715725,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x24-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 24,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 983040
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 27,
+          "y": 0,
+          "width": 800,
+          "height": 480
+        }
+      },
+      "reportSha256": "835aa82307220d2b578329b4e008388b0933c0cff176b5a4d4d745f953e92a05",
+      "tuplesSha256": "4a59ceafc40fecc1188463999a5510ba7d182d03758b71d969fee1158691255e",
+      "videoSha256": "c0f2b5b9de2d443f1457daa2d3dc5285a15952b21b60b2b565f5ed73195d8ef0",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 9.872621835883193,
+        "median": 4.535499999999956,
+        "p95": 7.229999999999563,
+        "min": 3.651900000000751,
+        "max": 177.71590000000015,
+        "inferredConversionFPS": 101.2902161779745
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 4.729225611510827,
+        "median": 4.511699999999109,
+        "p95": 6.480100000000675,
+        "min": 3.651900000000751,
+        "max": 11.822599999999511,
+        "inferredConversionFPS": 211.45110894393002
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 158.8168041666663,
+        "median": 156.0091999999995,
+        "p95": 173.39679999999862,
+        "min": 149.37249999999767,
+        "max": 177.71590000000015,
+        "inferredConversionFPS": 6.2965629188116345
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.4270818705035973,
+        "median": 0.3893,
+        "p95": 0.6138,
+        "min": 0.3473,
+        "max": 1.32
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 33074,
+      "observedConversionStageFPS": 21.73913043478261,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 15119086,
+      "ansiBytes": 5300115,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x25-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 1024000
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        }
+      },
+      "reportSha256": "0abb2f5775dc6f5364ec3d79ae40665725192bf587ea0514e102ebfb96d20e2d",
+      "tuplesSha256": "3cb160bb1025c5d98a33d5e71b3568406fd18129232b1cae44a1509f57ea8c24",
+      "videoSha256": "d57a96ab5dd88c4a2ef1e30f3389498a6b701d9687f82a7cf98bd5202eac032f",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 9.879713073713479,
+        "median": 4.587000000001353,
+        "p95": 7.035299999999552,
+        "min": 3.7106999999996333,
+        "max": 182.23590000000013,
+        "inferredConversionFPS": 101.21751436898064
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 4.778138417266178,
+        "median": 4.555599999999686,
+        "p95": 6.3015000000004875,
+        "min": 3.7106999999996333,
+        "max": 9.64639999999963,
+        "inferredConversionFPS": 209.2865280726112
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 157.6128124999999,
+        "median": 155.17839999999887,
+        "p95": 168.3953999999976,
+        "min": 149.04100000000108,
+        "max": 182.23590000000013,
+        "inferredConversionFPS": 6.344661859263508
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.47439352517985584,
+        "median": 0.4228,
+        "p95": 0.6901,
+        "min": 0.3651,
+        "max": 1.0549
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 33046,
+      "observedConversionStageFPS": 21.75755008170429,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 15628246,
+      "ansiBytes": 5461544,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "80x40-samples8x16-fp32",
+      "geometry": {
+        "columns": 80,
+        "rows": 40,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 1638400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "4107cfb2b5e2166e3e8df7578973e16c84cadc11567519631286e683393bbf12",
+      "tuplesSha256": "02cff0c3b03170c4509592ffe95d0cd85a81b55e6f6bf90f9399f6e4ed959364",
+      "videoSha256": "af0d18348d8ea29cb7548b827f74c9a10f9ac46d0c2394b415af0ab288180272",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 12.468581780250311,
+        "median": 6.975800000000163,
+        "p95": 10.174200000000155,
+        "min": 5.741000000001804,
+        "max": 208.2793999999999,
+        "inferredConversionFPS": 80.20158327741463
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 7.213877985611484,
+        "median": 6.946300000000065,
+        "p95": 9.251299999999901,
+        "min": 5.741000000001804,
+        "max": 16.461199999999963,
+        "inferredConversionFPS": 138.62169584716577
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 164.63604583333307,
+        "median": 164.67139999999927,
+        "p95": 169.9456999999993,
+        "min": 152.1235000000015,
+        "max": 208.2793999999999,
+        "inferredConversionFPS": 6.074003994315653
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 0.8821058992805755,
+        "median": 0.7952,
+        "p95": 1.3434,
+        "min": 0.7135,
+        "max": 2.4842
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 35718,
+      "observedConversionStageFPS": 20.12990648972507,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 14359590,
+      "ansiBytes": 6158457,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "120x34-samples8x16-fp32",
+      "geometry": {
+        "columns": 120,
+        "rows": 34,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 2088960
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 7,
+          "y": 2,
+          "width": 840,
+          "height": 476
+        }
+      },
+      "reportSha256": "104e6cd366ce36e794b36137368089051880033dc11878f11f6a897ed9ed3218",
+      "tuplesSha256": "d34f855fdd6e6418c7574f24da94389e8cf52b97395e58fee9513efda9aae72e",
+      "videoSha256": "837d11104a7153f851c5ab29cc6d766c383855dcd16f668cd30cb409104dc8cf",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 13.559771070931804,
+        "median": 8.019799999998213,
+        "p95": 10.773300000000745,
+        "min": 6.935100000002421,
+        "max": 198.02120000000014,
+        "inferredConversionFPS": 73.74755774038903
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 8.237928201438809,
+        "median": 7.972600000000057,
+        "p95": 9.902399999999943,
+        "min": 6.935100000002421,
+        "max": 14.371500000000196,
+        "inferredConversionFPS": 121.38974455074073
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 167.67147083333307,
+        "median": 165.10559999999987,
+        "p95": 191.88010000000008,
+        "min": 158.3693999999996,
+        "max": 198.02120000000014,
+        "inferredConversionFPS": 5.964043823495822
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 1.119948633093526,
+        "median": 1.0267,
+        "p95": 1.6316,
+        "min": 0.8789,
+        "max": 2.627
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 37121,
+      "observedConversionStageFPS": 19.369090272352576,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 29884180,
+      "ansiBytes": 9803289,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "160x45-samples8x16-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 45,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 3686400
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "reportSha256": "5303e57f9008fe33897894e20980a6eef0c21c17e99883a0ce9757c4aa6b7f86",
+      "tuplesSha256": "3077f0861636ede8246c1b4db2dd95ed4d6e04a596cb22d686e1edc91ade27b2",
+      "videoSha256": "a04f45b828cc416c9928d262b61a1dbd6d2be8491c05a3963367c29f60b34166",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 19.657534770514605,
+        "median": 14.05659999999989,
+        "p95": 18.77100000000064,
+        "min": 12.210800000000745,
+        "max": 188.71659999999997,
+        "inferredConversionFPS": 50.87107878348784
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 14.338754964028789,
+        "median": 14.010500000003958,
+        "p95": 16.953200000003562,
+        "min": 12.210800000000745,
+        "max": 22.983299999999872,
+        "inferredConversionFPS": 69.74106207328812
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 173.680533333333,
+        "median": 172.24099999999999,
+        "p95": 188.18219999999974,
+        "min": 158.4497999999985,
+        "max": 188.71659999999997,
+        "inferredConversionFPS": 5.757697657922143
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 2.021168345323739,
+        "median": 1.8744,
+        "p95": 2.9033,
+        "min": 1.4971,
+        "max": 5.0418
+      },
+      "warmFramesOver30FPSBudget": 0,
+      "conversionStageWallMs": 43779,
+      "observedConversionStageFPS": 16.423399346718746,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 50571149,
+      "ansiBytes": 15556980,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "160x80-samples8x16-fp32",
+      "geometry": {
+        "columns": 160,
+        "rows": 80,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 6553600
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "5bb4bec4b5ef28246a0a15cef85309679cbe97f4879effc0c68f272cc9529f06",
+      "tuplesSha256": "8fd5e976de2e2fe3570d7d02561fa58e38acc5c91bf12fbb80ca57cb7403d0c1",
+      "videoSha256": "6c4398f8ccc85a59792f3b921a21c6b7fea72e63db7b1e8328ccf8f609d5164e",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 29.182396105702427,
+        "median": 23.424199999999473,
+        "p95": 29.55959999999868,
+        "min": 20.408900000002177,
+        "max": 211.01350000000002,
+        "inferredConversionFPS": 34.26723413587665
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 23.73387726618711,
+        "median": 23.30080000000089,
+        "p95": 28.105799999999817,
+        "min": 20.408900000002177,
+        "max": 34.30030000000079,
+        "inferredConversionFPS": 42.13386581486488
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 186.9624208333333,
+        "median": 185.6569500000005,
+        "p95": 207.54460000000108,
+        "min": 169.8786,
+        "max": 211.01350000000002,
+        "inferredConversionFPS": 5.348668441191425
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 3.646366762589929,
+        "median": 3.5127,
+        "p95": 4.9738,
+        "min": 2.8318,
+        "max": 8.463000000000001
+      },
+      "warmFramesOver30FPSBudget": 4,
+      "conversionStageWallMs": 53724,
+      "observedConversionStageFPS": 13.383217928672474,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 49746967,
+      "ansiBytes": 19671575,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "320x90-samples8x16-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 90,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 14745600
+      },
+      "layout": {
+        "mode": "center-crop",
+        "crop": {
+          "x": 3,
+          "y": 1,
+          "width": 848,
+          "height": 477
+        }
+      },
+      "reportSha256": "24b44233945f43fbfccca2f1e96e4b43c784eed2db8d45efee48b8e0fb5ed718",
+      "tuplesSha256": "ff1b58d4ccdd5726d4540954fec5d47ac29120b7f6667a3a60bfea9d12812699",
+      "videoSha256": "8b7c48229bdd1be19bc67039060865a0e2c5114e51304b68c648754e57f495b7",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 60.310581084839946,
+        "median": 54.861799999998766,
+        "p95": 66.17770000000019,
+        "min": 46.397100000001956,
+        "max": 263.50519999999983,
+        "inferredConversionFPS": 16.58083842026464
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 55.0703094964028,
+        "median": 54.70479999999952,
+        "p95": 61.65709999999672,
+        "min": 46.397100000001956,
+        "max": 84.75590000000011,
+        "inferredConversionFPS": 18.158605047703976
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 212.06011249999906,
+        "median": 209.47825000000012,
+        "p95": 227.10280000000057,
+        "min": 198.26750000000175,
+        "max": 263.50519999999983,
+        "inferredConversionFPS": 4.715644013439842
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 8.385917985611519,
+        "median": 8.1413,
+        "p95": 10.5138,
+        "min": 6.976100000000001,
+        "max": 17.1528
+      },
+      "warmFramesOver30FPSBudget": 695,
+      "conversionStageWallMs": 84987,
+      "observedConversionStageFPS": 8.460117429724546,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 185887191,
+      "ansiBytes": 48975892,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    },
+    {
+      "key": "320x160-samples8x16-fp32",
+      "geometry": {
+        "columns": 320,
+        "rows": 160,
+        "sampleWidth": 8,
+        "sampleHeight": 16,
+        "count": 719,
+        "frameBytes": 26214400
+      },
+      "layout": {
+        "mode": "contain-black",
+        "crop": null
+      },
+      "reportSha256": "db2c97ed2f765c7f37d8845a45e9560445bfd4adb48283e464f5724f6333581f",
+      "tuplesSha256": "bf78b904b832ea521e171f490b955841162c9c2b5e43c84e5cf85d6cff0afff3",
+      "videoSha256": "7a77f3838fe717d2e2ad686315104d98643afa235dc65fb03394df0094a8eaf0",
+      "worker": {
+        "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+        "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+        "receipt": {
+          "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+          "worker": "pnggpu_cuda_worker.exe",
+          "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+          "build": {
+            "nvcc": "12.8.93",
+            "hostCompiler": "MSVC19.44.35228.0",
+            "profile": true,
+            "cmakeType": "Release",
+            "faultWorker": false,
+            "flags": [
+              "--resource-usage",
+              "-lineinfo",
+              "--fmad=false",
+              "--ftz=false",
+              "--prec-div=true",
+              "--prec-sqrt=true"
+            ],
+            "sampleMajorMasks": true,
+            "integerProjectionSums": true,
+            "colorMajorFP32": false,
+            "cuptiActivityBuild": false,
+            "nativeRasterPacking": "rgba-row-bands-v1",
+            "nativeGather": "cache-blocked-4KiB"
+          }
+        }
+      },
+      "allFitMs": {
+        "count": 719,
+        "mean": 99.17931182197498,
+        "median": 93.94729999999981,
+        "p95": 108.01670000000013,
+        "min": 80.68990000000122,
+        "max": 296.4951000000001,
+        "inferredConversionFPS": 10.082747920201156
+      },
+      "warmFitMs": {
+        "count": 695,
+        "mean": 93.90598589928057,
+        "median": 93.63539999999921,
+        "p95": 103.13330000000133,
+        "min": 80.68990000000122,
+        "max": 115.3092000000006,
+        "inferredConversionFPS": 10.648948418182373
+      },
+      "coldFitMs": {
+        "count": 24,
+        "mean": 251.88604166666735,
+        "median": 250.73805000000175,
+        "p95": 269.8736999999992,
+        "min": 238.26000000000204,
+        "max": 296.4951000000001,
+        "inferredConversionFPS": 3.970049286507694
+      },
+      "warmNativePackingMs": {
+        "count": 695,
+        "mean": 15.411881582733832,
+        "median": 15.0055,
+        "p95": 19.0417,
+        "min": 12.8727,
+        "max": 23.8627
+      },
+      "warmFramesOver30FPSBudget": 695,
+      "conversionStageWallMs": 123010,
+      "observedConversionStageFPS": 5.845053247703439,
+      "conversionStageDefinition": "report.finished - report.started: includes chunk startup/info, source IO, driver monitoring, ANSI/file work and cleanup; excludes subsequent MP4 encoding and earlier source/provenance validation.",
+      "videoBytes": 183930920,
+      "ansiBytes": 65004382,
+      "coldFrameIndices": [
+        0,
+        29,
+        59,
+        89,
+        119,
+        149,
+        179,
+        209,
+        239,
+        269,
+        299,
+        329,
+        359,
+        389,
+        419,
+        449,
+        479,
+        509,
+        539,
+        569,
+        599,
+        629,
+        659,
+        689
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "columns": 8,
+      "rows": 4,
+      "smallKey": "8x4-samples4x8-fp32",
+      "largeKey": "8x4-samples8x16-fp32",
+      "warmMean4x8Ms": 1.5948064748201591,
+      "warmMean8x16Ms": 1.7919169784173283,
+      "warmFPS4x8": 627.0353273507787,
+      "warmFPS8x16": 558.0615687247008,
+      "ratioOfWarmMeans": 1.1235952491473278,
+      "latencyIncreasePercent": 12.359524914732777,
+      "inferredFPSChangePercent": -10.999979684955186,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.149655935691733,
+        "median": 1.1326808549934275,
+        "p95": 1.5422357777490334,
+        "min": 0.4864209199751195,
+        "max": 2.3139482346864617
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 0.1971105035971691,
+        "min": -1.6300999999984924,
+        "max": 2.035699999999906
+      },
+      "videoBytes4x8": 881807,
+      "videoBytes8x16": 833693,
+      "ansiBytes4x8": 180664,
+      "ansiBytes8x16": 172675
+    },
+    {
+      "columns": 16,
+      "rows": 8,
+      "smallKey": "16x8-samples4x8-fp32",
+      "largeKey": "16x8-samples8x16-fp32",
+      "warmMean4x8Ms": 1.754790791366832,
+      "warmMean8x16Ms": 1.9358450359711947,
+      "warmFPS4x8": 569.8685022281691,
+      "warmFPS8x16": 516.5702736625867,
+      "ratioOfWarmMeans": 1.1031771111947408,
+      "latencyIncreasePercent": 10.317711119474083,
+      "inferredFPSChangePercent": -9.352724068304852,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.128007024920036,
+        "median": 1.1211830918442391,
+        "p95": 1.454670750381709,
+        "min": 0.6059306778391945,
+        "max": 2.6039201407848926
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 0.1810542446043629,
+        "min": -1.2039999999979045,
+        "max": 2.643099999999322
+      },
+      "videoBytes4x8": 1566123,
+      "videoBytes8x16": 1333123,
+      "ansiBytes4x8": 527562,
+      "ansiBytes8x16": 461408
+    },
+    {
+      "columns": 32,
+      "rows": 16,
+      "smallKey": "32x16-samples4x8-fp32",
+      "largeKey": "32x16-samples8x16-fp32",
+      "warmMean4x8Ms": 1.8819106474820422,
+      "warmMean8x16Ms": 2.3123716546763475,
+      "warmFPS4x8": 531.3748563663102,
+      "warmFPS8x16": 432.4564340588086,
+      "ratioOfWarmMeans": 1.2287361558691712,
+      "latencyIncreasePercent": 22.87361558691712,
+      "inferredFPSChangePercent": -18.615563217261233,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.2407455432990837,
+        "median": 1.2233120437955773,
+        "p95": 1.5419435736664182,
+        "min": 0.5263657456233873,
+        "max": 2.861557868178659
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 0.4304610071943054,
+        "min": -1.7963999999992666,
+        "max": 3.373099999999795
+      },
+      "videoBytes4x8": 3790705,
+      "videoBytes8x16": 3016051,
+      "ansiBytes4x8": 1499022,
+      "ansiBytes8x16": 1344801
+    },
+    {
+      "columns": 40,
+      "rows": 12,
+      "smallKey": "40x12-samples4x8-fp32",
+      "largeKey": "40x12-samples8x16-fp32",
+      "warmMean4x8Ms": 1.9203572661870347,
+      "warmMean8x16Ms": 2.2960877697841484,
+      "warmFPS4x8": 520.7364367077122,
+      "warmFPS8x16": 435.5234208202801,
+      "ratioOfWarmMeans": 1.1956565636055552,
+      "latencyIncreasePercent": 19.565656360555515,
+      "inferredFPSChangePercent": -16.363943423314144,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.2166362561745996,
+        "median": 1.2079418005461373,
+        "p95": 1.535359899196621,
+        "min": 0.5339623091035879,
+        "max": 2.622834837761764
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 0.37573050359711363,
+        "min": -2.5662999999999556,
+        "max": 2.6607999999978347
+      },
+      "videoBytes4x8": 5972779,
+      "videoBytes8x16": 4627686,
+      "ansiBytes4x8": 1975010,
+      "ansiBytes8x16": 1715725
+    },
+    {
+      "columns": 80,
+      "rows": 24,
+      "smallKey": "80x24-samples4x8-fp32",
+      "largeKey": "80x24-samples8x16-fp32",
+      "warmMean4x8Ms": 3.0971752517986295,
+      "warmMean8x16Ms": 4.729225611510827,
+      "warmFPS4x8": 322.87485166338837,
+      "warmFPS8x16": 211.45110894393002,
+      "ratioOfWarmMeans": 1.5269480177992554,
+      "latencyIncreasePercent": 52.69480177992554,
+      "inferredFPSChangePercent": -34.50988584134841,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.540478360328929,
+        "median": 1.503698698342092,
+        "p95": 2.0713698003964076,
+        "min": 0.8965198512502255,
+        "max": 4.146389366250788
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 1.632050359712198,
+        "min": -0.48139999999875727,
+        "max": 8.971299999997427
+      },
+      "videoBytes4x8": 20110166,
+      "videoBytes8x16": 15119086,
+      "ansiBytes4x8": 6366714,
+      "ansiBytes8x16": 5300115
+    },
+    {
+      "columns": 80,
+      "rows": 25,
+      "smallKey": "80x25-samples4x8-fp32",
+      "largeKey": "80x25-samples8x16-fp32",
+      "warmMean4x8Ms": 3.134759280575525,
+      "warmMean8x16Ms": 4.778138417266178,
+      "warmFPS4x8": 319.003760893693,
+      "warmFPS8x16": 209.2865280726112,
+      "ratioOfWarmMeans": 1.524244125178549,
+      "latencyIncreasePercent": 52.424412517854904,
+      "inferredFPSChangePercent": -34.393711382495184,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.5372369167483502,
+        "median": 1.5091411193050794,
+        "p95": 1.980730436876495,
+        "min": 0.787258738475781,
+        "max": 3.3699213973795694
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 1.6433791366906534,
+        "min": -1.2830000000003565,
+        "max": 6.7838999999994485
+      },
+      "videoBytes4x8": 20679178,
+      "videoBytes8x16": 15628246,
+      "ansiBytes4x8": 6553062,
+      "ansiBytes8x16": 5461544
+    },
+    {
+      "columns": 80,
+      "rows": 40,
+      "smallKey": "80x40-samples4x8-fp32",
+      "largeKey": "80x40-samples8x16-fp32",
+      "warmMean4x8Ms": 4.595079568345326,
+      "warmMean8x16Ms": 7.213877985611484,
+      "warmFPS4x8": 217.62408792413947,
+      "warmFPS8x16": 138.62169584716577,
+      "ratioOfWarmMeans": 1.5699136170147279,
+      "latencyIncreasePercent": 56.99136170147278,
+      "inferredFPSChangePercent": -36.30222776833085,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.585027514101041,
+        "median": 1.5730320592768103,
+        "p95": 1.96952652321123,
+        "min": 0.8106646269838159,
+        "max": 3.2050623052959635
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 2.6187984172661585,
+        "min": -1.3862000000008265,
+        "max": 11.325199999999995
+      },
+      "videoBytes4x8": 18956348,
+      "videoBytes8x16": 14359590,
+      "ansiBytes4x8": 7211468,
+      "ansiBytes8x16": 6158457
+    },
+    {
+      "columns": 120,
+      "rows": 34,
+      "smallKey": "120x34-samples4x8-fp32",
+      "largeKey": "120x34-samples8x16-fp32",
+      "warmMean4x8Ms": 5.375365467625851,
+      "warmMean8x16Ms": 8.237928201438809,
+      "warmFPS4x8": 186.03386244576075,
+      "warmFPS8x16": 121.38974455074073,
+      "ratioOfWarmMeans": 1.5325336018645206,
+      "latencyIncreasePercent": 53.253360186452056,
+      "inferredFPSChangePercent": -34.74857590180249,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.5543640877484002,
+        "median": 1.563478368051503,
+        "p95": 1.8612049831032567,
+        "min": 0.735556621880764,
+        "max": 2.7674754477180072
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 2.8625627338129567,
+        "min": -3.0309000000002015,
+        "max": 9.178499999999985
+      },
+      "videoBytes4x8": 39445980,
+      "videoBytes8x16": 29884180,
+      "ansiBytes4x8": 12043149,
+      "ansiBytes8x16": 9803289
+    },
+    {
+      "columns": 160,
+      "rows": 45,
+      "smallKey": "160x45-samples4x8-fp32",
+      "largeKey": "160x45-samples8x16-fp32",
+      "warmMean4x8Ms": 8.680268776978405,
+      "warmMean8x16Ms": 14.338754964028789,
+      "warmFPS4x8": 115.20380597570612,
+      "warmFPS8x16": 69.74106207328812,
+      "ratioOfWarmMeans": 1.6518791448091656,
+      "latencyIncreasePercent": 65.18791448091656,
+      "inferredFPSChangePercent": -39.46288364119243,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.6681932020507668,
+        "median": 1.6650442252945201,
+        "p95": 1.9722809103905155,
+        "min": 1.0309991825930989,
+        "max": 2.6982988365402605
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 5.658486187050385,
+        "min": 0.3981999999996333,
+        "max": 14.46559999999954
+      },
+      "videoBytes4x8": 67216994,
+      "videoBytes8x16": 50571149,
+      "ansiBytes4x8": 19460964,
+      "ansiBytes8x16": 15556980
+    },
+    {
+      "columns": 160,
+      "rows": 80,
+      "smallKey": "160x80-samples4x8-fp32",
+      "largeKey": "160x80-samples8x16-fp32",
+      "warmMean4x8Ms": 12.358716690647515,
+      "warmMean8x16Ms": 23.73387726618711,
+      "warmFPS4x8": 80.91455003226606,
+      "warmFPS8x16": 42.13386581486488,
+      "ratioOfWarmMeans": 1.920415999514559,
+      "latencyIncreasePercent": 92.04159995145591,
+      "inferredFPSChangePercent": -47.92794893123266,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 1.9355176629749635,
+        "median": 1.924416340183742,
+        "p95": 2.32011153583401,
+        "min": 1.1879999357081752,
+        "max": 2.8151920551545304
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 11.375160575539594,
+        "min": 3.50899999999956,
+        "max": 22.1163000000015
+      },
+      "videoBytes4x8": 65824067,
+      "videoBytes8x16": 49746967,
+      "ansiBytes4x8": 23493339,
+      "ansiBytes8x16": 19671575
+    },
+    {
+      "columns": 320,
+      "rows": 90,
+      "smallKey": "320x90-samples4x8-fp32",
+      "largeKey": "320x90-samples8x16-fp32",
+      "warmMean4x8Ms": 26.95518848920859,
+      "warmMean8x16Ms": 55.0703094964028,
+      "warmFPS4x8": 37.098609063718705,
+      "warmFPS8x16": 18.158605047703976,
+      "ratioOfWarmMeans": 2.0430318830250433,
+      "latencyIncreasePercent": 104.30318830250434,
+      "inferredFPSChangePercent": -51.05313782380448,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 2.056987910323697,
+        "median": 2.0606285244315883,
+        "p95": 2.356100777536805,
+        "min": 1.4207837990837626,
+        "max": 2.625448403162525
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 28.115121007194208,
+        "min": 16.352499999993597,
+        "max": 51.10380000000032
+      },
+      "videoBytes4x8": 245445008,
+      "videoBytes8x16": 185887191,
+      "ansiBytes4x8": 64238123,
+      "ansiBytes8x16": 48975892
+    },
+    {
+      "columns": 320,
+      "rows": 160,
+      "smallKey": "320x160-samples4x8-fp32",
+      "largeKey": "320x160-samples8x16-fp32",
+      "warmMean4x8Ms": 40.85781856115112,
+      "warmMean8x16Ms": 93.90598589928057,
+      "warmFPS4x8": 24.475119700855274,
+      "warmFPS8x16": 10.648948418182373,
+      "ratioOfWarmMeans": 2.298360245511719,
+      "latencyIncreasePercent": 129.8360245511719,
+      "inferredFPSChangePercent": -56.49071976628475,
+      "pairedSameFrameLatencyRatio": {
+        "count": 695,
+        "mean": 2.3142725080404225,
+        "median": 2.3266848168188146,
+        "p95": 2.6532628411462755,
+        "min": 1.508043603147654,
+        "max": 3.0416110388545654
+      },
+      "pairedSameFrameDeltaMs": {
+        "mean": 53.048167338129446,
+        "min": 28.387800000000425,
+        "max": 74.59550000000309
+      },
+      "videoBytes4x8": 239829138,
+      "videoBytes8x16": 183930920,
+      "ansiBytes4x8": 80043837,
+      "ansiBytes8x16": 65004382
+    }
+  ],
+  "focus80x25": {
+    "cellsPerFrame": 2000,
+    "tupleChanges": {
+      "count": 719,
+      "mean": 1195.981919332406,
+      "median": 1184,
+      "p95": 1343,
+      "min": 996,
+      "max": 1464
+    },
+    "totalChangedTuples": 859911,
+    "totalCells": 1438000,
+    "maximumChangeFrame": 1,
+    "caveat": "Tuple differences identify changed decisions, not visual improvement. Duplicated glyph shapes, blank glyph colors and near-equal renderings can differ in tuples without a comparable perceptual change."
+  }
+}

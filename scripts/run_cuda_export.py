@@ -69,7 +69,7 @@ def main():
             '24 configurations: 12 character grids, each at 4x8 and 8x16 samples per cell.',
             'Videos use the original DejaVu Sans Mono glyph atlas, 8x16 rendered pixels per character.',
             'Doubling sample parameters changes matching detail; it does not double output dimensions.',
-            'ANSI frames are UTF-8 with terminal color escapes. Use an ANSI-capable monospace terminal.',
+            'ANSI frames contain raw CP437 glyph bytes and ASCII SGR color escapes, not UTF-8. Use a CP437-aware ANSI viewer.',
             'PNG input is resampled by FFmpeg Lanczos for this export; earlier browser-prepared benchmarks are separate.',
             'Square legacy canvases retain letterboxing. Other grids use centered integral aspect crops listed below.',
             'Offline rendering speed is not a realtime pipeline or stability qualification. WebGPU remains application default.',

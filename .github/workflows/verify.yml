@@ -22,7 +22,7 @@ jobs:
         shell: pwsh
         run: npm test --prefix PNG2ANSI
       - name: Validate optional CUDA bridge without a GPU
-        run: node --test tests/cuda_bridge.test.mjs tests/cuda_direct.test.mjs tests/cuda_raster_packet.test.mjs tests/cuda_fixture_plan.test.mjs tests/cuda_image_fixture.test.mjs tests/cuda_queue.test.mjs tests/cuda_timing_breakdown.test.mjs tests/cuda_export_plan.test.mjs
+        run: node --test tests/cuda_bridge.test.mjs tests/cuda_direct.test.mjs tests/cuda_raster_packet.test.mjs tests/cuda_fixture_plan.test.mjs tests/cuda_image_fixture.test.mjs tests/cuda_queue.test.mjs tests/cuda_timing_breakdown.test.mjs tests/cuda_export_plan.test.mjs tests/ansi_compare.test.mjs tests/cuda_quality_plan.test.mjs
       - name: Verify source package manifest
         run: python scripts/package_manifest.py --check
       - name: Verify native regression fixtures against independent CPU

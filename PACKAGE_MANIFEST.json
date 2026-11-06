@@ -58,8 +58,8 @@
       "bytes": 370
     },
     ".github/workflows/verify.yml": {
-      "sha256": "c65120fac9b0bcdc76c0f5fffd8dd3b8d76a558b482527f4167636210ebac611",
-      "bytes": 5625
+      "sha256": "8e86a43b5e0f8984b471cc583d124c6495969ebdcee80dc004802b3a51951672",
+      "bytes": 5686
     },
     ".gitignore": {
       "sha256": "b0ee05b6dd0bb4a0eb11169e9f0a79bc11593c337244e5d61575e37c81f7f0b3",
@@ -152,6 +152,26 @@
     "overlay/docs/WEBGPU_RESEARCH.md": {
       "sha256": "62dc790edb07833596fe3c0f8b64465dbd0aa3b61c004501f0f6b2ee7fe63ed3",
       "bytes": 9761
+    },
+    "overlay/experiments/ansi-compare/README.md": {
+      "sha256": "8ac78db2378acdd294f5c3d93b91d779f0921168916437d227bd036eb2129509",
+      "bytes": 2583
+    },
+    "overlay/experiments/ansi-compare/app.js": {
+      "sha256": "0c249d6ba96771b1fe18b9fc69d8fb8bf5ee8f62df631c6c66e5d32825c435ee",
+      "bytes": 16787
+    },
+    "overlay/experiments/ansi-compare/index.html": {
+      "sha256": "97b301749ec43ed116ec4484f7ab27820b8f617191271495bebf0a799f3a0dd3",
+      "bytes": 3667
+    },
+    "overlay/experiments/ansi-compare/parser.js": {
+      "sha256": "44d40e475d922c0c9eb114cbcf6a6d8e55504c591b4da908d5f08582bd07c020",
+      "bytes": 6245
+    },
+    "overlay/experiments/ansi-compare/styles.css": {
+      "sha256": "28cb921b77ff85a50dfa2f587d75db29925c2b5f2fa149a85f4fa6540155f425",
+      "bytes": 3957
     },
     "overlay/experiments/webgpu/photographic.html": {
       "sha256": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
@@ -321,6 +341,10 @@
       "sha256": "7be38847475ad2a2b02231aeaa320c387d859eee8b1d89aeae718676ecafbcd6",
       "bytes": 9784
     },
+    "qualification/GTX1650SUPER_PARAMETER_MAP.md": {
+      "sha256": "4208f3969c12313683a3a7d6dcbfb13c8e54d3f8c1a110139ec137fa113e17f8",
+      "bytes": 10790
+    },
     "qualification/GTX1650SUPER_PRECISION_BENCHMARK.md": {
       "sha256": "5a74533db58915a4628b56706d6a00f99b3bdf1aece30424805c10296141dd34",
       "bytes": 14269
@@ -336,6 +360,10 @@
     "qualification/GTX1650SUPER_RESULTS.md": {
       "sha256": "589e7122c81f1c5738e837e05edd3bed8cb41b1828b53bf3280cc57372252e96",
       "bytes": 11706
+    },
+    "qualification/GTX1650SUPER_SAMPLE_LATENCY.md": {
+      "sha256": "00c1fdeb54c189e114521affad172005858238f7e76b7cc97abc3a98b710061d",
+      "bytes": 7263
     },
     "qualification/GTX1650SUPER_SELECTION_PROFILE.md": {
       "sha256": "823dac733de11c4bdf2988b7693b62b9039075fb5755605a1c62f326922181e6",
@@ -1897,6 +1925,18 @@
       "sha256": "b3b7423810facf816413dd9d56401bf3351d0038d0983d4100faad94b64a0b37",
       "bytes": 27413
     },
+    "qualification/gtx1650super-sample-latency/frames-80x25.csv": {
+      "sha256": "c34bb2d1815fe695a51250cb6abdd00eba7a60cc347678404a192372079bccdb",
+      "bytes": 50137
+    },
+    "qualification/gtx1650super-sample-latency/pairs.csv": {
+      "sha256": "a65cc7ad088a5cf6319bfbf27d1530b5b7c213b3e150702581e0946804f70945",
+      "bytes": 1767
+    },
+    "qualification/gtx1650super-sample-latency/summary.json": {
+      "sha256": "17d4f75a6848b2072fe446564ad81859855eab9cfa101a6889833206c6e45276",
+      "bytes": 98819
+    },
     "qualification/gtx1650super-selection-profile/activity-baseline.csv": {
       "sha256": "1fdcfe6d537d1537f4169007773d9c8cdaf41783f44140742b9d57cf56992523",
       "bytes": 215813
@@ -2233,6 +2273,10 @@
       "sha256": "26573d378d04c7556f70b18813d19bec95912e62cf65d202af9f114391556894",
       "bytes": 34677
     },
+    "scripts/analyze_cuda_export_latency.mjs": {
+      "sha256": "ac45f359c0205ce640163f9d56665f25fd4129a8f1d1a37a331d8d773775dcb4",
+      "bytes": 10036
+    },
     "scripts/analyze_cuda_fixture.mjs": {
       "sha256": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
       "bytes": 3882
@@ -2317,6 +2361,10 @@
       "sha256": "614d10c4c68e24554effa601cf334def066c32fe841d5ae1b58b0ed72557670b",
       "bytes": 6841
     },
+    "scripts/cuda_quality_plan.mjs": {
+      "sha256": "eab420306eda3680217310a38a241b59870ea60d884e99033b73517b5c6a562b",
+      "bytes": 4181
+    },
     "scripts/cuda_raster_packet.mjs": {
       "sha256": "5bc8bb204f376e4fa5854c3257eeda15436e70d04f804dec1ab5456f44fc5bee",
       "bytes": 1513
@@ -2381,6 +2429,10 @@
       "sha256": "ff9efede0f601305383cdb4e29b9a5615afa14d3ed12269df38e8eec31c386b1",
       "bytes": 6759
     },
+    "scripts/prepare_cuda_quality.mjs": {
+      "sha256": "6b21fb44b601e5ba749d291fda6071a768a462c4c322b8d416030b8851f3891b",
+      "bytes": 6290
+    },
     "scripts/prepare_cuda_video.mjs": {
       "sha256": "cc62e06b1fd8fb28bc22c4f60dc352ac15ac7a6e7f90a036e485ab2c0fff858a",
       "bytes": 7674
@@ -2410,8 +2462,12 @@
       "bytes": 10736
     },
     "scripts/run_cuda_export.py": {
-      "sha256": "a6638895dfab7cfc40a518e6ede2ea3d2671cb5f3a8d8e64876f7968ab6652d0",
-      "bytes": 9313
+      "sha256": "b4f25c0a0b7dc0046d22caab2b5616b958e8d128aca67938bbfd1abc01d515f1",
+      "bytes": 9335
+    },
+    "scripts/run_cuda_quality.mjs": {
+      "sha256": "44eeacd6acf214ba12caf7884886c2bcc899c30fd82fc5a061ef3948a4145911",
+      "bytes": 9826
     },
     "scripts/serve.mjs": {
       "sha256": "d14586f55d125ba5860cd27d50df4704502311a2c32535508a7bf4d1040744c1",
@@ -2445,6 +2501,10 @@
       "sha256": "1c8788c027b138718c6aca11e8f609b586ff8e031d87102199da3f36971bec02",
       "bytes": 706
     },
+    "tests/ansi_compare.test.mjs": {
+      "sha256": "e5b050c1674bcc2a47fcee080643509252b12e08b1d59c9618a99afcf2bb0907",
+      "bytes": 4786
+    },
     "tests/cuda_bridge.test.mjs": {
       "sha256": "77b87b2b5b08c61421f6d3733b43aa94a7bef8161fd777598d068bd91d8c982b",
       "bytes": 21804
@@ -2464,6 +2524,10 @@
     "tests/cuda_image_fixture.test.mjs": {
       "sha256": "b70cd8838b5cfc576ea6eb453214b4b34539b5b1a0f5aaab5130b9c3151c6132",
       "bytes": 7257
+    },
+    "tests/cuda_quality_plan.test.mjs": {
+      "sha256": "ea37e214139ec09aef2d4760f6b339427cbe1d41928fe2c4a548e3793d2929b1",
+      "bytes": 2424
     },
     "tests/cuda_queue.test.mjs": {
       "sha256": "cc92716f5de0af3f1f30d47e20ee8851198e3ac142417541c917d38d6dfb49e2",
