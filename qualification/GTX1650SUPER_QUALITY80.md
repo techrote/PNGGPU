@@ -108,6 +108,17 @@ rejection. [Summary](gtx1650super-quality80/summary.json),
 raw preparation/matching receipts remain in ignored build/qualification and
 build/exports directories; the portable pack includes exact ANSI checksums.
 
+The [independent offline audit](gtx1650super-quality80/independent-audit.json)
+re-encoded all 105 ANSI files from stored tuples, verified source/prepared/baseline
+hashes, device/monitor/process evidence and all 149 ZIP entry CRC/payload hashes.
+The [local host log](gtx1650super-quality80/host-tests.txt) records 92 passing
+bridge/planning/parser/render/quality checks. The initial engineering CI caught
+a CSS checkout-line-ending manifest mismatch; explicit LF checkout and CSS text
+hash normalization fix that portability issue without changing any GPU code.
+The corrected source `cf2d1f6d629a614bd237a99dc974dd3da581a1af` passes all three
+[CI jobs](https://github.com/techrote/PNGGPU/actions/runs/42242373368), including
+Windows application/host checks and Windows/Linux CUDA compilation/native tests.
+
 ## Reproduction
 
 After setup and verification of the normal worker, from the repository root:

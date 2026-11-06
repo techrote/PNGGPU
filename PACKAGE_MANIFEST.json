@@ -358,8 +358,8 @@
       "bytes": 16591
     },
     "qualification/GTX1650SUPER_QUALITY80.md": {
-      "sha256": "68caa9bfcd3d0255119bd08034926ea9af6c6483da9b81dc433b9f4bf68598c1",
-      "bytes": 7222
+      "sha256": "44e6aefaf49368ffc7bfde97d5cfc6c5577bc7c21df657d329917008a879b9ff",
+      "bytes": 8028
     },
     "qualification/GTX1650SUPER_REAL_IMAGES.md": {
       "sha256": "4e8c91f2641ce9d1085f7dfb1931a8148e7e54103ef405811214f89e954bdb39",
@@ -1876,6 +1876,14 @@
     "qualification/gtx1650super-quality80/delivery.json": {
       "sha256": "d0da5fa010557e323613cede502b2c8055f18f09465e0ee97d32f9a24e3f2e74",
       "bytes": 279
+    },
+    "qualification/gtx1650super-quality80/host-tests.txt": {
+      "sha256": "3ecfe0336b554e62652223d18f8753a70be679bfb1040f432b6e38f4863ba746",
+      "bytes": 8470
+    },
+    "qualification/gtx1650super-quality80/independent-audit.json": {
+      "sha256": "7eb74f0505a0482e4e3752564e3548540c6e478641d87895f7c51e7d9211c39d",
+      "bytes": 1609
     },
     "qualification/gtx1650super-quality80/summary.json": {
       "sha256": "de40d3e5486fe212f19d99a8921e8ee0ef6e9f86fe5ddf7e1119e9fb0f8b6071",

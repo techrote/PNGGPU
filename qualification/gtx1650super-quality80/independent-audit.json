@@ -1,0 +1,62 @@
+{
+  "schema": "pnggpu-quality80-independent-audit-v1",
+  "checkedAt": "2026-11-06T15:22:25.684Z",
+  "passed": true,
+  "sourceCommit": "4f6f6d841effcfcad5958e835707a7e4c1fb52e5",
+  "reportSha256": "953984679c8181f88e35101cc4cb45db80638046a35220cdd9694671715df353",
+  "settingsSha256": "a23ddec00088c24f716c9ebe2f59d8be36ba82af28fcb5e599b4be6d46fff95b",
+  "preparationSha256": "1a7d8accda0c68a12f0f7f09bcaedf1a7abd8d56c478abf1854e157780cb0806",
+  "variants": 35,
+  "ansiFiles": 105,
+  "originalCoreAnsiReencodes": 105,
+  "photoCases": 66,
+  "industrialCpuCases": 33,
+  "gpuFrameFits": 88,
+  "gpuCells": 176000,
+  "photographicContexts": 22,
+  "trackedProcessesExited": 66,
+  "sourceAndPreparedHashesVerified": true,
+  "baselineReceiptAndByteBindingsVerified": true,
+  "deviceMonitorAfterInfoVerified": true,
+  "maxDeclaredGpuBytes": 15290784,
+  "minFreeBeforeContexts": 3441950720,
+  "changedCells4x8": {
+    "photo-nearest-4x8": [
+      514,
+      439,
+      456
+    ],
+    "photo-bilinear-4x8": [
+      485,
+      379,
+      388
+    ],
+    "photo-bicubic-4x8": [
+      0,
+      0,
+      0
+    ],
+    "photo-candidates12-8-4x8": [
+      152,
+      109,
+      127
+    ],
+    "photo-candidates3-3-4x8": [
+      481,
+      363,
+      439
+    ]
+  },
+  "browserQaReceiptPassed": true,
+  "errors": [],
+  "portableZip": {
+    "bytes": 1211346,
+    "sha256": "5ae2f285ad8cfcdcd9f026b5ddc59da3b26b2931477fbbf5806438309a7caf7b",
+    "entries": 149,
+    "ansiFiles": 105,
+    "crcVerified": true,
+    "uniqueNames": true,
+    "allPayloadHashesMatchPackageFolder": true,
+    "allPackagedAnsiMatchAuditedBytes": true
+  }
+}
