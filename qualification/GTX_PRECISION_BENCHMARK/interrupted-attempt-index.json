@@ -1,0 +1,271 @@
+{
+  "schema": "pnggpu-interrupted-large-attempt-index-v1",
+  "sourceCommit": "2148bdfc91c2eb205dc0649c011946cfc2b41819",
+  "started": "2026-11-04T15:26:38.724Z",
+  "finished": "2026-11-04T15:28:07.813Z",
+  "benchmarkCompleted": false,
+  "completedFits": 15,
+  "excludedFromPrimary": true,
+  "cases": [
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float32-direct",
+      "tileMiB": 1,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float32-direct.mib1.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "82b83cf26e92013771f8e28b4f1551fdbd68bb9b4e7b45b03c5a7257cf99a00a"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "binary64-direct",
+      "tileMiB": 1,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.binary64-direct.mib1.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "4c986acbc08589827a72c7dbee9216f637c79242ca0d3e27abf5677558bc2733"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float16-mixed",
+      "tileMiB": 1,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float16-mixed.mib1.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "b86b829fdad83c6cf1a0cd8f101be3bfa7a96d184cf9fc69556986044d00053a"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "binary64-direct",
+      "tileMiB": 4,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.binary64-direct.mib4.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "ff897fe3ec5822dd246d4db28e2083a4366b29c26f2d5b3d1be6e1ebaf4ab4f8"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float16-mixed",
+      "tileMiB": 4,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float16-mixed.mib4.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "147578a7c93633bddb27cf11904762e39e7e3efb9e318c2eb56f04e828f45ed3"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float32-direct",
+      "tileMiB": 4,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float32-direct.mib4.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "d1c68fd0c16ae62d8eaf51a5268416bfdbad7136545524b6e41cccdd075be8b4"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float16-mixed",
+      "tileMiB": 8,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float16-mixed.mib8.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "03395032996b5f315e68e793219c76648b55543b64579cf9bad213bc09abd677"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float32-direct",
+      "tileMiB": 8,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float32-direct.mib8.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "8c8e76af7aff1b90d246e2f04f434bfba336d66d0adb73364ce8d92fed38e63e"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "binary64-direct",
+      "tileMiB": 8,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.binary64-direct.mib8.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "c7560cd5672693f1e3e16524643129da62a0c960612d76172e98728553db0f9b"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float32-direct",
+      "tileMiB": 16,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float32-direct.mib16.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "491f6268948d90d1219716846839229b06d786bd7ffa8272f9082f51b88e2b1e"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "binary64-direct",
+      "tileMiB": 16,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.binary64-direct.mib16.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "9c438993e0a9708a00348c8e37637d0fac8e49843523b5d2e7b94ce3efe6f573"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float16-mixed",
+      "tileMiB": 16,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float16-mixed.mib16.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "cddfc657f5c0e1cf0faa8d570353a72b8044a66665ef0cd734daf59bdcc5e47a"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "binary64-direct",
+      "tileMiB": 32,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.binary64-direct.mib32.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "9782186a3e8ed8ec82b1bd258dd67929c1279eebe199e8252b97e75d44397bf0"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float16-mixed",
+      "tileMiB": 32,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float16-mixed.mib32.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "21e3a03bd02d15dfb4dd7a6f494e9f6223743688749779715ff62234ec2fa29c"
+    },
+    {
+      "key": "0-160x80-4x8",
+      "image": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "settings": {
+        "columns": 160,
+        "rows": 80,
+        "sw": 4,
+        "sh": 8
+      },
+      "mode": "float32-direct",
+      "tileMiB": 32,
+      "input": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.input.json",
+      "report": "C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-160x80-4x8.float32-direct.mib32.json",
+      "inputSha256": "38784fd9004b0785256d5d6d06352a605fac1f78378bc699fc5be64e086015da",
+      "reportSha256": "de4005ddcd1f4be557dc7817c7727f2f8cd154db4190d8844fd83d338039edfe"
+    }
+  ],
+  "error": "Error: Command failed: C:\\Program Files\\nodejs\\node.exe scripts/prepare_cuda_image.mjs build/qualification-tools/node_modules/playwright/index.mjs C:\\pnggpu-CUDA\\build\\qualification\\precision-large\\0-320x160-4x8.input.json holo-stealth-cloak-1024.png 320 160 4 8 --max-preparation-cells 51200\nnode:internal/modules/run_main:107\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nError: Qualification operation timed out; scope stopped\r\n    at Timeout.<anonymous> (file:///C:/pnggpu-CUDA/scripts/qualification_lifecycle.mjs:7:14)\r\n    at listOnTimeout (node:internal/timers:685:17)\r\n    at process.processTimers (node:internal/timers:618:7)\r\n\r\nNode.js v24.21.0\r\n\n    at genericNodeError (node:internal/errors:986:15)\n    at wrappedFn (node:internal/errors:540:14)\n    at checkExecSyncError (node:child_process:942:11)\n    at execFileSync (node:child_process:978:15)\n    at run (file:///C:/pnggpu-CUDA/scripts/benchmark_cuda_large.mjs:22:17)\n    at file:///C:/pnggpu-CUDA/scripts/benchmark_cuda_large.mjs:28:5",
+  "driverAfter": {
+    "supported": true,
+    "events": []
+  }
+}

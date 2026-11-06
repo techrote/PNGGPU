@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "aa0fe810600b998b90c18e3581a20981440dfb42",
+  "worker": "pnggpu_cuda_worker.exe",
+  "sha256": "503ae80c1a5d09ff4f3118e4bb4cc600d8450bd305702bf36449e1934366fa1e",
+  "build": {
+    "nvcc": "12.8.93",
+    "hostCompiler": "MSVC19.44.35228.0",
+    "profile": true,
+    "cmakeType": "Release",
+    "faultWorker": false,
+    "flags": [
+      "--resource-usage",
+      "-lineinfo",
+      "--fmad=false",
+      "--ftz=false",
+      "--prec-div=true",
+      "--prec-sqrt=true"
+    ],
+    "sampleMajorMasks": false,
+    "colorMajorFP32": false,
+    "cuptiActivityBuild": true,
+    "cuptiVersion": "12.8.90",
+    "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+    "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+  }
+}

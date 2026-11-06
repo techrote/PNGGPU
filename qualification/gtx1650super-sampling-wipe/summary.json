@@ -1,0 +1,3879 @@
+{
+  "sourceCommit": "c7aee42a5a429c4abebd91f402df12a9ef655e87",
+  "sourceStatus": "",
+  "worker": {
+    "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+    "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+    "receipt": {
+      "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+      "worker": "pnggpu_cuda_worker.exe",
+      "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "build": {
+        "nvcc": "12.8.93",
+        "hostCompiler": "MSVC19.44.35228.0",
+        "profile": true,
+        "cmakeType": "Release",
+        "faultWorker": false,
+        "flags": [
+          "--resource-usage",
+          "-lineinfo",
+          "--fmad=false",
+          "--ftz=false",
+          "--prec-div=true",
+          "--prec-sqrt=true"
+        ],
+        "sampleMajorMasks": true,
+        "integerProjectionSums": true,
+        "colorMajorFP32": false,
+        "cuptiActivityBuild": false,
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "nativeGather": "cache-blocked-4KiB"
+      }
+    }
+  },
+  "preparationSha256": "bdb5dc6b4ddb702be56b316d5bcaaa315f53e21f980ec3006a99bc1578379372",
+  "sourceFiles": {
+    "scripts/cuda_sampling_plan.mjs": "d7ed650b57b3a0f6ffc5c18e4c6ba6ca11ceb1f60179842d3250aba4ae79f457",
+    "scripts/prepare_cuda_sampling.mjs": "17a18718af46e7d02253e2e8b375320ffbb7c9b18a40f1a6ef885fc8789abf2d",
+    "scripts/run_cuda_sampling.mjs": "f7de7ca0b43d2bca56239637bec5bdf1e33d670ff5fc0849ee84e3f17529642d",
+    "scripts/cuda_quality_plan.mjs": "eab420306eda3680217310a38a241b59870ea60d884e99033b73517b5c6a562b",
+    "scripts/cuda_image_fixture.mjs": "614d10c4c68e24554effa601cf334def066c32fe841d5ae1b58b0ed72557670b",
+    "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9",
+    "PNG2ANSI/assets/DejaVuSansMono.ttf": "b4a6c3e4faab8773f4ff761d56451646409f29abedd68f05d38c2df667d3c582",
+    "overlay/experiments/webgpu/photographic.html": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60"
+  },
+  "seed": {
+    "preparationSha256": "1a7d8accda0c68a12f0f7f09bcaedf1a7abd8d56c478abf1854e157780cb0806",
+    "settingsSha256": "a23ddec00088c24f716c9ebe2f59d8be36ba82af28fcb5e599b4be6d46fff95b",
+    "reportSha256": "953984679c8181f88e35101cc4cb45db80638046a35220cdd9694671715df353"
+  },
+  "selectedFrames": [
+    1,
+    360,
+    719
+  ],
+  "addedConfigurations": 15,
+  "totalConfigurations": 50,
+  "totalAnsiFrames": 150,
+  "gpuFrameFits": 52,
+  "gpuCells": 104000,
+  "newDriverErrors": 0,
+  "sessions": [
+    {
+      "key": "80x25-photo-samples4x10",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:10.470Z",
+            "checkedAt": "2026-11-06T15:52:10.871Z",
+            "queryMs": 401,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples4x12",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:12.032Z",
+            "checkedAt": "2026-11-06T15:52:12.521Z",
+            "queryMs": 489,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples5x10",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:13.603Z",
+            "checkedAt": "2026-11-06T15:52:14.013Z",
+            "queryMs": 410,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x8",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:15.028Z",
+            "checkedAt": "2026-11-06T15:52:15.409Z",
+            "queryMs": 381,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x10",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:16.436Z",
+            "checkedAt": "2026-11-06T15:52:16.807Z",
+            "queryMs": 371,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x12",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:17.823Z",
+            "checkedAt": "2026-11-06T15:52:18.189Z",
+            "queryMs": 366,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x16",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:19.164Z",
+            "checkedAt": "2026-11-06T15:52:19.537Z",
+            "queryMs": 373,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples7x14",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:20.534Z",
+            "checkedAt": "2026-11-06T15:52:20.904Z",
+            "queryMs": 370,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "80x25-photo-samples8x12",
+      "kind": "normal",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:21.887Z",
+            "checkedAt": "2026-11-06T15:52:22.249Z",
+            "queryMs": 362,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-literal-samples8x4",
+      "kind": "literal",
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-rotated-refit-samples8x4",
+      "kind": "rotated-refit",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:23.607Z",
+            "checkedAt": "2026-11-06T15:52:23.976Z",
+            "queryMs": 369,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-upright-refit-samples8x4",
+      "kind": "upright-refit",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:24.982Z",
+            "checkedAt": "2026-11-06T15:52:25.360Z",
+            "queryMs": 378,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-literal-samples16x8",
+      "kind": "literal",
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-rotated-refit-samples16x8",
+      "kind": "rotated-refit",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:26.722Z",
+            "checkedAt": "2026-11-06T15:52:27.100Z",
+            "queryMs": 378,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    },
+    {
+      "key": "25x80-upright-refit-samples16x8",
+      "kind": "upright-refit",
+      "before": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "after": {
+        "schema": "pnggpu-cuda-info-v1",
+        "available": true,
+        "backend": "cuda",
+        "protocolVersion": 1,
+        "precision": "float32-direct",
+        "device": {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "computeCapability": "7.5",
+          "totalMemoryBytes": 4294508544,
+          "freeMemoryBytes": 3441950720,
+          "index": 0,
+          "multiprocessorCount": 20,
+          "kernelExecTimeoutEnabled": true
+        },
+        "runtimeVersion": 12080,
+        "driverVersion": 13040,
+        "directFP32SelectionTraversal": "glyph-major-stable-rank",
+        "deviceMaskLayout": "sample-major",
+        "binary64ProjectionSums": "uint32-exact",
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "limits": {
+          "maxMessageBytes": 134217728,
+          "maxTileCells": 65536,
+          "maxSamplesPerCell": 2048,
+          "maxGlyphCount": 65535,
+          "maxProjectionBytes": 134217728,
+          "maxPixelBytes": 67108864,
+          "maxProjectionWork": 16777216,
+          "memoryReserveBytes": 2147483648,
+          "maxRecoveryProjectionBytes": 33554432,
+          "maxRecoveryCells": 1024,
+          "maxKernelProjectionWork": 16777216
+        },
+        "kernelWorkLimitScope": "internal sublaunches; HTTP tile size is independently bounded by buffers",
+        "timingSources": {
+          "gpuProjectionMs": "CUDA events, sum of sublaunches",
+          "gpuSelectionMs": "CUDA events, sum of sublaunches",
+          "uploadMs": "host steady clock, transfer plus stream synchronization",
+          "readbackMs": "host steady clock, transfer plus stream synchronization"
+        },
+        "kernelResources": {
+          "source": "CUDA function attributes and theoretical occupancy API; not achieved hardware counters",
+          "selectionGuarded": {
+            "registersPerThread": 96,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 10,
+            "theoreticalActiveThreadsPerSM": 640,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP32": {
+            "registersPerThread": 64,
+            "localBytesPerThread": 352,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "selectionFP64": {
+            "registersPerThread": 80,
+            "localBytesPerThread": 768,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 12,
+            "theoreticalActiveThreadsPerSM": 768,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionShared": {
+            "registersPerThread": 48,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          },
+          "projectionFP64": {
+            "registersPerThread": 52,
+            "localBytesPerThread": 0,
+            "staticSharedBytesPerBlock": 0,
+            "blockThreads": 64,
+            "theoreticalActiveBlocksPerSM": 16,
+            "theoreticalActiveThreadsPerSM": 1024,
+            "deviceMaxThreadsPerSM": 1024,
+            "binaryVersion": 75,
+            "ptxVersion": 75
+          }
+        }
+      },
+      "monitor": {
+        "pollMs": 250,
+        "maxAgeMs": 12000,
+        "samples": [
+          {
+            "started": "2026-11-06T15:52:28.084Z",
+            "checkedAt": "2026-11-06T15:52:28.465Z",
+            "queryMs": 381,
+            "supported": true,
+            "events": []
+          }
+        ]
+      },
+      "driverAfter": {
+        "supported": true,
+        "events": []
+      }
+    }
+  ],
+  "processes": [
+    {
+      "pid": 15240,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:10.878Z",
+      "exited": "2026-11-06T15:52:11.103Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 18680,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:11.115Z",
+      "exited": "2026-11-06T15:52:11.355Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 19424,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:11.360Z",
+      "exited": "2026-11-06T15:52:11.589Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 18184,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:12.525Z",
+      "exited": "2026-11-06T15:52:12.746Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 3936,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:12.753Z",
+      "exited": "2026-11-06T15:52:12.985Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 19428,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:12.988Z",
+      "exited": "2026-11-06T15:52:13.176Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 14456,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:14.017Z",
+      "exited": "2026-11-06T15:52:14.219Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 7452,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:14.225Z",
+      "exited": "2026-11-06T15:52:14.460Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 19236,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:14.464Z",
+      "exited": "2026-11-06T15:52:14.650Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 18720,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:15.412Z",
+      "exited": "2026-11-06T15:52:15.613Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 17844,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:15.619Z",
+      "exited": "2026-11-06T15:52:15.845Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 18892,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:15.850Z",
+      "exited": "2026-11-06T15:52:16.048Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 16620,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:16.810Z",
+      "exited": "2026-11-06T15:52:17.001Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 10188,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:17.008Z",
+      "exited": "2026-11-06T15:52:17.228Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 10272,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:17.231Z",
+      "exited": "2026-11-06T15:52:17.449Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 8268,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:18.192Z",
+      "exited": "2026-11-06T15:52:18.374Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 16976,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:18.379Z",
+      "exited": "2026-11-06T15:52:18.594Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 8400,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:18.598Z",
+      "exited": "2026-11-06T15:52:18.793Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 18568,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:19.541Z",
+      "exited": "2026-11-06T15:52:19.735Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 18260,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:19.741Z",
+      "exited": "2026-11-06T15:52:19.951Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 16212,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:19.956Z",
+      "exited": "2026-11-06T15:52:20.152Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 14732,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:20.907Z",
+      "exited": "2026-11-06T15:52:21.093Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 17520,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:21.100Z",
+      "exited": "2026-11-06T15:52:21.306Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 16856,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:21.309Z",
+      "exited": "2026-11-06T15:52:21.506Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 14168,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:22.252Z",
+      "exited": "2026-11-06T15:52:22.442Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 14304,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:22.449Z",
+      "exited": "2026-11-06T15:52:22.657Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 17608,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:22.661Z",
+      "exited": "2026-11-06T15:52:22.855Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 8360,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:23.980Z",
+      "exited": "2026-11-06T15:52:24.166Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 3308,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:24.171Z",
+      "exited": "2026-11-06T15:52:24.386Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 14004,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:24.389Z",
+      "exited": "2026-11-06T15:52:24.596Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 5992,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:25.363Z",
+      "exited": "2026-11-06T15:52:25.549Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 11332,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:25.554Z",
+      "exited": "2026-11-06T15:52:25.768Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 16976,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:25.771Z",
+      "exited": "2026-11-06T15:52:25.959Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 4524,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:27.103Z",
+      "exited": "2026-11-06T15:52:27.279Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 6604,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:27.286Z",
+      "exited": "2026-11-06T15:52:27.499Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 7852,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:27.503Z",
+      "exited": "2026-11-06T15:52:27.698Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 17120,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:28.468Z",
+      "exited": "2026-11-06T15:52:28.658Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "pid": 16704,
+      "args": [
+        "--stdio",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:28.664Z",
+      "exited": "2026-11-06T15:52:28.888Z",
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 12132,
+      "args": [
+        "--info",
+        "--device",
+        "0",
+        "--arithmetic-mode",
+        "float32-direct"
+      ],
+      "started": "2026-11-06T15:52:28.891Z",
+      "exited": "2026-11-06T15:52:29.084Z",
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "maxAllocatedBytes": 15290784,
+  "minFreeBeforeBytes": 3441950720,
+  "variants": [
+    {
+      "key": "80x25-photo-samples4x10",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 4,
+        "sampleHeight": 10,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "b65da020f90deab25c3c10558c652073ebf11c7ff68f040e56864f3333eee6a9",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples4x12",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 4,
+        "sampleHeight": 12,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "28e8f7a4bf6d6d7f1499777755010ea988d5d53a62741129d95b749db921f5d4",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples5x10",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 5,
+        "sampleHeight": 10,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "1c8388a1dde2b4daca31c1773f3e165730b0bb29d98cbf97ba3abe874aebc0b2",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x8",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 6,
+        "sampleHeight": 8,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "85657a0a5036b65b950bb0a07d2e02fbf5bb5bd17e43c245b8d50b0cd11f7bc5",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x10",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 6,
+        "sampleHeight": 10,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "05e8cfaeedb06a8afbae2e172e9c4ad041ea39b5a494c45fb7b6df52ee29f135",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x12",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 6,
+        "sampleHeight": 12,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "b9ffebb1127a12f5b6a0a785742d1c59bd5ce9240aa623528f9e7593ecd80cea",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples6x16",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 6,
+        "sampleHeight": 16,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "a2785ce10365bf83a2347a8480c16b660a13c0e2a80b77ad619f29b74406bb46",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples7x14",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 7,
+        "sampleHeight": 14,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "726475b6735fa57f94efb5826a37adcdf88fe58d06be0ea535a356730b5c6aae",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "80x25-photo-samples8x12",
+      "kind": "normal",
+      "geometry": {
+        "columns": 80,
+        "rows": 25,
+        "sampleWidth": 8,
+        "sampleHeight": 12,
+        "count": 3
+      },
+      "fontPolicy": null,
+      "displayRotationDegrees": null,
+      "comparisonGroup": null,
+      "highAtlasSha256": "685f5582f926966e5fc05ce0c3f0002518982ac0ceef36f741f075ffaf6b444f",
+      "lowAtlasSha256": "a27cc888234157b8caff8452ce20d033dd2e8fbdf669c09190c9d339cc35e4af",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 0
+      }
+    },
+    {
+      "key": "25x80-literal-samples8x4",
+      "kind": "literal",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 8,
+        "sampleHeight": 4,
+        "count": 3
+      },
+      "fontPolicy": "exact 90-degree permutation of saved glyph pixels and low samples",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "4d141cdbb82100a13273e66625a06736f2bb863f22a99b359256be22065ea3b6",
+      "lowAtlasSha256": "3583f2f0cc37c8528b85fa9b2f7736bd15a618936ff177d2ca575b79289e7a31",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    },
+    {
+      "key": "25x80-rotated-refit-samples8x4",
+      "kind": "rotated-refit",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 8,
+        "sampleHeight": 4,
+        "count": 3
+      },
+      "fontPolicy": "exact 90-degree permutation of saved glyph pixels and low samples",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "4d141cdbb82100a13273e66625a06736f2bb863f22a99b359256be22065ea3b6",
+      "lowAtlasSha256": "3583f2f0cc37c8528b85fa9b2f7736bd15a618936ff177d2ca575b79289e7a31",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    },
+    {
+      "key": "25x80-upright-refit-samples8x4",
+      "kind": "upright-refit",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 8,
+        "sampleHeight": 4,
+        "count": 3
+      },
+      "fontPolicy": "upright DejaVu 7px in 16x8 cells",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "6d44610fd52d6596b2d9f8fe592740ae7bd4b32ba7c4824e290c862127ac3664",
+      "lowAtlasSha256": "85ca82af992db6bf08b1a4564f2ada099f54990f05f67075b542b5f60824c708",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    },
+    {
+      "key": "25x80-literal-samples16x8",
+      "kind": "literal",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 16,
+        "sampleHeight": 8,
+        "count": 3
+      },
+      "fontPolicy": "exact 90-degree permutation of saved glyph pixels and low samples",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "4d141cdbb82100a13273e66625a06736f2bb863f22a99b359256be22065ea3b6",
+      "lowAtlasSha256": "f4e1ae37a5ae5d48bbf779a779ab0b1205ff490e9f00ba6fbd0193496b93e636",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    },
+    {
+      "key": "25x80-rotated-refit-samples16x8",
+      "kind": "rotated-refit",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 16,
+        "sampleHeight": 8,
+        "count": 3
+      },
+      "fontPolicy": "exact 90-degree permutation of saved glyph pixels and low samples",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "4d141cdbb82100a13273e66625a06736f2bb863f22a99b359256be22065ea3b6",
+      "lowAtlasSha256": "f4e1ae37a5ae5d48bbf779a779ab0b1205ff490e9f00ba6fbd0193496b93e636",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    },
+    {
+      "key": "25x80-upright-refit-samples16x8",
+      "kind": "upright-refit",
+      "geometry": {
+        "columns": 25,
+        "rows": 80,
+        "sampleWidth": 16,
+        "sampleHeight": 8,
+        "count": 3
+      },
+      "fontPolicy": "upright DejaVu 7px in 16x8 cells",
+      "displayRotationDegrees": 270,
+      "comparisonGroup": "80x25",
+      "highAtlasSha256": "6d44610fd52d6596b2d9f8fe592740ae7bd4b32ba7c4824e290c862127ac3664",
+      "lowAtlasSha256": "93a85dec07863f2415945a699323920bb5f069a1e64e63d0dd03f366816df054",
+      "layout": {
+        "cropBeforeRotation": {
+          "x": 43,
+          "y": 0,
+          "width": 768,
+          "height": 480
+        },
+        "sourceRotationDegrees": 90
+      }
+    }
+  ]
+}

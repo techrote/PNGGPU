@@ -1,0 +1,13 @@
+{
+  "zip": "C:\\pnggpu-CUDA\\build\\exports\\ansi-sampling80-viewer.zip",
+  "bytes": 4394613,
+  "sha256": "98ae59097bdf8f6cfd8fdda4296590bc5ef88d12c72b66f7f9193d952f6e99ed",
+  "variants": 50,
+  "frames": [
+    1,
+    360,
+    719
+  ],
+  "ansiFrames": 150,
+  "crcVerified": true
+}

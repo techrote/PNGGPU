@@ -1,6 +1,6 @@
-# PNGGPU — GPU-007
+# PNGGPU — WebGPU and optional CUDA
 
-**Fidelity-first GPU-accelerated PNG2ANSI reconstruction research**, implemented with WebGPU compute and WGSL.
+**Fidelity-first GPU-accelerated PNG2ANSI reconstruction research**, with WebGPU/WGSL as the default and an optional local CUDA backend targeting **TITAN RTX / RTX 20-series (Turing, compute capability 7.5)**.
 
 The original [PNG2ANSI](https://github.com/techrote/PNG2ANSI) and [pyANSI](https://github.com/techrote/pyANSI) implementations remain independent CPU correctness references. This repository is the dedicated GPU development line.
 
@@ -17,6 +17,36 @@ Clone this repository, or download its repository ZIP, and double-click **`start
 - Stage and tile instrumentation, benchmark ZIP exports, folder-to-ANSI-ZIP batch conversion with optional performance receipts.
 - All **five original-byte hardmode images** and their SHA-256 manifest in `overlay/fixtures/hardmode/`.
 
+## Optional CUDA backend
+
+Install Node.js 22+, CMake 3.21+, Visual Studio 2022 C++ tools and an NVIDIA CUDA
+Toolkit (CI baseline: 12.8.1), then run **`build-cuda.bat`**, followed by
+**`start-cuda.bat`**. The workbench opens with CUDA selected; enter the selected
+GPU's VRAM capacity (24 GiB for TITAN RTX), choose an image and run. WebGPU remains
+available in the backend selector, and normal `start.bat` has no CUDA dependency.
+
+The CUDA worker uses the same browser-prepared samples, glyph masks and ANSI
+palette, then uses float32 projection, conservative decision certification and
+binary64 GPU recovery for ambiguous cells. Fused multiply-add remains disabled.
+It contains native `sm_75` code plus
+`compute_75` PTX, selects the first compatible GPU (skipping older cards such as
+V100), and supports explicit device selection. It reuses one tile-buffer set and
+splits large tiles into bounded kernel launches. Actual CUDA pipeline depth is
+one; WebGPU's 1–24 depth control is preserved separately.
+
+CUDA reports device identity, full local-bridge/initialization overhead and
+actual kernel timings. The existing CPU/ANSI comparison, hardmode benchmark,
+ZIP exports and folder-batch paths work with the selected backend. **CUDA
+hardware qualification remains incomplete.** Physical TITAN RTX tests pass the
+five modest hardmode cases and both 512×512 workloads now match the CPU exactly
+with precise GPU recovery. WebGPU retains its known float32 differences.
+PR #2 remains draft pending remaining qualification gates. See the
+[recovery evidence](qualification/RECOVERY.md) and CUDA guide.
+Host tests and compiler CI are not physical GPU acceptance.
+
+See the [CUDA setup, usage and qualification guide](overlay/docs/CUDA_BACKEND.md)
+and [native developer documentation](native/cuda/README.md).
+
 ## Repository layout
 
 - `overlay/src/gpu/` — JS hosts, WGSL shaders, memory/tiling and benchmarking.
@@ -24,6 +54,9 @@ Clone this repository, or download its repository ZIP, and double-click **`start
 - `overlay/tests/` — host-side validation.
 - `overlay/fixtures/hardmode/` — five original benchmark PNGs and manifest.
 - `scripts/setup.ps1` — reproducible pinned upstream installation, with `setup.bat`, `start.bat`, and `test.bat` wrappers.
+- `native/cuda/` — optional CUDA worker, host protocol/arithmetic tests and CMake build.
+- `scripts/cuda_bridge.mjs` — explicitly enabled, same-origin loopback native bridge.
+- `overlay/src/gpu/cuda.js` — browser CUDA adapter using the existing sample/ANSI contract.
 
 ## Qualification status
 

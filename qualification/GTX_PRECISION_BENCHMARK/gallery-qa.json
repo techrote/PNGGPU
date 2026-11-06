@@ -1,0 +1,37 @@
+{
+  "selections": 70,
+  "pixelsChecked": 105447424,
+  "layouts": [
+    {
+      "width": 748,
+      "scroll": 748,
+      "alert": null
+    },
+    {
+      "width": 358,
+      "scroll": 358,
+      "alert": null
+    },
+    {
+      "width": 328,
+      "scroll": 328,
+      "alert": null
+    }
+  ],
+  "errors": [],
+  "testedZooms": [
+    1,
+    2,
+    4
+  ],
+  "testedFocuses": [
+    "center",
+    "tl",
+    "tr",
+    "bl",
+    "br"
+  ],
+  "sharedImageClickTested": true,
+  "previewFiles": 52,
+  "distinctPreviewHashes": 51
+}

@@ -1,0 +1,25 @@
+{
+  "sourceCommit": "d135f6d0127f0921bfbb2ddd5821435ae7c5a6cc",
+  "worker": "pnggpu_cuda_worker.exe",
+  "sha256": "001d8ce51bdfde775cc5ff87b40bca660a3d6e8dcd8196326389a2441950b90f",
+  "build": {
+    "nvcc": "12.8.93",
+    "hostCompiler": "MSVC19.44.35228.0",
+    "profile": true,
+    "cmakeType": "Release",
+    "faultWorker": false,
+    "flags": [
+      "--resource-usage",
+      "-lineinfo",
+      "--fmad=false",
+      "--ftz=false",
+      "--prec-div=true",
+      "--prec-sqrt=true"
+    ],
+    "sampleMajorMasks": true,
+    "integerProjectionSums": true,
+    "colorMajorFP32": false,
+    "cuptiActivityBuild": false,
+    "nativeRasterPacking": "rgba-row-bands-v1"
+  }
+}

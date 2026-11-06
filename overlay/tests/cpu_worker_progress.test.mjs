@@ -3,6 +3,22 @@ import assert from 'node:assert/strict';
 import {referencePhotoFit} from '../src/gpu/reference_photo.js';
 import {runCpuReferenceInWorker} from '../src/gpu/cpu_worker_host.js';
 
+test('CPU cancellation terminates an active worker and an already aborted job never launches',async()=>{
+  let launched=0,terminated=0;
+  class StalledWorker {
+    constructor(){launched++;}
+    postMessage(){}
+    terminate(){terminated++;}
+  }
+  const controller=new AbortController();
+  const pending=runCpuReferenceInWorker({signal:controller.signal,WorkerClass:StalledWorker});
+  controller.abort(new DOMException('Stopped','AbortError'));
+  await assert.rejects(pending,{name:'AbortError'});
+  assert.equal(terminated,1);
+  await assert.rejects(runCpuReferenceInWorker({signal:controller.signal,WorkerClass:StalledWorker}),{name:'AbortError'});
+  assert.equal(launched,1);
+});
+
 test('reference worker posts a real progress event and returns the exact CPU glyph selection',async()=>{
   const before=globalThis.self;
   const messages=[];

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PNG2ANSI GPU-007 · Pipelined GPU profiling and ZIP benchmark workbench</title>
+<title>PNGGPU · WebGPU and optional CUDA workbench</title>
 <style>
 body{font:14px/1.45 ui-monospace,Consolas,monospace;background:#11151b;color:#e1e6e8;margin:0;padding:20px}
 main{max-width:1500px;margin:auto}h1{font-size:20px}p{color:#a9b4c3}
@@ -23,9 +23,10 @@ section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space
 </style>
 </head>
 <body><main>
-<h1>PNG2ANSI · GPU-007 GPU photographic workbench</h1>
-<p>This is an experimental WebGPU matching backend, not the release webapp. Times the reference-equivalent CPU matcher and the WGSL matcher on exactly the same prepared samples and masks. The CPU matcher is checked against the original reference in host tests. Requires HTTPS or localhost; it never changes the existing PNG2ANSI release.</p>
+<h1>PNGGPU · GPU-007 photographic workbench + optional CUDA</h1>
+<p>Compare WebGPU or local CUDA matching with the CPU reference on the same prepared samples, glyph masks and ANSI palette. WebGPU uses single precision; CUDA certifies decisions with conservative intervals and recovers ambiguous cells in binary64 on the GPU. Enable CPU comparison to measure actual parity.</p>
 <div class="controls">
+<label>Backend <select id="backend"><option value="webgpu" selected>WebGPU · browser</option><option value="cuda">CUDA · local NVIDIA GPU</option></select></label>
 <label>Image <input id="image" type="file" accept="image/*"></label>
 <label>Columns <input id="columns" type="number" value="80" min="16" max="1024"></label>
 <label>Rows <input id="rows" type="number" value="40" min="8" max="1024"></label>
@@ -59,6 +60,7 @@ section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space
 <button id="run">Run GPU / optional CPU</button>
 <a id="gpu-download" hidden download="webgpu.ans">Save GPU .ANS</a>
 </div>
+<p id="backend-help" class="help" aria-live="polite">WebGPU runs in a compatible browser on HTTPS or localhost. CUDA is optional: build with build-cuda.bat, then launch start-cuda.bat. <a href="../../docs/CUDA_BACKEND.md">CUDA setup and qualification guide</a>.</p>
 <div class="side-actions">
 <label>Hardmode image <select id="hardmode"><option value="">Loading samples…</option></select></label>
 <button id="load-hardmode">Load sample</button>
@@ -89,7 +91,7 @@ section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space
 <section id="job-progress" class="progress-panel" hidden>
 <h2>Live glyph-fitting progress</h2>
 <div class="progress-line"><span class="name">CPU oracle</span><progress id="progress-cpu" max="100" value="0"></progress><output id="progress-cpu-text">Idle</output></div>
-<div class="progress-line"><span class="name">WebGPU</span><progress id="progress-gpu" max="100" value="0"></progress><output id="progress-gpu-text">Idle</output></div>
+<div class="progress-line"><span class="name" id="gpu-progress-name">WebGPU</span><progress id="progress-gpu" max="100" value="0"></progress><output id="progress-gpu-text">Idle</output></div>
 <p class="progress-help">Progress counts completed terminal cells. Cells/s and estimated work-units/s are measured/derived during execution; GPU counts advance only after a tile is read back. Rates and ETA are provisional while running.</p>
 </section>
 <section id="metrics" class="perf-results" hidden aria-live="polite">
@@ -98,10 +100,11 @@ section{min-width:0}img{max-width:100%;image-rendering:pixelated}pre{white-space
 <p class="help" id="metric-note"></p>
 <details><summary>GPU profiling details, memory and throughput</summary><pre id="metric-profile"></pre></details>
 </section><details id="debug-details" hidden><summary>Technical stack trace</summary><pre id="debug"></pre></details>
-<div class="images"><section><h2>CPU reference</h2><img id="cpu" alt="CPU reference output"></section><section><h2>WebGPU matching</h2><img id="gpu" alt="WebGPU output"></section></div>
+<div class="images"><section><h2>CPU reference</h2><img id="cpu" alt="CPU reference output"></section><section><h2 id="gpu-output-title">WebGPU matching</h2><img id="gpu" alt="Selected GPU backend output"></section></div>
 <script src="../../src/core.js"></script>
 <script type="module">
 import { PhotographicWebGpuFitter } from "../../src/gpu/photographic.js?gpu007";
+import { PhotographicCudaFitter } from "../../src/gpu/cuda.js?cuda001";
 import {benchmarkZip,csvRows} from '../../src/gpu/benchmark_zip.js?gpu007';
 import {runCpuReferenceInWorker} from '../../src/gpu/cpu_worker_host.js?gpu007';
 import {progressSnapshot,humanRate,etaText} from '../../src/gpu/progress.js?gpu007';
@@ -113,8 +116,11 @@ import {GPU_MAX_WORK_UNITS, GPU_SLOW_WORK_WARNING_UNITS, CPU_REFERENCE_WORK_UNIT
 import {requiresStreamedSamples,makeStreamedSampleProvider,PREVIEW_MAX_PIXELS} from '../../src/gpu/streamed_samples.js?gpu007';
 const byId=id=>document.getElementById(id),status=byId('status');
 let fitter=null,maskCache=new Map(),fontReady=null,downloadUrl=null,reportUrl=null,zipUrl=null,batchUrl=null;
+const fitterCache=new Map();
+const backendName=backend=>backend==='cuda'?'CUDA':'WebGPU';
 let selectedFile=null,corpus=null,running=false,stopping=false,preflightTimer=null,preflightEpoch=0;
 let currentWorkUnits=null,currentGlyphCount=0;
+let activeConversion=null;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const TILE_TARGETS_MIB=[4,8,16,32,64,128,256,512,1024];
 const BENCHMARK_SWEEP_MIB=[8,16,32,64,128,256];
@@ -181,7 +187,9 @@ function currentSettings(){
     throw new RangeError('GPU runs must be an integer between 1 and 10');
   const inFlightTiles=Number(byId('in-flight').value);
   if(![1,2,3,4,6,8,12,16,24].includes(inFlightTiles))throw new RangeError('GPU pipeline depth must be 1, 2, 3, 4, 6, 8, 12, 16 or 24');
-  return {...settings,tileMiB,inFlightTiles,gpuRepeats,captureGpuTimestamps:byId('gpu-timestamps').checked,declaredVramGiB:validateDeclaredVramGiB(byId('gpu-vram').value)};
+  const backend=byId('backend').value;
+  if(!['webgpu','cuda'].includes(backend))throw new RangeError('Choose WebGPU or CUDA');
+  return {...settings,backend,tileMiB,inFlightTiles,gpuRepeats,captureGpuTimestamps:byId('gpu-timestamps').checked,declaredVramGiB:validateDeclaredVramGiB(byId('gpu-vram').value)};
 }
 function resetProgress(cpuEnabled=true){
   byId('job-progress').hidden=false;
@@ -210,11 +218,23 @@ function showError(error){
   byId('debug').textContent=error?.stack||String(error);
 }
 function clearError(){byId('debug-details').hidden=true;byId('debug').textContent='';}
-function setBusy(value){running=value;for(const id of ['run','suite','suite-zip','batch-run','estimate-memory','apply-preset','load-hardmode'])byId(id).disabled=value;byId('stop').hidden=!value;}
-async function createGpuFitter(){
-  if(fitter&&!fitter.lost)return fitter;
-  const shaderSource=await(await fetch('../../src/gpu/photographic.wgsl?gpu007',{cache:'no-store'})).text();
-  fitter=await PhotographicWebGpuFitter.create(shaderSource);return fitter;
+function setBusy(value){running=value;for(const id of ['run','suite','suite-zip','batch-run','estimate-memory','apply-preset','load-hardmode','backend'])byId(id).disabled=value;byId('stop').hidden=!value;}
+async function createGpuFitter(backend=byId('backend').value){
+  if(!fitterCache.has(backend)){
+    const pending=(async()=>{
+      if(backend==='cuda')return PhotographicCudaFitter.create();
+      const response=await fetch('../../src/gpu/photographic.wgsl?gpu007',{cache:'no-store'});
+      if(!response.ok)throw new Error('WebGPU shader could not be loaded');
+      return PhotographicWebGpuFitter.create(await response.text());
+    })();
+    fitterCache.set(backend,pending);
+  }
+  const pending=fitterCache.get(backend);
+  try{
+    const ready=await pending;
+    if(ready.lost){fitterCache.delete(backend);return createGpuFitter(backend);}
+    fitter=ready;return ready;
+  }catch(error){if(fitterCache.get(backend)===pending)fitterCache.delete(backend);throw error;}
 }
 // Never infer VRAM from WebGPU adapter labels or buffer limits. The user
 // supplies the installed GPU capacity; save it locally for subsequent starts.
@@ -224,13 +244,13 @@ function displayVramBudget(estimate,budget,plan){
   const actual=plan.tileCells,requested=plan.requestedTileCells;
   byId('vram-status').textContent=`Declared VRAM: ${budget.declaredVramGiB} GiB (manual; NOT detected free memory) · `+
     `estimated workbench allocation: ${f(estimate.estimatedWorkingSetBytes)} `+
-    `(WebGPU buffers ${f(estimate.gpuBufferBytes)}, browser-image allowance ${f(estimate.browserBackingEstimateBytes)}, `+
+    `(GPU buffers ${f(estimate.gpuBufferBytes)}, browser-image allowance ${f(estimate.browserBackingEstimateBytes)}, `+
     `uncertainty reserve ${f(estimate.uncertaintyAllowanceBytes)}).\n`+
     `Warning above ${f(budget.warningThresholdBytes)}, HARD BLOCK above ${f(budget.hardThresholdBytes)}. `+
     `Projection target ${plan.requestedTileMiB??'?'} MiB → effective ${plan.effectiveProjectionMiB.toFixed(1)} MiB `+
     `(${format(requested)} requested vs ${format(actual)} actual cells) `+
     `(${format(plan.tileCount)} tiles; projection ${f(plan.projectionBufferBytes)}; `+
-    `${plan.projectWorkgroupsX}×${plan.projectWorkgroupsY} projection workgroups).\n`+
+    (plan.backend==='cuda'?'one reusable CUDA tile slot; bounded native kernel launches).\n':`${plan.projectWorkgroupsX}×${plan.projectWorkgroupsY} projection workgroups).\n`)+
     vramDecisionMessage(budget);
   byId('vram-status').dataset.state=budget.status;
 }
@@ -248,17 +268,19 @@ function memoryGate(estimate,budget,plan,approvalScope){
   }
 }
 function makeMemoryEstimate(gpu,settings,glyphCount,sourceWidth,sourceHeight){
-  const plan=PhotographicWebGpuFitter.tilePlan(gpu.device,{
+  const tileOptions={
     columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,
     sampleHeight:settings.sampleH,glyphCount,preferredTileMiB:settings.tileMiB,
-    inFlightTiles:settings.inFlightTiles});
+    inFlightTiles:settings.inFlightTiles};
+  const plan=settings.backend==='cuda'?gpu.tilePlan(tileOptions):PhotographicWebGpuFitter.tilePlan(gpu.device,tileOptions);
+  plan.backend=settings.backend;
   const estimate=estimateGpuMemory({plan,columns:settings.columns,rows:settings.rows,
     sampleWidth:settings.sampleW,sampleHeight:settings.sampleH,glyphCount,
     sourceWidth,sourceHeight,captureGpuTimestamps:settings.captureGpuTimestamps,
     streamedSamples:requiresStreamedSamples(settings),
     previews:settings.columns*settings.rows*128<=PREVIEW_MAX_PIXELS,
-    timestampsAvailable:gpu.timestampsAvailable&&!!gpu.device.createQuerySet,
-    maxQuerySetSize:gpu.device.limits.maxQuerySetSize??8192});
+    timestampsAvailable:settings.backend!=='cuda'&&gpu.timestampsAvailable&&!!gpu.device?.createQuerySet,
+    maxQuerySetSize:settings.backend==='cuda'?0:(gpu.device?.limits?.maxQuerySetSize??8192)});
   const budget=evaluateVramBudget(estimate,settings.declaredVramGiB);
   return {plan,estimate,budget};
 }
@@ -274,7 +296,7 @@ async function estimateOnly({background=false}={}){
     try{
       const masks=await masksFor(codes,config.canvas);
       const work=validateGpuBudget(settings,masks.codes.length);
-      const gpu=await createGpuFitter();
+      const gpu=await createGpuFitter(settings.backend);
       const {plan,estimate,budget}=makeMemoryEstimate(gpu,settings,masks.codes.length,bitmap?.width??2048,bitmap?.height??2048);
       if(token!==preflightEpoch||running)return;
       displayVramBudget(estimate,budget,plan);
@@ -302,6 +324,7 @@ function cpuGeometrySupported(settings){
   return settings.columns<=512&&settings.rows<=512&&settings.sampleW<=16&&settings.sampleH<=32;
 }
 async function compareImage(file,settings,{previews=true,approvalScope=null,returnAnsi=false,cpuEnabled=null}={}){
+  if(stopping)throw new DOMException('Conversion cancelled','AbortError');
   const now=()=>performance.now();
   const prepStart=now();
   const compareCpu=cpuEnabled??byId('compare-cpu').checked;
@@ -309,7 +332,10 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
     'CPU oracle is limited to 512×512 cells and 16×32 samples. Disable CPU comparison for GPU-only extended resolutions.');
   const config=makeConfig(settings),codes=PNG2ANSI.vocabularies()[config.vocabulary];
   const decodeStart=now(),bitmap=await createImageBitmap(file),decodeMs=now()-decodeStart;
+  const controller=new AbortController();activeConversion=controller;
+  const signal=controller.signal;
   try{
+    if(stopping)controller.abort();signal.throwIfAborted();
     const atlasStart=now();
     const atlasKey=`${codes.join(',')}|${config.canvas.cell_width}x${config.canvas.cell_height}|${config.canvas.sample_width}x${config.canvas.sample_height}|${config.canvas.font_size}`;
     const atlasCached=maskCache.has(atlasKey),masks=await masksFor(codes,config.canvas),atlasMs=now()-atlasStart;
@@ -317,7 +343,7 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
     currentWorkUnits=units;currentGlyphCount=masks.codes.length;
     // Admission gate BEFORE allocating the large sample raster or launching
     // the slow CPU oracle. Initial pipeline compilation is not charged to prep.
-    const gpuInitStart=now(),gpu=await createGpuFitter(),gpuInitMs=now()-gpuInitStart;
+    const gpuInitStart=now(),gpu=await createGpuFitter(settings.backend),gpuInitMs=now()-gpuInitStart;
     const memoryStart=now();
     const {plan,estimate,budget}=makeMemoryEstimate(gpu,settings,masks.codes.length,bitmap.width,bitmap.height);
     memoryGate(estimate,budget,plan,approvalScope);
@@ -346,7 +372,8 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       // The reference algorithm remains exactly the same, but executes in a
       // dedicated worker so the browser can repaint a real progress bar.
       // Worker startup and input clone belong to the CPU fit wall time.
-      const cpuResult=await runCpuReferenceInWorker({pixels,masks:masks.low,config,
+      signal.throwIfAborted();
+      const cpuResult=await runCpuReferenceInWorker({pixels,masks:masks.low,config,signal,
         palette:PNG2ANSI.PALETTE,onProgress:event=>updateProgress('cpu',event)});
       cpuCells=cpuResult.cells;cpuFitMs=cpuResult.wallMs;cpuComputeMs=cpuResult.computeMs;
       const encoded=now();cpuAnsi=PNG2ANSI.ansiBytes(masks,cpuCells,config);cpuAnsiMs=now()-encoded;
@@ -354,20 +381,22 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
         const rendered=now();cpuPng=await renderCells(masks,cpuCells,config.canvas);cpuPreviewMs=now()-rendered;
       }
     }
-    status.textContent=`${file.name}: WebGPU tiled glyph reconstruction…`;
+    status.textContent=`${file.name}: ${backendName(settings.backend)} tiled glyph reconstruction…`;
     const runs=[];
     let cells=null,firstGpuCells=null;
     for(let i=0;i<settings.gpuRepeats;i++){
+      signal.throwIfAborted();
       status.textContent=`${file.name}: GPU run ${i+1}/${settings.gpuRepeats}…`;
       byId('progress-gpu').value=0;
       const t=now();
-      cells=await gpu.fit({pixels,sampleProvider,masks:masks.low,palette:PNG2ANSI.PALETTE,
+      cells=await gpu.fit({pixels,sampleProvider,signal,masks:masks.low,palette:PNG2ANSI.PALETTE,
         columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,sampleHeight:settings.sampleH,
         foregroundCandidates:settings.foreground,backgroundCandidates:settings.background,
         preferredTileMiB:settings.tileMiB,inFlightTiles:settings.inFlightTiles,
         captureGpuTimestamps:settings.captureGpuTimestamps,
         onProgress:event=>updateProgress('gpu',event,{runIndex:i+1,runCount:settings.gpuRepeats})});
       const runWallMs=now()-t;
+      signal.throwIfAborted();
       // Also finish the bar for a successful older backend that lacks tile callbacks.
       updateProgress('gpu',{completedCells:settings.columns*settings.rows,
         totalCells:settings.columns*settings.rows,elapsedMs:runWallMs,
@@ -375,7 +404,9 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
         {runIndex:i+1,runCount:settings.gpuRepeats});
       runs.push({wallMs:runWallMs,stages:cells.stats?.timing??null,
         tileCount:cells.stats?.tileCount??null,peakInFlightTiles:cells.stats?.peakInFlightTiles??null,
-        tileMeasurements:cells.stats?.tileMeasurements??[]});
+        tileMeasurements:cells.stats?.tileMeasurements??[],
+        repeatCellDiff:firstGpuCells?compareCells(firstGpuCells,cells):null,
+        repeatAnsiDiff:firstGpuCells?compareAnsi(PNG2ANSI.ansiBytes(masks,firstGpuCells,config),PNG2ANSI.ansiBytes(masks,cells,config)):null});
       if(i===0)firstGpuCells=cells;
     }
     cells=firstGpuCells;
@@ -401,9 +432,9 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       else{gpuImg.removeAttribute('src');gpuImg.hidden=true;}
       if(downloadUrl)URL.revokeObjectURL(downloadUrl);
       downloadUrl=URL.createObjectURL(new Blob([gpuAnsi],{type:'application/octet-stream'}));
-      byId('gpu-download').href=downloadUrl;byId('gpu-download').hidden=false;
+      byId('gpu-download').href=downloadUrl;byId('gpu-download').download=`${settings.backend}.ans`;byId('gpu-download').hidden=false;
     }
-    return {schema:'png2ansi-webgpu-metrics-v4',image:file.name,sourceBytes:file.size,
+    return {schema:'png2ansi-webgpu-metrics-v4',backend:settings.backend,image:file.name,sourceBytes:file.size,
       sourceWidth:bitmap.width,sourceHeight:bitmap.height,memoryEstimate:estimate,vramBudget:budget,
       columns:settings.columns,rows:settings.rows,sampleWidth:settings.sampleW,
       sampleHeight:settings.sampleH,foregroundCandidates:settings.foreground,
@@ -411,6 +442,8 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       sharedCpuPreparation:{decodeMs,atlasMs,sampleMs,miscMs:Math.max(0,prepMs-decodeMs-atlasMs-sampleMs),
         totalMs:prepMs,atlasCached},
       cpuRender:{fitMs:cpuFitMs,computeMs:cpuComputeMs,workerOverheadMs:cpuFitMs===null?null:Math.max(0,cpuFitMs-cpuComputeMs),ansiMs:cpuAnsiMs,previewPngMs:cpuPreviewMs},
+      repeatability:{deterministic:runs.every(r=>!r.repeatCellDiff||
+        (r.repeatCellDiff.changedCells===0&&r.repeatAnsiDiff.mismatches===0)),comparedRuns:runs.length-1},
       gpuRender:{fitMs:gpuFitMs,ansiMs:gpuAnsiMs,previewPngMs:gpuPreviewMs,
         pipelineInitMs:gpuInitMs,stageTimings:cells.stats.timing,
         repeatRuns:runs.map(r=>r.wallMs),repeatDetails:runs},
@@ -422,13 +455,14 @@ async function compareImage(file,settings,{previews=true,approvalScope=null,retu
       gpuTileCells:cells.stats?.tileCells??null,gpuTiles:cells.stats?.tileCount??null,
       gpuProjectionBytes:cells.stats?.projectionBufferBytes??null,
       gpuStats:cells.stats??{},...(returnAnsi?{ansiBytes:gpuAnsi}:{})};
-  }finally{bitmap.close();}
+  }finally{if(activeConversion===controller)activeConversion=null;bitmap.close();}
 }
 function metricText(result){
+  if(result.repeatability?.deterministic===false)return 'FAILED: repeated GPU runs produced different cell records or ANSI bytes. Save the report for diagnosis.';
   const parity=result.mismatches===null?'CPU comparison disabled':result.mismatches===0?'EXACT ANSI PARITY':
     `${format(result.mismatches)} byte mismatches; first offset ${result.firstMismatch}`;
   const t=result.timings;
-  return `${result.image} · ${result.columns}×${result.rows} · ${result.glyphCount} glyphs · ${result.outputKind}
+  return `${backendName(result.backend)} · ${result.image} · ${result.columns}×${result.rows} · ${result.glyphCount} glyphs · ${result.outputKind}
 `+
     `Work units: ${format(result.workUnits)} / ${format(GPU_MAX_WORK_UNITS)}
 `+
@@ -461,13 +495,42 @@ function presentMetrics(result){
     tbody.appendChild(tr);
   }
   byId('metric-note').textContent='Preparation is executed once and charged to both pathways. '+
-    `Pipeline compilation/init (${milliseconds(result.gpuRender.pipelineInitMs)}) is reported separately. `+
+    `${result.backend==='cuda'?'Capability probe':'Pipeline compilation/init'} (${milliseconds(result.gpuRender.pipelineInitMs)}) is reported separately. `+
+    (result.backend==='cuda'?'Native worker/context startup and local transfer are included in CUDA fit time. ':'')+
     `Headline totals exclude optional extra GPU repeat runs and use the first GPU run. `+
     `GPU runs: ${result.gpuRender.repeatRuns.length} · median ${milliseconds(t.gpuMedianMs)}.`;
   // GPU-002/003 cached modules can produce a valid cell result without the
   // newest timing schema. Report missing fields rather than throwing after
   // an otherwise successful 40-second CPU + GPU benchmark.
   const g=result.gpuStats??{},h=gpuProfileStages(result);
+  if(result.backend==='cuda'){
+    byId('metric-profile').textContent=[
+      'CUDA · certified float32 decisions with binary64 GPU recovery, fused multiply-add disabled',
+      `Device: ${JSON.stringify(g.adapterInfo??'not reported')}`,
+      `Sampling: ${result.sourceSamplingMode}; full logical raster ${bytes(result.sourceRasterBytes)}`,
+      `Atlas packing: ${milliseconds(h.atlasPackMs)}`,
+      `Native worker/context/allocation startup (included in fit): ${milliseconds(h.nativeInitMs)}`,
+      `Streamed sampling: ${milliseconds(h.sampleProviderMs)}; tile packing: ${milliseconds(h.tilePackMs)}`,
+      `Local request/response wall time (includes native work): ${milliseconds(h.bridgeRoundTripMs)}`,
+      `Native upload + synchronization (host wall): ${milliseconds(h.uploadMs)}`,
+      `True GPU projection shader: ${milliseconds(h.gpuProjectionMs)}`,
+      `True GPU selection shader: ${milliseconds(h.gpuSelectionMs)}`,
+      `Decision certification: ${milliseconds(h.gpuGuardMs)}; recovery projection: ${milliseconds(h.gpuRecoveryProjectionMs)}; recovery selection: ${milliseconds(h.gpuRecoverySelectionMs)}`,
+      `Certified cells: ${g.certifiedCells??'not reported'}; precisely recovered cells: ${g.recoveredCells??'not reported'}`,
+      `Maximum measured projection/selection sublaunch: ${milliseconds(h.maxProjectionLaunchMs)} / ${milliseconds(h.maxSelectionLaunchMs)}`,
+      `Native readback + synchronization (host wall): ${milliseconds(h.readbackMs)}`,
+      `Result decode: ${milliseconds(h.decodeCellsMs)}; fit wall: ${milliseconds(h.wallTotalMs)}`,
+      `Uploaded: ${bytes(g.uploadedBytes)}; read back: ${bytes(g.readbackBytes)}`,
+      `Native GPU buffers: ${bytes(g.allocatedBytes)}; estimated workbench working set: ${bytes(result.memoryEstimate?.estimatedWorkingSetBytes)}`,
+      `Requested projection target: ${g.requestedTileMiB} MiB; actual: ${g.effectiveProjectionMiB?.toFixed(2)} MiB`,
+      `Tiles: ${g.tileCount}; cells/tile: ${g.tileCells}; requested depth: ${g.requestedInFlightTiles}; actual depth: ${g.inFlightTiles}`,
+      `Repeated CUDA fit wall times: ${result.gpuRender.repeatRuns.map(milliseconds).join(' / ')}`,
+      'Each fit starts a fresh native worker; atlas and device buffers are reused across its tiles.',
+      'Kernel event times are subsets of native work and local request wall time; do not add them together.',
+      'CUDA uses one reusable tile slot and bounded kernel launches. CPU/ANSI parity is measured only when CPU comparison is enabled.'
+    ].join('\n');
+    byId('metrics').hidden=false;return;
+  }
   const tiles=g.tileMeasurements??[];
   const median=values=>{if(!values.length)return null;const a=[...values].sort((x,y)=>x-y),m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2;};
   const p95=values=>{if(!values.length)return null;const a=[...values].sort((x,y)=>x-y);return a[Math.ceil(.95*a.length)-1];};
@@ -602,15 +665,17 @@ function presentMetrics(result){
 }
 async function run(){
   if(running)return;
+  stopping=false;
   setBusy(true);clearError();byId('metrics').hidden=true;byId('job-progress').hidden=true;
   try{
     const file=selectedFile||byId('image').files[0];
     if(!file)throw new Error('Choose an image or load a hardmode sample first');
-    const result=await compareImage(file,currentSettings(),{approvalScope:new Set()});
+    const settings=currentSettings();
+    const result=await compareImage(file,settings,{approvalScope:new Set()});
     status.textContent=metricText(result);
     presentMetrics(result);
     publishReport({schema:'png2ansi-webgpu-benchmark-v2',timestamp:new Date().toISOString(),
-      profile:currentSettings(),source:{name:result.image,bytes:result.sourceBytes},result});
+      backend:settings.backend,profile:settings,source:{name:result.image,bytes:result.sourceBytes},result});
   }catch(error){showError(error);}finally{setBusy(false);}
 }
 async function loadCorpus(){
@@ -671,7 +736,7 @@ async function preflightSuiteMemory(data,settings,approvalScope){
   // the largest estimated allocation to request ONE explicit suite approval.
   const config=makeConfig(settings),masks=await masksFor(PNG2ANSI.vocabularies()[config.vocabulary],config.canvas);
   validateGpuBudget(settings,masks.codes.length);
-  const gpu=await createGpuFitter();
+  const gpu=await createGpuFitter(settings.backend);
   const decisions=data.images.map(image=>makeMemoryEstimate(gpu,settings,masks.codes.length,image.width,image.height));
   const blocked=decisions.find(x=>x.budget.status==='blocked');
   if(blocked){displayVramBudget(blocked.estimate,blocked.budget,blocked.plan);throw new RangeError('Hardmode suite blocked before starting any conversions. '+vramDecisionMessage(blocked.budget));}
@@ -710,15 +775,32 @@ async function runSuite(){
       profile:settings,gpuWorkUnitCeiling:GPU_MAX_WORK_UNITS,compareCpu:byId('compare-cpu').checked,
       stopped:stopping,results};
     publishReport(report);
-    const exact=results.filter(x=>x.mismatches===0).length,failed=results.filter(x=>x.error||x.mismatches>0).length;
+    const exact=results.filter(x=>x.mismatches===0&&x.repeatability?.deterministic!==false).length,failed=results.filter(x=>x.error||x.mismatches>0||x.repeatability?.deterministic===false).length;
     status.textContent=`Hardmode suite: ${results.length}/${data.images.length} completed · ${exact} exact parity · ${failed} failed/mismatched\n`+
-      results.map(x=>x.error?`${x.image}: ERROR ${x.error}`:`${x.image}: CPU prep ${milliseconds(x.timings.cpuPrepMs)} · CPU fit ${milliseconds(x.timings.cpuFitMs)} · GPU prep ${milliseconds(x.timings.gpuPrepMs)} · GPU fit ${milliseconds(x.timings.gpuFitMs)} · `+
+      results.map(x=>x.error?`${x.image}: ERROR ${x.error}`:x.repeatability?.deterministic===false?`${x.image}: FAILED repeat determinism`:`${x.image}: CPU prep ${milliseconds(x.timings.cpuPrepMs)} · CPU fit ${milliseconds(x.timings.cpuFitMs)} · GPU prep ${milliseconds(x.timings.gpuPrepMs)} · GPU fit ${milliseconds(x.timings.gpuFitMs)} · `+
         (x.mismatches===null?'GPU only':x.mismatches===0?'EXACT ANSI PARITY':`${x.mismatches} byte mismatches`)).join('\n')+
       '\nSave hardmode report (.JSON) for reproducible benchmark records.';
   }catch(error){showError(error);}finally{setBusy(false);stopping=false;}
 }
 
 byId('run').addEventListener('click',run);
+function updateBackendControls(){
+  const cuda=byId('backend').value==='cuda',name=backendName(byId('backend').value);
+  byId('in-flight').disabled=cuda;
+  byId('gpu-timestamps').disabled=cuda;
+  byId('gpu-progress-name').textContent=name;
+  byId('gpu-output-title').textContent=`${name} matching`;
+  byId('backend-help').textContent=cuda?
+    'CUDA requires the local server started by start-cuda.bat. Targets TITAN RTX / RTX 20-series. Uses one reusable tile slot and CUDA event timings; kernel launches are bounded. Enter VRAM for the selected device. See docs/CUDA_BACKEND.md for build and qualification instructions.':
+    'WebGPU runs in a compatible browser on HTTPS or localhost. CUDA is optional: build-cuda.bat, then start-cuda.bat. Existing WebGPU tile depth and timestamp controls remain available.';
+}
+byId('backend').addEventListener('change',()=>{
+  updateBackendControls();clearError();
+  byId('metrics').hidden=true;byId('job-progress').hidden=true;
+  byId('gpu-download').hidden=true;byId('gpu').hidden=true;byId('cpu').hidden=true;
+  status.textContent=`${backendName(byId('backend').value)} selected. Estimate memory or run the selected image.`;
+  scheduleMemoryEstimate();
+});
 byId('estimate-memory').addEventListener('click',()=>estimateOnly());
 const savedCapacity=(()=>{try{return localStorage.getItem('png2ansi-gpu-vram-gib')||'';}catch{return '';}})();
 if(savedCapacity)byId('gpu-vram').value=savedCapacity;
@@ -745,7 +827,7 @@ async function preflightZipMemory(data,settings,tileTargetMiBs,approvalScope){
   const config=makeConfig(settings);
   const masks=await masksFor(PNG2ANSI.vocabularies()[config.vocabulary],config.canvas);
   validateGpuBudget(settings,masks.codes.length);
-  const gpu=await createGpuFitter();
+  const gpu=await createGpuFitter(settings.backend);
   const decisions=[];
   for(const tileMiB of tileTargetMiBs){
     for(const entry of data.images){
@@ -770,14 +852,14 @@ Approve this entire fixed-profile batch? `+
 }
 const asFixed=(n)=>Number.isFinite(n)?n:null;
 function zipSummaryCsv(jobs){
-  const columns=['image','tile_target_mib','tile_effective_cells','tile_count','in_flight','peak_in_flight','gpu_repeats',
+  const columns=['backend','image','tile_target_mib','tile_effective_cells','tile_count','in_flight','peak_in_flight','gpu_repeats',
     'gpu_fit_ms','gpu_total_ms','gpu_median_ms','cpu_fit_ms','cpu_total_ms','prep_ms',
     'gpu_projection_shader_ms','gpu_selection_shader_ms','gpu_stream_sample_ms','uploaded_bytes','readback_bytes',
     'estimated_vram_bytes','ansi_bytes','ansi_mismatches','glyph_mismatches','status','error'];
   const rows=[columns];
   for(const job of jobs){
     const r=job.result??{},g=r.gpuStats??{},t=r.timings??{};
-    const obj={image:job.image,tile_target_mib:job.tileTargetMiB,tile_effective_cells:g.tileCells,tile_count:g.tileCount,
+    const obj={backend:r.backend??job.backend??'',image:job.image,tile_target_mib:job.tileTargetMiB,tile_effective_cells:g.tileCells,tile_count:g.tileCount,
       in_flight:g.inFlightTiles,peak_in_flight:g.peakInFlightTiles,gpu_repeats:r.gpuRender?.repeatRuns?.length,
       gpu_fit_ms:t.gpuFitMs,gpu_total_ms:t.gpuTotalMs,gpu_median_ms:t.gpuMedianMs,
       cpu_fit_ms:t.cpuFitMs,cpu_total_ms:t.cpuTotalMs,prep_ms:t.gpuPrepMs,
@@ -785,42 +867,44 @@ function zipSummaryCsv(jobs){
       gpu_stream_sample_ms:g.timing?.sampleProviderMs,uploaded_bytes:g.uploadedBytes,readback_bytes:g.readbackBytes,
       estimated_vram_bytes:r.memoryEstimate?.estimatedWorkingSetBytes,ansi_bytes:r.gpuAnsiBytes,
       ansi_mismatches:r.mismatches,glyph_mismatches:r.cellDiff?.glyph,
-      status:job.error?'ERROR':'OK',error:job.error??''};
+      status:job.error?'ERROR':r.repeatability?.deterministic===false?'NONDETERMINISTIC':r.mismatches>0?'MISMATCH':'OK',error:job.error??''};
     rows.push(columns.map(key=>obj[key]??''));
   }
   return csvRows(rows);
 }
 function zipRepeatsCsv(jobs){
-  const fields=['image','tile_target_mib','run','wall_ms','atlas_pack_ms','buffer_create_ms',
+  const fields=['backend','image','tile_target_mib','run','wall_ms','native_init_ms','bridge_round_trip_ms','cuda_upload_ms','cuda_readback_ms','atlas_pack_ms','buffer_create_ms',
     'source_sample_ms','tile_pack_ms','queue_write_buffer_ms','encode_submit_ms','readback_wait_ms',
     'cell_decode_ms','pipeline_slot_wait_ms','first_tile_completed_ms',
-    'gpu_projection_shader_ms','gpu_selection_shader_ms','tile_count','peak_in_flight'];
+    'gpu_projection_shader_ms','gpu_selection_shader_ms','tile_count','peak_in_flight','repeat_changed_cells','repeat_ansi_mismatches'];
   const rows=[fields];
   for(const job of jobs){
     for(const [i,run] of (job.result?.gpuRender?.repeatDetails??[]).entries()){
       const t=run.stages??{};
-      const values={image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,wall_ms:run.wallMs,
+      const values={backend:job.result?.backend??'',image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,wall_ms:run.wallMs,
+        native_init_ms:t.nativeInitMs,bridge_round_trip_ms:t.bridgeRoundTripMs,cuda_upload_ms:t.uploadMs,cuda_readback_ms:t.readbackMs,
         atlas_pack_ms:t.atlasPackMs,buffer_create_ms:t.bufferCreateMs,
         source_sample_ms:t.sampleProviderMs,tile_pack_ms:t.tilePackMs,queue_write_buffer_ms:t.writeBufferMs,
         encode_submit_ms:t.encodeSubmitMs,readback_wait_ms:t.readbackWaitMs,
         cell_decode_ms:t.decodeCellsMs,pipeline_slot_wait_ms:t.slotAvailabilityWaitMs,
         first_tile_completed_ms:t.firstTileCompletedMs,
         gpu_projection_shader_ms:t.gpuProjectionMs,gpu_selection_shader_ms:t.gpuSelectionMs,
-        tile_count:run.tileCount,peak_in_flight:run.peakInFlightTiles};
+        tile_count:run.tileCount,peak_in_flight:run.peakInFlightTiles,
+        repeat_changed_cells:run.repeatCellDiff?.changedCells,repeat_ansi_mismatches:run.repeatAnsiDiff?.mismatches};
       rows.push(fields.map(k=>values[k]??''));
     }
   }
   return csvRows(rows);
 }
 function zipTilesCsv(jobs){
-  const fields=['image','tile_target_mib','run','tile_index','cells','wall_ms','source_sample_ms','pack_ms',
+  const fields=['backend','image','tile_target_mib','run','tile_index','cells','wall_ms','source_sample_ms','pack_ms',
     'upload_enqueue_ms','encode_submit_ms','map_wait_ms','decode_ms',
     'gpu_projection_shader_ms','gpu_selection_shader_ms'];
   const rows=[fields];
   for(const job of jobs){
     for(const [i,run] of (job.result?.gpuRender?.repeatDetails??[]).entries()){
       for(const tile of (run.tileMeasurements??[])){
-        const values={image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,
+        const values={backend:job.result?.backend??'',image:job.image,tile_target_mib:job.tileTargetMiB,run:i+1,
           tile_index:tile.index,cells:tile.cells,wall_ms:tile.wallMs,source_sample_ms:tile.sourceSampleMs,pack_ms:tile.packMs,
           upload_enqueue_ms:tile.uploadEnqueueMs,encode_submit_ms:tile.encodeSubmitMs,
           map_wait_ms:tile.mapWaitMs,decode_ms:tile.decodeMs,
@@ -878,9 +962,9 @@ async function runZipBenchmarks(){
       summary:jobs.map(j=>({image:j.image,tileTargetMiB:j.tileTargetMiB,
         gpuFitMs:j.result?.timings.gpuFitMs??null,gpuMedianMs:j.result?.timings.gpuMedianMs??null,
         requestedInFlight:j.result?.gpuStats?.requestedInFlightTiles??null,
-        effectiveInFlight:j.result?.gpuStats?.inFlightTiles??null,error:j.error??null}))};
+        effectiveInFlight:j.result?.gpuStats?.inFlightTiles??null,repeatability:j.result?.repeatability??null,error:j.error??null}))};
     const entries=[
-      {name:'README.txt',content:'PNG2ANSI WebGPU GPU-007 benchmark ZIP\nGPU fitting stage, host transfers and shader times are separate.\n'+
+      {name:'README.txt',content:`PNGGPU ${backendName(settings.backend)} benchmark ZIP\nGPU fitting stage, host transfers and shader times are separate.\n`+
         'GPU shader timestamps are optional. CPU oracle is disabled by default and may be very slow.\n'+
         'Use results.csv, repeats.csv, tiles.csv, and runs/*.json for full stage and per-tile details.\n'+
         'Requested tile size may be clamped by maxStorageBufferBindingSize / GPU limits.\n'+
@@ -902,7 +986,7 @@ async function runZipBenchmarks(){
     a.download=`png2ansi-gpu007-${byId('zip-scope').value}-${date}.zip`;
     a.hidden=false;a.click();
     // Keep the manual link visible if the browser refuses an async-triggered download.
-    status.textContent=`ZIP benchmark ${jobs.length}/${total} cases (${jobs.filter(j=>!!j.error).length} errors) · `+
+    status.textContent=`ZIP benchmark ${jobs.length}/${total} cases (${jobs.filter(j=>!!j.error||j.result?.repeatability?.deterministic===false).length} errors/repeat failures) · `+
       `archive ${format(archive.size)} bytes · ${stopping?'partial/stopped':'complete'}. `+
       `Use "Save benchmark ZIP" if the download did not begin automatically.`;
     publishReport(manifest);
@@ -956,7 +1040,7 @@ async function runFolderBatch(){
         let path=base,dup=1;
         while(usedPaths.has(path)){path=base.replace(/\.ans$/i,`-${dup++}.ans`);}
         usedPaths.add(path);entries.push({name:path,content:ansiBytes});archiveBytes+=ansiBytes.length;
-        const record={source:file.webkitRelativePath||file.name,output:path,status:'OK',
+        const record={backend:settings.backend,source:file.webkitRelativePath||file.name,output:path,status:'OK',
           ansiBytes:ansiBytes.length,gpuFitMs:receipt.timings.gpuFitMs,gpuTotalMs:receipt.timings.gpuTotalMs,
           prepMs:receipt.timings.gpuPrepMs,sourceSamplingMode:receipt.sourceSamplingMode,
           sourceWidth:receipt.sourceWidth,sourceHeight:receipt.sourceHeight,gpuTiles:receipt.gpuTiles,peakInFlight:receipt.gpuStats.peakInFlightTiles,
@@ -977,7 +1061,7 @@ async function runFolderBatch(){
       settings,requested:files.length,completed:records.length,partial:stopping,receipts:records};
     entries.push({name:'manifest.json',content:JSON.stringify(summary,null,2)+'\n'});
     if(timings){
-      const columns=['source','output','status','gpuFitMs','gpuTotalMs','prepMs','sourceSamplingMode',
+      const columns=['backend','source','output','status','gpuFitMs','gpuTotalMs','prepMs','sourceSamplingMode',
         'ansiBytes','gpuTiles','peakInFlight','workingSetBytes','projectionShaderMs','selectionShaderMs','error'];
       entries.push({name:'timings.csv',content:csvRows([columns,...records.map(r=>columns.map(key=>r[key]??''))])});
     }
@@ -1000,7 +1084,11 @@ byId('batch-run').addEventListener('click',runFolderBatch);
 byId('suite-zip').addEventListener('click',runZipBenchmarks);
 
 byId('suite').addEventListener('click',runSuite);
-byId('stop').addEventListener('click',()=>{stopping=true;status.textContent='Stop requested; finishing the active benchmark then archiving completed results…';});
+function stopConversion(){
+  stopping=true;activeConversion?.abort(new DOMException('Conversion cancelled','AbortError'));
+  status.textContent='Stop requested; cancelling the active conversion and archiving completed results…';
+}
+byId('stop').addEventListener('click',stopConversion);
 byId('load-hardmode').addEventListener('click',loadHardmode);
 byId('apply-preset').addEventListener('click',applyPreset);
 byId('image').addEventListener('change',event=>{
@@ -1008,7 +1096,9 @@ byId('image').addEventListener('change',event=>{
   if(selectedFile){byId('hardmode').value='';status.textContent=`Loaded ${selectedFile.name}. Click Run GPU / optional CPU.`;}
   scheduleMemoryEstimate();
 });
-status.textContent=PhotographicWebGpuFitter.available()?
+if(new URLSearchParams(location.search).get('backend')==='cuda')byId('backend').value='cuda';
+updateBackendControls();
+status.textContent=byId('backend').value==='cuda'?'CUDA selected. Choose an image and enter the selected GPU’s VRAM capacity.':PhotographicWebGpuFitter.available()?
   `WebGPU detected · GPU research mode · choose an image or hardmode sample.`:
   'WebGPU unavailable. Serve over localhost/HTTPS with a supported GPU/browser.';
 loadCorpus().catch(showError);

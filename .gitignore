@@ -1,0 +1,8 @@
+PNG2ANSI/
+build/
+.cuda-toolchain/
+.cuda-downloads/
+__pycache__/
+*.pyc
+# Local video/frame datasets; keep raw media out of the source package.
+/benchmarking-material/

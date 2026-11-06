@@ -1,0 +1,57 @@
+{
+  "schema": "pnggpu-real-image-preparation-error-v1",
+  "provenance": {
+    "sourceCommit": "2148bdfc91c2eb205dc0649c011946cfc2b41819",
+    "sourceStatus": "",
+    "sourceFiles": {
+      "overlay/fixtures/hardmode/manifest.json": "09a9fc5fab3554e87325ff89e5a325f42ed03c8d6ede901649f642ca38c6e0a8",
+      "overlay/fixtures/hardmode/holo-stealth-cloak-1024.png": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+      "overlay/experiments/webgpu/photographic.html": "07d74d53e386c0ccd715dcd82c46ada43a69d97f2925f6b584aaa89e173b9c60",
+      "PNG2ANSI/src/core.js": "f38f4657798fdf095bee62905b337a3726dd2ea70d3b86e98a1f8fea093484e9",
+      "PNG2ANSI/assets/DejaVuSansMono.ttf": "b4a6c3e4faab8773f4ff761d56451646409f29abedd68f05d38c2df667d3c582",
+      "scripts/prepare_cuda_image.mjs": "edd16c858346395cee008d576778fafbca71036d2c604194c9a453e538938f8d",
+      "scripts/cuda_image_fixture.mjs": "02fb94f80538fc8f3ff73265be35c392d220e455022045987e227cfbd6968d8a"
+    },
+    "started": "2026-11-04T15:27:32.151Z",
+    "geometry": {
+      "columns": 320,
+      "rows": 160,
+      "sampleWidth": 4,
+      "sampleHeight": 8
+    },
+    "maxPreparationCells": 51200,
+    "image": {
+      "file": "holo-stealth-cloak-1024.png",
+      "title": "Holographic cloak / tiled geometry",
+      "description": "High saturation against monochrome geometry; thin edges and complex surfaces",
+      "width": 1024,
+      "height": 1024,
+      "size_bytes": 2935057,
+      "sha256": "f2576e299d2c3262dfb708c795c0867a615f0cd7e6bb4d6c1a5ad9a29cd10079",
+      "stress": [
+        "saturated gradients",
+        "repeating diagonals",
+        "fine outlines"
+      ]
+    },
+    "sourceSamplingMode": "full-reference-canvas",
+    "matchingRuns": 0,
+    "driverBaseline": {
+      "supported": true,
+      "events": []
+    },
+    "browserVersion": "156.0.8078.80",
+    "cleanupErrors": [
+      {
+        "step": "browser",
+        "error": "Qualification operation timed out; scope stopped"
+      }
+    ],
+    "driverFinal": {
+      "supported": true,
+      "events": []
+    },
+    "finished": "2026-11-04T15:28:07.508Z"
+  },
+  "error": "Error: Qualification operation timed out; scope stopped\n    at Timeout.<anonymous> (file:///C:/pnggpu-CUDA/scripts/qualification_lifecycle.mjs:7:14)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)"
+}

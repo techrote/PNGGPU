@@ -22,3 +22,10 @@ This release is cumulative and needs **no previous GPU package**. Extract the ZI
 6. For reproducible hardware timing, first run the prior known-good 512×512 / 16×32 / FG12 BG8 setup at depth 1/2/3, then explore depth 8 and 24 at a fixed tile MiB setting. Check memory warnings and exact parity on smaller compatible configurations before trusting new extreme paths.
 
 **Validation status:** Host-side unit tests and ZIP consistency are verified; no real GPU-007 WebGPU shader/pipeline/sampling parity tests were possible in this build environment. The distribution is a *research build*, not a production-quality infinite-resolution converter. Do not interpret VRAM estimate as live GPU memory availability. Details: `PNG2ANSI/docs/WEBGPU_BENCHMARKS.md` after setup.
+# Optional CUDA backend
+
+For TITAN RTX / RTX 20-series, see
+[the CUDA guide](overlay/docs/CUDA_BACKEND.md). Run `build-cuda.bat` once with
+Visual Studio 2022 C++ tools, CMake and CUDA Toolkit installed, then
+`start-cuda.bat`. CUDA uses the existing workbench and requires Node.js 22+.
+Normal `start.bat` remains the default WebGPU entry point.

@@ -1,0 +1,23 @@
+✔ CP437 table matches pinned original and raw high bytes are one glyph each (2.7374ms)
+✔ actual original ANSI encoder round-trips all 16 foreground and 8 background colors (2.3493ms)
+✔ decoder rejects cursor/OSC/truecolor controls, truncation, wrong counts and missing closing reset (0.9455ms)
+✔ row delimiters are optional but cannot split a row; C1 byte is never executed (0.4803ms)
+✔ atlas rendering respects CP437 ordering, raster geometry and original float32 coverage (1.5904ms)
+✔ cell comparison includes glyph, foreground and background and preserves cell alignment (0.6293ms)
+✔ saved 80x25 export ANSI decodes to every original packed tuple when local delivery is present (75.0629ms)
+✔ quarter rotations preserve every RGBA pixel and inverse coordinates (2.774ms)
+✔ 25x80 swapped-cell portrait rotates back to the 80x25 comparison raster (0.3445ms)
+✔ wipe boundaries cover entire B at zero and entire A at one hundred without a pixel gap (1.3095ms)
+✔ fit keeps complete images at one common scale and never silently upsamples (0.289ms)
+✔ cell differences are disabled for mismatched native grids or display rotation (0.3609ms)
+✔ 15 additions include nine finite intermediates and both portrait policies at two anchors (1.4093ms)
+✔ clockwise rectangular permutation preserves pixel channels and returns after four turns (1.9344ms)
+✔ CW cell placement maps80x25 to25x80 without losing cells (2.2604ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 194.3057

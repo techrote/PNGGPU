@@ -1,6 +1,7 @@
 /** CPU oracle worker launch helper. Works with the locally served module worker.
  * Worker startup and input cloning are included in wallMs, not shared prep. */
-export function runCpuReferenceInWorker({pixels,masks,config,palette,onProgress=()=>{},WorkerClass=globalThis.Worker,workerUrl=new URL('./reference_photo.worker.js?gpu005',import.meta.url)}) {
+export function runCpuReferenceInWorker({pixels,masks,config,palette,signal,onProgress=()=>{},WorkerClass=globalThis.Worker,workerUrl=new URL('./reference_photo.worker.js?gpu005',import.meta.url)}) {
+  if(signal?.aborted) return Promise.reject(signal.reason ?? new DOMException('CPU conversion cancelled','AbortError'));
   if(!WorkerClass) return Promise.reject(new Error('A module Web Worker is required for live CPU progress'));
   const t=performance.now();
   return new Promise((resolve,reject)=>{
@@ -10,10 +11,14 @@ export function runCpuReferenceInWorker({pixels,masks,config,palette,onProgress=
     let settled=false;
     const finish=(error,result)=>{
       if(settled)return;settled=true;
+      signal?.removeEventListener('abort',abort);
       worker.terminate();
       if(error)reject(error);
       else resolve({...result,wallMs:performance.now()-t});
     };
+    const abort=()=>finish(signal.reason ?? new DOMException('CPU conversion cancelled','AbortError'));
+    signal?.addEventListener('abort',abort,{once:true});
+    if(signal?.aborted){abort();return;}
     worker.onmessage=({data})=>{
       if(data?.type==='progress'){
         try{onProgress(data);}catch(error){/* Reporting must never break the parity oracle. */}

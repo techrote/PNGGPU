@@ -1,0 +1,375 @@
+[
+  {
+    "tag": "baseline",
+    "sourceCommit": "6270bb998188c775ef1682768da5fa21fd9c6758",
+    "worker": {
+      "sourceCommit": "6270bb998188c775ef1682768da5fa21fd9c6758",
+      "sha256": "d418709f6525a9b76465440c2323e417e34cf54732c75b3343e4b254da1b5d4a",
+      "receipt": {
+        "sourceCommit": "6270bb998188c775ef1682768da5fa21fd9c6758",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "d418709f6525a9b76465440c2323e417e34cf54732c75b3343e4b254da1b5d4a",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "expectedKernels": 330,
+    "actualKernels": 330,
+    "activityErrors": [],
+    "frames": [
+      {
+        "frame": 0,
+        "eventSelectionMs": 7.402463973,
+        "activitySelectionMs": 7.126213
+      },
+      {
+        "frame": 1,
+        "eventSelectionMs": 7.310176015,
+        "activitySelectionMs": 7.143396
+      },
+      {
+        "frame": 2,
+        "eventSelectionMs": 7.24723196,
+        "activitySelectionMs": 7.151907
+      },
+      {
+        "frame": 3,
+        "eventSelectionMs": 7.573023975,
+        "activitySelectionMs": 7.472636
+      },
+      {
+        "frame": 4,
+        "eventSelectionMs": 7.209344089,
+        "activitySelectionMs": 7.11428
+      },
+      {
+        "frame": 5,
+        "eventSelectionMs": 7.229312003,
+        "activitySelectionMs": 7.133509
+      },
+      {
+        "frame": 6,
+        "eventSelectionMs": 7.126688004,
+        "activitySelectionMs": 7.03428
+      },
+      {
+        "frame": 7,
+        "eventSelectionMs": 7.127327979,
+        "activitySelectionMs": 7.034924
+      },
+      {
+        "frame": 8,
+        "eventSelectionMs": 8.289696038,
+        "activitySelectionMs": 8.205484
+      },
+      {
+        "frame": 9,
+        "eventSelectionMs": 53.76460767,
+        "activitySelectionMs": 53.595224
+      },
+      {
+        "frame": 10,
+        "eventSelectionMs": 60.0510397,
+        "activitySelectionMs": 59.933204
+      },
+      {
+        "frame": 11,
+        "eventSelectionMs": 60.3395524,
+        "activitySelectionMs": 60.142921
+      },
+      {
+        "frame": 12,
+        "eventSelectionMs": 55.02947211,
+        "activitySelectionMs": 54.932016
+      },
+      {
+        "frame": 13,
+        "eventSelectionMs": 56.42016029,
+        "activitySelectionMs": 56.327114
+      },
+      {
+        "frame": 14,
+        "eventSelectionMs": 58.34806514,
+        "activitySelectionMs": 58.213273
+      },
+      {
+        "frame": 15,
+        "eventSelectionMs": 59.10073614,
+        "activitySelectionMs": 58.964423
+      },
+      {
+        "frame": 16,
+        "eventSelectionMs": 57.76969671,
+        "activitySelectionMs": 57.547623
+      },
+      {
+        "frame": 17,
+        "eventSelectionMs": 58.51532888,
+        "activitySelectionMs": 58.414739
+      },
+      {
+        "frame": 18,
+        "eventSelectionMs": 60.39673543,
+        "activitySelectionMs": 60.290529
+      },
+      {
+        "frame": 19,
+        "eventSelectionMs": 56.92809582,
+        "activitySelectionMs": 56.784541
+      },
+      {
+        "frame": 20,
+        "eventSelectionMs": 57.40396833,
+        "activitySelectionMs": 57.183763
+      },
+      {
+        "frame": 21,
+        "eventSelectionMs": 56.5488317,
+        "activitySelectionMs": 56.384299
+      },
+      {
+        "frame": 22,
+        "eventSelectionMs": 52.28124809,
+        "activitySelectionMs": 51.997658
+      },
+      {
+        "frame": 23,
+        "eventSelectionMs": 52.13894439,
+        "activitySelectionMs": 52.025721
+      },
+      {
+        "frame": 24,
+        "eventSelectionMs": 51.1887033,
+        "activitySelectionMs": 51.103569
+      },
+      {
+        "frame": 25,
+        "eventSelectionMs": 57.27782393,
+        "activitySelectionMs": 57.175859
+      },
+      {
+        "frame": 26,
+        "eventSelectionMs": 54.24559927,
+        "activitySelectionMs": 54.134272
+      },
+      {
+        "frame": 27,
+        "eventSelectionMs": 61.58790421,
+        "activitySelectionMs": 61.175016
+      },
+      {
+        "frame": 28,
+        "eventSelectionMs": 54.6662724,
+        "activitySelectionMs": 54.567285
+      },
+      {
+        "frame": 29,
+        "eventSelectionMs": 53.85555172,
+        "activitySelectionMs": 53.756873999999996
+      }
+    ],
+    "rawReport": "selection-activity-fp32-160.json",
+    "traceFiles": [
+      "build/qualification/activity-fp32-160\\activity-15724.csv"
+    ]
+  },
+  {
+    "tag": "final-fp32",
+    "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+    "worker": {
+      "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+      "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+      "receipt": {
+        "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "expectedKernels": 110,
+    "actualKernels": 110,
+    "activityErrors": [],
+    "frames": [
+      {
+        "frame": 0,
+        "eventSelectionMs": 5.256799996,
+        "activitySelectionMs": 4.89837
+      },
+      {
+        "frame": 1,
+        "eventSelectionMs": 4.81904012,
+        "activitySelectionMs": 4.716677
+      },
+      {
+        "frame": 2,
+        "eventSelectionMs": 4.798207998,
+        "activitySelectionMs": 4.704293
+      },
+      {
+        "frame": 3,
+        "eventSelectionMs": 4.85027194,
+        "activitySelectionMs": 4.722981
+      },
+      {
+        "frame": 4,
+        "eventSelectionMs": 4.916415989,
+        "activitySelectionMs": 4.7625340000000005
+      },
+      {
+        "frame": 5,
+        "eventSelectionMs": 4.816255987,
+        "activitySelectionMs": 4.722468
+      },
+      {
+        "frame": 6,
+        "eventSelectionMs": 4.815231919,
+        "activitySelectionMs": 4.680968
+      },
+      {
+        "frame": 7,
+        "eventSelectionMs": 4.77433604,
+        "activitySelectionMs": 4.672872
+      },
+      {
+        "frame": 8,
+        "eventSelectionMs": 5.097984076,
+        "activitySelectionMs": 4.933472
+      },
+      {
+        "frame": 9,
+        "eventSelectionMs": 4.728416026,
+        "activitySelectionMs": 4.634759
+      }
+    ],
+    "rawReport": "selection-activity-final-fp32.json",
+    "traceFiles": [
+      "build/qualification/activity-final-fp32\\activity-19116.csv"
+    ]
+  },
+  {
+    "tag": "final-fp64",
+    "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+    "worker": {
+      "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+      "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+      "receipt": {
+        "sourceCommit": "5de0fb39a53d8aa87472b6b9ee9c9b18e03826ae",
+        "worker": "pnggpu_cuda_worker.exe",
+        "sha256": "934360929f06df90ea49db8279dadc5fb3477b7241ef98f67cc1cdd666383b57",
+        "build": {
+          "nvcc": "12.8.93",
+          "hostCompiler": "MSVC19.44.35228.0",
+          "profile": true,
+          "cmakeType": "Release",
+          "faultWorker": false,
+          "flags": [
+            "--resource-usage",
+            "-lineinfo",
+            "--fmad=false",
+            "--ftz=false",
+            "--prec-div=true",
+            "--prec-sqrt=true"
+          ],
+          "cuptiActivityBuild": true,
+          "cuptiVersion": "12.8.90",
+          "cuptiDllSha256": "d026870a2c503d1b6e38a793170823ceca83d776f9b887f63fb0bb5c93d5c525",
+          "cuptiArchiveSha256": "8a09eab5412addc6e132a55bac41ebad0141de3b5b6f6eca3028eb9e49a8cdb6"
+        }
+      }
+    },
+    "expectedKernels": 160,
+    "actualKernels": 160,
+    "activityErrors": [],
+    "frames": [
+      {
+        "frame": 0,
+        "eventSelectionMs": 16.61375976,
+        "activitySelectionMs": 16.037855
+      },
+      {
+        "frame": 1,
+        "eventSelectionMs": 16.54687977,
+        "activitySelectionMs": 16.093501
+      },
+      {
+        "frame": 2,
+        "eventSelectionMs": 16.42287993,
+        "activitySelectionMs": 16.131484
+      },
+      {
+        "frame": 3,
+        "eventSelectionMs": 16.1154238,
+        "activitySelectionMs": 15.9448
+      },
+      {
+        "frame": 4,
+        "eventSelectionMs": 15.9607358,
+        "activitySelectionMs": 15.846179
+      },
+      {
+        "frame": 5,
+        "eventSelectionMs": 16.39478397,
+        "activitySelectionMs": 16.236697
+      },
+      {
+        "frame": 6,
+        "eventSelectionMs": 16.15663993,
+        "activitySelectionMs": 16.020766
+      },
+      {
+        "frame": 7,
+        "eventSelectionMs": 16.52892792,
+        "activitySelectionMs": 16.388629
+      },
+      {
+        "frame": 8,
+        "eventSelectionMs": 49.00076771,
+        "activitySelectionMs": 48.823943
+      },
+      {
+        "frame": 9,
+        "eventSelectionMs": 46.40121555,
+        "activitySelectionMs": 46.295434
+      }
+    ],
+    "rawReport": "selection-activity-final-fp64.json",
+    "traceFiles": [
+      "build/qualification/activity-final-fp64\\activity-17388.csv"
+    ]
+  }
+]

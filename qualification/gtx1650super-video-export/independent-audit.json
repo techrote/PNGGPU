@@ -1,0 +1,917 @@
+{
+  "schema": "pnggpu-independent-offline-export-audit-v1",
+  "started": "2026-11-05T20:53:55.174Z",
+  "planSha256": "da6dbcbeacbf0c52f2f7c53908ce29ca9a5408baada8f44b3c0bf1502027bd5e",
+  "sourceChecks": true,
+  "variants": {
+    "8x4-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:04.592Z",
+      "frames": 719,
+      "cells": 23008,
+      "ansiFrames": 719,
+      "reportSha256": "034c6c9f2cd613c31c9c3711886604bdf980dade22f6b2bbf9b9ec290d57d01d",
+      "renderSha256": "3d5245efd7fe1964e55f8dc7e4e621b36b8679cc3cfdc4b04590a20e2d84c08e",
+      "tuplesSha256": "49dcdeaf2331b4e7ad9b5859c23009a74e09a3071eae9452c5e794c5bb1afd61",
+      "videoSha256": "1eca197cfcb00da7b121e0a893275c0439007ec41eb40bee702798e9eac92da2",
+      "videoBytes": 881807,
+      "videoFrames": 719,
+      "width": 64,
+      "height": 64,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 371104,
+      "maxFitMs": 207.50199999999995,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "fafce2bf5cc8818ce8f96389d38e681f652e4389354aaea2864585934b5d6b8c",
+          "pixels": 4096
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "67bcf75bbe4dc5fdc94e0ed842ae2c8144ec7fc923b6893a15b4ec4f0cae65b6",
+          "pixels": 4096
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "16x8-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:04.856Z",
+      "frames": 719,
+      "cells": 92032,
+      "ansiFrames": 719,
+      "reportSha256": "1d446a42f4e985417bb46f8193be144a607109fd56abef3b3f505dcfd06ae7cc",
+      "renderSha256": "e35f09902999adfc3613cdc5a7b868676fdbb585af0f18d513f598e67ca0ae70",
+      "tuplesSha256": "bfe2c092146073748b5bd4e9cc55af4502fcbc129f42b06dbbbebfcacbc17d62",
+      "videoSha256": "8d22bc6db742861ed9d527c8d24d2d6a251eebdece1e1266601c8b93be5f8689",
+      "videoBytes": 1566123,
+      "videoFrames": 719,
+      "width": 128,
+      "height": 128,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 1389472,
+      "maxFitMs": 213.21240000000034,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "ff02a0294b939b5b6d814d6681cb48360a8bbb0c40d6b5c3b9de8e8dc565bcbd",
+          "pixels": 16384
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "cbe07140f52498bd53b6eb01cf3dfdc691f47518a19f61d14a81a7be16a6eb01",
+          "pixels": 16384
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "32x16-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:05.162Z",
+      "frames": 719,
+      "cells": 368128,
+      "ansiFrames": 719,
+      "reportSha256": "7b9afbecf28473bd303fbf7eb71934dc2e4d2911460d67dfb8c5121383e2d3e9",
+      "renderSha256": "81369f2470febea9b30fc4d4eafed81b6d214e44c9dd100ab219247e928adc69",
+      "tuplesSha256": "b56694b0c279eb18102b1cb0bab491fcdc847b2b0452833b5d0c68f4bc0f9f0b",
+      "videoSha256": "ddfd685463e9cd5ead5a9147fa507be3a430142d795de96e2c917679dd9bd0a8",
+      "videoBytes": 3790705,
+      "videoFrames": 719,
+      "width": 256,
+      "height": 256,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 5462944,
+      "maxFitMs": 196.21120000000155,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "5f0d0a8f6a97c1f8805843b5ee88a780a0332312b234079b089efa6f7ef7653e",
+          "pixels": 65536
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "d18beda772fc701c36976cba8e90ad59dbc2a5f2c0cbf4a7efc026d9fe8f6386",
+          "pixels": 65536
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "40x12-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:05.458Z",
+      "frames": 719,
+      "cells": 345120,
+      "ansiFrames": 719,
+      "reportSha256": "d62eee9d75120e2bb2090860ec376c23ba7011bdb3f19a90c7d558bfe4763d7e",
+      "renderSha256": "f107b9e3039265b5825a8b78d23473d87cc6b56ab8366b22aa87f4830f571cd4",
+      "tuplesSha256": "e2e000f513799a443bfdff01269ab8c1d0508a0089ed375b566973218d267fea",
+      "videoSha256": "708d6429abaab3205e5b7cc68ecb11a7b4fc360c7f6a68f826a224b955da6a59",
+      "videoBytes": 5972779,
+      "videoFrames": 719,
+      "width": 320,
+      "height": 192,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 5123488,
+      "maxFitMs": 212.6245999999992,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "8f4f5166470e55f266c59ac7351483145b815e5b854220465150c5f2866496e7",
+          "pixels": 61440
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "a0d0d91285ecc2321711e9831aa4bb4ab80b915987343520c0071cebaa841f45",
+          "pixels": 61440
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x24-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:05.901Z",
+      "frames": 719,
+      "cells": 1380480,
+      "ansiFrames": 719,
+      "reportSha256": "7bbc1bf822515fe16d548f784b87dc93fda9821a418e4b3a33d33acddf7421b3",
+      "renderSha256": "e5f9270bb38e79f33f381b10dfed63325eaecc04772d6cb69c9f17fe3702728d",
+      "tuplesSha256": "28d30b7b9eb7da68eb6cb45ac7c1e790464211673bca6b36c74f225ce14a5f29",
+      "videoSha256": "d79deda767d43ef3fb79feec39459392cb2f900af2b3f1ebed8b7e3384ae4ccc",
+      "videoBytes": 20110166,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 384,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 14148512,
+      "maxFitMs": 193.2976000000001,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "1d375b42883af3f36233efcfd1444942ac0e7f985faf69f5ada20d4768628f39",
+          "pixels": 245760
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "ea88323a19ae82cfc685d9b4c881837048e689d6ebc1ab327e4fb53006a612fc",
+          "pixels": 245760
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x25-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:06.319Z",
+      "frames": 719,
+      "cells": 1438000,
+      "ansiFrames": 719,
+      "reportSha256": "2721dc0e10e39c47ffc5dcf175494b3beff526b65077b4c80f2734306d9fb15f",
+      "renderSha256": "80270377f6c0a3adad715a6dc4fd7d95fca270a1a627d82b2877d51bac51e25c",
+      "tuplesSha256": "6626e8f18aec8c62b3df90a70f745297e010f0ba275193166501d686d75b3993",
+      "videoSha256": "8eb7685639772f984385a90f255f119c149de64bea17b3e4d4324acdf3d019f6",
+      "videoBytes": 20679178,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 400,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 14439072,
+      "maxFitMs": 192.77869999999893,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "ee629b0ae24f4aca8b0219594c127e6600e0b0794098d3745c538cca8c34c2b1",
+          "pixels": 256000
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "dd931e1014bfef67de43a48216931a8a120997f6d72751fbc60db688f960d840",
+          "pixels": 256000
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x40-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:06.773Z",
+      "frames": 719,
+      "cells": 2300800,
+      "ansiFrames": 719,
+      "reportSha256": "3c79edd8f0b821abe3ae205478d6caa021ce69347cd69868f7de32649c6d2304",
+      "renderSha256": "04e6fbc7fd6279418e3b2a781b4be13cbfb0e2e1127a796ffd39adb383206274",
+      "tuplesSha256": "2caef5b35d930ad9102b52ed7608d15c0c67a748a6da28b40070f72b0b20cfd9",
+      "videoSha256": "c7fd924418abaca1be786eb7df2b8a15e9eba0e647499e5a1c51a292ef943964",
+      "videoBytes": 18956348,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 640,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 18797472,
+      "maxFitMs": 183.77570000000014,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "8a1dbfdfca31842a9733e8a70b3b6ae61f31bc7296cefe66ab87d9349f0fd55c",
+          "pixels": 409600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "4391d09f1e8dda15bbdf45f18150fbed3d10132952730928345b9a6bfca1ecdc",
+          "pixels": 409600
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "120x34-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:07.528Z",
+      "frames": 719,
+      "cells": 2933520,
+      "ansiFrames": 719,
+      "reportSha256": "0a119cba9474ee4d3daa15f21a0da018a3dc2f0dea7718eed0c97e51fb86c334",
+      "renderSha256": "4740f1fb883da283a108323ddb2d2492b71d7c763cbb3eb52e693dba004c36ee",
+      "tuplesSha256": "7b553a4abe6b1401c27bacf67c5500982cc2e59aa27676a4b80de8e22bcaa225",
+      "videoSha256": "4b3ed5f04a55529d47654f5aa52398de40bd90ed9a5b3b3837c7cd58ea33a9c2",
+      "videoBytes": 39445980,
+      "videoFrames": 719,
+      "width": 960,
+      "height": 544,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 21993632,
+      "maxFitMs": 188.61990000000014,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "f3cad3e9a6cb19c8943ddd3d13fac699bcc85050be5d7c9a7fa314d7dd6cfd90",
+          "pixels": 522240
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "8522bdc15181987c52822294197f0a486daff7471135643599079f60bf9eafc3",
+          "pixels": 522240
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "160x45-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:08.695Z",
+      "frames": 719,
+      "cells": 5176800,
+      "ansiFrames": 719,
+      "reportSha256": "0cbf68e41d54088a26da1c4f20f5c728478539ea3f8b4dcc331bb8c461bbf92c",
+      "renderSha256": "57ebf18fc064d0c412f3703971080bb93eefe3fcacff75e43e12cb8a8f5f9c56",
+      "tuplesSha256": "e6af7c3d0f11d5fda7b3285789ddad8cd5610be07f60ba336b86ae79bd144e58",
+      "videoSha256": "974b2943a6f32f8aa119bcaa877c799aa04e8cea8855f68acc6004185bbfc5f6",
+      "videoBytes": 67216994,
+      "videoFrames": 719,
+      "width": 1280,
+      "height": 720,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 33325472,
+      "maxFitMs": 192.3053,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "d5661f5369ea9de94a39bc443c9adfd34141b71e6de5acaf33592a91ca4ffd07",
+          "pixels": 921600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "ca38fc7438d568b9276275a8e3cebcfa160e669b246784f60613893fb7c60659",
+          "pixels": 921600
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "160x80-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:54:10.154Z",
+      "frames": 719,
+      "cells": 9203200,
+      "ansiFrames": 719,
+      "reportSha256": "2b538f276738f9c47a36f5a2e01d9fa44875644f6ceff235fce06842c32a2d01",
+      "renderSha256": "745a231d02fee761978a1417efbc0cd9b79c8000f1cf18f4237d7c1759825a4a",
+      "tuplesSha256": "e873bd132810be6e9972c83c67b5517c7010fd72d606810fafd06ba70f510029",
+      "videoSha256": "31d7c9d2f6e171b83366df0419b89531ea22c181ea9fb598a58254cec933d56d",
+      "videoBytes": 65824067,
+      "videoFrames": 719,
+      "width": 1280,
+      "height": 1280,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 42111280,
+      "maxFitMs": 202.07130000000006,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "f20adcd131fe0e82a81d31f1355a32c6ecd6d4d28d0261cd5d35a2f846fc411a",
+          "pixels": 1638400
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "5523b377697d3822b9fbc88d879f0cd23d136e856ee445bf62080d75d5c03af9",
+          "pixels": 1638400
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "320x90-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:56:19.441Z",
+      "frames": 719,
+      "cells": 20707200,
+      "ansiFrames": 719,
+      "reportSha256": "25747376013b78624d396e9b738ef816f5e9f0af716c1f3258000587f0ff391d",
+      "renderSha256": "de8e5a1cba2815d6fcda2b5250f9b4cf232b048c5b9c2cb55a67e3cf85e08f23",
+      "tuplesSha256": "941df96621e868e304fd83957a32f9412f55f9e284c076bc89c3f7ffa1d00b72",
+      "videoSha256": "c775247352aa0b8e14ea65b61969b48f258805aef21ff81752a7b59705f1b146",
+      "videoBytes": 245445008,
+      "videoFrames": 719,
+      "width": 2560,
+      "height": 1440,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 77051120,
+      "maxFitMs": 218.86170000000016,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "2d836106cd02bff1def35005c31a445344dc7755044e1f23f156750029a9f907",
+          "pixels": 3686400
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "a8deba2571fca6c03193f29fdafa19f0b1bdb40121b67c0b91f6d1ab58cf0fe6",
+          "pixels": 3686400
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "320x160-samples4x8-fp32": {
+      "checkedAt": "2026-11-05T20:58:47.174Z",
+      "frames": 719,
+      "cells": 36812800,
+      "ansiFrames": 719,
+      "reportSha256": "46190394365e4c320e15652e308d36628170efc838e338cf36b3a84f2bf7a395",
+      "renderSha256": "2e68485d396f966f787939f447f8a27767c5dc4074bded672fe4fff93d51b5c5",
+      "tuplesSha256": "52eab247c825f3b6bb52836456d128f03192d3fdc7aa50062d1fe00feafb6277",
+      "videoSha256": "217a3435977160548f49188600441d2433a2cbcb625bc0cfaeca715bc4e5cf3d",
+      "videoBytes": 239829138,
+      "videoFrames": 719,
+      "width": 2560,
+      "height": 2560,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 77051120,
+      "maxFitMs": 254.93129999999996,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "6dbc8e5bcfa6c4e51aefcdaa81a9f82c1de33ed7e14ecc38b528bf78a3143121",
+          "pixels": 6553600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "d06eb1a6ea9626ee50c922562bdeccaadbd38a4a2cca4258d056f207df3643ea",
+          "pixels": 6553600
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "8x4-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T20:59:41.989Z",
+      "frames": 719,
+      "cells": 23008,
+      "ansiFrames": 719,
+      "reportSha256": "542825646a158c599b1dc24ac62c7b28bb247534838b8a3fe2f6a1321de47508",
+      "renderSha256": "185f05e9dd396f8e03be838d98c4938279d8dc392ebf1eaafef4e90e1d0a751a",
+      "tuplesSha256": "bf45312d5f8869659584c52f60edc2c41321b00791a91f049e9a91bbc1e609dc",
+      "videoSha256": "ed4c329850d1d6fd250106740493287c84681b54cc925708585dc9a8538aa7ca",
+      "videoBytes": 833693,
+      "videoFrames": 719,
+      "width": 64,
+      "height": 64,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 467104,
+      "maxFitMs": 191.23270000000048,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "a18c891918eafee4cdb23e69f536635c30877715786d9af0fc45624520895263",
+          "pixels": 4096
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "9a19232c68d278af5e54c0413750a1396584761da03b8b28d144ddc87e8bb79f",
+          "pixels": 4096
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "16x8-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T20:59:42.213Z",
+      "frames": 719,
+      "cells": 92032,
+      "ansiFrames": 719,
+      "reportSha256": "925a82181f3e5e5afe401676040894c5e7c2ebd8e35d3ac14a485da12bb14454",
+      "renderSha256": "e1176fa831c9eacfded7e57b59576cd332e48dfc943f7a1bc44a8178d7e357bd",
+      "tuplesSha256": "10a07e1b34f0cf2f47f16dd7c9c04fb0fb649b11fe1f0633786f27cea3d3d44e",
+      "videoSha256": "815af346d25c8f376bcab7df3583f958bf01e27161a97b07dc40317bd83830e8",
+      "videoBytes": 1333123,
+      "videoFrames": 719,
+      "width": 128,
+      "height": 128,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 1522336,
+      "maxFitMs": 189.62079999999992,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "a1ff048306b0d7fb89b00acfe294368f790390e26e2d6d35ba7e8b4ea6529af7",
+          "pixels": 16384
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "fcf2287ea22e249aac51684053b3796ff739653b84f727fe27510a67b7e91738",
+          "pixels": 16384
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "32x16-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:00:48.934Z",
+      "frames": 719,
+      "cells": 368128,
+      "ansiFrames": 719,
+      "reportSha256": "32bcfa7f96d8f1fdaa8f3c55913cd80da106fae112a798f36450d31478914034",
+      "renderSha256": "2153fde530b6755c34253b005736872dd7828859c30689b59896fc553c33f1d1",
+      "tuplesSha256": "76bea702f7f88c9839ddba6663be97418b60db88215aa3bafc8e5ad152abaa51",
+      "videoSha256": "a158815ef718d51404e5ccc48f4e909f926bd060dacc57f9feb45d07c8602e86",
+      "videoBytes": 3016051,
+      "videoFrames": 719,
+      "width": 256,
+      "height": 256,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 5743264,
+      "maxFitMs": 184.86040000000003,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "d55f2e569a6c6db5f0a8babf1740711b19bfe6d4022180214fb5cfc8bfafc61d",
+          "pixels": 65536
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "5208de46eb496aca6606228919db323f2f1665c4e88fe175857abdf8539c249b",
+          "pixels": 65536
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "40x12-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:01:27.633Z",
+      "frames": 719,
+      "cells": 345120,
+      "ansiFrames": 719,
+      "reportSha256": "169fb4cc6d703affe1e36beb8b4852fdb82094d55faac8483f9fee964708d7e4",
+      "renderSha256": "26fb5fe6defce8d375e094113ff4c3146156c3eb357b3e6a78cfee19904f215c",
+      "tuplesSha256": "a34baf5b909bcbc8b6896a26932567c6cf82d8e2c9e2ec8b1f03ac2c6ca4637e",
+      "videoSha256": "d4335b19e73c57ea259fe90e976954a7cedd913b3fce2ec643fffe349e10a08b",
+      "videoBytes": 4627686,
+      "videoFrames": 719,
+      "width": 320,
+      "height": 192,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 5391520,
+      "maxFitMs": 172.24450000000002,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "0ccd98be74d290748f87ab31e840449294982f859263ec087486fcd15162af51",
+          "pixels": 61440
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "06305ac15ed6978f1b0d648ec21ec883ea80230e69a535ed0f8959ab737c1120",
+          "pixels": 61440
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x24-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:02:18.433Z",
+      "frames": 719,
+      "cells": 1380480,
+      "ansiFrames": 719,
+      "reportSha256": "835aa82307220d2b578329b4e008388b0933c0cff176b5a4d4d745f953e92a05",
+      "renderSha256": "f37b7a6798f7cdcfa745b32430542c29b6e712c8c114d178677585cec77d4d76",
+      "tuplesSha256": "4a59ceafc40fecc1188463999a5510ba7d182d03758b71d969fee1158691255e",
+      "videoSha256": "c0f2b5b9de2d443f1457daa2d3dc5285a15952b21b60b2b565f5ed73195d8ef0",
+      "videoBytes": 15119086,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 384,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 14969504,
+      "maxFitMs": 177.71590000000015,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "28920c0e828ff1b795aadff3508aca4bcbe96421d8269d0dfc8bd3ee85d5bf8d",
+          "pixels": 245760
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "321aeb8627a9dec1416688876aeff45a0414df18448b27bbcf81d339f330ff3b",
+          "pixels": 245760
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x25-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:02:19.033Z",
+      "frames": 719,
+      "cells": 1438000,
+      "ansiFrames": 719,
+      "reportSha256": "0abb2f5775dc6f5364ec3d79ae40665725192bf587ea0514e102ebfb96d20e2d",
+      "renderSha256": "876f0e88aad31ea40089dd00420bec4110ea2a0fd891f4657be2c9249e923f15",
+      "tuplesSha256": "3cb160bb1025c5d98a33d5e71b3568406fd18129232b1cae44a1509f57ea8c24",
+      "videoSha256": "d57a96ab5dd88c4a2ef1e30f3389498a6b701d9687f82a7cf98bd5202eac032f",
+      "videoBytes": 15628246,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 400,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 15290784,
+      "maxFitMs": 182.23590000000013,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "0d8fb93dd2e5423657a512854d1509914eb09b42356b6ada5810a66fe8bc8e01",
+          "pixels": 256000
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "6621f422b6e736cce812a2cff0c0547d0c7054e35632d44c24fe253c1cca57c8",
+          "pixels": 256000
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "80x40-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:03:06.480Z",
+      "frames": 719,
+      "cells": 2300800,
+      "ansiFrames": 719,
+      "reportSha256": "4107cfb2b5e2166e3e8df7578973e16c84cadc11567519631286e683393bbf12",
+      "renderSha256": "c9f342f068b83ab22fe5da21cbe2b4cec46e176df74c4a0c722ec50eb50028f5",
+      "tuplesSha256": "02cff0c3b03170c4509592ffe95d0cd85a81b55e6f6bf90f9399f6e4ed959364",
+      "videoSha256": "af0d18348d8ea29cb7548b827f74c9a10f9ac46d0c2394b415af0ab288180272",
+      "videoBytes": 14359590,
+      "videoFrames": 719,
+      "width": 640,
+      "height": 640,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 20109984,
+      "maxFitMs": 208.2793999999999,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "145f4fc233e9af1a19bc31b27303067a0b9d2f89010eacedf1eb9559bc7743ad",
+          "pixels": 409600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "bf4a9dc7633e8eaef5ea8799bf015aeede67e53391fc42d161ff34dd6cf17909",
+          "pixels": 409600
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "120x34-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:04:31.331Z",
+      "frames": 719,
+      "cells": 2933520,
+      "ansiFrames": 719,
+      "reportSha256": "104e6cd366ce36e794b36137368089051880033dc11878f11f6a897ed9ed3218",
+      "renderSha256": "cb7092622342cec8414ee2f564ce09612d253ec951ae4b0f8cc0abbc22b4be28",
+      "tuplesSha256": "d34f855fdd6e6418c7574f24da94389e8cf52b97395e58fee9513efda9aae72e",
+      "videoSha256": "837d11104a7153f851c5ab29cc6d766c383855dcd16f668cd30cb409104dc8cf",
+      "videoBytes": 29884180,
+      "videoFrames": 719,
+      "width": 960,
+      "height": 544,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 23644064,
+      "maxFitMs": 198.02120000000014,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "29b306ee3adeaa76607865d18e00021a27ac6aad62ef533f0f88980c98652c74",
+          "pixels": 522240
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "14edf65e8cf8144b3f2aee877560e81e9b9f17d240a6f734d642bd04943864b3",
+          "pixels": 522240
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "160x45-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:05:30.354Z",
+      "frames": 719,
+      "cells": 5176800,
+      "ansiFrames": 719,
+      "reportSha256": "5303e57f9008fe33897894e20980a6eef0c21c17e99883a0ce9757c4aa6b7f86",
+      "renderSha256": "a1229db10401f3e286ee93a7ced395769226313581fdaff3e7f9f1224d686187",
+      "tuplesSha256": "3077f0861636ede8246c1b4db2dd95ed4d6e04a596cb22d686e1edc91ade27b2",
+      "videoSha256": "a04f45b828cc416c9928d262b61a1dbd6d2be8491c05a3963367c29f60b34166",
+      "videoBytes": 50571149,
+      "videoFrames": 719,
+      "width": 1280,
+      "height": 720,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 36173984,
+      "maxFitMs": 188.71659999999997,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "83abae1843119c78d0e34eac3d20fbc779f7d9631475207e284cd9506e253576",
+          "pixels": 921600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "310cea92bf816cef41fe0145f2d186945dd77446ed018672fbcf7923042b16f7",
+          "pixels": 921600
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "160x80-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:06:27.577Z",
+      "frames": 719,
+      "cells": 9203200,
+      "ansiFrames": 719,
+      "reportSha256": "5bb4bec4b5ef28246a0a15cef85309679cbe97f4879effc0c68f272cc9529f06",
+      "renderSha256": "3fec4774c747929a10b1d27dd33dbf9838a68097e581e572144519eb9cd289d4",
+      "tuplesSha256": "8fd5e976de2e2fe3570d7d02561fa58e38acc5c91bf12fbb80ca57cb7403d0c1",
+      "videoSha256": "6c4398f8ccc85a59792f3b921a21c6b7fea72e63db7b1e8328ccf8f609d5164e",
+      "videoBytes": 49746967,
+      "videoFrames": 719,
+      "width": 1280,
+      "height": 1280,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "maxAllocatedBytes": 45888688,
+      "maxFitMs": 211.01350000000002,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "2da93ed649278e025dc4367fe959461e584988df8b4d6085506335f88a67adb6",
+          "pixels": 1638400
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "b6493e6aa1e666c4dced40cef860c0dd10c8a6bac39b49f26e1d03bbd411192a",
+          "pixels": 1638400
+        }
+      ],
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30
+    },
+    "320x90-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:08:43.824Z",
+      "frames": 719,
+      "cells": 20707200,
+      "ansiFrames": 719,
+      "reportSha256": "24b44233945f43fbfccca2f1e96e4b43c784eed2db8d45efee48b8e0fb5ed718",
+      "renderSha256": "9cad5c4c151b84921637c569f8f17e4166f2f7737f380b0890f4b33625a2e0fe",
+      "tuplesSha256": "ff1b58d4ccdd5726d4540954fec5d47ac29120b7f6667a3a60bfea9d12812699",
+      "videoSha256": "8b7c48229bdd1be19bc67039060865a0e2c5114e51304b68c648754e57f495b7",
+      "videoBytes": 185887191,
+      "videoFrames": 719,
+      "width": 2560,
+      "height": 1440,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30,
+      "maxAllocatedBytes": 84522608,
+      "maxFitMs": 263.50519999999983,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "00d7df1f05f965fe3f33349364549ddbb425dbb479e7fbfe7e82ad18c19524e5",
+          "pixels": 3686400
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "c17d8bd0fa62c46641063ba2cd4c85a89864eaa0d9e4015dca0fe3a965a83022",
+          "pixels": 3686400
+        }
+      ]
+    },
+    "320x160-samples8x16-fp32": {
+      "checkedAt": "2026-11-05T21:12:25.419Z",
+      "frames": 719,
+      "cells": 36812800,
+      "ansiFrames": 719,
+      "reportSha256": "db2c97ed2f765c7f37d8845a45e9560445bfd4adb48283e464f5724f6333581f",
+      "renderSha256": "08bccebc370e82fda83138fd67fce8f2aa2be5dfe67f86e3f709e131ca044b14",
+      "tuplesSha256": "bf78b904b832ea521e171f490b955841162c9c2b5e43c84e5cf85d6cff0afff3",
+      "videoSha256": "7a77f3838fe717d2e2ad686315104d98643afa235dc65fb03394df0094a8eaf0",
+      "videoBytes": 183930920,
+      "videoFrames": 719,
+      "width": 2560,
+      "height": 2560,
+      "videoDuration": 23.966667,
+      "audioDuration": 23.957333,
+      "audio": true,
+      "chunks": 24,
+      "frameFitsIncludingComparison": 720,
+      "maxFrameFitsPerChunk": 30,
+      "maxAllocatedBytes": 84522608,
+      "maxFitMs": 296.4951000000001,
+      "workerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "originalCoreAnsiReencoded": true,
+      "driverAndCleanupClear": true,
+      "previewsPixelExact": [
+        {
+          "file": "preview_0001.png",
+          "rgbSha256": "f065ca941d023f90a784a272f295892b64628a10bbdf774a761cfffdd7ec777f",
+          "pixels": 6553600
+        },
+        {
+          "file": "preview_0719.png",
+          "rgbSha256": "3ad1e466802f4229e33a05e7544d8172adbd2d943d8de28dccb315a8e6dae15a",
+          "pixels": 6553600
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "sourceFrameHashes": 719,
+  "sourceCommit": "b7d2d7e46244fd8b6fd136e656fe818ecef495ed",
+  "actualWorkerSha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+  "updated": "2026-11-05T21:12:25.421Z",
+  "completedVariants": 24,
+  "totalAnsiFrames": 17256,
+  "totalCells": 161562176,
+  "complete": true,
+  "zip": {
+    "path": "C:\\pnggpu-CUDA\\build\\exports\\agenticparkour-fp32-delivery.zip",
+    "bytes": 1389965898,
+    "sha256": "ef18065cbb2592532ab906df784fd34eb45c42e8bf889fbdcb35acc6973628cf",
+    "entries": 17380,
+    "videos": 24,
+    "ansiFrames": 17256,
+    "namesExactAndUnique": true,
+    "crcVerified": true,
+    "allPayloadSha256MatchSource": true,
+    "manifestBindingsVerified": true
+  }
+}

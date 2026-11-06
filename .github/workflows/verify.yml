@@ -1,4 +1,4 @@
-name: GPU-007 validation
+name: PNGGPU validation
 on:
   push:
     branches: [main]
@@ -10,6 +10,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -19,6 +21,14 @@ jobs:
       - name: Validate GPU-007 host tests and original CPU artifact
         shell: pwsh
         run: npm test --prefix PNG2ANSI
+      - name: Validate optional CUDA bridge without a GPU
+        run: node --test tests/cuda_bridge.test.mjs tests/cuda_direct.test.mjs tests/cuda_raster_packet.test.mjs tests/cuda_fixture_plan.test.mjs tests/cuda_image_fixture.test.mjs tests/cuda_queue.test.mjs tests/cuda_timing_breakdown.test.mjs tests/cuda_export_plan.test.mjs tests/ansi_compare.test.mjs tests/cuda_quality_plan.test.mjs tests/ansi_wipe.test.mjs tests/cuda_sampling_plan.test.mjs
+      - name: Verify source package manifest
+        run: python scripts/package_manifest.py --check
+      - name: Verify native regression fixtures against independent CPU
+        run: node scripts/generate_cuda_regressions.mjs --check
+      - name: Verify frozen pre-optimization FP32 seed packets
+        run: node scripts/generate_cuda_fp32_seed_regressions.mjs --check
       - name: Verify benchmark image hashes
         shell: pwsh
         run: |
@@ -28,3 +38,82 @@ jobs:
             $hash = (Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()
             if ($hash -ne $i.sha256) { throw "Hash mismatch: $path" }
           }
+  cuda-build:
+    name: CUDA compile and host tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch SHA-pinned NVIDIA CUDA 12.8.1 compiler components
+        run: python scripts/fetch_cuda_toolchain.py .cuda-toolchain
+      - name: Build Linux Turing worker and host tests
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cmake -S native/cuda -B build/cuda -G Ninja -DCMAKE_BUILD_TYPE=Release -DPNGGPU_ENABLE_CUDA=ON -DCMAKE_CUDA_COMPILER="$PWD/.cuda-toolchain/bin/nvcc" -DCUDAToolkit_ROOT="$PWD/.cuda-toolchain"
+          cmake --build build/cuda --parallel 4
+          ctest --test-dir build/cuda --output-on-failure
+      - name: Build Windows Turing worker and host tests
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $visualStudio = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $visualStudio) { throw 'Visual Studio C++ tools not found' }
+          $cuda = (Resolve-Path .cuda-toolchain).Path
+          $commands = @"
+          @echo off
+          call "$visualStudio\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "PATH=$cuda\bin;%PATH%"
+          cmake -S native/cuda -B build/cuda -G Ninja -DCMAKE_BUILD_TYPE=Release -DPNGGPU_ENABLE_CUDA=ON "-DCMAKE_CUDA_COMPILER=$cuda\bin\nvcc.exe" "-DCUDAToolkit_ROOT=$cuda"
+          if errorlevel 1 exit /b 1
+          cmake --build build/cuda --parallel 4
+          if errorlevel 1 exit /b 1
+          ctest --test-dir build/cuda --output-on-failure
+          exit /b %errorlevel%
+          "@
+          $script = Join-Path $env:RUNNER_TEMP 'pnggpu-build-cuda.cmd'
+          Set-Content -LiteralPath $script -Value $commands -Encoding ascii
+          & cmd.exe /d /c $script
+          if ($LASTEXITCODE -ne 0) { throw 'CUDA build or native host tests failed' }
+      - name: Validate arithmetic CLI before device discovery (host only)
+        run: python scripts/check_cuda_modes.py build/cuda
+      - name: Bind worker to source revision
+        shell: python
+        env:
+          PNGGPU_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          import hashlib, json, os
+          from pathlib import Path
+          directory = Path('build/cuda')
+          worker = directory / ('pnggpu_cuda_worker.exe' if os.name == 'nt' else 'pnggpu_cuda_worker')
+          (directory / 'SOURCE_COMMIT.txt').write_text(os.environ['PNGGPU_SOURCE_SHA'] + '\n')
+          (directory / 'worker-sha256.json').write_text(json.dumps({
+              'sourceCommit': os.environ['PNGGPU_SOURCE_SHA'],
+              'worker': worker.name,
+              'sha256': hashlib.sha256(worker.read_bytes()).hexdigest()
+          }, indent=2) + '\n')
+      - name: Preserve source-bound worker for hardware qualification
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnggpu-cuda-${{ runner.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          retention-days: 30
+          if-no-files-found: error
+          include-hidden-files: true
+          path: |
+            build/cuda/pnggpu_cuda_worker
+            build/cuda/pnggpu_cuda_worker.exe
+            build/cuda/SOURCE_COMMIT.txt
+            build/cuda/worker-sha256.json
+            overlay/docs/CUDA_BACKEND.md
+            .cuda-toolchain/licenses/cuda_cudart/

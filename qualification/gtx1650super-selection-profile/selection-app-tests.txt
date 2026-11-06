@@ -1,0 +1,117 @@
+
+> png2ansi-web@0.4.0 test
+> node tests/core.test.mjs && node tests/artifact.test.mjs && node --test tests/gpu_photo_contract.test.mjs tests/gpu_workload.test.mjs tests/hardmode_manifest.test.mjs tests/gpu_metrics.test.mjs tests/gpu_profiling.test.mjs tests/reference_photo.test.mjs tests/gpu_progress.test.mjs tests/cpu_worker_progress.test.mjs tests/gpu_memory.test.mjs tests/gpu_pipeline.test.mjs tests/benchmark_zip.test.mjs tests/gpu007_extended.test.mjs tests/cuda_fitter.test.mjs tests/cuda_workbench.test.mjs && node scripts/build.mjs --check
+
+✔ schema v2 defaults match the Python reference contract (2.5393ms)
+✔ v1 profiles migrate while strict nested validation remains transactional (2.6276ms)
+✔ candidate ranges and deterministic workload ceiling are safe (25.3573ms)
+✔ all five vocabularies are CP437 byte codes (0.6696ms)
+✔ multiple ANSI references make a frequency-ordered union (0.4937ms)
+✔ all NL modes match Python deterministic pixel fixtures (11.5959ms)
+✔ ANSI encoder emits classic SGR, one CP437 cell, reset, and no footer (1.1061ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 52.436
+✔ tracked artifact is single-file and network-disabled (5.8452ms)
+✔ worker jobs and UI debounce reject stale work without accumulating workers (0.1959ms)
+✔ numeric controls commit transactionally and expose safe candidate limits (0.2887ms)
+✔ compact ANSI themes and explicit work-limit override ship (0.907ms)
+✔ side-by-side spacing, console reflow, editable values, and bundled sample ship (3.2932ms)
+✔ header and console preserve ANSI detail at reduced vertical density (0.8636ms)
+✔ visible workflow, schema-v2 preprocessing, guidance, and help ship (6.7648ms)
+✔ quickstart length and parameter documentation meet the release contract (0.4745ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25.9131
+✔ ZIP32 writer emits valid local headers, UTF-8 paths, CRCs, central directory and EOCD (3.4181ms)
+✔ ZIP rejects duplicate, unsafe paths, invalid entries (2.991ms)
+✔ GPU-007 UI includes power-of-two projection MiB choices, 5-image ZIP + tile sweep, and pipeline depth controls (29.2935ms)
+✔ CPU cancellation terminates an active worker and an already aborted job never launches (6.9726ms)
+✔ reference worker posts a real progress event and returns the exact CPU glyph selection (27.3147ms)
+✔ CPU worker host relays progress and transfers results without modifying input buffers (1.8273ms)
+✔ CUDA capability lookup is optional and reports unavailable services without WebGPU access (58.5925ms)
+✔ direct binary64 requires explicit selection and preserves honest counts/readbacks/timings (18.2887ms)
+✔ experimental FP32 and FP16 mixed modes require opt-in without recovery or certification claims (6.2512ms)
+✔ direct mode rejects recovery work or false direct accounting and still closes its session (15.5916ms)
+✔ worker version, precision and GPU capability are checked before any rendering (0.6939ms)
+✔ initialization preserves live memory telemetry but cannot silently change GPU identity (9.7378ms)
+✔ CUDA tile limits use actual buffer/payload limits and report the requested versus actual pipeline depth (0.5598ms)
+✔ browser packs atlas statistics, palette and cell-major RGB identically to WebGPU, then stitches a partial tile (2.7727ms)
+✔ streamed provider samples use the same cell-major ABI and clean up on invalid geometry (3.4531ms)
+✔ malformed input is rejected before creating a native session (2.7067ms)
+✔ the selected CUDA path surfaces runtime failures and always releases its session (1.4703ms)
+✔ invalid native tuples, timings and truncated frames cannot reach ANSI encoding (19.1019ms)
+✔ response byte limits are enforced even with chunked HTTP data (2.6304ms)
+✔ AbortSignal and close cancel CUDA work and use an independent cleanup request (3.2263ms)
+✔ already-cancelled work creates no session and does not permanently occupy the fitter (2.5957ms)
+✔ an HTTP timeout releases the worker; simultaneous fits cannot share native buffers (61.142ms)
+✔ session cleanup errors cannot mask a compute error or silently pass a successful fit (3.2259ms)
+✔ UTF-8 JSON byte length need not align the native results to a four-byte boundary (2.0849ms)
+✔ frame sessions retain one atlas/worker and reuse upload storage while replacing input/results (5.1336ms)
+✔ frame session refuses concurrent refill, closes idle sessions, and cancels active frames (3.4284ms)
+✔ frame failure poisons the sequence and cleanup failure cannot silently pass close (4.5903ms)
+✔ historical physical precision fixture retains the independent CPU winner and failed baseline output (18.7809ms)
+✔ physical shortlist-cutoff fixture preserves the CPU winner and material reconstruction error difference (11.1637ms)
+✔ Stop aborts an active CUDA conversion, releases it, and permits a subsequent conversion (8.0808ms)
+✔ changed repeated tuples and ANSI bytes are reported while the first run stays canonical (2.9645ms)
+✔ ZIP summary and repeated-run CSV preserve nondeterminism failures (15.7056ms)
+✔ CUDA memory preflight works without a navigator.gpu or fake WebGPU device (4.3213ms)
+✔ backend capabilities are cached concurrently and failed CUDA detection is retryable (2.7152ms)
+✔ backend selection persists in captured settings and incompatible controls are disabled only for CUDA (3.1469ms)
+✔ CUDA profiling keeps native startup and bridge overhead separate from measured kernels (3.7968ms)
+✔ GPU-007: 1 GiB requested projection target clamps at per-binding raster cap (1.8602ms)
+✔ GPU-007: deep buffering multiplies resident buffers and is rejected on small declared VRAM (2.2471ms)
+✔ GPU-007: streamed image sampling avoids a full 8 GiB sample raster (0.6629ms)
+✔ GPU-007: high output profile is valid and charged exact integer work units (0.3473ms)
+✔ GPU-007: folder UI, ZIP outputs and cache busting are present (47.9673ms)
+✔ streamed Canvas2D strips preserve per-cell sample order across row/column boundaries (1.6523ms)
+✔ workbench requires user-declared VRAM, never infers physical capacity from GPU limits (2.3956ms)
+✔ requested 262144 tile target is preserved; actual tile is bounded by storage/dispatch limits (0.3761ms)
+✔ VRAM estimate matches actual GPU buffer categories and reuses buffers across tiles (0.9703ms)
+✔ warning and block thresholds are exactly manual VRAM minus 4 and 2 GiB (0.8155ms)
+✔ GPU-007 workbench preflights memory before CPU fitting, warns with confirmation, and defaults CPU comparison off (34.1843ms)
+✔ 2-D linear projection indices cover every cell/glyph exactly once across X and Y rows (4.0484ms)
+✔ runtime 2-D dispatch packs >1-D-limit tile and decodes without reordering (8.7637ms)
+✔ single-run comparable wall totals include same shared CPU prep and output on each side (1.7599ms)
+✔ CPU disabled is not misreported as a speedup or a zero-duration CPU run (0.3324ms)
+✔ ANSI byte and component-level mismatch reporting is independent and exact (1.6994ms)
+✔ metric helpers preserve binary byte units and stable medians (2.0023ms)
+✔ shader implements two-pass projection + real palette selection (1.8452ms)
+✔ WebGPU absence reported without touching global navigator (0.4151ms)
+✔ invalid inputs fail before allocating GPU resources (3.8983ms)
+✔ host-side packing, two dispatches, and result decoding obey ABI (7.0437ms)
+✔ tiled host dispatch packs cells in reference order and stitches output without gaps (2.5565ms)
+✔ tile plan respects per-device workgroup and storage-buffer maxima (2.5673ms)
+✔ multiple independent GPU slots are submitted before first readback and stitched correctly out of order (19.484ms)
+✔ VRAM admission counts each concurrent tile buffer set, not just one tile (1.816ms)
+✔ optional GPU timestamp queries measure actual project/select pass timestamps, not readback wait (6.8381ms)
+✔ GPU-003 workbench labels prep, CPU render, GPU render, output, totals and optional timing correctly (11.0118ms)
+✔ GPU-005 workbench has live CPU/GPU progress and hardened profiler fallbacks (12.4109ms)
+✔ real completed-cell counters derive correct elapsed throughput and remaining work (2.7828ms)
+✔ progress clamps invalid inputs and does not fabricate throughput before completion (0.8879ms)
+✔ GPU profiler render remains safe when a stale but valid older fitter has no timings (1.5586ms)
+✔ GPU work accounting supports huge research profiles, CPU ceiling unchanged (31.6679ms)
+✔ all UI bounds emit a parameter-specific error before CPU schema validation (1.6273ms)
+✔ GPU maximum supports 1024² cells / 32×64 sampling without integer overflow (1.2557ms)
+✔ hardmode corpus contains all five original supplied benchmark images with verifiable hashes (53.0486ms)
+✔ hardmode presets respect CPU reference or GPU-007 extended schema (0.4499ms)
+✔ timed CPU matcher is bit-exact against pinned original private photoFit, not a lower-quality rewrite (304.266ms)
+ℹ tests 73
+ℹ suites 0
+ℹ pass 73
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 708.3208
+artifact current (00d9f03304df)

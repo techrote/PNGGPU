@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "autoLoad": true,
+  "frameIds": [
+    1,
+    360,
+    719
+  ],
+  "downloadAnsiExact": true,
+  "originalPreviewPixelsExact": true,
+  "folderImport12Grids": true,
+  "pageErrors": []
+}

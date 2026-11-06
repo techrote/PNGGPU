@@ -1,0 +1,7 @@
+Test project C:/pnggpu-CUDA/build/host
+    Start 1: cuda_host_protocol_and_arithmetic
+1/1 Test #1: cuda_host_protocol_and_arithmetic ...   Passed    0.04 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.04 sec
