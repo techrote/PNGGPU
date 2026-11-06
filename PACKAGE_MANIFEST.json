@@ -334,8 +334,8 @@
       "bytes": 13953
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "bfc10e1f6e17e54c35ed633b2bfb419a1e6ba019aa65d9ad02a099a951713143",
-      "bytes": 12672
+      "sha256": "4c8610add9cc14fd561be864c60a3a54c7a3c0038897e5315b76948af087664b",
+      "bytes": 13050
     },
     "qualification/GTX1650SUPER_MOTION.md": {
       "sha256": "8ba6fcbc764bc524d26aa683d8363b64c0271eb3488ea7ece151bdcab7d863ba",
@@ -372,6 +372,10 @@
     "qualification/GTX1650SUPER_SAMPLE_LATENCY.md": {
       "sha256": "00c1fdeb54c189e114521affad172005858238f7e76b7cc97abc3a98b710061d",
       "bytes": 7263
+    },
+    "qualification/GTX1650SUPER_SAMPLING_WIPE.md": {
+      "sha256": "5ea4c2dd45c5daf27ab43934ace1fb5550277f2065ca61a9f21e8e604ccd75bb",
+      "bytes": 7649
     },
     "qualification/GTX1650SUPER_SELECTION_PROFILE.md": {
       "sha256": "823dac733de11c4bdf2988b7693b62b9039075fb5755605a1c62f326922181e6",
@@ -1965,6 +1969,38 @@
       "sha256": "17d4f75a6848b2072fe446564ad81859855eab9cfa101a6889833206c6e45276",
       "bytes": 98819
     },
+    "qualification/gtx1650super-sampling-wipe/all-host-tests.txt": {
+      "sha256": "3eee6e184c9d53fab79d0923dfdd48e39f1834b533f7df36990ca3050040fe4b",
+      "bytes": 9205
+    },
+    "qualification/gtx1650super-sampling-wipe/browser-qa.json": {
+      "sha256": "d5ff98419400db1106ac67358341a0f7af87bfa41acdd6f1fcacb1dc81e55652",
+      "bytes": 387
+    },
+    "qualification/gtx1650super-sampling-wipe/delivery.json": {
+      "sha256": "e78f0d0f1934dda2623299a1b4f6f6fd55f2adbdf0abecca62fc55f19dfa21c5",
+      "bytes": 280
+    },
+    "qualification/gtx1650super-sampling-wipe/host-tests.txt": {
+      "sha256": "63540904939a32d086f022bd6a4ea3852e903e764100009af8dc1c4f04f88e96",
+      "bytes": 1554
+    },
+    "qualification/gtx1650super-sampling-wipe/independent-audit.json": {
+      "sha256": "942029b764478c5c1b54a3b959a42922fc276797ca816874c7ca67d0db23ce70",
+      "bytes": 55900
+    },
+    "qualification/gtx1650super-sampling-wipe/prior-axis-analysis.json": {
+      "sha256": "c17f7b1f37e2e3be8d57452b17a67f507877f3dcb2ea4b1d2015af7adb4a862b",
+      "bytes": 13232
+    },
+    "qualification/gtx1650super-sampling-wipe/rotation-comparisons.json": {
+      "sha256": "c6232bb146e8d81d28873cfd2affb5128f7e6fb438407adfb9fc0eddbc1452a3",
+      "bytes": 8369
+    },
+    "qualification/gtx1650super-sampling-wipe/summary.json": {
+      "sha256": "3d1c794b0a35de471cb8f3273ad2a97e7384e10c44845f5fd581459eb8a989c9",
+      "bytes": 131012
+    },
     "qualification/gtx1650super-selection-profile/activity-baseline.csv": {
       "sha256": "1fdcfe6d537d1537f4169007773d9c8cdaf41783f44140742b9d57cf56992523",
       "bytes": 215813
@@ -2450,8 +2486,8 @@
       "bytes": 2170
     },
     "scripts/package_ansi_comparison.py": {
-      "sha256": "527e014667e8e09228b4adc2c775e8858cdc2468a7aa1f23452167efa7756335",
-      "bytes": 4422
+      "sha256": "5af0b368bfda46fc72eccefca4a19759a27cedea976ff76cbee452cbb1bd15fc",
+      "bytes": 4658
     },
     "scripts/package_manifest.py": {
       "sha256": "6090067c7359cebf6cbd3de583b651d2edf623ccb51bf12f295b72808fb920a4",
@@ -2496,6 +2532,10 @@
     "scripts/render_cuda_video.py": {
       "sha256": "e4ab7dbfcfb7c16f89a7d05c545a8c47fac1ab9bf20029289dd5f9369e2faad9",
       "bytes": 3466
+    },
+    "scripts/render_sampling_previews.py": {
+      "sha256": "620b69338b3e6f2a4ab2368d45778a43f64fc75d90fe168869299382c3857dac",
+      "bytes": 2152
     },
     "scripts/replay_cuda_fixtures.mjs": {
       "sha256": "2a698fe8d076dbc46de1165ee0f26cf11da5378b0225e6a0433b60a44c2978f1",

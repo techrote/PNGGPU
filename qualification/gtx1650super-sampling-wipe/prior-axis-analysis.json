@@ -1,0 +1,402 @@
+{
+  "schema": "pnggpu-existing-sampling-axis-analysis-v1",
+  "sourceCommit": "4f6f6d841effcfcad5958e835707a7e4c1fb52e5",
+  "reportSha256": "953984679c8181f88e35101cc4cb45db80638046a35220cdd9694671715df353",
+  "settingsSha256": "a23ddec00088c24f716c9ebe2f59d8be36ba82af28fcb5e599b4be6d46fff95b",
+  "worker": {
+    "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+    "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+    "receipt": {
+      "sourceCommit": "58cc6e24009cf2e522189bfbeb5c9c4ceaf939bc",
+      "worker": "pnggpu_cuda_worker.exe",
+      "sha256": "9724dcdd33594ece5f41cdc8fb5695d86fe0c2b7d80913003a5d37c32e58bad7",
+      "build": {
+        "nvcc": "12.8.93",
+        "hostCompiler": "MSVC19.44.35228.0",
+        "profile": true,
+        "cmakeType": "Release",
+        "faultWorker": false,
+        "flags": [
+          "--resource-usage",
+          "-lineinfo",
+          "--fmad=false",
+          "--ftz=false",
+          "--prec-div=true",
+          "--prec-sqrt=true"
+        ],
+        "sampleMajorMasks": true,
+        "integerProjectionSums": true,
+        "colorMajorFP32": false,
+        "cuptiActivityBuild": false,
+        "nativeRasterPacking": "rgba-row-bands-v1",
+        "nativeGather": "cache-blocked-4KiB"
+      }
+    }
+  },
+  "selectedFrames": [
+    1,
+    360,
+    719
+  ],
+  "cellsPerFrame": 2000,
+  "pixelsPerFrame": 256000,
+  "samplingDimensions": {
+    "80x25-photo-samples4x8": {
+      "width": 4,
+      "height": 8,
+      "samples": 32
+    },
+    "80x25-photo-samples8x8": {
+      "width": 8,
+      "height": 8,
+      "samples": 64
+    },
+    "80x25-photo-samples4x16": {
+      "width": 4,
+      "height": 16,
+      "samples": 64
+    },
+    "80x25-photo-samples8x16": {
+      "width": 8,
+      "height": 16,
+      "samples": 128
+    }
+  },
+  "comparisons": [
+    {
+      "a": "80x25-photo-samples4x8",
+      "b": "80x25-photo-samples8x8",
+      "change": "double width only, height8",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1144,
+          "glyphChanges": 1093,
+          "foregroundChanges": 444,
+          "backgroundChanges": 137,
+          "changedPixels": 91206,
+          "changedPixelPercent": 35.62734375,
+          "meanAbsoluteChannelDifference0to255": 17.5198515625,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 89431,
+          "ansiBytesA": 7851,
+          "ansiBytesB": 6996
+        },
+        {
+          "frame": 360,
+          "changedTuples": 913,
+          "glyphChanges": 877,
+          "foregroundChanges": 362,
+          "backgroundChanges": 176,
+          "changedPixels": 56329,
+          "changedPixelPercent": 22.003515625,
+          "meanAbsoluteChannelDifference0to255": 10.84504296875,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 55440,
+          "ansiBytesA": 7531,
+          "ansiBytesB": 7051
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1001,
+          "glyphChanges": 964,
+          "foregroundChanges": 426,
+          "backgroundChanges": 170,
+          "changedPixels": 68908,
+          "changedPixelPercent": 26.9171875,
+          "meanAbsoluteChannelDifference0to255": 13.624391927083334,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 67900,
+          "ansiBytesA": 9661,
+          "ansiBytesB": 8792
+        }
+      ],
+      "meanChangedTuples": 1019.3333333333334,
+      "meanChangedPixelPercent": 28.182682291666666,
+      "meanAbsoluteChannelDifference0to255": 13.996428819444446
+    },
+    {
+      "a": "80x25-photo-samples4x8",
+      "b": "80x25-photo-samples4x16",
+      "change": "double height only, width4",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1230,
+          "glyphChanges": 1138,
+          "foregroundChanges": 315,
+          "backgroundChanges": 176,
+          "changedPixels": 75950,
+          "changedPixelPercent": 29.66796875,
+          "meanAbsoluteChannelDifference0to255": 13.723807291666667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 72563,
+          "ansiBytesA": 7851,
+          "ansiBytesB": 8176
+        },
+        {
+          "frame": 360,
+          "changedTuples": 890,
+          "glyphChanges": 833,
+          "foregroundChanges": 240,
+          "backgroundChanges": 153,
+          "changedPixels": 42949,
+          "changedPixelPercent": 16.776953125,
+          "meanAbsoluteChannelDifference0to255": 7.717276041666667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 41624,
+          "ansiBytesA": 7531,
+          "ansiBytesB": 7027
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1009,
+          "glyphChanges": 937,
+          "foregroundChanges": 301,
+          "backgroundChanges": 181,
+          "changedPixels": 50328,
+          "changedPixelPercent": 19.659375,
+          "meanAbsoluteChannelDifference0to255": 9.557796875,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 48874,
+          "ansiBytesA": 9661,
+          "ansiBytesB": 9559
+        }
+      ],
+      "meanChangedTuples": 1043.0,
+      "meanChangedPixelPercent": 22.034765625000002,
+      "meanAbsoluteChannelDifference0to255": 10.332960069444445
+    },
+    {
+      "a": "80x25-photo-samples8x8",
+      "b": "80x25-photo-samples8x16",
+      "change": "double height only, width8",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1210,
+          "glyphChanges": 1103,
+          "foregroundChanges": 303,
+          "backgroundChanges": 186,
+          "changedPixels": 79119,
+          "changedPixelPercent": 30.905859375,
+          "meanAbsoluteChannelDifference0to255": 14.301916666666667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 75637,
+          "ansiBytesA": 6996,
+          "ansiBytesB": 5887
+        },
+        {
+          "frame": 360,
+          "changedTuples": 950,
+          "glyphChanges": 872,
+          "foregroundChanges": 194,
+          "backgroundChanges": 207,
+          "changedPixels": 50291,
+          "changedPixelPercent": 19.644921874999998,
+          "meanAbsoluteChannelDifference0to255": 8.77440625,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 48585,
+          "ansiBytesA": 7051,
+          "ansiBytesB": 5593
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1115,
+          "glyphChanges": 1051,
+          "foregroundChanges": 257,
+          "backgroundChanges": 184,
+          "changedPixels": 67507,
+          "changedPixelPercent": 26.369921875000003,
+          "meanAbsoluteChannelDifference0to255": 12.054423177083333,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 64518,
+          "ansiBytesA": 8792,
+          "ansiBytesB": 7618
+        }
+      ],
+      "meanChangedTuples": 1091.6666666666667,
+      "meanChangedPixelPercent": 25.640234375000002,
+      "meanAbsoluteChannelDifference0to255": 11.710248697916668
+    },
+    {
+      "a": "80x25-photo-samples4x16",
+      "b": "80x25-photo-samples8x16",
+      "change": "double width only, height16",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1158,
+          "glyphChanges": 1116,
+          "foregroundChanges": 498,
+          "backgroundChanges": 102,
+          "changedPixels": 85641,
+          "changedPixelPercent": 33.453515625,
+          "meanAbsoluteChannelDifference0to255": 15.96575,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 82926,
+          "ansiBytesA": 8176,
+          "ansiBytesB": 5887
+        },
+        {
+          "frame": 360,
+          "changedTuples": 876,
+          "glyphChanges": 805,
+          "foregroundChanges": 365,
+          "backgroundChanges": 121,
+          "changedPixels": 55851,
+          "changedPixelPercent": 21.816796875,
+          "meanAbsoluteChannelDifference0to255": 10.158983072916667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 54564,
+          "ansiBytesA": 7027,
+          "ansiBytesB": 5593
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1072,
+          "glyphChanges": 1031,
+          "foregroundChanges": 460,
+          "backgroundChanges": 144,
+          "changedPixels": 75668,
+          "changedPixelPercent": 29.557812500000004,
+          "meanAbsoluteChannelDifference0to255": 14.173557291666667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 73527,
+          "ansiBytesA": 9559,
+          "ansiBytesB": 7618
+        }
+      ],
+      "meanChangedTuples": 1035.3333333333333,
+      "meanChangedPixelPercent": 28.276041666666668,
+      "meanAbsoluteChannelDifference0to255": 13.432763454861112
+    },
+    {
+      "a": "80x25-photo-samples4x8",
+      "b": "80x25-photo-samples8x16",
+      "change": "double both dimensions",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1464,
+          "glyphChanges": 1307,
+          "foregroundChanges": 693,
+          "backgroundChanges": 245,
+          "changedPixels": 108126,
+          "changedPixelPercent": 42.23671875,
+          "meanAbsoluteChannelDifference0to255": 20.669098958333333,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 104939,
+          "ansiBytesA": 7851,
+          "ansiBytesB": 5887
+        },
+        {
+          "frame": 360,
+          "changedTuples": 1112,
+          "glyphChanges": 1014,
+          "foregroundChanges": 470,
+          "backgroundChanges": 199,
+          "changedPixels": 64400,
+          "changedPixelPercent": 25.156250000000004,
+          "meanAbsoluteChannelDifference0to255": 12.140865885416666,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 62915,
+          "ansiBytesA": 7531,
+          "ansiBytesB": 5593
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1319,
+          "glyphChanges": 1203,
+          "foregroundChanges": 635,
+          "backgroundChanges": 237,
+          "changedPixels": 92738,
+          "changedPixelPercent": 36.22578125,
+          "meanAbsoluteChannelDifference0to255": 17.623697916666668,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 90216,
+          "ansiBytesA": 9661,
+          "ansiBytesB": 7618
+        }
+      ],
+      "meanChangedTuples": 1298.3333333333333,
+      "meanChangedPixelPercent": 34.53958333333333,
+      "meanAbsoluteChannelDifference0to255": 16.81122092013889
+    },
+    {
+      "a": "80x25-photo-samples8x8",
+      "b": "80x25-photo-samples4x16",
+      "change": "equal64 samples, different axis balance",
+      "frames": [
+        {
+          "frame": 1,
+          "changedTuples": 1497,
+          "glyphChanges": 1439,
+          "foregroundChanges": 413,
+          "backgroundChanges": 181,
+          "changedPixels": 111366,
+          "changedPixelPercent": 43.50234375,
+          "meanAbsoluteChannelDifference0to255": 20.173841145833332,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 107310,
+          "ansiBytesA": 6996,
+          "ansiBytesB": 8176
+        },
+        {
+          "frame": 360,
+          "changedTuples": 1124,
+          "glyphChanges": 1096,
+          "foregroundChanges": 318,
+          "backgroundChanges": 212,
+          "changedPixels": 67372,
+          "changedPixelPercent": 26.3171875,
+          "meanAbsoluteChannelDifference0to255": 12.15756640625,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 65647,
+          "ansiBytesA": 7051,
+          "ansiBytesB": 7027
+        },
+        {
+          "frame": 719,
+          "changedTuples": 1241,
+          "glyphChanges": 1206,
+          "foregroundChanges": 412,
+          "backgroundChanges": 228,
+          "changedPixels": 84223,
+          "changedPixelPercent": 32.899609375,
+          "meanAbsoluteChannelDifference0to255": 15.958600260416667,
+          "pixelsWithAnyChannelDifferenceAtLeast8": 82188,
+          "ansiBytesA": 8792,
+          "ansiBytesB": 9559
+        }
+      ],
+      "meanChangedTuples": 1287.3333333333333,
+      "meanChangedPixelPercent": 34.23971354166667,
+      "meanAbsoluteChannelDifference0to255": 16.096669270833335
+    }
+  ],
+  "definition": "Tuple change is glyph and/or palette-index change. Pixel change is any differing final RGB component in original 8x16 glyph-atlas rendering; it is an exact signal difference, not perceptual visibility or quality.",
+  "caveats": [
+    "These selected cells use browser reference-canvas preparation, not the earlier full export FFmpeg sampling pipeline. Do not mix the two datasets as a sampling-only comparison.",
+    "Only three selected frames and one run per case; no general perceptual-quality or temporal-stability conclusion.",
+    "Fit times include cold setup per case and are not warm latency benchmarks.",
+    "64-sample grids 8x8 and4x16 have equal counts but different horizontal/vertical coverage."
+  ],
+  "ansiBytes": {
+    "80x25-photo-samples4x8": {
+      "frames": {
+        "1": 7851,
+        "360": 7531,
+        "719": 9661
+      },
+      "totalSelectedFrames": 25043
+    },
+    "80x25-photo-samples8x8": {
+      "frames": {
+        "1": 6996,
+        "360": 7051,
+        "719": 8792
+      },
+      "totalSelectedFrames": 22839
+    },
+    "80x25-photo-samples4x16": {
+      "frames": {
+        "1": 8176,
+        "360": 7027,
+        "719": 9559
+      },
+      "totalSelectedFrames": 24762
+    },
+    "80x25-photo-samples8x16": {
+      "frames": {
+        "1": 5887,
+        "360": 5593,
+        "719": 7618
+      },
+      "totalSelectedFrames": 19098
+    }
+  }
+}

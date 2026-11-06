@@ -8,6 +8,7 @@ settings['variants']=[{k:v for k,v in item.items() if k in {'key','label','style
 assets=Path('overlay/experiments/ansi-compare')
 for name in ['index.html','parser.js','app.js','styles.css','README.md']:shutil.copy2(assets/name,out/name)
 shutil.copy2(source/'report.json',out/'study-report.json')
+if (source/'rotation-comparisons.json').exists():shutil.copy2(source/'rotation-comparisons.json',out/'rotation-comparisons.json')
 bundle={'settings.json':base64.b64encode((out/'settings.json').read_bytes()).decode()}
 for item in settings['variants']:
     key=item['key'];folder=out/key;shutil.copytree(source/key,folder,dirs_exist_ok=True)
@@ -50,7 +51,7 @@ Standard terminal CP437 does not itself express a custom rotated glyph atlas;
 the saved atlas and this viewer define the exact rendering. Cell differences
 across unlike native grids are disabled; displayed-pixel comparisons still apply.
 '''
-(out/'STUDY.txt').write_text(notes,encoding='utf-8')
+(out/'STUDY.txt').write_text(f"Configurations: {len(settings['variants'])}; selected source frames: {settings['selectedFrames']}.\n\n"+notes,encoding='utf-8')
 archive=out.with_suffix('.zip')
 with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as z:
     for f in sorted(out.rglob('*')):

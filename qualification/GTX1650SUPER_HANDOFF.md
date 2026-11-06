@@ -4,6 +4,12 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The [sampling/wipe extension](GTX1650SUPER_SAMPLING_WIPE.md) adds whole-frame A/B
+fit, a draggable in-frame divider, thirteen normal sample grids and explicitly
+labelled literal/fresh 25x80 portrait cases. Its new portable pack contains 50
+configurations / 150 stills; previous ZIPs remain unchanged. The 2 GiB reserve,
+depth one and backend/arithmetic defaults remain intact.
+
 The 6 November [sampling analysis and exact-frame lab](GTX1650SUPER_QUALITY80.md)
 adds the full export's 4x8/8x16 latency table, a local CP437 A/B/C viewer and a
 bounded 80x25 parameter screen. Photographic CUDA presets are separate from the

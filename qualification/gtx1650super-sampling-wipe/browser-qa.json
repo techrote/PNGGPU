@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "autoLoaded50Variants": true,
+  "abWholeFramesFit": true,
+  "wipePixelsExact": [
+    0,
+    50,
+    100
+  ],
+  "swapExact": true,
+  "pointerDragPercent": 75,
+  "keyboardHomeEnd": true,
+  "rotatedLiteralPixelExact": true,
+  "rotatedDifferentGridHandled": true,
+  "sparseFrames": [
+    1,
+    360,
+    719
+  ],
+  "comparisonPngDownloaded": true,
+  "pageErrors": []
+}
