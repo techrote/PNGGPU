@@ -54,8 +54,8 @@
   "hardware_GPU_validation": "Not performed in container; high-resolution streaming exact-reference parity unverified",
   "files": {
     ".gitattributes": {
-      "sha256": "6631894ccf59b76433d44b67f6cd58d825d0f94b2c4c5667ee061d665d10c1f7",
-      "bytes": 370
+      "sha256": "f548ec0599762020d3b442cef9616f85e3045273ed5ef850cae285c6ff0102c7",
+      "bytes": 388
     },
     ".github/workflows/verify.yml": {
       "sha256": "8e86a43b5e0f8984b471cc583d124c6495969ebdcee80dc004802b3a51951672",
@@ -154,16 +154,20 @@
       "bytes": 9761
     },
     "overlay/experiments/ansi-compare/README.md": {
-      "sha256": "8ac78db2378acdd294f5c3d93b91d779f0921168916437d227bd036eb2129509",
-      "bytes": 2583
+      "sha256": "112353ea57eaf2739982da11cbf92d5ce20809cf08b041c2d0119e6919eebc11",
+      "bytes": 2885
     },
     "overlay/experiments/ansi-compare/app.js": {
-      "sha256": "0c249d6ba96771b1fe18b9fc69d8fb8bf5ee8f62df631c6c66e5d32825c435ee",
-      "bytes": 16787
+      "sha256": "bec06e527c951d02dd45056fe54fa4984afa57acc5b529a2f70d1262c9d7ac5a",
+      "bytes": 17065
+    },
+    "overlay/experiments/ansi-compare/demo.js": {
+      "sha256": "82307fc49c70ba39a7f141b10432f6f80dd6c54fce9483ad84a6622d3bfdaa81",
+      "bytes": 85
     },
     "overlay/experiments/ansi-compare/index.html": {
-      "sha256": "97b301749ec43ed116ec4484f7ab27820b8f617191271495bebf0a799f3a0dd3",
-      "bytes": 3667
+      "sha256": "64d1cbff89d6d03648c2aa5b6759ad452e024c02c098064e0db2b3f3b4bf5004",
+      "bytes": 3707
     },
     "overlay/experiments/ansi-compare/parser.js": {
       "sha256": "44d40e475d922c0c9eb114cbcf6a6d8e55504c591b4da908d5f08582bd07c020",
@@ -330,8 +334,8 @@
       "bytes": 13953
     },
     "qualification/GTX1650SUPER_HANDOFF.md": {
-      "sha256": "fd5e4cc1bd77198c89e16a9537a0a0d04baf852030e4a8e187789c70a6424d88",
-      "bytes": 12289
+      "sha256": "bfc10e1f6e17e54c35ed633b2bfb419a1e6ba019aa65d9ad02a099a951713143",
+      "bytes": 12672
     },
     "qualification/GTX1650SUPER_MOTION.md": {
       "sha256": "8ba6fcbc764bc524d26aa683d8363b64c0271eb3488ea7ece151bdcab7d863ba",
@@ -352,6 +356,10 @@
     "qualification/GTX1650SUPER_PROJECTION_QUEUE.md": {
       "sha256": "5964fd4b0b4ef351e44a4b4662fd491b5ff07b8e5293cdf407b93b9122f50378",
       "bytes": 16591
+    },
+    "qualification/GTX1650SUPER_QUALITY80.md": {
+      "sha256": "68caa9bfcd3d0255119bd08034926ea9af6c6483da9b81dc433b9f4bf68598c1",
+      "bytes": 7222
     },
     "qualification/GTX1650SUPER_REAL_IMAGES.md": {
       "sha256": "4e8c91f2641ce9d1085f7dfb1931a8148e7e54103ef405811214f89e954bdb39",
@@ -1861,6 +1869,18 @@
       "sha256": "845bab98feaadaf8b6ae799c0c55be4da6d8d3b1576da261594c8bc22b8b0996",
       "bytes": 626
     },
+    "qualification/gtx1650super-quality80/browser-qa.json": {
+      "sha256": "05a731d5af262e9f193d296870651ccad5a24328c122788c943dfebcdc4ec220",
+      "bytes": 204
+    },
+    "qualification/gtx1650super-quality80/delivery.json": {
+      "sha256": "d0da5fa010557e323613cede502b2c8055f18f09465e0ee97d32f9a24e3f2e74",
+      "bytes": 279
+    },
+    "qualification/gtx1650super-quality80/summary.json": {
+      "sha256": "de40d3e5486fe212f19d99a8921e8ee0ef6e9f86fe5ddf7e1119e9fb0f8b6071",
+      "bytes": 220978
+    },
     "qualification/gtx1650super-real-images/driver-final.json": {
       "sha256": "daaf63c05f9d4b1709eb8c1ce3a2991518486056d7528c1fa6ad779e5bf7d1fa",
       "bytes": 121
@@ -2274,8 +2294,8 @@
       "bytes": 34677
     },
     "scripts/analyze_cuda_export_latency.mjs": {
-      "sha256": "ac45f359c0205ce640163f9d56665f25fd4129a8f1d1a37a331d8d773775dcb4",
-      "bytes": 10036
+      "sha256": "4474ff7b2c26839390872c4703a7965eae5110cf0c7bef3534489f2b5209882c",
+      "bytes": 10260
     },
     "scripts/analyze_cuda_fixture.mjs": {
       "sha256": "5be0111afd12e3393bb604aa6ee78909929eb04570b2ee9d8dcba53a59f58926",
@@ -2417,9 +2437,13 @@
       "sha256": "12e25ad5d97602560acf67b2b0c44eadeb9d879ebde9cd93996e5973cb71244b",
       "bytes": 2170
     },
+    "scripts/package_ansi_comparison.py": {
+      "sha256": "8f9835e782210f1c863b98287981aecbf6bb7f54bd3c47106bf0fd4031ec8fcb",
+      "bytes": 3478
+    },
     "scripts/package_manifest.py": {
-      "sha256": "04e7a59749a79f006e99504688e23fdeb6d6899675064106dc91936481f9463a",
-      "bytes": 2047
+      "sha256": "6090067c7359cebf6cbd3de583b651d2edf623ccb51bf12f295b72808fb920a4",
+      "bytes": 2055
     },
     "scripts/prepare_cuda_export.mjs": {
       "sha256": "01a9f44937a3f47f06ff6ef1c59b3967c23db4fadba70e9b975a966b1539f8ea",

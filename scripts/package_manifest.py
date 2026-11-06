@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
-TEXT_SUFFIXES = {".bat", ".ps1", ".mjs", ".js", ".wgsl", ".json", ".md",
+TEXT_SUFFIXES = {".bat", ".ps1", ".mjs", ".js", ".wgsl", ".json", ".md", ".css",
                  ".html", ".yml", ".yaml", ".py", ".cpp", ".hpp", ".cu", ".txt"}
 
 

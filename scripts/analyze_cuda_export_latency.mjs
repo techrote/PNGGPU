@@ -74,6 +74,8 @@ for(const a of result.variants.filter(v=>v.geometry.sampleWidth===4)){
 }
 // Exact tuple differences are useful for navigation, not a perceptual-quality score.
 const aKey='80x25-samples4x8-fp32',bKey='80x25-samples8x16-fp32';
+const av=settings.variants.find(v=>v.key===aKey),bv=settings.variants.find(v=>v.key===bKey);
+assert.deepEqual(av.codes,bv.codes,'Tuple indices require identical glyph code ordering');assert.deepEqual(av.palette,bv.palette);
 const [a,b]=await Promise.all([readFile(resolve(root,aKey,'tuples.bin')),readFile(resolve(root,bKey,'tuples.bin'))]);
 const diffs=[];assert.equal(a.length,719*2000*4);assert.equal(b.length,a.length);
 for(let index=0;index<719;index++){

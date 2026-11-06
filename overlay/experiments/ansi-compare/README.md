@@ -5,6 +5,11 @@ the earlier delivery ZIP, then choose its root folder (containing `settings.json
 with **Open extracted export folder**. You can also drag a folder onto the import
 area. MP4 files and raw tuple buffers are never loaded by the viewer.
 
+The small generated quality-study ZIP loads its 35 presets automatically.
+Its `demo.js` embeds only local settings/ANSI/checksum data; the repository's
+placeholder is empty. The default single-pane view keeps A/B/C at the same
+pixel origin. Choose Side by side when inspecting several panes together.
+
 The initial grid is **80x25** when available. A selects 4x8 samples and B selects
 8x16; C selects a third variant when present. Each selector is independent. Add
 another export folder to compare new experiment packs alongside the delivery.

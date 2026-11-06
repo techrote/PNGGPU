@@ -4,6 +4,12 @@ Recorded 4 November 2026. Repository: https://github.com/techrote/PNGGPU
 PR: https://github.com/techrote/PNGGPU/pull/2
 Branch: `feat/optional-cuda-turing`. **Keep PR #2 in draft; do not merge.**
 
+The 6 November [sampling analysis and exact-frame lab](GTX1650SUPER_QUALITY80.md)
+adds the full export's 4x8/8x16 latency table, a local CP437 A/B/C viewer and a
+bounded 80x25 parameter screen. Photographic CUDA presets are separate from the
+original CPU industrial style. The prior ZIP remains unchanged; its README's
+UTF-8 encoding label is corrected by the viewer documentation.
+
 The [complete-video delivery](GTX1650SUPER_VIDEO_EXPORT.md), dated 5 November,
 exports all 719 parkour frames in FP32 at twelve grids, each with 4x8 and 8x16
 samples. It records 24 MP4 clips with audio and 17,256 ANSI frames in a verified
